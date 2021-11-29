@@ -4,7 +4,7 @@
 </script>
 
 <main>
-	<section>
+	<section class="q-action-section">
 		<QuickAction />
 	</section>
 	<section>
@@ -26,6 +26,10 @@
 	main {
 		@apply flex justify-between;
 		animation: fade 1s;
+	}
+
+	.q-action-section {
+		@apply w-full;
 	}
 
 	@keyframes fade {
