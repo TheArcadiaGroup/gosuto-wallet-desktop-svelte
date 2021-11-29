@@ -1,14 +1,9 @@
 <script lang="ts">
-	import Counter from '$lib/Counter.svelte';
-	import Logo from '$lib/Logo.svelte';
+	import QuickAction from '$lib/QuickAction.svelte';
 </script>
 
 <main>
-	<Logo />
-
-	<h1 class="my-5">IDS Electron + Sveltekit + Tailwindcss Template</h1>
-
-	<Counter />
+	<QuickAction />
 </main>
 
 <style>
