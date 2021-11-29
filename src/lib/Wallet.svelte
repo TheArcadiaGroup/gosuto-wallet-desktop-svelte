@@ -72,6 +72,9 @@
 		<img src="/images/png/corner.png" alt="" class="image-2" />
 		<img src="/images/png/wallet-side-art.png" alt="" class="image-1" />
 	</div>
+	<div class="options">
+		<p>...</p>
+	</div>
 </div>
 
 <style>
@@ -82,6 +85,14 @@
 	.image-2 {
 		@apply absolute right-0 top-0;
 		z-index: -10;
+	}
+
+	.options {
+		@apply relative;
+	}
+
+	.options > p {
+		@apply absolute right-0 top-0 text-white font-bold mr-2;
 	}
 
 	.available {
