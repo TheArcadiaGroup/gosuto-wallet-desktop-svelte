@@ -23,7 +23,7 @@
 	}
 
 	.btn {
-		@apply text-white py-3 px-7 rounded-2xl mt-4;
+		@apply text-white py-3 px-7 rounded-2xl mt-4 hover:bg-red-500 transition duration-200 ease-in-out;
 		background: #ff8266;
 		box-shadow: 0px 1px 4px #ff8266;
 	}

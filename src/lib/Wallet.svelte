@@ -88,11 +88,11 @@
 	}
 
 	.options {
-		@apply relative;
+		@apply cursor-pointer relative;
 	}
 
 	.options > p {
-		@apply absolute right-0 top-0 text-white font-bold mr-2;
+		@apply absolute right-0 top-0 text-white font-bold mr-2 p-1 mt-2 cursor-pointer;
 	}
 
 	.available {

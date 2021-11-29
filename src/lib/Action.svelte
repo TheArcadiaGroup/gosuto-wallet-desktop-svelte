@@ -12,7 +12,12 @@
 	}
 </script>
 
-<div class="action" class:selected={quickAction.selected} on:click={actionClicked}>
+<div
+	class="action"
+	class:selected={quickAction.selected}
+	class:not-selected={!quickAction.selected}
+	on:click={actionClicked}
+>
 	<img src="/images/png/{quickAction.img}.png" alt={quickAction.text} />
 	<p>{quickAction.text}</p>
 </div>
@@ -20,6 +25,10 @@
 <style>
 	.action {
 		@apply flex flex-col justify-center items-center p-6 rounded-3xl cursor-pointer;
+	}
+
+	.not-selected {
+		@apply hover:bg-purple-100 transition duration-200 ease-in-out;
 	}
 
 	p {
