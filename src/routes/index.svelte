@@ -1,9 +1,15 @@
 <script lang="ts">
 	import QuickAction from '$lib/QuickAction.svelte';
+	import WalletsContainer from '$lib/WalletsContainer.svelte';
 </script>
 
 <main>
-	<QuickAction />
+	<section>
+		<QuickAction />
+	</section>
+	<section>
+		<WalletsContainer />
+	</section>
 </main>
 
 <style>
@@ -18,6 +24,7 @@
 	}
 
 	main {
+		@apply flex justify-between;
 		animation: fade 1s;
 	}
 

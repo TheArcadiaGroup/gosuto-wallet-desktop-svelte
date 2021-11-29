@@ -48,7 +48,7 @@
 
 <style>
 	.quick-action-section {
-		@apply box-border rounded-3xl flex justify-between items-center w-full px-12 py-10 m-1;
+		@apply box-border rounded-3xl flex justify-between items-center px-12 py-10 m-4;
 		border: 0.5px solid rgba(243, 243, 243, 1);
 		box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
 	}
