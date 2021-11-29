@@ -40,4 +40,8 @@
 		background: #725dff;
 		box-shadow: 0px 4px 7px rgba(114, 93, 255, 0.3);
 	}
+
+	.selected > p {
+		@apply text-white;
+	}
 </style>
