@@ -1,13 +1,16 @@
 <script lang="ts">
 	import { currentCount } from '$stores/counterStore';
+	export let dark = '';
+	$: dark;
 
-	const increment = () => {
-		currentCount.update((e) => e + 1);
+	const toggle = () => {
+		dark = 'dark';
 	};
 </script>
 
-<button on:click={increment}>
-	Clicks: {$currentCount}
+<button on:click={toggle}>
+	<!-- Clicks: {$currentCount} -->
+	Toggle
 </button>
 
 <style>
