@@ -7,8 +7,7 @@
 
 {#if !loaded}
 	<div
-		class="absolute top-0 left-0 z-50 flex align-items-center h-screen w-screen"
-		style="background: #FF8266;"
+		class="absolute top-0 left-0 z-50 flex align-items-center h-screen w-screen bg-light-orange"
 		out:fade={{ delay: 2000, duration: 2100 }}
 	>
 		<div class="w-full my-auto mx-auto">
