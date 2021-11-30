@@ -1,7 +1,7 @@
 <script>
 	import { fade } from 'svelte/transition';
 	import { onMount } from 'svelte';
-	import GosutoIcon from '$icons/GosutoIcon.svelte';
+	import GosutoLogoOnly from '$icons/GosutoLogoOnly.svelte';
 	let loaded = false;
 	onMount(() => (loaded = true));
 </script>
@@ -13,7 +13,7 @@
 	>
 		<div class="w-full my-auto mx-auto">
 			<div class="flex justify-center my-auto mx-auto max-h-full w-screen">
-				<GosutoIcon />
+				<GosutoLogoOnly />
 			</div>
 			<div class="mt-2">
 				<h1 class="font-bold text-3xl text-white">Gosuto</h1>

@@ -1,11 +1,12 @@
 <script>
+	import GosutoLogoAndText from '$icons/GosutoLogoAndText.svelte';
 	import LargeSquareButton from '$lib/NewToGosuto/LargeSquareButton.svelte';
 	import RoundedButton from '$lib/RoundedButton.svelte';
 </script>
 
 <div>
 	<div class="inline-flex mt-5">
-		<img src="images/svg/gosutoOrange.svg" alt="" />
+		<GosutoLogoAndText />
 	</div>
 </div>
 <div class="mt-7">
