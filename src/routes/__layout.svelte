@@ -6,7 +6,7 @@
 	onMount(() => (ready = true));
 </script>
 
-<div class="dragbar" />
+<!-- <div class="dragbar" /> -->
 
 {#if ready}
 	<slot />

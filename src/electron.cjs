@@ -24,7 +24,7 @@ function createWindow() {
 
 	const mainWindow = new BrowserWindow({
 		backgroundColor: 'whitesmoke',
-		titleBarStyle: 'hidden',
+		titleBarStyle: 'customButtonsOnHover',
 		autoHideMenuBar: true,
 		trafficLightPosition: {
 			x: 17,
@@ -89,7 +89,7 @@ function createMainWindow() {
 	if (dev) loadVite(port);
 	else serveURL(mainWindow);
 
-	if (dev) mainWindow.openDevTools();
+	// if (dev) mainWindow.openDevTools();
 }
 
 app.once('ready', createMainWindow);
