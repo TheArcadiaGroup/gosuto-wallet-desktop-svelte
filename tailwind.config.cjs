@@ -11,9 +11,10 @@ module.exports = {
 					// Light Theme Colors
 				},
 				light: {
-					// Dark Theme Colors
+					purple: '#725DFF',
 				},
 			},
+			fontFamily: { display: 'Manrope' },
 		},
 	},
 	variants: {
