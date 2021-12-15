@@ -36,7 +36,9 @@
 			"$utils": ["./src/utils"],
 			"$utils/*": ["./src/utils/*"],
 			"$icons": ["./src/icons"],
-			"$icons/*": ["./src/icons/*"]
+			"$icons/*": ["./src/icons/*"],
+			"$components": ["./src/lib/components"],
+			"$components/*": ["./src/lib/components/*"]
 		}
 	},
 	"include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.ts", "src/**/*.svelte", "src/electron.js"]
