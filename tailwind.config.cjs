@@ -8,10 +8,12 @@ module.exports = {
 				...require('tailwindcss/defaultTheme').colors,
 				// Add other colors (theme here)
 				dark: {
-					// Light Theme Colors
+					gray: '#4F4F4F',
 				},
 				light: {
-					// Dark Theme Colors
+					gray: '#A9A9A9',
+					green: '#70CF98',
+					red: '#FF6666',
 				},
 			},
 		},
