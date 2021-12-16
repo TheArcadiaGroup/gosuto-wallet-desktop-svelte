@@ -8,8 +8,15 @@
 	import GosutoNavLogo from '$icons/NavLogo.svelte';
 </script>
 
+<!-- TODO: When creating navbar related components, its recommended to have these within a NavBar directory in the components folder -->
+
 <div class="nav">
 	<ul class="bar">
+		<!-- TODO: I'd recommend having a NavItem component here -->
+		<!-- Its easier to style and follow when working with your code -->
+		<!-- Also, it can just take a prop `active` and you get to reduce the size of this file -->
+		<!-- Especially the styles bundled in this single file -->
+		<!-- <NavItem> {other elements/components} </NavItem> -->
 		<li><GosutoNavLogo /></li>
 		<li class="avatar"><div class="avatar-img" /></li>
 		<li class="active"><NavHomeIcon /></li>
@@ -20,6 +27,10 @@
 		<li><NavSettingsIcon /></li>
 	</ul>
 
+	<!-- TODO: Not sure if this select would have been the best approach -->
+	<!-- as it is not in line with the design when rendered -->
+	<!-- Maybe build a custom select component that we control using js and can style freely -->
+	<!-- Or explore ways of styling select components -->
 	<select class="language">
 		<option value="en">EN</option>
 		<option value="de">DE</option>
@@ -67,6 +78,8 @@
 	ul.bar li.active {
 		@apply bg-light-purple;
 
+		/* TODO: There is a better way of achieving this. Might be an issue of specificity */
+		/* Using this might cause issues when we finally try changing the dark/light toggles */
 		fill: #ffffff !important;
 
 		box-shadow: 0px 4px 12px rgba(114, 93, 255, 0.5);
