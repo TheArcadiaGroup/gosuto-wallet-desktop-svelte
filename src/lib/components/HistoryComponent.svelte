@@ -26,18 +26,28 @@
 	export let currencyUnit = 'USD';
 </script>
 
-<div class="container {background == 'purple' ? 'bg-purple-500' : ''}">
+<div
+	class="container {background == 'purple'
+		? 'bg-purple-500'
+		: 'dark:bg-dark-blue '} hover:cursor-pointer"
+>
 	<div class="left">
 		<div class="leftcontent">
 			<div>
-				<span class="status {background == 'purple' ? 'text-white' : 'text-dark-gray'}">
+				<span
+					class="status {background == 'purple'
+						? 'text-white'
+						: 'text-dark-gray dark:text-white'}"
+				>
 					{status}
 				</span>
 				<span class="wallet">Wallet</span>
 			</div>
 			<div>
 				<span
-					class="dateAndTime {background == 'purple' ? 'text-white' : 'text-light-gray'}"
+					class="dateAndTime {background == 'purple'
+						? 'text-white'
+						: 'text-light-gray dark:text-white'}"
 				>
 					{dateAndTime}
 				</span>
@@ -73,12 +83,12 @@
 		@apply text-left;
 	}
 	.status {
-		@apply text-xl font-bold dark:text-white;
+		@apply text-xl font-bold;
 	}
 	.wallet {
 		@apply text-xs text-light-gray font-bold;
 	}
 	.dateAndime {
-		@apply text-base dark:text-white;
+		@apply text-base;
 	}
 </style>

@@ -9,13 +9,16 @@ module.exports = {
 				// Add other colors (theme here)
 				dark: {
 					gray: '#4F4F4F',
+					blue: '#313642',
 				},
 				light: {
 					gray: '#A9A9A9',
 					green: '#70CF98',
 					red: '#FF6666',
+					orange: '#FF8266',
 				},
 			},
+			fontFamily: { display: 'Manrope' },
 		},
 	},
 	variants: {
