@@ -17,6 +17,8 @@ module.exports = {
 					red: '#FF6666',
 					orange: '#FF8266',
 					appPurple: '#725DFF',
+					lineColor: '#E6E8EC',
+					scrollBar: '#EAEAEA',
 				},
 			},
 			fontFamily: { display: 'Manrope' },
