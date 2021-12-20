@@ -2,9 +2,7 @@
 	export let active = false;
 </script>
 
-<div class="nav-item" class:active>
-	<slot />
-</div>
+<div class="nav-item" class:active><slot /></div>
 
 <style lang="postcss">
 	:global(div.nav-item svg) {

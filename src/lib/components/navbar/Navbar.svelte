@@ -13,6 +13,7 @@
 
 	// Variables
 	let active = true;
+	let dark = false;
 </script>
 
 <!-- [✔️] TODO: When creating navbar related components, its recommended to have these within a NavBar directory in the components folder -->
@@ -25,11 +26,11 @@
 		<!-- Especially the styles bundled in this single file -->
 		<!-- <NavItem> {other elements/components} </NavItem> -->
 		<NavItem><GosutoNavLogo /></NavItem>
-		<NavItem><NavFlameIcon /></NavItem>
+		<NavItem><NavFlameIcon {dark} /></NavItem>
 		<NavItem {active}><div class="avatar-img" /></NavItem>
 		<NavItem><NavBookmarkIcon /></NavItem>
 		<NavItem><NavStackIcon /></NavItem>
-		<NavItem><NavActivityIcon /></NavItem>
+		<NavItem><NavActivityIcon {dark} /></NavItem>
 	</div>
 
 	<div class="bottom">

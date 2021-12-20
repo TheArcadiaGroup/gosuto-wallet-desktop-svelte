@@ -9,10 +9,14 @@
 </select>
 
 <style lang="postcss">
-	select {
-		@apply text-light-grey font-display font-bold;
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
 
-		appearance: none;
-		cursor: pointer;
+	select {
+		@apply dark:bg-dark-grey;
+		@apply text-light-grey dark:text-white font-display font-bold;
 	}
 </style>
