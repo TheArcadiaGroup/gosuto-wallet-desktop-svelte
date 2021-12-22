@@ -12,6 +12,11 @@
 	{#if showPopup}
 		<ConfirmPopUp
 			on:confirm={() => {
+				//Any Additional Tasks
+				showPopup = false;
+			}}
+			on:cancel={() => {
+				//Any Additional Tasks
 				showPopup = false;
 			}}
 		/>
