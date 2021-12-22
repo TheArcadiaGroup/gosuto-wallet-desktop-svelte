@@ -50,13 +50,13 @@
 
 <style lang="postcss">
 	.popup {
-		@apply rounded-[34px] text-center max-w-xs w-1/2 px-4;
+		@apply rounded-[34px] text-center max-w-sm w-1/2 px-4;
 	}
 	.pcontainer {
 		@apply py-8;
 	}
 	.popuptitle {
-		@apply font-bold mb-5;
+		@apply font-bold mb-5 mx-12;
 	}
 
 	.button-container {
