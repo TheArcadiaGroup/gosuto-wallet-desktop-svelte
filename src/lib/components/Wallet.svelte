@@ -8,24 +8,26 @@
 	];
 </script>
 
-<div class="wallet" style="background-image: url({variations[variant - 1][1]});">
-	<div class="profile">
-		<div class="avatar">
-			<img src="/images/png/avatar.png" alt="avatar" />
+<div class="dark">
+	<div class="wallet" style="background-image: url({variations[variant - 1][1]});">
+		<div class="profile">
+			<div class="avatar">
+				<img src="/images/png/avatar.png" alt="avatar" />
+			</div>
+			<div class="title {variations[variant - 1][0]}">Wallet 1</div>
 		</div>
-		<div class="title {variations[variant - 1][0]}">Wallet 1</div>
-	</div>
 
-	<div class="available">
-		Available
-		<div class="amount">$5,000 USD</div>
-	</div>
+		<div class="available">
+			Available
+			<div class="amount">$5,000 USD</div>
+		</div>
 
-	<div class="staked">
-		Staked
-		<div class="amount">$2,500 USD</div>
-		<div class="msg">
-			Unclaimed Reward <span>$250 USD</span>
+		<div class="staked">
+			Staked
+			<div class="amount">$2,500 USD</div>
+			<div class="msg">
+				Unclaimed Reward <span>$250 USD</span>
+			</div>
 		</div>
 	</div>
 </div>
@@ -33,7 +35,7 @@
 <style lang="postcss">
 	div.wallet {
 		@apply px-8 py-6;
-		@apply bg-white;
+		@apply bg-white dark:bg-dark-black;
 		@apply rounded-[25px];
 		@apply bg-no-repeat bg-contain;
 		background-position: calc(100% - -5px) -25px;
@@ -77,7 +79,7 @@
 	div.wallet div.staked div.amount {
 		@apply py-0.5;
 		@apply font-display font-bold;
-		@apply text-xl text-dark-grey;
+		@apply text-xl text-dark-grey dark:text-white;
 	}
 
 	div.wallet div.staked div.msg {
@@ -86,6 +88,6 @@
 
 	div.wallet div.staked div.msg span {
 		@apply font-display font-bold;
-		@apply text-dark-grey;
+		@apply text-dark-grey dark:text-white;
 	}
 </style>
