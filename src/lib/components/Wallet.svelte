@@ -8,26 +8,24 @@
 	];
 </script>
 
-<div class="dark">
-	<div class="wallet" style="background-image: url({variations[variant - 1][1]});">
-		<div class="profile">
-			<div class="avatar">
-				<img src="/images/png/avatar.png" alt="avatar" />
-			</div>
-			<div class="title {variations[variant - 1][0]}">Wallet 1</div>
+<div class="wallet" style="background-image: url({variations[variant - 1][1]});">
+	<div class="profile">
+		<div class="avatar">
+			<img src="/images/png/avatar.png" alt="avatar" />
 		</div>
+		<div class="title {variations[variant - 1][0]}">Wallet 1</div>
+	</div>
 
-		<div class="available">
-			Available
-			<div class="amount">$5,000 USD</div>
-		</div>
+	<div class="available">
+		Available
+		<div class="amount">$5,000 USD</div>
+	</div>
 
-		<div class="staked">
-			Staked
-			<div class="amount">$2,500 USD</div>
-			<div class="msg">
-				Unclaimed Reward <span>$250 USD</span>
-			</div>
+	<div class="staked">
+		Staked
+		<div class="amount">$2,500 USD</div>
+		<div class="msg">
+			Unclaimed Reward <span>$250 USD</span>
 		</div>
 	</div>
 </div>
