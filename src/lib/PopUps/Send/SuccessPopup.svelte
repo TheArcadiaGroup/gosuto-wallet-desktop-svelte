@@ -5,7 +5,7 @@
 	export let address: string = '4e32r8932hdi32hurh8hri3hior2io3r32rj3iofj';
 </script>
 
-<Popup title="Success" on:confirm on:cancel>
+<Popup title="Success!" on:confirm on:cancel>
 	<p>
 		You sent <span class="highlights">{amount} CSPR</span>
 		to
