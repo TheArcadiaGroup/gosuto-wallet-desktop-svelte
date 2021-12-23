@@ -51,7 +51,7 @@
 	}
 
 	.delegate {
-		@apply px-3 py-1 text-white bg-light-appPurple rounded-[46px] text-xs;
+		@apply px-3 py-1 text-white bg-light-purple rounded-[46px] text-xs;
 	}
 
 	.details-holder {

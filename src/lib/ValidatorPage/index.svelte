@@ -58,6 +58,6 @@
 		@apply border-2 border-light-lineColor rounded-[90px];
 		@apply text-sm font-bold;
 		@apply my-6 py-2 px-4;
-		@apply hover:bg-light-appPurple hover:text-white hover:border-light-appPurple transition duration-500;
+		@apply hover:bg-light-purple hover:text-white hover:border-light-purple transition duration-500;
 	}
 </style>
