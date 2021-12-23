@@ -1,17 +1,15 @@
 <script lang="ts">
-	import { scale } from 'svelte/transition';
+	import { scale, fade } from 'svelte/transition';
 	import { createEventDispatcher } from 'svelte';
-	import { darkOverlay } from '$stores/popupStore';
 
 	const dispatch = createEventDispatcher();
 
 	export let title: String = 'Title Test';
 	export let hasCancel: boolean = false;
 	export let goBack: boolean = false;
-
-	darkOverlay.set(true);
 </script>
 
+<div transition:fade class="darker" />
 <div class="popup-holder" transition:scale>
 	<div class="popup bg-white dark:bg-dark-blue">
 		<div class="pcontainer">
@@ -25,7 +23,6 @@
 					class:w-full={hasCancel}
 					class:mr-3={hasCancel}
 					on:click={() => {
-						darkOverlay.set(false);
 						dispatch('confirm');
 					}}
 				>
@@ -36,7 +33,6 @@
 						class="cancel-button bg-light-orange"
 						class:w-full={hasCancel}
 						on:click={() => {
-							darkOverlay.set(false);
 							dispatch('cancel');
 						}}
 					>
@@ -80,5 +76,9 @@
 	.popup-holder {
 		@apply fixed top-0 left-0 right-0 bottom-0 h-screen w-screen z-50 px-4;
 		@apply justify-center items-center flex;
+	}
+
+	.darker {
+		@apply fixed top-0 bottom-0 left-0 right-0 z-30 bg-[#00000077];
 	}
 </style>
