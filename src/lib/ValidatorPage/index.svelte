@@ -16,21 +16,6 @@
 </div>
 
 <style lang="postcss">
-	/* width */
-	::-webkit-scrollbar {
-		@apply w-2;
-	}
-
-	/* Track */
-	::-webkit-scrollbar-track {
-		@apply rounded-[39px];
-	}
-
-	/* Handle */
-	::-webkit-scrollbar-thumb {
-		@apply bg-light-scrollBar rounded-[39px];
-	}
-
 	.main {
 		@apply h-screen flex flex-col;
 	}
