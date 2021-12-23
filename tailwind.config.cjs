@@ -12,6 +12,7 @@ module.exports = {
 				light: {
 					grey: '#4F4F4F',
 					purple: '#725DFF',
+					orange: '#FF8266',
 				},
 			},
 			fill: {
