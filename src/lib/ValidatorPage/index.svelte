@@ -1,21 +1,14 @@
 <script>
 	import ValidatorItem from './ValidatorItem/index.svelte';
+	export let validatorArray = ['', '', '', '', '', '', '', '', '', ''];
 </script>
 
 <div class="main">
 	<h3>Validators</h3>
 	<div class="validator-holder">
-		<ValidatorItem first={true} />
-		<ValidatorItem />
-		<ValidatorItem />
-		<ValidatorItem />
-		<ValidatorItem />
-		<ValidatorItem />
-		<ValidatorItem />
-		<ValidatorItem />
-		<ValidatorItem />
-		<ValidatorItem />
-		<ValidatorItem />
+		{#each validatorArray as validatorObject, i}
+			<ValidatorItem class={i > 0 ? 'top-border' : ''} />
+		{/each}
 	</div>
 	<div class="button-holder">
 		<button>Show more</button>

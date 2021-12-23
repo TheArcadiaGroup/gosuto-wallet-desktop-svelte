@@ -1,5 +1,4 @@
 <script lang="ts">
-	export let first: boolean = false;
 	export let validatorName: string = 'Arcadia';
 	export let uptime = 1;
 	export let validatorCommission = 0.05;
@@ -8,7 +7,7 @@
 	export let delegationReturn = 0.405;
 </script>
 
-<div class="main" class:top-border={!first}>
+<div class="{$$props.class} main">
 	<div class="header">
 		<h4>{validatorName}</h4>
 		<p class="delegate">Delegate</p>
