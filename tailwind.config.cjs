@@ -6,14 +6,19 @@ module.exports = {
 		extend: {
 			colors: {
 				...require('tailwindcss/defaultTheme').colors,
-				// Add other colors (theme here)
 				dark: {
-					// Light Theme Colors
+					grey: '#2A2F3C',
 				},
 				light: {
-					// Dark Theme Colors
+					grey: '#4F4F4F',
+					purple: '#725DFF',
 				},
 			},
+			fill: {
+				white: '#FFFFFF',
+				grey: '#4F4F4F',
+			},
+			fontFamily: { display: 'Manrope' },
 		},
 	},
 	variants: {
