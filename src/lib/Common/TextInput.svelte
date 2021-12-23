@@ -14,14 +14,14 @@
 	}
 
 	input[type='password'] {
-		@apply border border-light-gray h-[50px] px-2 w-full rounded-[12px] bg-white;
+		@apply border border-light-gray h-[50px] px-2 w-full rounded-[12px] bg-white dark:bg-dark-background;
 	}
 
 	input[type='text'] {
-		@apply border border-light-gray h-[50px] px-2 w-full rounded-[12px] bg-white;
+		@apply border border-light-gray h-[50px] px-2 w-full rounded-[12px] bg-white dark:bg-dark-background;
 	}
 
 	p {
-		@apply absolute bg-white transform translate-y-[-7px] translate-x-4 leading-none text-[14px] px-1;
+		@apply absolute bg-white dark:bg-dark-background transform translate-y-[-7px] translate-x-4 leading-none text-[14px] px-1;
 	}
 </style>
