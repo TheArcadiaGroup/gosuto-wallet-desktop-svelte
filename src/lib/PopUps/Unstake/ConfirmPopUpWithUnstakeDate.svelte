@@ -29,11 +29,11 @@
 	}
 
 	.amount {
-		@apply text-lg text-light-appPurple;
+		@apply text-lg text-light-purple;
 	}
 
 	.staked-on > .highlight {
-		@apply text-light-appPurple;
+		@apply text-light-purple;
 	}
 
 	.total-time-until > .highlight {

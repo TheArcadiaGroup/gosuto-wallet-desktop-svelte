@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Navbar from '$components/navbar/Navbar.svelte';
+
 	import '$styles/tailwind.css';
 	import { fade } from 'svelte/transition';
 	import { darkOverlay } from '$stores/popupStore';
@@ -8,6 +10,7 @@
 	{#if $darkOverlay}
 		<div transition:fade class="darker" />
 	{/if}
+	<Navbar />
 	<slot />
 </main>
 

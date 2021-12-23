@@ -41,11 +41,11 @@
 	}
 
 	.amount {
-		@apply text-lg text-light-appPurple;
+		@apply text-lg text-light-purple;
 	}
 
 	.highlight {
-		@apply text-light-appPurple;
+		@apply text-light-purple;
 	}
 
 	.description {

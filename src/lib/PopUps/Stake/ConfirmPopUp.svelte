@@ -30,7 +30,7 @@
 	}
 
 	.amount {
-		@apply text-lg font-bold text-light-appPurple;
+		@apply text-lg font-bold text-light-purple;
 	}
 
 	.time-until-date {

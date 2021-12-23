@@ -19,6 +19,6 @@
 	}
 
 	.highlights {
-		@apply text-light-appPurple break-words;
+		@apply text-light-purple break-words;
 	}
 </style>
