@@ -1,7 +1,3 @@
-<script lang="ts">
-	let dark = false;
-</script>
-
 <div class="absolute inset-0 dark:bg-dark-grey">
 	<div class="flex gap-2 absolute top-24 right-24">
 		<button class="bg-light-orange py-3 px-6 rounded-xl" />
