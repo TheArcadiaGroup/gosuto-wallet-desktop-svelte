@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { decimalToPercentage } from '$utils';
+
 	export let validatorName: string = 'Arcadia';
 	export let uptime = 1;
 	export let validatorCommission = 0.05;
@@ -15,23 +17,23 @@
 	<div class="details-holder">
 		<div class="detail left">
 			<p class="detail-title">Uptime</p>
-			<p class="detail-value">{uptime * 100} %</p>
+			<p class="detail-value">{decimalToPercentage(uptime)} %</p>
 		</div>
 		<div class="detail mid">
 			<p class="detail-title">Validator Commission</p>
-			<p class="detail-value">{validatorCommission * 100} %</p>
+			<p class="detail-value">{decimalToPercentage(validatorCommission)} %</p>
 		</div>
 		<div class="detail right">
 			<p class="detail-title">Voting power</p>
-			<p class="detail-value">{votingPower * 100} %</p>
+			<p class="detail-value">{decimalToPercentage(votingPower)} %</p>
 		</div>
 		<div class="detail left">
 			<p class="detail-title">Self-delegation</p>
-			<p class="detail-value">{selfDelegation * 100} %</p>
+			<p class="detail-value">{decimalToPercentage(selfDelegation)} %</p>
 		</div>
 		<div class="detail mid">
 			<p class="detail-title">Delegation Return</p>
-			<p class="detail-value">{delegationReturn * 100} %</p>
+			<p class="detail-value">{decimalToPercentage(delegationReturn)} %</p>
 		</div>
 	</div>
 </div>
