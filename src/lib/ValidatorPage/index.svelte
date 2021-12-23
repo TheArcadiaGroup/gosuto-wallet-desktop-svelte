@@ -1,6 +1,6 @@
 <script>
 	import ValidatorItem from './ValidatorItem/index.svelte';
-	export let validatorArray = ['', '', '', '', '', '', '', '', '', ''];
+	export let validatorArray = Array(10);
 </script>
 
 <div class="main">
