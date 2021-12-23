@@ -13,11 +13,7 @@
 		@apply relative mt-4;
 	}
 
-	input[type='password'] {
-		@apply border border-light-gray h-[50px] px-2 w-full rounded-[12px] bg-white dark:bg-dark-background;
-	}
-
-	input[type='text'] {
+	input {
 		@apply border border-light-gray h-[50px] px-2 w-full rounded-[12px] bg-white dark:bg-dark-background;
 	}
 

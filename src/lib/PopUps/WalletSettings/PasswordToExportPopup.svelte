@@ -4,5 +4,5 @@
 </script>
 
 <Popup title="Enter wallet password to export wallet file" on:confirm on:cancel hasCancel={true}>
-	<TextInput label="New Password" />
+	<TextInput label="New Password" isPassword={true} />
 </Popup>
