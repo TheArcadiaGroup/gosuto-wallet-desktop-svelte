@@ -44,7 +44,7 @@
 	}
 
 	h4 {
-		@apply text-[18px] font-extrabold mr-5;
+		@apply text-lg font-extrabold mr-5;
 	}
 
 	.header {

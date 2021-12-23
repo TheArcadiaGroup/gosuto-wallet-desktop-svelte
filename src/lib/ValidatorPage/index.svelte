@@ -18,7 +18,7 @@
 <style lang="postcss">
 	/* width */
 	::-webkit-scrollbar {
-		@apply w-[7px];
+		@apply w-2;
 	}
 
 	/* Track */
@@ -39,10 +39,12 @@
 		@apply font-bold text-2xl;
 	}
 
+	/* Width should be same to the button holder */
 	.validator-holder {
 		@apply w-[650px] overflow-y-auto h-[85%] pr-6;
 	}
 
+	/* Width should be same to the validator holder */
 	.button-holder {
 		@apply w-[650px] flex items-center justify-center;
 	}
