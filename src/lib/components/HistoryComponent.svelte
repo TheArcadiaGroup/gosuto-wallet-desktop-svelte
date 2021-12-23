@@ -9,16 +9,7 @@
 
 	export let dateAndTime = 'Apr 01, 2021 07:15:20 am (CST)';
 
-	export let SwapData = {
-		fromAmount: 0.0,
-		toAmount: 0.0,
-		fromPrice: 0.0,
-		toPrice: 0.0,
-		fromCryptoUnit: '',
-		fromPriceUnit: '',
-		toCryptoUnit: '',
-		toPriceUnit: '',
-	};
+	export let SwapData: SwapData;
 
 	export let amount = 0.0;
 	export let price = 0.0;
@@ -37,7 +28,7 @@
 				<span
 					class="status {background == 'purple'
 						? 'text-white'
-						: 'text-dark-gray dark:text-white'}"
+						: 'text-dark-grey dark:text-white'}"
 				>
 					{status}
 				</span>
@@ -47,7 +38,7 @@
 				<span
 					class="dateAndTime {background == 'purple'
 						? 'text-white'
-						: 'text-light-gray dark:text-white'}"
+						: 'text-light-grey dark:text-white'}"
 				>
 					{dateAndTime}
 				</span>
@@ -86,7 +77,7 @@
 		@apply text-xl font-bold;
 	}
 	.wallet {
-		@apply text-xs text-light-gray font-bold;
+		@apply text-xs text-light-grey font-bold;
 	}
 	.dateAndime {
 		@apply text-base;

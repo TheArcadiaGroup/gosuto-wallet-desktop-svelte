@@ -3,13 +3,13 @@
 	import PositiveAmount from './PositiveAmount.svelte';
 	import Swap from './Swap.svelte';
 
-	export let background: any;
+	export let background: String;
 	export let status: 'Received' | 'Sent' | 'Stake' | 'Swap' = 'Swap';
-	export let amount: any;
+	export let amount: number;
 
-	export let price: any;
-	export let currencyUnit: any;
-	export let cryptoUnit: any;
+	export let price: number;
+	export let currencyUnit: string;
+	export let cryptoUnit: string;
 </script>
 
 <div class="text-right">

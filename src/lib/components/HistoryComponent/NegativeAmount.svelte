@@ -5,7 +5,7 @@
 	export let cryptoUnit = 'USDT';
 	export let currencyUnit = 'USD';
 
-	export let background: any;
+	export let background: String;
 </script>
 
 <div>

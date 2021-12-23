@@ -12,7 +12,7 @@
 		toCryptoUnit: '',
 		toPriceUnit: '',
 	};
-	export let background: any;
+	export let background: String;
 </script>
 
 <div class="inline-flex space-x-4 ">
@@ -27,9 +27,9 @@
 	</div>
 	<div class="my-auto">
 		{#if background == 'white'}
-			<img src="images/svg/swap.svg" alt="" />
+			<img src="images/svg/swap.svg" alt="swapIcon" />
 		{:else}
-			<img src="images/svg/swapWhite.svg" alt="" />
+			<img src="images/svg/swapWhite.svg" alt="swapWhiteIcon" />
 		{/if}
 	</div>
 	<div class="text-right">
