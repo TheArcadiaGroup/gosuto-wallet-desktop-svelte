@@ -8,10 +8,15 @@ module.exports = {
 				...require('tailwindcss/defaultTheme').colors,
 				dark: {
 					grey: '#2A2F3C',
+					brown: '#FECE80',
+					blue: '#E1E3FF',
+					gosutoDark: '#363B46',
 				},
 				light: {
 					grey: '#4F4F4F',
 					purple: '#725DFF',
+					orange: '#FF8266',
+					blue: '#383B62',
 				},
 			},
 			fill: {
