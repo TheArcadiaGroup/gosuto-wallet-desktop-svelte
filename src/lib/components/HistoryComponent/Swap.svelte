@@ -1,23 +1,14 @@
 <script lang="ts">
-	import NegativeAmount from './NegativeAmount.svelte';
-	import PositiveAmount from './PositiveAmount.svelte';
+	import Amount from './Amount.svelte';
 
-	export let SwapData = {
-		fromAmount: 0.0,
-		toAmount: 0.0,
-		fromPrice: 0.0,
-		toPrice: 0.0,
-		fromCryptoUnit: '',
-		fromPriceUnit: '',
-		toCryptoUnit: '',
-		toPriceUnit: '',
-	};
+	export let SwapData: SwapData;
 	export let background: String;
 </script>
 
 <div class="inline-flex space-x-4 ">
 	<div class="text-right">
-		<NegativeAmount
+		<Amount
+			type="negative"
 			{background}
 			amount={SwapData.fromAmount}
 			price={SwapData.fromPrice}
@@ -33,7 +24,7 @@
 		{/if}
 	</div>
 	<div class="text-right">
-		<PositiveAmount
+		<Amount
 			{background}
 			amount={SwapData.toAmount}
 			price={SwapData.toPrice}

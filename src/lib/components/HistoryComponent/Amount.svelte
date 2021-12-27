@@ -9,26 +9,25 @@
 	export let type: 'positive' | 'negative' = 'positive';
 </script>
 
-{#if type == 'negative'}
-	<div>
-		<span class="text-lg {background == 'white' ? 'text-light-red' : 'text-white'}">
-			-{amount}&nbsp;{cryptoUnit}
-		</span>
-	</div>
-	<div>
-		<span class="text-base {background == 'white' ? 'text-light-red' : 'text-white'}">
-			{price}&nbsp;{currencyUnit}
-		</span>
-	</div>
-{:else}
-	<div>
-		<span class="text-lg {background == 'white' ? 'text-light-green' : 'text-white'}">
-			+{amount}&nbsp;{cryptoUnit}
-		</span>
-	</div>
-	<div>
-		<span class="text-base {background == 'white' ? 'text-light-green' : 'text-white'}">
-			{price}&nbsp;{currencyUnit}
-		</span>
-	</div>
-{/if}
+<div>
+	<span
+		class="text-lg {background == 'white'
+			? type == 'negative'
+				? 'text-light-red'
+				: 'text-light-green'
+			: 'text-white'}"
+	>
+		{type == 'negative' ? '-' : '+'}{amount}&nbsp;{cryptoUnit}
+	</span>
+</div>
+<div>
+	<span
+		class="text-base {background == 'white'
+			? type == 'negative'
+				? 'text-light-red'
+				: 'text-light-green'
+			: 'text-white'}"
+	>
+		{price}&nbsp;{currencyUnit}
+	</span>
+</div>

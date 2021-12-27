@@ -1,14 +1,14 @@
 <script>
-	import BackButton from '$icons/BackButton.svelte';
-	import CopyButton from '$icons/CopyButton.svelte';
+	import BackIcon from '$icons/BackIcon.svelte';
+	import CopyIcon from '$icons/CopyIcon.svelte';
 </script>
 
 <div class="inline-flex">
 	<div>
-		<BackButton />
+		<BackIcon />
 	</div>
 	<div>Wallet</div>
 	<div>Wallet number</div>
-	<div><CopyButton /></div>
+	<div><CopyIcon /></div>
 </div>
 <div />
