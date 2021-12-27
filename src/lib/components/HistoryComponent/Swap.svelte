@@ -1,7 +1,16 @@
 <script lang="ts">
 	import Amount from './Amount.svelte';
 
-	export let SwapData: SwapData;
+	export let SwapData: SwapData = {
+		fromAmount: 0.0,
+		toAmount: 0.0,
+		fromPrice: 0.0,
+		toPrice: 0.0,
+		fromCryptoUnit: '',
+		fromPriceUnit: '',
+		toCryptoUnit: '',
+		toPriceUnit: '',
+	};
 	export let background: String;
 </script>
 
