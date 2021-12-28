@@ -11,9 +11,11 @@ module.exports = {
 					blue: '#313642',
 					background: '#363b46',
 					grey: '#2A2F3C',
+					blue: '#313642',
 				},
 				light: {
 					gray: '#A9A9A9',
+					lighterGray: '#6C727F',
 					grey: '#4F4F4F',
 					green: '#70CF98',
 					red: '#FF6666',
@@ -22,6 +24,9 @@ module.exports = {
 					lineColor: '#E6E8EC',
 					scrollBar: '#EAEAEA',
 					white: '#FFFFFF',
+					green: '#70CF98',
+					red: '#FF6666',
+					orange: '#FF8266',
 				},
 			},
 			fill: {
