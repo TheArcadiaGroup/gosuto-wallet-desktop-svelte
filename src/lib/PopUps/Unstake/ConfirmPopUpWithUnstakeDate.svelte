@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Popup from '$lib/Common/Popup.svelte';
-	import { convertDate, dateDifference } from '$utils';
-	import { onDestroy } from 'svelte';
+	import { convertDate } from '$utils';
 
 	export let amount: number = 15;
 	export let stakedOn = new Date(2022, 0, 1, 16, 48, 39);
