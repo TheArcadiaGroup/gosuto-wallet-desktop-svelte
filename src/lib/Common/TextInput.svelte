@@ -1,11 +1,10 @@
 <script lang="ts">
 	export let label: string = 'Input Your Text';
-	export let isPassword: boolean = false;
 </script>
 
 <div class="input-holder">
 	<p>{label}</p>
-	<input type={isPassword ? 'password' : 'text'} />
+	<input type={$$props.type} />
 </div>
 
 <style lang="postcss">
