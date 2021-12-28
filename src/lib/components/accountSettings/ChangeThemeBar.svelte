@@ -15,7 +15,7 @@
 	}
 
 	span {
-		@apply font-semibold font-display text-light-blue dark:text-dark-blue text-sm;
+		@apply font-semibold font-display text-light-blue dark:text-dark-lightBlue text-sm;
 		@apply ml-3;
 	}
 </style>

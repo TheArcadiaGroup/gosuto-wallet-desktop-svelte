@@ -6,11 +6,6 @@
 	import InfoInput from './InfoInput.svelte';
 	import ThemeSwitch from './ThemeSwitch.svelte';
 
-	interface infoCategory {
-		name: string;
-		placeholder: string;
-	}
-
 	let info: infoCategory[] = [
 		{ name: 'Name', placeholder: 'Jake Waterson' },
 		{ name: 'Email', placeholder: 'Jake.waterson@gmail.com' },
