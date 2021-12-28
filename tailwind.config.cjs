@@ -11,12 +11,16 @@ module.exports = {
 					brown: '#FECE80',
 					lightBlue: '#E1E3FF',
 					gosutoDark: '#363B46',
+					blue: '#313642',
 				},
 				light: {
+					lighterGray: '#6C727F',
 					grey: '#4F4F4F',
 					purple: '#725DFF',
-					orange: '#FF8266',
 					blue: '#383B62',
+					green: '#70CF98',
+					red: '#FF6666',
+					orange: '#FF8266',
 				},
 			},
 			fill: {
