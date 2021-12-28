@@ -10,9 +10,7 @@
 			<ValidatorItem class={i > 0 ? 'top-border' : ''} />
 		{/each}
 	</div>
-	<div class="button-holder">
-		<button>Show more</button>
-	</div>
+	<button>Show more</button>
 </div>
 
 <style lang="postcss">
@@ -25,7 +23,7 @@
 	}
 
 	.validator-holder {
-		@apply w-full overflow-y-auto h-[85%] pr-6;
+		@apply w-full min-w-max overflow-y-auto h-[85%] pr-6;
 	}
 
 	.button-holder {
@@ -35,7 +33,7 @@
 	button {
 		@apply border-2 border-light-lineColor rounded-[90px];
 		@apply text-sm font-bold;
-		@apply my-6 py-2 px-4;
+		@apply my-6 py-2 px-4 self-center;
 		@apply hover:bg-light-purple hover:text-white hover:border-light-purple transition duration-500;
 	}
 </style>
