@@ -1,18 +1,14 @@
 <script lang="ts">
-	import Navbar from '$components/navbar/Navbar.svelte';
-	import AvatarCard from './AvatarCard.svelte';
-	import ChangeThemeBar from './ChangeThemeBar.svelte';
-	import ChooseFileButton from './ChooseFileButton.svelte';
-	import InfoInput from './InfoInput.svelte';
-	import ThemeSwitch from './ThemeSwitch.svelte';
+	import AvatarCard from '$components/accountSettings/AvatarCard.svelte';
+	import ChangeThemeBar from '$components/accountSettings/ChangeThemeBar.svelte';
+	import ChooseFileButton from '$components/accountSettings/ChooseFileButton.svelte';
+	import InfoInput from '$components/accountSettings/InfoInput.svelte';
 
 	let info: infoCategory[] = [
 		{ name: 'Name', placeholder: 'Jake Waterson' },
 		{ name: 'Email', placeholder: 'Jake.waterson@gmail.com' },
 	];
 </script>
-
-<Navbar />
 
 <div class="page-wrapper">
 	<div class="content">
