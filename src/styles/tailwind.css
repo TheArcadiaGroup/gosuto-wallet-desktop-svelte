@@ -3,3 +3,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* width */
+::-webkit-scrollbar {
+	@apply w-2;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	@apply rounded-[39px];
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	@apply bg-light-scrollBar rounded-[39px];
+}

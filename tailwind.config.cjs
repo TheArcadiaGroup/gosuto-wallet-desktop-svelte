@@ -7,13 +7,21 @@ module.exports = {
 			colors: {
 				...require('tailwindcss/defaultTheme').colors,
 				dark: {
+					gray: '#4F4F4F',
+					blue: '#313642',
 					grey: '#2A2F3C',
 					blue: '#313642',
 				},
 				light: {
+					gray: '#A9A9A9',
+					green: '#70CF98',
+					red: '#FF6666',
+					orange: '#FF8266',
 					lighterGray: '#6C727F',
 					grey: '#4F4F4F',
 					purple: '#725DFF',
+					lineColor: '#E6E8EC',
+					scrollBar: '#EAEAEA',
 					green: '#70CF98',
 					red: '#FF6666',
 					orange: '#FF8266',
