@@ -68,3 +68,7 @@ function convertMiliseconds(miliseconds: number, format: string): string {
 			return `${days}:${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
 	}
 }
+
+export const decimalToPercentage = (decimal: number): number => {
+	return decimal * 100;
+};
