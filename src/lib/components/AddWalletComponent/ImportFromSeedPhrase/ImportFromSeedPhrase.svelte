@@ -2,7 +2,6 @@
 	import EyeIcon from '$icons/EyeIcon.svelte';
 	import GosutoLogoAndText from '$icons/GosutoLogoAndText.svelte';
 	import LockIcon from '$icons/LockIcon.svelte';
-	let passwordType: string = 'text';
 	let seedPhrase: string;
 	let walletName: string;
 	let password: string;
