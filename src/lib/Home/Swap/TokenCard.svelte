@@ -1,29 +1,46 @@
-<script>
+<script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+
+	export let cardId: number
 
 	export let cryptoUnit = 'USDT';
 	export let currencyUnit = 'USD';
 
+	export let selected = false
 	export let positive = true
 
+	const dispatch = createEventDispatcher();
+
+	function select(): void {
+		dispatch('select', {
+			id: cardId
+		})
+	}
 </script>
 
-<div class="token-card">
+<div on:click={select} class="token-card {selected ? 'selected' : ''}">
 	<div class="gap-1">
-		<p class="font-bold my-0.5">Tether ({cryptoUnit})</p>
-		<p class="text-2xl font-bold {positive ? 'text-light-green' : 'text-light-red'}">2000 {cryptoUnit}</p>
-		<p class="font-bold {positive ? 'text-light-green' : 'text-light-red'}">$175 {currencyUnit}</p>
+		<p class="text-xs font-bold mb-0.5 md:text-base">Tether ({cryptoUnit})</p>
+		<p class="text-sm font-bold {positive ? 'text-light-green' : 'text-light-red'} md:text-2xl">2000 {cryptoUnit}</p>
+		<p class="text-xs font-bold {positive ? 'text-light-green' : 'text-light-red'} md:text-base">$175 {currencyUnit}</p>
 	</div>
 	<div class="ml-auto text-right">
 		<!-- TODO: up / down arrow -->
-		<p class="font-bold {positive ? 'text-light-green' : 'text-light-red'}">+15%</p>
-		<p class="font-bold text-sm {positive ? 'text-light-green' : 'text-light-red'}">897,000 CSPR</p>
-		<p class="font-bold text-sm text-light-gray">(24h)</p>
+		<p class="text-sm font-bold {positive ? 'text-light-green' : 'text-light-red'} md:text-base">+15%</p>
+		<p class="text-xs font-bold {positive ? 'text-light-green' : 'text-light-red'} md:text-sm">897,000 CSPR</p>
+		<p class="text-xs font-bold text-light-gray md:text-sm">(24h)</p>
 	</div>
 </div>
 
 <style lang="postcss">
 	.token-card {
-		@apply p-5 flex flex-row rounded-[1.375rem] cursor-pointer;
+		@apply px-3 py-2 flex flex-row rounded-2xl border cursor-pointer select-none
+				sm:p-5 sm:rounded-[1.375rem];
 		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
+
+	.token-card.selected {
+		@apply border border-light-purple;
+		box-shadow: 0 4px 12px rgba(114, 93, 255, 0.3);
+	}
 </style>
