@@ -32,6 +32,9 @@ module.exports = {
 				grey: '#4F4F4F',
 			},
 			fontFamily: { display: 'Manrope' },
+			boxShadow: {
+				'stake-position': '0px 4px 9px rgba(0, 0, 0, 0.05)',
+			},
 		},
 	},
 	variants: {
