@@ -12,7 +12,9 @@
 </script>
 
 <!-- <div class="grid grid-cols-1"> -->
-<div class="flex flex-col md:flex-row items-center justify-center gap-8 w-full h-screen">
+<div
+	class="flex flex-col md:flex-row items-center justify-center gap-8 w-full h-screen bg-gray-200"
+>
 	<StakingPositionCard {...stakingPositionCard} />
 	<!-- <StakingPositionCard {...stakingPositionCard} /> -->
 </div>
