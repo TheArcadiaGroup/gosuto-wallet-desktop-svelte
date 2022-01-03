@@ -17,11 +17,6 @@
 	let midTrigger = 50;
 	let endTrigger = 100;
 	let selected = false;
-	$: if (selected) {
-		console.log(`${walletName} selected!`);
-	} else {
-		console.log(`${walletName} not selected!`);
-	}
 </script>
 
 <div
