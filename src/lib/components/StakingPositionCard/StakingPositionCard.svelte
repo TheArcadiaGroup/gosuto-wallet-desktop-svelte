@@ -1,10 +1,13 @@
 <script lang="ts">
+	export let unstaked: boolean;
 	export let walletName: string;
 	export let tokenAmount: number;
 	export let percentage: number;
-	export let stakingDate: string;
+	export let stakedOn: string;
+	export let unstakedOn: string;
 	export let unlockedOn: string;
 	export let rewardOn: string;
+	export let reclaimOn: string;
 	export let totalTimeUntilReward: string;
 
 	let startTrigger = 33;
@@ -18,27 +21,34 @@
 	>
 		{walletName}
 	</h2>
-	<div
-		class="mt-[9px] flex flex-row items-center gap-x-[67px] sm:gap-x-0 sm:justify-between mx-[33px]"
-	>
+	<div class="mt-[9px] flex flex-row items-center justify-between mx-[33px]">
 		<div
-			class="flex flex-col justify-center text-xs leading-[15px] text-[#FF7A28] font-bold text-left"
+			class="flex flex-col sm:flex-row sm:gap-x-1 justify-center text-xs leading-[15px] text-left {percentage >=
+			startTrigger
+				? 'text-[#FF7A28] font-bold'
+				: 'text-[#AEBBC5] font-medium'}"
 		>
 			<span>{tokenAmount} CSPR</span>
-			<span class="md:hidden">Unlocked</span>
+			<span>Staked</span>
 		</div>
 
 		<div
-			class="flex flex-col justify-center text-xs leading-[15px] text-[#AEBBC5] font-medium text-left"
+			class="flex flex-col sm:flex-row sm:gap-x-1 justify-center text-xs leading-[15px] text-left {percentage >=
+			midTrigger
+				? 'text-[#FF7A28] font-bold'
+				: 'text-[#AEBBC5] font-medium'}"
 		>
 			<span>{tokenAmount} CSPR</span>
-			<span class="md:hidden">Unlocked</span>
+			<span>Unlocked</span>
 		</div>
 		<div
-			class="hidden sm:flex flex-col justify-center text-xs leading-[15px] text-[#AEBBC5] font-medium text-left"
+			class="flex flex-col justify-center text-xs leading-[15px] text-left {percentage >=
+			endTrigger
+				? 'text-[#FF7A28] font-bold'
+				: 'text-[#AEBBC5] font-medium'}"
 		>
-			<span>{tokenAmount} CSPR</span>
-			<span class="md:hidden">Unlocked</span>
+			<!-- <span>{tokenAmount} CSPR</span>
+			<span class="md:hidden">Unlocked</span> -->
 		</div>
 	</div>
 	<div class="progress-bar">
@@ -46,24 +56,58 @@
 	</div>
 	<div class="mt-[9px] flex flex-row items-center justify-between mx-[23px]">
 		<div
-			class="flex flex-col justify-center text-xs leading-[15px] text-[#FF7A28] font-bold text-center"
+			class:hidden={unstaked}
+			class="flex flex-col justify-center text-xs leading-[15px] text-center {percentage >=
+			startTrigger
+				? 'text-[#FF7A28] font-bold'
+				: 'text-[#AEBBC5] font-medium'}"
 		>
-			<span>Staked On</span>
-			<span>{stakingDate}</span>
+			<span>Staked on</span>
+			<span>{stakedOn}</span>
 		</div>
 
 		<div
-			class="flex flex-col justify-center text-xs leading-[15px] text-[#AEBBC5] font-medium text-center"
+			class:hidden={unstaked}
+			class="flex flex-col justify-center text-xs leading-[15px] text-center {percentage >=
+			midTrigger
+				? 'text-[#FF7A28] font-bold'
+				: 'text-[#AEBBC5] font-medium'}"
 		>
 			<span>Unlocked On</span>
 			<span>{unlockedOn}</span>
 		</div>
 
 		<div
-			class="flex flex-col justify-center text-xs leading-[15px] text-[#AEBBC5] font-medium text-center"
+			class:hidden={unstaked}
+			class="flex flex-col justify-center text-xs leading-[15px] text-center {percentage >=
+			endTrigger
+				? 'text-[#FF7A28] font-bold'
+				: 'text-[#AEBBC5] font-medium'}"
 		>
 			<span>Reward On</span>
 			<span>{rewardOn}</span>
+		</div>
+
+		<div
+			class:hidden={!unstaked}
+			class="flex flex-col justify-center text-xs leading-[15px] text-center {percentage >=
+			startTrigger
+				? 'text-[#FF7A28] font-bold'
+				: 'text-[#AEBBC5] font-medium'}"
+		>
+			<span>Unstaked on</span>
+			<span>{unstakedOn}</span>
+		</div>
+
+		<div
+			class:hidden={!unstaked}
+			class="flex flex-col justify-center text-xs leading-[15px] text-center {percentage >=
+			endTrigger
+				? 'text-[#FF7A28] font-bold'
+				: 'text-[#AEBBC5] font-medium'}"
+		>
+			<span>Reclaimed on</span>
+			<span>{reclaimOn}</span>
 		</div>
 	</div>
 	<div
