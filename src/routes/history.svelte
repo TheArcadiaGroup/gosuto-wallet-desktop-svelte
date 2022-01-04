@@ -1,6 +1,7 @@
 <script>
 	import BackIcon from '$icons/BackIcon.svelte';
 	import CopyIcon from '$icons/CopyIcon.svelte';
+	import WalletSelect from '$lib/components/WalletSelect.svelte';
 </script>
 
 <div class="inline-flex">
