@@ -4,5 +4,7 @@
 	import '$styles/tailwind.css';
 </script>
 
-<Navbar />
-<slot />
+<main>
+	<Navbar />
+	<slot />
+</main>
