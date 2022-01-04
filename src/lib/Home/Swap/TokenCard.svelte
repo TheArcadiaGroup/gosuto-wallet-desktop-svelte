@@ -1,10 +1,16 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import ProfitUpIcon from '$icons/ProfitUpIcon.svelte';
+	import ProfitDownIcon from '$icons/ProfitDownIcon.svelte';
 
 	export let cardId: number
 
-	export let cryptoUnit = 'USDT';
-	export let currencyUnit = 'USD';
+	export let cryptoName = 'Tether'
+	export let cryptoUnit = 'USDT'
+	export let cryptoAmount = 2000;
+	export let currencyUnit = 'USD'
+	export let currencySymbol = '$'
+	export let currencyAmount = 175
 
 	export let selected = false
 	export let positive = true
@@ -20,13 +26,19 @@
 
 <div on:click={select} class="token-card {selected ? 'selected' : ''}">
 	<div class="gap-1">
-		<p class="text-xs font-bold mb-0.5 md:text-base">Tether ({cryptoUnit})</p>
-		<p class="text-sm font-bold {positive ? 'text-light-green' : 'text-light-red'} md:text-2xl">2000 {cryptoUnit}</p>
-		<p class="text-xs font-bold {positive ? 'text-light-green' : 'text-light-red'} md:text-base">$175 {currencyUnit}</p>
+		<p class="text-xs font-bold mb-0.5 md:text-base">{cryptoName} ({cryptoUnit})</p>
+		<p class="text-sm font-bold {positive ? 'text-light-green' : 'text-light-red'} md:text-2xl">{cryptoAmount} {cryptoUnit}</p>
+		<p class="text-xs font-bold {positive ? 'text-light-green' : 'text-light-red'} md:text-base">{currencySymbol}{currencyAmount} {currencyUnit}</p>
 	</div>
 	<div class="ml-auto text-right">
-		<!-- TODO: up / down arrow -->
-		<p class="text-sm font-bold {positive ? 'text-light-green' : 'text-light-red'} md:text-base">+15%</p>
+		<p class="flex flex-row items-center justify-end gap-1 text-sm font-bold {positive ? 'text-light-green' : 'text-light-red'} md:gap-2 md:text-base">
+			{#if positive}
+				<ProfitUpIcon />
+			{:else}
+				<ProfitDownIcon />
+			{/if}
+			+15%
+		</p>
 		<p class="text-xs font-bold {positive ? 'text-light-green' : 'text-light-red'} md:text-sm">897,000 CSPR</p>
 		<p class="text-xs font-bold text-light-gray md:text-sm">(24h)</p>
 	</div>

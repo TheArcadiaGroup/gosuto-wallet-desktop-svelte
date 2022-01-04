@@ -4,12 +4,15 @@
 	import TokenCard from '$lib/Home/Swap/TokenCard.svelte';
 
     export let tokens = [{
-      a: 1,
+      cryptoUnit: 'CSPR',
+      cryptoName: 'Casper',
       positive: false
-    },{ a: 2}, { a: 3}, {
-      a: 4,
+    },{}, {}, {
       positive: false
-    }, {a: 5}]
+    }, {
+      cryptoName: 'Test',
+      cryptoUnit: 'TST'
+    }]
 
     let scroll = 0
     let scrollWidth = 0
@@ -43,20 +46,19 @@
     </div>
     <div on:scroll={onScroll}
       class="flex flex-row overflow-x-scroll scrollbar-hide gap-x-3.5 gap-y-5 px-2 py-8 snap-x
-      sm:gap-8 md:flex-col">
+      sm:gap-8 md:flex-col md:overflow-auto">
 
       {#each Array(Math.ceil(tokens.length / 4)) as _, i}
         <div class="w-full shrink-0 snap-center grid grid-cols-2 grid-rows-2 gap-x-3.5 gap-y-5 sm:gap-8">
           {#each tokens.slice(i * 4, i * 4 + 4) as token, y}
-            <TokenCard cardId={i * 4 + y} selected={selectedTokenIndex === i * 4 + y} on:select={selectToken}/>
+            <TokenCard cardId={i * 4 + y} selected={selectedTokenIndex === i * 4 + y} on:select={selectToken} {...token}/>
           {/each}
         </div>
       {/each}
     </div>
-    <!-- TODO: transition -->
     <div class="w-full mx-auto px-2 flex flex-row justify-center gap-1 mb-7 md:hidden">
       {#each Array(Math.ceil(tokens.length / 4)) as _, i}
-        <div class="h-1 rounded-full { currentPage === i ? 'w-2 bg-light-orange' : 'w-1 bg-light-gray' }"></div>
+        <div class="h-1.5 rounded-full { currentPage === i ? 'w-3 bg-light-orange' : 'w-1.5 bg-light-gray' }"></div>
       {/each}
     </div>
   </div>
@@ -77,14 +79,5 @@
 
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
-  }
-
-  .scrollbar-show {
-    -ms-overflow-style: auto;
-    scrollbar-width: auto;
-  }
-
-  .scrollbar-show::-webkit-scrollbar {
-    display: block;
   }
 </style>
