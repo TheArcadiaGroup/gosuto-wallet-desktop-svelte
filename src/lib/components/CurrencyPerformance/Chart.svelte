@@ -19,6 +19,7 @@
 						pointRadius: 0,
 						data: prices,
 						tension: 0.5,
+						spanGaps: true,
 					},
 				],
 			},
@@ -27,6 +28,36 @@
 				plugins: {
 					legend: {
 						display: false,
+					},
+				},
+				scales: {
+					y: {
+						ticks: {
+							callback: (value) => {
+								return `$${value}k`;
+							},
+							color: '#4F4F4F',
+							font: {
+								size: 7,
+								lineHeight: '28px',
+								weight: 'bold',
+							},
+						},
+						grid: {
+							borderDash: [4],
+							borderWidth: 0,
+						},
+					},
+					x: {
+						grid: {
+							display: false,
+							borderColor: 'rgba(0, 0, 0, 0.1)',
+							borderWidth: 2,
+						},
+						// type: 'time',
+						// time: {
+						// 	unit: 'hour',
+						// },
 					},
 				},
 			},
