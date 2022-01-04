@@ -2,7 +2,7 @@
     import CopyIcon from "$icons/CopyIcon.svelte";
     import BackIcon from '$icons/BackIcon.svelte';
 </script>
-<div class="relative flex flex-col gap-x-8 sm:flex-row sm:items-center">
+<div class="relative flex flex-col gap-x-8 px-2 sm:flex-row sm:items-center">
   <div class="hidden absolute right-full pr-2 cursor-pointer sm:block">
     <BackIcon />
   </div>
