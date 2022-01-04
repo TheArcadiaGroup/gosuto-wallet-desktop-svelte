@@ -1,7 +1,30 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Chart from 'chart.js/auto';
-	export let prices: number[] = [0, 10, 12, 15, 17, 19, 27];
+	import 'chartjs-adapter-date-fns';
+	export let prices = [
+		{ x: '2022-01-03T08:00:00', y: 7 },
+		{ x: '2022-01-03T08:10:00', y: 9 },
+		{ x: '2022-01-03T08:18:00', y: 14 },
+		{ x: '2022-01-03T08:21:00', y: 11 },
+		{ x: '2022-01-03T08:27:00', y: 18 },
+		{ x: '2022-01-03T08:35:00', y: 20 },
+		{ x: '2022-01-03T08:43:00', y: 23 },
+		{ x: '2022-01-03T09:00:00', y: 24 },
+		// { x: '2022-01-03T10:00:00', y: 25 },
+	];
+	let data = {
+		datasets: [
+			{
+				// backgroundColor: 'rgb(255, 99, 132)',
+				borderColor: '#725DFF',
+				borderWidth: 1,
+				pointRadius: 0,
+				data: prices,
+				tension: 0.5,
+			},
+		],
+	};
 	onMount(async () => {
 		renderChart();
 	});
@@ -9,20 +32,7 @@
 		let ctx = <HTMLCanvasElement>document.getElementById('myChart');
 		let chart = new Chart(ctx, {
 			type: 'line',
-			data: {
-				labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-				datasets: [
-					{
-						backgroundColor: 'rgb(255, 99, 132)',
-						borderColor: '#725DFF',
-						borderWidth: 1,
-						pointRadius: 0,
-						data: prices,
-						tension: 0.5,
-						spanGaps: true,
-					},
-				],
-			},
+			data: data,
 			options: {
 				responsive: true,
 				plugins: {
@@ -32,11 +42,13 @@
 				},
 				scales: {
 					y: {
+						// beginAtZero: true,
+						offset: true,
 						ticks: {
 							callback: (value) => {
 								return `$${value}k`;
 							},
-							color: '#4F4F4F',
+							color: '#AAB5C5',
 							font: {
 								size: 7,
 								lineHeight: '28px',
@@ -49,15 +61,29 @@
 						},
 					},
 					x: {
+						adapters: {
+							date: {},
+						},
 						grid: {
 							display: false,
 							borderColor: 'rgba(0, 0, 0, 0.1)',
-							borderWidth: 2,
+							borderWidth: 1,
 						},
-						// type: 'time',
-						// time: {
-						// 	unit: 'hour',
-						// },
+						ticks: {
+							color: '#AAB5C5',
+							font: {
+								size: 8,
+								lineHeight: '28px',
+								weight: 'bold',
+							},
+						},
+						type: 'time',
+						time: {
+							unit: 'hour',
+							displayFormats: {
+								// hour: 'HH' + '.00' + 'AM' ? 'AM' : 'PM',
+							},
+						},
 					},
 				},
 			},
