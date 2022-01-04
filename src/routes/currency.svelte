@@ -2,6 +2,7 @@
 	import CurrencyPerfomance from '$lib/components/CurrencyPerformance/CurrencyPerfomance.svelte';
 </script>
 
-<div class=" font-display flex items-center justify-center h-screen">
+<div class=" font-display flex flex-col items-center justify-center gap-10 py-20">
+	<CurrencyPerfomance />
 	<CurrencyPerfomance />
 </div>

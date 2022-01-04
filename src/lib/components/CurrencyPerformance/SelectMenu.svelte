@@ -13,7 +13,7 @@
 				dropDown = !dropDown;
 			}}
 			type="button"
-			class="inline-flex items-center justify-center w-full text-[10px] sm:text-[13px] text-[#4F4F4F] leading-6 font-medium border border-black border-opacity-10 rounded-3xl pl-4 sm:pl-[52px] pr-[9px] sm:pr-4 py-[9px] bg-transparent "
+			class="inline-flex items-center justify-center w-full text-[10px] sm:text-[13px] text-[#4F4F4F] dark:text-white leading-6 font-medium border border-black border-opacity-10 dark:border-white dark:border-opacity-30 rounded-3xl pl-4 sm:pl-[52px] pr-[9px] sm:pr-4 py-[9px] bg-transparent "
 			id="menu-button"
 			aria-expanded="true"
 			aria-haspopup="true"
@@ -29,7 +29,7 @@
 
 	<div
 		class:hidden={!dropDown}
-		class="origin-top-right absolute right-0 mt-1 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+		class="origin-top-right absolute right-0 mt-1 w-32 rounded-md shadow-lg bg-white dark:bg-dark-grey ring-1 ring-black ring-opacity-5 focus:outline-none"
 		role="menu"
 		aria-orientation="vertical"
 		aria-labelledby="menu-button"
@@ -42,7 +42,7 @@
 						selectedRange = rangeOption;
 						dropDown = false;
 					}}
-					class="w-full text-[10px] text-[#4F4F4F] leading-6 font-medium block px-4 py-2 text-sm hover:bg-slate-100"
+					class="w-full text-[10px] text-[#4F4F4F] dark:text-white leading-6 font-medium block px-4 py-2 text-sm hover:bg-slate-100 hover:dark:bg-gray-700"
 					role="menuitem"
 					tabindex="-1"
 					id="menu-item-0"

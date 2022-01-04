@@ -13,10 +13,11 @@
 		{ x: '2022-01-03T09:00:00', y: 24 },
 		// { x: '2022-01-03T10:00:00', y: 25 },
 	];
+
+	let isDarkTheme: boolean = false;
 	let data = {
 		datasets: [
 			{
-				// backgroundColor: 'rgb(255, 99, 132)',
 				borderColor: '#725DFF',
 				borderWidth: 2,
 				pointRadius: 0,
@@ -26,10 +27,11 @@
 		],
 	};
 	onMount(async () => {
+		setChartColors();
 		renderChart();
 	});
+	let ctx: HTMLCanvasElement;
 	function renderChart() {
-		let ctx = <HTMLCanvasElement>document.getElementById('myChart');
 		let chart = new Chart(ctx, {
 			type: 'line',
 			data: data,
@@ -58,6 +60,7 @@
 						grid: {
 							borderDash: [4],
 							borderWidth: 0,
+							color: isDarkTheme ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.1)',
 						},
 					},
 					x: {
@@ -66,7 +69,9 @@
 						},
 						grid: {
 							display: false,
-							borderColor: 'rgba(0, 0, 0, 0.1)',
+							borderColor: isDarkTheme
+								? 'rgba(255, 255, 255, 0.3)'
+								: 'rgba(0, 0, 0, 0.1)',
 							borderWidth: 1,
 						},
 						ticks: {
@@ -89,6 +94,17 @@
 			},
 		});
 	}
+	function setChartColors() {
+		if (
+			localStorage.theme === 'dark' ||
+			(!('theme' in localStorage) &&
+				window.matchMedia('(prefers-color-scheme: dark)').matches)
+		) {
+			isDarkTheme = true;
+		} else {
+			isDarkTheme = false;
+		}
+	}
 </script>
 
-<canvas id="myChart" />
+<canvas bind:this={ctx} />

@@ -15,7 +15,7 @@
 		</div>
 		<SelectMenu />
 	</div>
-	<div class="w-full h-64 bg-gray-200">
+	<div class="w-full">
 		<Chart />
 	</div>
 </div>
