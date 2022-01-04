@@ -13,7 +13,7 @@
 				dropDown = !dropDown;
 			}}
 			type="button"
-			class="inline-flex items-center justify-center w-full text-[10px] text-[#4F4F4F] leading-6 font-medium border border-black border-opacity-10 rounded-3xl px-4 py-2 bg-transparent "
+			class="inline-flex items-center justify-center w-full text-[10px] sm:text-[13px] text-[#4F4F4F] leading-6 font-medium border border-black border-opacity-10 rounded-3xl pl-4 sm:pl-[52px] pr-[9px] sm:pr-4 py-[9px] bg-transparent "
 			id="menu-button"
 			aria-expanded="true"
 			aria-haspopup="true"
@@ -21,7 +21,7 @@
 			<!-- <span> -->
 			{selectedRange}
 			<!-- </span> -->
-			<div class="-mr-1 ml-2 h-4 w-4">
+			<div class="-mr-1 ml-2 sm:ml-7 h-4 w-4">
 				<ChevronDownIcon />
 			</div>
 		</button>

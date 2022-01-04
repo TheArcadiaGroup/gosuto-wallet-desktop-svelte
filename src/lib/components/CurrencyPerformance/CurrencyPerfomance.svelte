@@ -6,7 +6,7 @@
 </script>
 
 <div
-	class="bg-white dark:bg-dark-grey w-[375px] md:w-[620px] rounded-[22px] pl-[21px] pr-[15px] pt-5 pb-[30px] flex flex-col currency-performance-card"
+	class="bg-white dark:bg-dark-grey w-[375px] md:w-[628px] rounded-[22px] pl-[21px] pr-[15px] sm:pl-[29px] sm:pr-[25px] pt-5 sm:pt-[34px]  pb-[30px] sm:pb-[19px] flex flex-col currency-performance-card"
 >
 	<div class="flex flex-row justify-between items-start">
 		<div class=" flex flex-col justify-start">
@@ -15,7 +15,7 @@
 		</div>
 		<SelectMenu />
 	</div>
-	<div class="w-full h-full -mt-2">
+	<div class="w-full h-64 bg-gray-200">
 		<Chart />
 	</div>
 </div>

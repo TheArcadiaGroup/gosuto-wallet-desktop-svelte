@@ -3,9 +3,9 @@
 	export let percentageChange: number = 2.5;
 </script>
 
-<div class="flex flex-row gap-x-2.5 items-baseline font-bold text-center leading-7">
-	<h3 class="text-sm text-[#4F4F4F]">${price} USD</h3>
-	<span class="text-[#70CF98] text-[10px]">
+<div class="flex flex-row gap-x-2.5 items-baseline font-bold text-center  leading-7">
+	<h3 class="text-sm sm:text-base text-[#4F4F4F]">${price} USD</h3>
+	<span class="text-[#70CF98] text-[10px] sm:text-sm">
 		{#if percentageChange >= 0}
 			+
 		{:else}

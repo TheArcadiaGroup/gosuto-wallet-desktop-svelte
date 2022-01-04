@@ -18,7 +18,7 @@
 			{
 				// backgroundColor: 'rgb(255, 99, 132)',
 				borderColor: '#725DFF',
-				borderWidth: 1,
+				borderWidth: 2,
 				pointRadius: 0,
 				data: prices,
 				tension: 0.5,
