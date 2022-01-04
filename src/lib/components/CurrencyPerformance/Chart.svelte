@@ -10,16 +10,19 @@
 		{ x: '2022-01-03T08:27:00', y: 18 },
 		{ x: '2022-01-03T08:35:00', y: 20 },
 		{ x: '2022-01-03T08:43:00', y: 23 },
-		{ x: '2022-01-03T09:00:00', y: 24 },
+		{ x: '2022-01-03T09:00:00', y: 32 },
 		// { x: '2022-01-03T10:00:00', y: 25 },
 	];
 
 	let isDarkTheme: boolean = false;
+	$: window.matchMedia('(min-width: 640px)').matches
+		? console.log('Mobile')
+		: console.log('Desktop');
 	let data = {
 		datasets: [
 			{
 				borderColor: '#725DFF',
-				borderWidth: 2,
+				borderWidth: window.matchMedia('(min-width: 640px)').matches ? 2 : 1,
 				pointRadius: 0,
 				data: prices,
 				tension: 0.5,
@@ -107,4 +110,6 @@
 	}
 </script>
 
-<canvas bind:this={ctx} />
+<div class="relative shrink-0 w-full sm:h-full">
+	<canvas class="bg-gray-100 dark:bg-gray-800 w-full h-full" bind:this={ctx} />
+</div>
