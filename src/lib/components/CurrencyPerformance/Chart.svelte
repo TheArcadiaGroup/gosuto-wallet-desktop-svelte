@@ -81,7 +81,7 @@
 								lineHeight: '28px',
 								weight: 'bold',
 							},
-							callback: (tick) => {
+							callback: (tick: string) => {
 								let formattedTick: string = <string>tick;
 								if (
 									formattedTick.indexOf('A') === 1 ||
@@ -90,7 +90,6 @@
 									formattedTick = '0' + formattedTick;
 								}
 								if (formattedTick.includes('AM')) {
-									console.log('AM');
 									formattedTick = formattedTick.replace('AM', '.00 AM');
 								} else {
 									formattedTick = formattedTick.replace('PM', '.00 PM');

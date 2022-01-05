@@ -24,7 +24,8 @@
 			</div>
 		</button>
 	</div>
-
+	<!-- TODO uncomment the dropdown menu and when the menu design is available and use the necessary styles. -->
+	<!-- 
 	<div
 		class:hidden={!dropDown}
 		class="dropdown-menu"
@@ -48,10 +49,10 @@
 				</button>
 			{/each}
 		</div>
-	</div>
+	</div> -->
 </div>
 
-<style>
+<style lang="postcss" global>
 	.dropdown-wrapper {
 		@apply relative inline-block text-left;
 	}
@@ -68,6 +69,6 @@
 		@apply py-1;
 	}
 	.dropdown-menu-item-button {
-		@apply w-full text-[10px] text-light-grey dark:text-white leading-6 font-medium block px-4 py-2 text-sm hover:bg-slate-100 hover:dark:bg-gray-700;
+		@apply w-full text-[10px] text-light-grey dark:text-white leading-6 font-medium block px-4 py-2 hover:bg-slate-100 hover:dark:bg-gray-700;
 	}
 </style>

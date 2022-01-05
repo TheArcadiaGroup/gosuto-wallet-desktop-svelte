@@ -1,6 +1,6 @@
 <script lang="ts">
-	export const price: number = 26.234;
-	export const percentageChange: number = 2.5;
+	export let price: number;
+	export let percentageChange: number;
 </script>
 
 <div class="price-wrapper">
@@ -13,7 +13,7 @@
 	</span>
 </div>
 
-<style>
+<style lang="postcss" global>
 	.price-wrapper {
 		@apply flex flex-row gap-x-2.5 items-baseline font-bold text-center leading-7;
 	}
