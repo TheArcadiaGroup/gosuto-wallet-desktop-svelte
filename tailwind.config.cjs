@@ -11,6 +11,9 @@ module.exports = {
 					blue: '#313642',
 					background: '#363b46',
 					grey: '#2A2F3C',
+					brown: '#FECE80',
+					lightBlue: '#E1E3FF',
+					gosutoDark: '#363B46',
 					blue: '#313642',
 				},
 				light: {
@@ -24,12 +27,10 @@ module.exports = {
 					red: '#FF6666',
 					orange: '#FF8266',
 					purple: '#725DFF',
+					blue: '#383B62',
 					lineColor: '#E6E8EC',
 					scrollBar: '#EAEAEA',
 					white: '#FFFFFF',
-					green: '#70CF98',
-					red: '#FF6666',
-					orange: '#FF8266',
 				},
 			},
 			fill: {
