@@ -1,7 +1,7 @@
 <script lang="ts">
 	import AvatarCard from '$components/accountSettings/AvatarCard.svelte';
-	import ChangeThemeBar from '$components/accountSettings/ChangeThemeBar.svelte';
 	import ChooseFileButton from '$components/accountSettings/ChooseFileButton.svelte';
+	import ChangeThemeBar from '$components/accountSettings/ChangeThemeBar.svelte';
 	import InfoInput from '$components/accountSettings/InfoInput.svelte';
 
 	let info: infoCategory[] = [
@@ -10,7 +10,7 @@
 	];
 </script>
 
-<div class="page-wrapper">
+<div class="page-wrapper pl-28">
 	<div class="content">
 		<div class="left-side">
 			<h1>Account Settings</h1>
@@ -32,8 +32,8 @@
 	</div>
 </div>
 
-<style type="postcss">
-	.page-wrapper {
+<style type="postcss" global>
+	:local(.page-wrapper) {
 		@apply absolute inset-0;
 		@apply grid place-items-center;
 		@apply dark:bg-dark-gosutoDark;
