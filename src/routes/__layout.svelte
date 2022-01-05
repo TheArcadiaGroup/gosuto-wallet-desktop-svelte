@@ -5,7 +5,9 @@
 	import { initializeTheme, toggleDarkMode } from '$utils/themeSettings';
 
 	onMount(() => {
-		toggleDarkMode();
+		//TODO Remove the dark theme setting here and use the universal theme.
+		document.documentElement.classList.add('dark');
+		localStorage.theme = 'dark';
 		initializeTheme();
 	});
 </script>
