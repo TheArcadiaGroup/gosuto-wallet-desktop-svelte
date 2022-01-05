@@ -11,6 +11,7 @@ module.exports = {
 					blue: '#313642',
 					grey: '#2A2F3C',
 					blue: '#313642',
+					darkerBlue: '#363B46',
 				},
 				light: {
 					gray: '#A9A9A9',
@@ -25,6 +26,7 @@ module.exports = {
 					green: '#70CF98',
 					red: '#FF6666',
 					orange: '#FF8266',
+					gardenText: '#4B4B4B',
 				},
 			},
 			fill: {

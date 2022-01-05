@@ -6,12 +6,12 @@
   <div class="hidden absolute right-full pr-2 cursor-pointer sm:block">
     <BackIcon />
   </div>
-  <p class="font-bold sm:text-2xl">
+  <p class="font-bold sm:text-2xl dark:text-white">
     Wallet 1
     <span class="hidden sm:inline">Swap</span>
   </p>
   <div class="flex gap-[0.75rem] items-center">
-    <p class="text-sm sm:text-base">0x9f98e01d3...4ed7</p>
+    <p class="text-light-gardenText text-sm sm:text-base dark:text-white">0x9f98e01d3...4ed7</p>
     <div class='cursor-pointer'>
       <CopyIcon />
     </div>

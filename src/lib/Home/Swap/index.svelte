@@ -34,11 +34,11 @@
     }
 
 </script>
-<div class="mx-4 mt-10 sm:mx-11 sm:mt-20">
+<div class="px-4 pt-10 sm:px-11 sm:pt-20 dark:bg-dark-darkerBlue">
   <ReturnHome />
   <div class="my-6 sm:my-12">
     <div class="px-2 flex flex-row items-center">
-      <p class="font-bold text-base sm:text-xl">Tokens in this wallet</p>
+      <p class="font-bold text-base sm:text-xl dark:text-white">Tokens in this wallet</p>
       <button class="ml-auto">
         <PlusIcon />
         <span>Add Token</span>
