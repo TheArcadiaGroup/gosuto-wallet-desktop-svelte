@@ -2,6 +2,9 @@
 	import { onMount } from 'svelte';
 	import Chart from 'chart.js/auto';
 	import 'chartjs-adapter-date-fns';
+
+	let ctx: HTMLCanvasElement;
+	let isDarkTheme: boolean = false;
 	export let prices = [
 		{ x: '2022-01-03T08:00:00', y: 7 },
 		{ x: '2022-01-03T08:10:00', y: 9 },
@@ -9,37 +12,31 @@
 		{ x: '2022-01-03T08:21:00', y: 11 },
 		{ x: '2022-01-03T08:27:00', y: 18 },
 		{ x: '2022-01-03T08:35:00', y: 20 },
-		{ x: '2022-01-03T08:43:00', y: 23 },
-		{ x: '2022-01-03T09:00:00', y: 32 },
-		// { x: '2022-01-03T10:00:00', y: 25 },
+		{ x: '2022-01-03T09:00:00', y: 23 },
 	];
-
-	let isDarkTheme: boolean = false;
-	$: window.matchMedia('(min-width: 640px)').matches
-		? console.log('Mobile')
-		: console.log('Desktop');
-	let data = {
-		datasets: [
-			{
-				borderColor: '#725DFF',
-				borderWidth: window.matchMedia('(min-width: 640px)').matches ? 2 : 1,
-				pointRadius: 0,
-				data: prices,
-				tension: 0.5,
-			},
-		],
-	};
 	onMount(async () => {
-		setChartColors();
-		renderChart();
+		chartColors();
+		chartRender();
 	});
-	let ctx: HTMLCanvasElement;
-	function renderChart() {
-		let chart = new Chart(ctx, {
+
+	const chartRender = () => {
+		const chart = new Chart(ctx, {
 			type: 'line',
-			data: data,
+			data: {
+				datasets: [
+					{
+						borderColor: '#725DFF',
+						borderWidth: window.matchMedia('(min-width: 640px)').matches ? 2 : 1,
+						pointRadius: 0,
+						data: prices,
+						tension: 0.5,
+					},
+				],
+			},
 			options: {
 				responsive: true,
+				// aspectRatio: window.matchMedia('(min-width: 640px)').matches ? 2 : 1,
+				// maintainAspectRatio: false,
 				plugins: {
 					legend: {
 						display: false,
@@ -47,7 +44,6 @@
 				},
 				scales: {
 					y: {
-						// beginAtZero: true,
 						offset: true,
 						ticks: {
 							callback: (value) => {
@@ -96,8 +92,9 @@
 				},
 			},
 		});
-	}
-	function setChartColors() {
+	};
+	// Check if dark them is enabled.
+	const chartColors = () => {
 		if (
 			localStorage.theme === 'dark' ||
 			(!('theme' in localStorage) &&
@@ -107,9 +104,18 @@
 		} else {
 			isDarkTheme = false;
 		}
-	}
+	};
 </script>
 
-<div class="relative shrink-0 w-full sm:h-full">
-	<canvas class="bg-gray-100 dark:bg-gray-800 w-full h-full" bind:this={ctx} />
+<div class="chart-wrapper">
+	<canvas class="chart" bind:this={ctx} />
 </div>
+
+<style>
+	.chart-wrapper {
+		@apply relative shrink-0 w-full h-full;
+	}
+	.chart {
+		@apply w-full h-full;
+	}
+</style>

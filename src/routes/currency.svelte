@@ -4,5 +4,5 @@
 
 <div class=" font-display flex flex-col items-center justify-center gap-10 py-20">
 	<CurrencyPerfomance percentageChange="-2.12" price="52.248" />
-	<CurrencyPerfomance tokenName={'Tether (USDT)'} />
+	<!-- <CurrencyPerfomance tokenName={'Tether (USDT)'} /> -->
 </div>

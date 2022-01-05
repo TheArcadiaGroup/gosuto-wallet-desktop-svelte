@@ -1,6 +1,6 @@
 <script lang="ts">
-	export let price: number = 26.234;
-	export let percentageChange: number = 2.5;
+	export const price: number = 26.234;
+	export const percentageChange: number = 2.5;
 </script>
 
 <div class="flex flex-row gap-x-2.5 items-baseline font-bold text-center  leading-7">

@@ -3,9 +3,9 @@
 	import CurrencyName from './CurrencyName.svelte';
 	import CurrencyPrice from './CurrencyPrice.svelte';
 	import SelectMenu from './SelectMenu.svelte';
-	export let price: number;
-	export let percentageChange: number;
-	export let tokenName: string;
+	export const price: number = 0;
+	export const percentageChange: number = 0;
+	export const tokenName: string = '';
 </script>
 
 <!-- class="bg-white dark:bg-dark-grey w-[375px] sm:w-[628px] rounded-[22px] pl-[21px] pr-[15px] sm:pl-[29px] sm:pr-[25px] pt-5 sm:pt-[34px]  pb-[30px] sm:pb-[19px] flex flex-col currency-performance-card" -->
