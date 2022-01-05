@@ -25,12 +25,12 @@
 		<!-- Also, it can just take a prop `active` and you get to reduce the size of this file -->
 		<!-- Especially the styles bundled in this single file -->
 		<!-- <NavItem> {other elements/components} </NavItem> -->
-		<NavItem><GosutoNavLogo /></NavItem>
+		<NavItem href="/"><GosutoNavLogo /></NavItem>
 		<NavItem><NavFlameIcon {dark} /></NavItem>
 		<NavItem {active}><div class="avatar-img" /></NavItem>
 		<NavItem><NavBookmarkIcon /></NavItem>
 		<NavItem><NavStackIcon /></NavItem>
-		<NavItem><NavActivityIcon {dark} /></NavItem>
+		<NavItem href="/currency-performance"><NavActivityIcon {dark} /></NavItem>
 	</div>
 
 	<div class="bottom">

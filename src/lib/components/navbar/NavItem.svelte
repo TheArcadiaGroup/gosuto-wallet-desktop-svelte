@@ -2,7 +2,7 @@
 	export let active = false;
 </script>
 
-<a class="nav-item" href={$$props.href || '!#'} class:active><slot /></a>
+<a class="nav-item" href={$$props.href || '/'} class:active><slot /></a>
 
 <style lang="postcss" global>
 	:global(.nav-item svg) {
@@ -11,7 +11,7 @@
 
 	:local(.nav-item) {
 		@apply flex flex-col items-center;
-		@apply w-12 h-12;
+		@apply w-12 h-12 cursor-pointer;
 		@apply fill-grey dark:fill-white;
 	}
 
