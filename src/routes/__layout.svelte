@@ -20,5 +20,5 @@
 	localStorage.removeItem('theme');
 </script>
 
-<!-- <Navbar /> -->
+<Navbar />
 <slot />

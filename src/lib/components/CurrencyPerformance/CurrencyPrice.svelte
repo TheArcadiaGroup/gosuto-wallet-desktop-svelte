@@ -3,14 +3,27 @@
 	export const percentageChange: number = 2.5;
 </script>
 
-<div class="flex flex-row gap-x-2.5 items-baseline font-bold text-center  leading-7">
-	<h3 class="text-sm sm:text-base text-[#4F4F4F] dark:text-white">${price} USD</h3>
-	<span
-		class=" text-[10px] sm:text-sm {percentageChange > 0 ? 'text-[#70CF98]' : 'text-[#FFCB66]'}"
-	>
+<div class="price-wrapper">
+	<h3 class="price ">${price} USD</h3>
+	<span class="percentage-change {percentageChange > 0 ? 'text-[#70CF98]' : 'text-[#FFCB66]'}">
 		{#if percentageChange >= 0}
 			+
 		{/if}
 		{percentageChange}%
 	</span>
 </div>
+
+<style>
+	.price-wrapper {
+		@apply flex flex-row gap-x-2.5 items-baseline font-bold text-center leading-7;
+	}
+	.price {
+		@apply text-sm sm:text-base text-[#4f4f4f] dark:text-white;
+	}
+	.dark-class {
+		color: white;
+	}
+	.percentage-change {
+		@apply text-[10px] sm:text-sm;
+	}
+</style>
