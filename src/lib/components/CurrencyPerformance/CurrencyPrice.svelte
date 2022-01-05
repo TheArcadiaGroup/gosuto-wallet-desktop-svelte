@@ -20,9 +20,6 @@
 	.price {
 		@apply text-sm sm:text-base text-light-grey dark:text-white;
 	}
-	.dark-class {
-		color: white;
-	}
 	.percentage-change {
 		@apply text-[10px] sm:text-sm;
 	}

@@ -6,14 +6,15 @@
 	let ctx: HTMLCanvasElement;
 	let isDarkTheme: boolean = false;
 	export let prices = [
-		{ x: '2022-01-03T08:00:00', y: 7 },
-		{ x: '2022-01-03T08:10:00', y: 9 },
-		{ x: '2022-01-03T08:18:00', y: 14 },
-		{ x: '2022-01-03T08:21:00', y: 11 },
-		{ x: '2022-01-03T08:27:00', y: 18 },
-		{ x: '2022-01-03T08:35:00', y: 20 },
-		{ x: '2022-01-03T09:00:00', y: 23 },
+		{ x: '2022-01-03T09:00:00', y: 7 },
+		{ x: '2022-01-03T10:10:00', y: 9 },
+		{ x: '2022-01-03T11:18:00', y: 14 },
+		{ x: '2022-01-03T12:21:00', y: 11 },
+		{ x: '2022-01-03T12:27:00', y: 18 },
+		{ x: '2022-01-03T12:35:00', y: 20 },
+		{ x: '2022-01-03T13:00:00', y: 23 },
 	];
+
 	onMount(async () => {
 		chartColors();
 		chartRender();
@@ -35,8 +36,8 @@
 			},
 			options: {
 				responsive: true,
-				// aspectRatio: window.matchMedia('(min-width: 640px)').matches ? 2 : 1,
-				// maintainAspectRatio: false,
+				aspectRatio: window.matchMedia('(min-width: 640px)').matches ? 2 : 1,
+				maintainAspectRatio: false,
 				plugins: {
 					legend: {
 						display: false,
@@ -80,13 +81,27 @@
 								lineHeight: '28px',
 								weight: 'bold',
 							},
+							callback: (tick) => {
+								let formattedTick: string = <string>tick;
+								if (
+									formattedTick.indexOf('A') === 1 ||
+									formattedTick.indexOf('P') === 1
+								) {
+									formattedTick = '0' + formattedTick;
+								}
+								if (formattedTick.includes('AM')) {
+									console.log('AM');
+									formattedTick = formattedTick.replace('AM', '.00 AM');
+								} else {
+									formattedTick = formattedTick.replace('PM', '.00 PM');
+								}
+
+								return formattedTick;
+							},
 						},
 						type: 'time',
 						time: {
 							unit: 'hour',
-							displayFormats: {
-								// hour: 'HH' + '.00' + 'AM' ? 'AM' : 'PM',
-							},
 						},
 					},
 				},
