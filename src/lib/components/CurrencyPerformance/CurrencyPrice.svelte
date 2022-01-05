@@ -18,7 +18,7 @@
 		@apply flex flex-row gap-x-2.5 items-baseline font-bold text-center leading-7;
 	}
 	.price {
-		@apply text-sm sm:text-base text-[#4f4f4f] dark:text-white;
+		@apply text-sm sm:text-base text-light-grey dark:text-white;
 	}
 	.dark-class {
 		color: white;

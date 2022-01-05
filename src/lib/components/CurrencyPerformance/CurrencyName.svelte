@@ -8,6 +8,6 @@
 
 <style>
 	.token-name {
-		@apply font-extrabold text-[10px] sm:text-[13px] leading-7 text-[#4F4F4F] dark:text-white;
+		@apply font-extrabold text-[10px] sm:text-[13px] leading-7 text-light-grey dark:text-white;
 	}
 </style>
