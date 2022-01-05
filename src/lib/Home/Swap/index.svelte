@@ -12,7 +12,7 @@
     }, {
       cryptoName: 'Test',
       cryptoUnit: 'TST'
-    }]
+    }, {}, {}, {}, {}]
 
     let scroll = 0
     let scrollWidth = 0
@@ -27,10 +27,11 @@
     function onScroll (event) {
       if (!event.target || !event.target.scrollLeft || !event.target.clientWidth) return
       scroll = event.target.scrollLeft
-      scrollWidth = event.target.clientWidth
+      scrollWidth = event.target.scrollWidth
 
       const totalPages = Math.ceil(tokens.length / 4)
-      currentPage = scroll >= scrollWidth ? totalPages - 1 : Math.ceil(scroll / (scrollWidth / totalPages)) - 1
+
+      currentPage = Math.round(scroll / (scrollWidth / totalPages))
     }
 
 </script>
