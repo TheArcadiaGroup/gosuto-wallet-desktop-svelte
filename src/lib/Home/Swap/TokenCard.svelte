@@ -47,7 +47,7 @@
 <style lang="postcss">
 	.token-card {
 		@apply px-3 py-2 flex flex-row rounded-2xl border border-[#F3F3F31A] cursor-pointer select-none
-				sm:p-5 sm:rounded-[1.375rem];
+				md:p-5 md:rounded-[1.375rem];
 		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
 
