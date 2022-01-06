@@ -10,7 +10,7 @@
 <style type="postcss">
 	.theme-bar {
 		@apply flex flex-wrap items-center;
-		@apply shadow rounded-lg dark:bg-dark-grey;
+		@apply shadow rounded-2xl dark:bg-dark-grey;
 		@apply relative py-7;
 	}
 

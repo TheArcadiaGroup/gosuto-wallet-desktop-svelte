@@ -30,7 +30,7 @@
 	.theme-bt {
 		@apply grid items-center;
 		@apply bg-gray-100 dark:bg-dark-gosutoDark rounded-2xl;
-		@apply w-16 h-10;
+		@apply w-16 h-9;
 	}
 
 	.switch {
