@@ -15,6 +15,7 @@ module.exports = {
 					lightBlue: '#E1E3FF',
 					gosutoDark: '#363B46',
 					blue: '#313642',
+					lighterGray: ' #AEBBC4',
 				},
 				light: {
 					gray: '#A9A9A9',
@@ -23,14 +24,13 @@ module.exports = {
 					orange: '#FF8266',
 					lighterGray: '#6C727F',
 					grey: '#4F4F4F',
-					green: '#70CF98',
-					red: '#FF6666',
-					orange: '#FF8266',
+					gardenText: '#4B4B4B',
 					purple: '#725DFF',
 					blue: '#383B62',
 					lineColor: '#E6E8EC',
 					scrollBar: '#EAEAEA',
 					white: '#FFFFFF',
+					backgroundgray: '#FDFDDE',
 				},
 			},
 			fill: {
@@ -43,5 +43,5 @@ module.exports = {
 	variants: {
 		extend: {},
 	},
-	plugins: [],
+	plugins: [require('@tailwindcss/forms')],
 };
