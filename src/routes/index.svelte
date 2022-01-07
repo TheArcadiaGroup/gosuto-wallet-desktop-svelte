@@ -1,1 +1,2 @@
-<main>Gosuto Wallet</main>
+<script>
+</script>
