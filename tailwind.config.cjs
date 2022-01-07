@@ -15,6 +15,8 @@ module.exports = {
 					lightBlue: '#E1E3FF',
 					gosutoDark: '#363B46',
 					blue: '#313642',
+					lighterGray: ' #AEBBC4',
+					backgroundgray: '#363B46',
 				},
 				light: {
 					gray: '#A9A9A9',
@@ -31,6 +33,10 @@ module.exports = {
 					lineColor: '#E6E8EC',
 					scrollBar: '#EAEAEA',
 					white: '#FFFFFF',
+					green: '#70CF98',
+					red: '#FF6666',
+					orange: '#FF8266',
+					backgroundgray: '#FDFDDE',
 				},
 			},
 			fill: {
@@ -43,5 +49,5 @@ module.exports = {
 	variants: {
 		extend: {},
 	},
-	plugins: [],
+	plugins: [require('@tailwindcss/forms')],
 };
