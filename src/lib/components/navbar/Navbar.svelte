@@ -34,7 +34,7 @@
 	</div>
 
 	<div class="bottom">
-		<NavItem><NavSettingsIcon /></NavItem>
+		<NavItem href="/settings"><NavSettingsIcon /></NavItem>
 
 		<!-- [✔️] TODO: Not sure if this select would have been the best approach -->
 		<!-- Explaination: Select can be styled to our needs, also it respect the HTML tag structure -->

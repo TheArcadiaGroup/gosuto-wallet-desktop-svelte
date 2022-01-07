@@ -1,1 +1,1 @@
-<main>Gosuto Wallet</main>
+<h1>Index Route</h1>

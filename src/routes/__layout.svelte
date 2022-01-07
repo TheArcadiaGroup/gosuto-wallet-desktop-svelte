@@ -1,9 +1,14 @@
 <script lang="ts">
 	import '$styles/tailwind.css';
 	import Navbar from '$components/navbar/Navbar.svelte';
-  import Swap from "$lib/Home/Swap/index.svelte";
+	import { onMount } from 'svelte';
+	import { initializeTheme } from '$utils/themeSettings';
+	onMount(() => {
+		initializeTheme();
+	});
 </script>
 
-<!--<Navbar />
-<slot />-->
-<Swap />
+<main>
+	<Navbar />
+	<slot />
+</main>
