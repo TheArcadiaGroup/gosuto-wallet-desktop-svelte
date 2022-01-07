@@ -1,17 +1,13 @@
 <script lang="ts">
 	import DarkThemeIcon from '$icons/DarkThemeIcon.svelte';
 	import LightThemeIcon from '$icons/LightThemeIcon.svelte';
+	import { toggleDarkMode } from '$utils/themeSettings';
 
 	let dark: boolean = false;
 </script>
 
 <div class="wrapper">
-	<button
-		class="theme-bt"
-		on:click={() => {
-			dark = !dark;
-		}}
-	>
+	<button class="theme-bt" on:click={toggleDarkMode}>
 		<div class="switch" class:dark>
 			{#if dark}
 				<DarkThemeIcon />
@@ -45,6 +41,6 @@
 
 	.switch.dark {
 		@apply mr-px my-0.5 bg-black;
-		transform: translateX(31px);
+		@apply translate-x-[31px];
 	}
 </style>
