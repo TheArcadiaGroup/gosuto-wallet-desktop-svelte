@@ -13,3 +13,4 @@
 	<div><CopyIcon /></div>
 </div>
 <div />
+<WalletSelect />

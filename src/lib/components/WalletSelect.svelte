@@ -3,7 +3,6 @@
 
 	export let mainText: string;
 	export let subText: string;
-	let selected: boolean;
 	$: selected = false;
 
 	function changeColor() {
@@ -18,8 +17,8 @@
 
 <div
 	class="container {background == 'purple'
-		? 'bg-light-purple text-white'
-		: 'dark:bg-dark-blue '} hover:cursor-pointer"
+		? 'contentIfPurple'
+		: 'contentIFWhite dark:bg-dark-blue text-white'}"
 	on:click={() => changeColor()}
 >
 	<div class="textContainer">
@@ -37,7 +36,13 @@
 
 <style>
 	.container {
-		@apply rounded-3xl m-1 w-max;
+		@apply rounded-3xl m-1 w-max hover:cursor-pointer;
+	}
+	.contentIfPurple {
+		@apply bg-light-purple text-white;
+	}
+	.contentIFWhite {
+		@apply text-black;
 	}
 	.textContainer {
 		@apply inline-flex pl-8 pr-24 py-5;
