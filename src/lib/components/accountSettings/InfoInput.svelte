@@ -1,14 +1,25 @@
 <script lang="ts">
-	export let name: string;
-	export let placeholder: string;
+	export let name: string = '';
+	export let placeholder: string = '';
+
+	let textInput: string = '';
+	let saveChange: HTMLElement;
+
+	$: {
+		if (textInput != '') {
+			saveChange.textContent = 'Save Change';
+		} else if (saveChange != undefined) {
+			saveChange.textContent = 'Change ' + name;
+		}
+	}
 </script>
 
-<div class="wrapper">
+<div>
 	<label for={name}>
 		{name}
 	</label>
-	<input {name} {placeholder} />
-	<button>
+	<input {name} {placeholder} bind:value={textInput} />
+	<button bind:this={saveChange}>
 		Change {name}
 	</button>
 </div>
