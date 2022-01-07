@@ -39,7 +39,7 @@
 		@apply dark:bg-dark-gosutoDark;
 	}
 
-	.content {
+	:local(.content) {
 		@apply flex gap-14;
 		@apply w-2/3;
 	}
@@ -50,7 +50,7 @@
 		@apply ml-20;
 	}
 
-	h1 {
+	:local(h1) {
 		@apply font-bold font-display text-2xl dark:text-white;
 	}
 

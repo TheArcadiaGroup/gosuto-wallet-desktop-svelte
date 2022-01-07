@@ -7,14 +7,14 @@
 	<ThemeSwitch />
 </div>
 
-<style type="postcss">
-	.theme-bar {
+<style type="postcss" global>
+	:local(.theme-bar) {
 		@apply flex flex-wrap items-center;
 		@apply shadow rounded-2xl dark:bg-dark-grey;
 		@apply relative py-7;
 	}
 
-	span {
+	:local(span) {
 		@apply font-semibold font-display text-light-blue dark:text-dark-lightBlue text-sm;
 		@apply ml-3;
 	}

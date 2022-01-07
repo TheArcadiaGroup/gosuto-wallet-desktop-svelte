@@ -2,12 +2,27 @@
 	import DarkThemeIcon from '$icons/DarkThemeIcon.svelte';
 	import LightThemeIcon from '$icons/LightThemeIcon.svelte';
 	import { toggleDarkMode } from '$utils/themeSettings';
+	import { onMount } from 'svelte';
 
 	let dark: boolean = false;
+
+	onMount(() => {
+		if (localStorage.theme == 'dark') {
+			dark = true;
+		} else {
+			dark = false;
+		}
+	});
 </script>
 
 <div class="wrapper">
-	<button class="theme-bt" on:click={toggleDarkMode}>
+	<button
+		class="theme-bt"
+		on:click={toggleDarkMode}
+		on:click={() => {
+			dark = !dark;
+		}}
+	>
 		<div class="switch" class:dark>
 			{#if dark}
 				<DarkThemeIcon />
@@ -18,18 +33,18 @@
 	</button>
 </div>
 
-<style lang="postcss">
-	.wrapper {
+<style lang="postcss" global>
+	:local(.wrapper) {
 		@apply absolute right-3;
 	}
 
-	.theme-bt {
+	:local(.theme-bt) {
 		@apply grid items-center;
 		@apply bg-gray-100 dark:bg-dark-gosutoDark rounded-2xl;
 		@apply w-16 h-9;
 	}
 
-	.switch {
+	:local(.switch) {
 		@apply grid place-items-center;
 		@apply rounded-full h-8 w-8;
 		@apply transition-all;
