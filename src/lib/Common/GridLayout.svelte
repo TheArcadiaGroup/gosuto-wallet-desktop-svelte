@@ -23,8 +23,11 @@
 		grid-template-columns: 5vw 25vw auto 25vw;
 	}
 
-	.left-column,
+	.left-column {
+		box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.05);
+	}
+
 	.right-column {
-		background-color: red;
+		box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.05);
 	}
 </style>
