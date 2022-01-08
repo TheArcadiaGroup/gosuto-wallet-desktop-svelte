@@ -55,10 +55,9 @@
 
 	div.navbar {
 		@apply flex flex-col justify-between items-center;
-		@apply fixed left-0;
 
 		@apply bg-white dark:bg-dark-grey;
-		@apply w-16 h-screen;
+		@apply w-full h-screen;
 
 		box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.05);
 	}
@@ -75,7 +74,7 @@
 	}
 
 	div.navbar div.top div.avatar-img {
-		@apply w-12 h-12;
+		@apply w-3/4 h-12;
 
 		background-image: url('/images/png/avatar.png');
 		@apply bg-cover bg-center;
