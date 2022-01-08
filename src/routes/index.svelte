@@ -1,1 +1,5 @@
-<h1>Index Route</h1>
+<script>
+	import GridLayout from '$lib/Common/GridLayout.svelte';
+</script>
+
+<GridLayout />
