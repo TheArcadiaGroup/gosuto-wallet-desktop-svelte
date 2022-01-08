@@ -7,6 +7,7 @@
 		<Navbar />
 	</div>
 	<div class="first-column">
+		hello
 		<slot name="left" />
 	</div>
 	<div class="mid-column">
@@ -23,7 +24,7 @@
 	}
 
 	.app-container > div {
-		@apply hidden;
+		@apply overflow-hidden;
 	}
 
 	@media only screen and (max-width: 768px) {
