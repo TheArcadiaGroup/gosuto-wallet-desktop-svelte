@@ -7,7 +7,6 @@
 		<Navbar />
 	</div>
 	<div class="first-column">
-		hello
 		<slot name="left" />
 	</div>
 	<div class="mid-column">
@@ -41,6 +40,7 @@
 
 	.first-column,
 	.last-column {
+		@apply z-30;
 		box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.05);
 	}
 </style>

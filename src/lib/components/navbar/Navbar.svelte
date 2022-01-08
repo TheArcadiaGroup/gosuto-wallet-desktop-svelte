@@ -54,23 +54,31 @@
 	}
 
 	div.navbar {
-		@apply flex flex-col justify-between items-center;
+		@apply flex md:flex-col justify-between items-center z-50;
 
 		@apply bg-white dark:bg-dark-grey;
-		@apply w-full h-screen;
+		@apply w-full py-4 md:py-0 md:h-screen;
 
 		box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.05);
 	}
 
+	@media only screen and (min-width: 768px) {
+		div.navbar div.top {
+			height: calc(100vh - 16.5em);
+		}
+
+		div.navbar div.bottom {
+			height: calc(100vh - 34.5em);
+		}
+	}
+
 	div.navbar div.top {
-		@apply flex flex-col justify-evenly items-center;
-		height: calc(100vh - 16.5em);
+		@apply flex md:flex-col justify-evenly items-center;
 	}
 
 	div.navbar div.bottom {
-		@apply flex flex-col justify-evenly items-center;
-		height: calc(100vh - 34.5em);
-		@apply pb-6;
+		@apply flex md:flex-col justify-evenly items-center;
+		@apply md:pb-6;
 	}
 
 	div.navbar div.top div.avatar-img {
