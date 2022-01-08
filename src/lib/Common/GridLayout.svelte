@@ -7,13 +7,13 @@
 		<Navbar />
 	</div>
 	<div class="first-column">
-		<slot name="left" />
+		<slot name="first" />
 	</div>
 	<div class="mid-column">
 		<slot name="mid" />
 	</div>
 	<div class="last-column">
-		<slot name="right" />
+		<slot name="last" />
 	</div>
 </div>
 
