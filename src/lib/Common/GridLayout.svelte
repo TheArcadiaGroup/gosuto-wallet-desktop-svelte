@@ -6,28 +6,40 @@
 	<div class="navbar-container">
 		<Navbar />
 	</div>
-	<div class="left-column">
+	<div class="first-column">
 		<slot name="left" />
 	</div>
 	<div class="mid-column">
 		<slot name="mid" />
 	</div>
-	<div class="right-column">
+	<div class="last-column">
 		<slot name="right" />
 	</div>
 </div>
 
 <style lang="postcss">
 	.app-container {
-		@apply w-full grid grid-cols-4 grid-rows-1 gap-0;
-		grid-template-columns: 5vw 25vw auto 25vw;
+		@apply w-full grid gap-0;
 	}
 
-	.left-column {
-		box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.05);
+	.app-container > div {
+		@apply hidden;
 	}
 
-	.right-column {
+	@media only screen and (max-width: 768px) {
+		.app-container {
+			grid-template-rows: auto auto auto auto;
+		}
+	}
+
+	@media only screen and (min-width: 768px) {
+		.app-container {
+			grid-template-columns: 5vw 25vw auto 25vw;
+		}
+	}
+
+	.first-column,
+	.last-column {
 		box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.05);
 	}
 </style>
