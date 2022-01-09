@@ -14,7 +14,7 @@
 <style type="postcss">
 	.wrapper {
 		@apply flex;
-		@apply p-1;
+		@apply p-1 mb-7;
 	}
 
 	.icon {

@@ -5,12 +5,10 @@
 	let textInput: string = '';
 	let saveChange: HTMLElement;
 
-	$: {
-		if (textInput != '') {
-			saveChange.textContent = 'Save Change';
-		} else if (saveChange != undefined) {
-			saveChange.textContent = 'Change ' + name;
-		}
+	$: if (textInput != '') {
+		saveChange.textContent = 'Save Change';
+	} else if (saveChange != undefined) {
+		saveChange.textContent = 'Change ' + name;
 	}
 </script>
 
@@ -27,6 +25,7 @@
 <style type="postcss" global>
 	:local(div) {
 		@apply relative;
+		@apply w-2/3 md:w-full;
 	}
 
 	:local(label) {

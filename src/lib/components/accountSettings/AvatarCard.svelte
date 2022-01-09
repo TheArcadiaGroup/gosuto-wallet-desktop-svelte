@@ -14,7 +14,7 @@
 	.card-wrapper {
 		@apply grid place-items-center;
 		@apply relative;
-		@apply py-6 px-10;
+		@apply py-6 px-10 mb-4;
 		@apply bg-dark-brown rounded-3xl;
 	}
 
