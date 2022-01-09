@@ -102,14 +102,8 @@
 		</div>
 	</div>
 	<!-- <div class="timers"> -->
-	<div
-		class="mt-[17px] mx-[23px] text-xs text-neutral-600 dark:text-light-grayShadeOne border-b border-light-grey border-dashed"
-	>
-		<div
-			class="justify-center space-x-10 divide-x divide-dashed divide-light-grey {unstaked
-				? 'hidden'
-				: 'flex'}"
-		>
+	<div class="timers-wrapper">
+		<div class=" timers {unstaked ? 'hidden' : 'flex'}">
 			<div class={timeOne === '00:00:00:00' ? 'text-light-lighterOrange' : ''}>
 				{timeOne}
 			</div>
@@ -148,8 +142,11 @@
 	.progress {
 		@apply h-full rounded-full text-xs leading-none py-1 text-center text-white bg-light-orangeShadeOne;
 	}
+	.timers-wrapper {
+		@apply mt-[17px] mx-[23px] text-xs text-neutral-600 dark:text-light-grayShadeOne border-b border-light-grey border-dashed;
+	}
 	.timers {
-		@apply mt-[17px] mx-[23px] flex justify-center space-x-10 text-xs text-neutral-600 dark:text-light-grayShadeOne border-b border-light-grey border-dashed divide-x divide-dashed divide-light-grey;
+		@apply justify-center space-x-10 divide-x divide-dashed divide-light-grey;
 	}
 	.time-left {
 		@apply flex flex-col items-center my-6 text-xs text-light-lighterOrange dark:text-light-grayShadeOne sm:text-light-grey text-center;
