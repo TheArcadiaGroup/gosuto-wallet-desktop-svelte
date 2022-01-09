@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let unstaked: boolean;
+	export let unstaked: boolean = false;
 	export let walletName: string;
 	export let stakedAmount: number;
 	export let unlockedAmount: number;
@@ -44,7 +44,7 @@
 		<div
 			class="amount-details {percentage >= midTrigger
 				? 'text-light-orange font-bold'
-				: 'text-light-grayShadeOne font-medium'}"
+				: 'text-light-grayShadeOne font-medium'} {unstaked ? 'hidden' : 'flex'}"
 		>
 			<span>{unlockedAmount} CSPR</span>
 			<span>Unlocked</span>
@@ -57,61 +57,65 @@
 	</div>
 	<div class="position-details mx-[23px]">
 		<div
-			class:hidden={unstaked}
 			class="date-details {percentage >= startTrigger
 				? 'text-light-lighterOrange font-bold'
-				: 'text-light-grayShadeOne font-medium'}"
+				: 'text-light-grayShadeOne font-medium'} {unstaked ? 'hidden' : 'flex'}"
 		>
 			<span>Staked on</span>
 			<span>{stakedOn}</span>
 		</div>
 
 		<div
-			class:hidden={unstaked}
 			class="date-details {percentage >= midTrigger
 				? 'text-light-orange font-bold'
-				: 'text-light-grayShadeOne font-medium'}"
+				: 'text-light-grayShadeOne font-medium'} {unstaked ? 'hidden' : 'flex'}"
 		>
 			<span>Unlocked On</span>
 			<span>{unlockedOn}</span>
 		</div>
 
 		<div
-			class:hidden={unstaked}
 			class="date-details {percentage >= endTrigger
 				? 'text-light-orange font-bold'
-				: 'text-light-grayShadeOne font-medium'}"
+				: 'text-light-grayShadeOne font-medium'} {unstaked ? 'hidden' : 'flex'}"
 		>
 			<span>Reward On</span>
 			<span>{rewardOn}</span>
 		</div>
 
 		<div
-			class:hidden={!unstaked}
 			class="date-details {percentage >= startTrigger
 				? 'text-light-lighterOrange font-bold'
-				: 'text-light-grayShadeOne font-medium'}"
+				: 'text-light-grayShadeOne font-medium'} {unstaked ? 'flex' : 'hidden'}"
 		>
 			<span>Unstaked on</span>
 			<span>{unstakedOn}</span>
 		</div>
 
 		<div
-			class:hidden={!unstaked}
 			class="date-details {percentage >= endTrigger
-				? 'text-light-lighterOrange font-bold'
-				: 'text-light-grayShadeOne font-medium'}"
+				? 'text-light-orange font-bold'
+				: 'text-light-grayShadeOne font-medium'} {unstaked ? 'flex' : 'hidden'}"
 		>
 			<span>Reclaimed on</span>
 			<span>{reclaimOn}</span>
 		</div>
 	</div>
-	<div class="timers">
-		<div class={timeOne === '00:00:00:00' ? 'text-light-lighterOrange' : ''}>
-			{timeOne}
-		</div>
-		<div class="{timeTwo === '00:00:00:00' ? 'text-light-lighterOrange' : ''} pl-10">
-			{timeTwo}
+	<!-- <div class="timers"> -->
+	<div
+		class="mt-[17px] mx-[23px] text-xs text-neutral-600 dark:text-light-grayShadeOne border-b border-light-grey border-dashed"
+	>
+		<div
+			class="justify-center space-x-10 divide-x divide-dashed divide-light-grey {unstaked
+				? 'hidden'
+				: 'flex'}"
+		>
+			<div class={timeOne === '00:00:00:00' ? 'text-light-lighterOrange' : ''}>
+				{timeOne}
+			</div>
+			<div class="{timeTwo === '00:00:00:00' ? 'text-light-lighterOrange' : ''} pl-10">
+				{timeTwo}
+			</div>
 		</div>
 	</div>
 	<div class="time-left">
@@ -124,7 +128,7 @@
 
 <style lang="postcss" global>
 	:local(.position-card) {
-		@apply font-display w-[351px] sm:w-[620px] rounded-[21px] sm:rounded-[22px] bg-white dark:bg-dark-grey shadow-[0px-4px_9px_rgba(0,_0,_0,_0.05)] dark:shadow-[0px_4px_12px_rgba(0,_0,_0,_0.05)] hover:border hover:border-light-purple;
+		@apply font-display max-w-[351px] md:max-w-[620px] rounded-[21px] sm:rounded-[22px] bg-white dark:bg-dark-grey shadow-[0px-4px_9px_rgba(0,_0,_0,_0.05)] dark:shadow-[0px_4px_12px_rgba(0,_0,_0,_0.05)] hover:border hover:border-light-purple;
 	}
 	.wallet-name {
 		@apply font-semibold sm:font-bold text-sm text-black dark:text-white text-left leading-[19px] ml-7 mt-[17px] sm:ml-8 sm:mt-[30px];
@@ -132,11 +136,11 @@
 	:local(.position-details) {
 		@apply mt-[9px] flex flex-row items-center justify-between;
 	}
-	.amount-details {
-		@apply flex flex-col sm:flex-row sm:gap-x-1 justify-center text-xs leading-[15px] text-left;
+	:local(.amount-details) {
+		@apply flex-col sm:flex-row sm:gap-x-1 justify-center text-xs leading-[15px] text-left;
 	}
 	:local(.date-details) {
-		@apply flex flex-col justify-center text-xs leading-[15px] text-center;
+		@apply flex-col justify-center text-xs leading-[15px] text-center;
 	}
 	.progress-bar {
 		@apply mt-[3px] ml-7 mr-[23px] h-[17px] rounded-full bg-neutral-200 dark:bg-black dark:bg-opacity-10;
