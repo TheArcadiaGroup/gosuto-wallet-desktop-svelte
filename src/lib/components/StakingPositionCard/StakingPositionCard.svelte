@@ -1,17 +1,17 @@
 <script lang="ts">
-	export let unstaked: boolean = false;
-	export let walletName: string = '';
-	export let stakedAmount: number = 0;
-	export let unlockedAmount: number = 0;
-	export let percentage: number = 0;
-	export let stakedOn: string = '';
-	export let unstakedOn: string = '';
-	export let unlockedOn: string = '';
-	export let rewardOn: string = '';
-	export let reclaimOn: string = '';
-	export let timeOne: string = '';
-	export let timeTwo: string = '';
-	export let totalTimeUntilReward: string = '';
+	export let unstaked: boolean;
+	export let walletName: string;
+	export let stakedAmount: number;
+	export let unlockedAmount: number;
+	export let percentage: number;
+	export let stakedOn: string;
+	export let unstakedOn: string;
+	export let unlockedOn: string;
+	export let rewardOn: string;
+	export let reclaimOn: string;
+	export let timeOne: string;
+	export let timeTwo: string;
+	export let totalTimeUntilReward: string;
 
 	const startTrigger = 33;
 	const midTrigger = 50;
@@ -124,33 +124,30 @@
 
 <style lang="postcss" global>
 	:local(.position-card) {
-		@apply font-display w-[351px] sm:w-[620px] rounded-[21px] sm:rounded-[22px] bg-white dark:bg-dark-grey shadow-light-stake-position dark:shadow-dark-stake-position hover:border hover:border-light-purple;
+		@apply font-display w-[351px] sm:w-[620px] rounded-[21px] sm:rounded-[22px] bg-white dark:bg-dark-grey shadow-[0px-4px_9px_rgba(0,_0,_0,_0.05)] dark:shadow-[0px_4px_12px_rgba(0,_0,_0,_0.05)] hover:border hover:border-light-purple;
 	}
 	.wallet-name {
 		@apply font-semibold sm:font-bold text-sm text-black dark:text-white text-left leading-[19px] ml-7 mt-[17px] sm:ml-8 sm:mt-[30px];
 	}
-	.position-details {
+	:local(.position-details) {
 		@apply mt-[9px] flex flex-row items-center justify-between;
 	}
 	.amount-details {
 		@apply flex flex-col sm:flex-row sm:gap-x-1 justify-center text-xs leading-[15px] text-left;
 	}
-	.date-details {
+	:local(.date-details) {
 		@apply flex flex-col justify-center text-xs leading-[15px] text-center;
 	}
 	.progress-bar {
 		@apply mt-[3px] ml-7 mr-[23px] h-[17px] rounded-full bg-neutral-200 dark:bg-black dark:bg-opacity-10;
 	}
 	.progress {
-		@apply h-full rounded-full text-xs leading-none py-1 text-center text-white;
+		@apply h-full rounded-full text-xs leading-none py-1 text-center text-white bg-light-orangeShadeOne;
 	}
 	.timers {
 		@apply mt-[17px] mx-[23px] flex justify-center space-x-10 text-xs text-neutral-600 dark:text-light-grayShadeOne border-b border-light-grey border-dashed divide-x divide-dashed divide-light-grey;
 	}
 	.time-left {
 		@apply flex flex-col items-center my-6 text-xs text-light-lighterOrange dark:text-light-grayShadeOne sm:text-light-grey text-center;
-	}
-	.progress-background {
-		background: linear-gradient(0deg, #ffcb66, #ffcb66), #ffcb66;
 	}
 </style>
