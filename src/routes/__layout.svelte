@@ -8,5 +8,5 @@
 	});
 </script>
 
-<!-- <Navbar /> -->
+<Navbar />
 <slot />
