@@ -1,8 +1,10 @@
 <script lang="ts">
 	import Navbar from '$components/navbar/Navbar.svelte';
+
+	export let lastColumnActive: boolean = false;
 </script>
 
-<div class="app-container">
+<div class={lastColumnActive ? 'app-container withLastColumn' : 'app-container withoutLastColumn'}>
 	<div class="navbar-container">
 		<Navbar />
 	</div>
@@ -12,9 +14,11 @@
 	<div class="mid-column">
 		<slot name="mid" />
 	</div>
-	<div class="last-column">
-		<slot name="last" />
-	</div>
+	{#if lastColumnActive}
+		<div class="last-column">
+			<slot name="last" />
+		</div>
+	{/if}
 </div>
 
 <style lang="postcss">
@@ -22,19 +26,27 @@
 		@apply w-full grid gap-0;
 	}
 
-	.app-container > div {
-		@apply overflow-hidden;
-	}
-
 	@media only screen and (max-width: 768px) {
-		.app-container {
+		.withLastColumn {
 			grid-template-rows: auto auto auto auto;
+		}
+
+		.withoutLastColumn {
+			grid-template-rows: auto auto auto;
+		}
+
+		.app-container > div {
+			@apply overflow-x-hidden;
 		}
 	}
 
 	@media only screen and (min-width: 768px) {
-		.app-container {
+		.withLastColumn {
 			grid-template-columns: 5vw 25vw auto 25vw;
+		}
+
+		.withoutLastColumn {
+			grid-template-columns: 5vw 25vw auto;
 		}
 	}
 
