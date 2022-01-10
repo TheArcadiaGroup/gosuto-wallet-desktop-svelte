@@ -193,6 +193,6 @@
 	}
 
 	.private-container > img {
-		@apply absolute z-50 transform translate-y-4 right-4 cursor-pointer;
+		@apply absolute z-40 transform translate-y-4 right-4 cursor-pointer;
 	}
 </style>
