@@ -124,7 +124,7 @@
 
 <style lang="postcss" global>
 	.wrapper {
-		@apply font-display bg-light-backgroundgray dark:bg-dark-backgroundgray flex flex-col items-center;
+		@apply font-display bg-light-backgroundgray dark:bg-dark-background flex flex-col items-center;
 	}
 	.logo-gosuto {
 		@apply mt-20 sm:mt-32;
@@ -152,7 +152,7 @@
 		@apply relative items-center w-96  border border-black border-opacity-10 dark:border-white dark:border-opacity-40 rounded-3xl;
 	}
 	:local(label) {
-		@apply absolute -top-2 left-5 -mt-px inline-block px-1 text-xs font-medium text-light-grey bg-light-backgroundgray dark:text-white dark:bg-dark-backgroundgray;
+		@apply absolute -top-2 left-5 -mt-px inline-block px-1 text-xs font-medium text-light-grey bg-light-backgroundgray dark:text-white dark:bg-dark-background;
 	}
 	:local(textarea) {
 		@apply block w-full h-full bg-transparent py-3 border-0 resize-none focus:ring-0 sm:text-sm text-opacity-40 text-black dark:text-white dark:text-opacity-40;
