@@ -26,12 +26,12 @@
 
 <div on:click={select} class="token-card {selected ? 'selected' : ''} dark:bg-dark-blue">
 	<div class="gap-1">
-		<p class="text-xs font-bold text-light-grey mb-0.5 md:text-base dark:text-white">{cryptoName} ({cryptoUnit})</p>
-		<p class="text-sm font-bold {positive ? 'text-light-green' : 'text-light-red'} md:text-2xl">{cryptoAmount} {cryptoUnit}</p>
-		<p class="text-xs font-bold {positive ? 'text-light-green' : 'text-light-red'} md:text-base">{currencySymbol}{currencyAmount} {currencyUnit}</p>
+		<p class="card-title light:text-light-grey dark:text-white">{cryptoName} ({cryptoUnit})</p>
+		<p class="card-text-sm {positive ? 'text-light-green' : 'text-light-red'}">{cryptoAmount} {cryptoUnit}</p>
+		<p class="card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">{currencySymbol}{currencyAmount} {currencyUnit}</p>
 	</div>
 	<div class="ml-auto text-right">
-		<p class="flex flex-row items-center justify-end gap-1 text-sm font-bold {positive ? 'text-light-green' : 'text-light-red'} md:gap-2 md:text-base">
+		<p class="card-text-sm card-text-flex {positive ? 'text-light-green' : 'text-light-red'}">
 			{#if positive}
 				<ProfitUpIcon />
 			{:else}
@@ -39,8 +39,8 @@
 			{/if}
 			+15%
 		</p>
-		<p class="text-xs font-bold {positive ? 'text-light-green' : 'text-light-red'} md:text-sm">897,000 CSPR</p>
-		<p class="text-xs font-bold text-light-gray md:text-sm">(24h)</p>
+		<p class="card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">897,000 CSPR</p>
+		<p class="card-text-xs text-light-gray">(24h)</p>
 	</div>
 </div>
 
@@ -54,5 +54,21 @@
 	.token-card.selected {
 		@apply border border-light-purple;
 		box-shadow: 0 4px 12px rgba(114, 93, 255, 0.3);
+	}
+
+	.card-title {
+		@apply text-xs font-bold mb-0.5 md:text-base;
+	}
+
+	.card-text-xs {
+		@apply text-xs font-bold md:text-base;
+	}
+
+	.card-text-sm {
+		@apply text-sm font-bold md:text-2xl;
+	}
+
+	.card-text-flex {
+		@apply inline-flex flex-row items-center justify-end gap-1 md:gap-2;
 	}
 </style>

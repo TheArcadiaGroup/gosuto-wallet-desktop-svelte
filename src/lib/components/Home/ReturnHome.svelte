@@ -1,19 +1,44 @@
-<script>
+<script lang="ts">
     import CopyIcon from "$icons/CopyIcon.svelte";
     import BackIcon from '$icons/BackIcon.svelte';
 </script>
-<div class="relative flex flex-col gap-x-8 px-2 md:flex-row md:items-center">
-  <div class="hidden absolute right-full pr-2 cursor-pointer md:block">
+
+<div class="return-home">
+  <div class="back-button">
     <BackIcon />
   </div>
-  <p class="font-bold md:text-2xl dark:text-white">
+  <p class="wallet-title dark:text-white">
     Wallet 1
     <span class="hidden md:inline">Swap</span>
   </p>
-  <div class="flex gap-[0.75rem] items-center">
-    <p class="text-light-gardenText text-sm md:text-base dark:text-white">0x9f98e01d3...4ed7</p>
+  <div class="wallet-pub-key">
+    <p class="pub-key-text text-light-gardenText dark:text-white">0x9f98e01d3...4ed7</p>
     <div class='cursor-pointer'>
       <CopyIcon />
     </div>
   </div>
 </div>
+
+<style lang="postcss">
+
+  .return-home {
+    @apply relative flex flex-col gap-x-8 px-2 md:flex-row md:items-center;
+  }
+
+  .back-button {
+    @apply hidden absolute right-full pr-2 cursor-pointer md:block;
+  }
+
+  .wallet-title {
+    @apply font-bold md:text-2xl;
+  }
+
+  .wallet-pub-key {
+    @apply flex gap-[0.75rem] items-center;
+  }
+
+  .pub-key-text {
+    @apply text-sm md:text-base;
+  }
+
+</style>
