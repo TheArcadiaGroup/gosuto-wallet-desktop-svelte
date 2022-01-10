@@ -6,5 +6,5 @@
 </script>
 
 <Popup title="Enter wallet password to export wallet file" on:confirm on:cancel hasCancel={true}>
-	<TextInput bind:value={password} label="New Password" type="password" />
+	<TextInput bind:value={password} label="Password" type="password" />
 </Popup>
