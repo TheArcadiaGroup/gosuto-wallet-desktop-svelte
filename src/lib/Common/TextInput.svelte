@@ -35,6 +35,6 @@
 	}
 
 	p {
-		@apply absolute bg-white dark:bg-dark-background transform translate-y-[-7px] translate-x-4 leading-none text-[14px] px-1;
+		@apply absolute bg-white font-medium font-display dark:bg-dark-background transform translate-y-[-8px] translate-x-4 leading-none text-xs md:text-base px-1;
 	}
 </style>
