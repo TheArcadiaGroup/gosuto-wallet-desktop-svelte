@@ -43,6 +43,15 @@ module.exports = {
 			},
 			fontFamily: { display: 'Manrope' },
 		},
+		screens: {
+			sm: '640px',
+			md: '768px',
+			lg: '1024px',
+			xl: '1280px',
+			'2xl': '1536px',
+			'3xl': '2048px',
+			'4xl': '3840px',
+		},
 	},
 	variants: {
 		extend: {},

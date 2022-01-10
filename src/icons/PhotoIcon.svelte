@@ -4,3 +4,9 @@
 		fill="white"
 	/>
 </svg>
+
+<style type="postcss">
+	svg {
+		@apply 4xl:w-40 4xl:h-40;
+	}
+</style>

@@ -14,12 +14,12 @@
 	.card-wrapper {
 		@apply grid place-items-center;
 		@apply relative;
-		@apply py-6 px-10 mb-4;
-		@apply bg-dark-brown rounded-3xl;
+		@apply py-6 px-9 md:px-10 mb-4 4xl:mb-10 4xl:px-[72px];
+		@apply bg-dark-brown rounded-3xl 4xl:rounded-[3rem];
 	}
 
 	img {
-		@apply w-32;
+		@apply w-24 md:w-32 4xl:w-96;
 		@apply z-10;
 	}
 
@@ -30,7 +30,7 @@
 
 	.card-bg {
 		@apply absolute w-full h-full;
-		@apply rounded-3xl bg-black opacity-60;
+		@apply rounded-3xl 4xl:rounded-[3rem] bg-black opacity-60;
 		@apply z-20;
 	}
 </style>

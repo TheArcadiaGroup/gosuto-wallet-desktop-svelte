@@ -18,10 +18,11 @@
 	}
 
 	.icon {
-		@apply mr-3;
+		@apply mr-3 4xl:mr-6;
 	}
 
 	span {
 		@apply text-light-orange font-bold font-display;
+		@apply 3xl:text-xl 4xl:text-5xl;
 	}
 </style>

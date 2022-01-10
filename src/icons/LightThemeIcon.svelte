@@ -4,3 +4,9 @@
 		fill="#FF8266"
 	/>
 </svg>
+
+<style type="postcss">
+	svg {
+		@apply 4xl:w-10 4xl:h-10;
+	}
+</style>

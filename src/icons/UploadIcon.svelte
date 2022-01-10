@@ -42,3 +42,9 @@
 		stroke-linejoin="round"
 	/>
 </svg>
+
+<style type="postcss">
+	svg {
+		@apply 3xl:w-6 3xl:h-6 4xl:w-12 4xl:h-12;
+	}
+</style>
