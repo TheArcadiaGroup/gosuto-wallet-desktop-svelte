@@ -1,11 +1,29 @@
 <script lang="ts">
 	export let label: string = 'Input Your Text';
+	export let value: string | number = '';
 </script>
 
-<div class="input-holder">
-	<p>{label}</p>
-	<input type={$$props.type} />
-</div>
+{#if $$props.type === 'password'}
+	<div class="input-holder">
+		<p>{label}</p>
+		<input bind:value type="password" />
+	</div>
+{:else if $$props.type === 'email'}
+	<div class="input-holder">
+		<p>{label}</p>
+		<input bind:value type="email" />
+	</div>
+{:else if $$props.type === 'number'}
+	<div class="input-holder">
+		<p>{label}</p>
+		<input bind:value type="number" />
+	</div>
+{:else}
+	<div class="input-holder">
+		<p>{label}</p>
+		<input bind:value type="text" />
+	</div>
+{/if}
 
 <style lang="postcss">
 	.input-holder {
