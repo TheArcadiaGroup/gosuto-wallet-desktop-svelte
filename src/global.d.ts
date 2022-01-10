@@ -17,3 +17,19 @@ interface SwapData {
 	toCryptoUnit: string;
 	toPriceUnit: string;
 }
+
+interface StakePosition {
+	unstaked: boolean;
+	walletName: string;
+	stakedAmount: number;
+	unlockedAmount: number;
+	percentage: number;
+	stakedOn: string;
+	unstakedOn: string;
+	unlockedOn: string;
+	rewardOn: string;
+	reclaimOn: string;
+	timeOne: string;
+	timeTwo: string;
+	totalTimeUntilReward: string;
+}
