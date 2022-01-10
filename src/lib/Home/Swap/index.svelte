@@ -4,6 +4,7 @@
 	import ReturnHome from '$components/Home/ReturnHome.svelte';
 	import PlusIcon from '$icons/PlusIcon.svelte';
 	import TokenCard from '$lib/Home/Swap/TokenCard.svelte';
+	import Button from '$lib/Common/Button.svelte';
 
 	export let tokens = [
 		{
@@ -58,10 +59,12 @@
 	<div class="my-6 md:my-12">
 		<div class="wallet-swap-title">
 			<p class="wallet-swap-title-text dark:text-white">Tokens in this wallet</p>
-			<button class="ml-auto">
-				<PlusIcon />
-				<span>Add Token</span>
-			</button>
+			<div class='ml-auto'>
+				<Button glow={true} class="ml-auto">
+					<PlusIcon />
+					<span>Add Token</span>
+				</Button>
+			</div>
 		</div>
 		<div
 			on:scroll={onScroll}
@@ -100,12 +103,6 @@
 
 	.wallet-swap-title-text {
 		@apply font-bold text-base md:text-xl;
-	}
-
-	button {
-		@apply flex gap-1 items-center py-1 px-3.5 rounded-[2.25rem] text-xs leading-7 text-white bg-light-orange
-            md:gap-2.5 md:py-2 md:px-5 md:text-base;
-		filter: drop-shadow(0px 4px 14px rgba(255, 130, 102, 0.3));
 	}
 
 	.scroll-container {
