@@ -26,7 +26,7 @@
   }
 
   .back-button {
-    @apply hidden absolute right-full pr-2 cursor-pointer md:block;
+    @apply hidden absolute right-full cursor-pointer md:block;
   }
 
   .wallet-title {
