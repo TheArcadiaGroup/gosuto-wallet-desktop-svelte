@@ -19,7 +19,7 @@
 
 <style lang="postcss">
 	.app-container {
-		@apply w-full grid gap-0;
+		@apply w-full grid gap-0 font-display;
 	}
 
 	.app-container > div {
