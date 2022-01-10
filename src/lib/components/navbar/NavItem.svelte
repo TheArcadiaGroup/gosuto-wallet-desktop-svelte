@@ -10,7 +10,7 @@
 	}
 
 	:local(.nav-item) {
-		@apply flex flex-col items-center;
+		@apply flex flex-col items-center justify-center;
 		@apply w-12 h-12 cursor-pointer;
 		@apply fill-grey dark:fill-white;
 	}
