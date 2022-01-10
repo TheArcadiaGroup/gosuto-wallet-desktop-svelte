@@ -1,5 +1,8 @@
 <script lang="ts">
 	import TextInput from '$lib/Common/TextInput.svelte';
+	import PasswordToCopyPopup from '$lib/PopUps/WalletSettings/PasswordToCopyPopup.svelte';
+	import PasswordToExportPopup from '$lib/PopUps/WalletSettings/PasswordToExportPopup.svelte';
+	import WalletCopiedPopup from '$lib/PopUps/WalletSettings/WalletCopiedPopup.svelte';
 
 	let walletName: string;
 	let publicKey: string;
@@ -8,10 +11,52 @@
 	let newPassword: string;
 	let reEnterPassword: string;
 
+	let showCopyWalletPasswordPopup: boolean = false;
+	let showExportWalletFilePopup: boolean = false;
+	let showWalletCopiedPopup: boolean = false;
+
 	let walletAddress: string = '0x9f98e01d2gj92ngn2g7gn24ed7';
+
+	let passwordIsCorrect: boolean = true;
 </script>
 
 <div class="main">
+	<!-- Popups -->
+	{#if showCopyWalletPasswordPopup}
+		<PasswordToCopyPopup
+			on:confirm={() => {
+				showCopyWalletPasswordPopup = false;
+				if (passwordIsCorrect) {
+					// Add code to copy private key Here
+					showWalletCopiedPopup = true;
+				}
+			}}
+			on:cancel={() => {
+				showCopyWalletPasswordPopup = false;
+			}}
+		/>
+	{/if}
+	{#if showExportWalletFilePopup}
+		<PasswordToExportPopup
+			on:confirm={() => {
+				showExportWalletFilePopup = false;
+			}}
+			on:cancel={() => {
+				showExportWalletFilePopup = false;
+			}}
+		/>
+	{/if}
+	{#if showWalletCopiedPopup}
+		<WalletCopiedPopup
+			on:confirm={() => {
+				showWalletCopiedPopup = false;
+			}}
+			on:cancel={() => {
+				showWalletCopiedPopup = false;
+			}}
+		/>
+	{/if}
+
 	<div class="settings-holder">
 		<div class="header">
 			<div class="left-holder">
@@ -26,13 +71,29 @@
 					<img src="/images/svg/copy.svg" alt="copy" />
 				</div>
 			</div>
-			<button class="confirm-button settings-btn">Export Wallet File</button>
+			<button
+				class="confirm-button settings-btn"
+				on:click={() => {
+					showExportWalletFilePopup = true;
+				}}
+			>
+				Export Wallet File
+			</button>
 		</div>
 		<TextInput bind:value={walletName} label="Wallet Name" type="text" />
 		<br />
 		<TextInput bind:value={publicKey} label="Public Key" type="text" />
 		<br />
-		<TextInput bind:value={privateKey} label="Private Key" type="password" />
+		<div class="private-container">
+			<img
+				src="/images/svg/copy-orange.svg"
+				alt="copy"
+				on:click={() => {
+					showCopyWalletPasswordPopup = true;
+				}}
+			/>
+			<TextInput bind:value={privateKey} label="Private Key" type="password" />
+		</div>
 		<br />
 		<h2>Change Password</h2>
 		<br />
@@ -46,9 +107,9 @@
 			<button class="confirm-button settings-btn">Change Password</button>
 		</div>
 		<div class="ok-cancel">
-			<button class="confirm-button" on:click={() => {}}>Save</button>
+			<button class="confirm-button">Save</button>
 
-			<button class="cancel-button bg-light-orange" on:click={() => {}}>Cancel</button>
+			<button class="cancel-button bg-light-orange">Cancel</button>
 		</div>
 	</div>
 </div>
@@ -125,5 +186,13 @@
 
 	.left-holder {
 		@apply flex flex-col md:flex-row;
+	}
+
+	.private-container {
+		@apply relative;
+	}
+
+	.private-container > img {
+		@apply absolute z-50 transform translate-y-4 right-4 cursor-pointer;
 	}
 </style>
