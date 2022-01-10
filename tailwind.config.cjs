@@ -9,8 +9,13 @@ module.exports = {
 				dark: {
 					gray: '#4F4F4F',
 					blue: '#313642',
+					background: '#363b46',
 					grey: '#2A2F3C',
+					brown: '#FECE80',
+					lightBlue: '#E1E3FF',
+					gosutoDark: '#363B46',
 					blue: '#313642',
+					lighterGray: ' #AEBBC4',
 				},
 				light: {
 					gray: '#A9A9A9',
@@ -22,17 +27,18 @@ module.exports = {
 					lighterOrange: '#FF7A28',
 					lighterGray: '#6C727F',
 					grey: '#4F4F4F',
+					gardenText: '#4B4B4B',
 					purple: '#725DFF',
+					blue: '#383B62',
 					lineColor: '#E6E8EC',
 					scrollBar: '#EAEAEA',
-					green: '#70CF98',
-					red: '#FF6666',
-					orange: '#FF8266',
+					white: '#FFFFFF',
+					backgroundgray: '#FDFDDE',
 				},
 			},
 			fill: {
-				white: '#FFFFFF',
 				grey: '#4F4F4F',
+				white: '#FFFFFF',
 			},
 			fontFamily: { display: 'Manrope' },
 		},
@@ -40,5 +46,5 @@ module.exports = {
 	variants: {
 		extend: {},
 	},
-	plugins: [],
+	plugins: [require('@tailwindcss/forms')],
 };
