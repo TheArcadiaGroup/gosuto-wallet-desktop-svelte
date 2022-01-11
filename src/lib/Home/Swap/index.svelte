@@ -6,28 +6,7 @@
 	import TokenCard from '$lib/Home/Swap/TokenCard.svelte';
 	import Button from '$lib/Common/Button.svelte';
 
-	export let tokens = [
-		{
-			cryptoUnit: 'CSPR',
-			cryptoName: 'Casper',
-			positive: false,
-		},
-		{},
-		{},
-		{
-			positive: false,
-		},
-		{
-			cryptoName: 'Test',
-			cryptoUnit: 'TST',
-		},
-		{},
-		{},
-		{},
-		{},
-	];
-
-	export let selected = false
+	export let tokens = []
 
 	let dispatch = createEventDispatcher()
 
@@ -35,12 +14,10 @@
 	let scrollWidth = 0;
 	let currentPage = 0;
 
-	let selectedTokenIndex = -1;
+	export let selected = -1;
 
 	function selectToken(e: { detail: { id: number } }): void {
-		selectedTokenIndex = e.detail.id;
-		selected = true
-		dispatch('select')
+		dispatch('select', e.detail)
 	}
 
 	function onScroll(event) {
@@ -59,8 +36,8 @@
 	<div class="my-6 md:my-12">
 		<div class="wallet-swap-title">
 			<p class="wallet-swap-title-text dark:text-white">Tokens in this wallet</p>
-			<div class='ml-auto'>
-				<Button glow={true} class="ml-auto">
+			<div class="ml-auto">
+				<Button glow={true}>
 					<PlusIcon />
 					<span>Add Token</span>
 				</Button>
@@ -75,7 +52,7 @@
 					{#each tokens.slice(i * 4, i * 4 + 4) as token, y}
 						<TokenCard
 							cardId={i * 4 + y}
-							selected={selectedTokenIndex === i * 4 + y}
+							selected={selected === i * 4 + y}
 							on:select={selectToken}
 							{...token}
 						/>

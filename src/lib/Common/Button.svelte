@@ -1,9 +1,13 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+
 	export let glow = false
 	export let color: 'orange' | 'none' = 'orange'
+
+	const dispatch = createEventDispatcher()
 </script>
 
-<button class:glow={glow} class:orange={color === 'orange'}>
+<button class:glow={glow} class:orange={color === 'orange'} class="dark:text-white" on:click={(e) => dispatch('click', e)}>
 	<slot>
 
 	</slot>
@@ -12,8 +16,10 @@
 <style lang="postcss">
 
 	button {
-		@apply flex justify-center gap-1 items-center py-1 px-3.5 rounded-[2.25rem] text-xs leading-7
-            transition-colors duration-300 md:gap-2.5 md:py-2 md:px-5 md:text-base;
+		@apply py-1 px-3.5 rounded-[2.25rem] text-xs leading-7;
+		@apply flex justify-center gap-1 items-center;
+		@apply transition-colors duration-300;
+		@apply md:gap-2.5 md:py-2 md:px-5 md:text-base;
 	}
 
 	button.orange {

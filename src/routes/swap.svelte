@@ -3,33 +3,65 @@
 	import SelectCurrency from '$lib/Home/Swap/Forms/SelectCurrency.svelte';
 	import SwapCurrency from '$lib/Home/Swap/Forms/SwapCurrency.svelte';
 
-	let selected = false
+	let tokens = [
+		{
+			cryptoUnit: 'CSPR',
+			cryptoName: 'Casper',
+			positive: false,
+		},
+		{},
+		{},
+		{
+			positive: false,
+		},
+		{
+			cryptoName: 'Test',
+			cryptoUnit: 'TST',
+		},
+	];
+
+	let selected = -1
+
+	function selectToken(e: { detail: { id: number } }): void {
+		selected = e.detail.id;
+	}
+
+	function deselectToken(): void {
+		selected = -1
+	}
+
 
 </script>
 
 <div class="wallet-swap-page dark:bg-dark-background">
 	<div class="main-view">
-		<Swap on:select={() => selected = true} />
+		<Swap on:select={selectToken} bind:tokens={tokens} bind:selected={selected} />
 	</div>
+	<div class="sidebar-placeholder"></div>
 	<div class="sidebar">
-		{#if !selected}
+		{#if selected === -1}
 			<SelectCurrency />
 		{:else}
-			<SwapCurrency />
+			<SwapCurrency on:deselect={deselectToken} />
 		{/if}
 	</div>
 </div>
 
 <style lang="postcss">
 	.wallet-swap-page {
-		@apply flex flex-col md:flex-row;
+		@apply min-h-screen flex flex-col md:flex-row;
 	}
 
 	.main-view {
 		@apply md:w-3/4;
 	}
 
+	.sidebar-placeholder {
+		@apply md:w-1/4;
+	}
+
 	.sidebar {
-		@apply md:w-1/4
+		@apply mt-auto;
+		@apply md:fixed md:right-0 md:h-screen md:w-1/4;
 	}
 </style>

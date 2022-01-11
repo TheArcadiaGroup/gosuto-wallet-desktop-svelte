@@ -1,22 +1,31 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+
 	import SwapTokensIcon from '$icons/SwapTokensIcon.svelte';
 	import TextInput from '$lib/Common/TextInput.svelte';
 	import Button from '$lib/Common/Button.svelte';
 	import SelectInput from '$lib/Common/SelectInput.svelte';
 
+	let dispatch = createEventDispatcher()
+
 	export let fromToken = 'USDT'
 	export let createNewToken = true
+
+	function deselectToken (): void {
+		dispatch('deselect')
+	}
 </script>
+
 <div class="swap-currency dark:bg-dark-blue">
 	<form class="swap-form" on:submit|preventDefault>
-		<h2 class="form-title">Swap</h2>
+		<h2 class="form-title dark:text-white">Swap</h2>
 		<div class="form-row">
 			<div class="row-text-input">
 				<TextInput label="From"/>
 			</div>
-			<p class="row-text">{fromToken}</p>
+			<p class="row-text light:text-light-grey dark:text-white">{fromToken}</p>
 		</div>
-		<p class="money-amount">$0.00 USD</p>
+		<p class="money-amount light:text-light-grey dark:text-white">$0.00 USD</p>
 		<div class="swap-icon">
 			<SwapTokensIcon />
 		</div>
@@ -32,7 +41,7 @@
 				</SelectInput>
 			</div>
 		</div>
-		<p class="money-amount">$0.00 USD</p>
+		<p class="money-amount light:text-light-grey dark:text-white">$0.00 USD</p>
 		{#if createNewToken}
 			<p class="create-token-warning">
 				This wallet currently does not contain USDC.
@@ -40,8 +49,8 @@
 			</p>
 		{/if}
 		<div class='buttons'>
-			<Button>Swap</Button>
-			<Button color="none">Cancel</Button>
+			<Button><span class="landing-7 my-2">Swap</span></Button>
+			<Button on:click={deselectToken} color="none">Cancel</Button>
 		</div>
 	</form>
 </div>
@@ -49,16 +58,24 @@
 <style lang="postcss">
 
     .swap-currency {
-        @apply h-full w-full;
+        @apply relative min-h-[20rem] rounded-t-3xl h-full w-full;
+		@apply md:rounded-none;
         box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
     }
 
+	.swap-currency::before {
+		content: '';
+		@apply absolute left-1/2 -translate-x-1/2 top-0 my-3 w-1/3 h-2 rounded-3xl bg-[#c4c4c41e];
+	}
+
 	.swap-form {
-		@apply h-full w-full flex flex-col px-7;
+		@apply h-full w-full flex flex-col px-16;
+		@apply md:px-7;
 	}
 
 	.form-title {
-		@apply text-xl font-bold text-center mt-20 mb-14;
+		@apply text-xl font-bold text-center mt-16 mb-7;
+		@apply md:mt-20 md:mb-14;
 	}
 
 	.form-row {
@@ -70,7 +87,7 @@
 	}
 
 	.row-text {
-		@apply mt-4 w-1/3 text-center font-bold text-base text-light-grey;
+		@apply mt-4 w-1/3 text-center font-bold text-sm;
 	}
 
 	.row-token-select {
@@ -78,18 +95,21 @@
 	}
 
 	.money-amount {
-		@apply font-medium text-sm text-light-grey mt-5;
+		@apply font-medium text-sm mt-5;
 	}
 
 	.swap-icon {
-		@apply w-full flex items-center justify-center py-6;
+		@apply w-2/3 flex items-center justify-center py-6;
+		@apply md:w-full;
 	}
 
 	.create-token-warning {
-		@apply text-[#BDBDBE] text-sm font-semibold mt-6;
+		@apply text-[#BDBDBE] text-sm font-semibold mt-3;
+		@apply md:mt-6;
 	}
 
 	.buttons {
-		@apply flex flex-col gap-1 mt-10;
+		@apply w-3/4 mx-auto flex flex-col gap-4 mt-28 mb-16;
+		@apply md:mt-10 md:w-full md:gap-1;
 	}
 </style>

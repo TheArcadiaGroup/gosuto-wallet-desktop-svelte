@@ -1,6 +1,15 @@
+<script>
+	import Button from '$lib/Common/Button.svelte';
 
+	// TODO: Finish this component & add this logic to swap route
+</script>
 <div class="select-currency dark:bg-dark-grey md:dark:bg-dark-blue">
-	<p class="select-text">Select currency you want to swap</p>
+	<p>Tether (USDT)</p>
+	<div>
+		<p>2000 USDT</p>
+		<p>$175 USD</p>
+	</div>
+	<Button />
 </div>
 
 <style lang="postcss">
