@@ -2,6 +2,7 @@
 	import EyeIcon from '$icons/EyeIcon.svelte';
 	import GosutoLogoAndText from '$icons/GosutoLogoAndText.svelte';
 	import LockIcon from '$icons/LockIcon.svelte';
+	import Button from '$lib/Common/Button.svelte';
 
 	let seedPhrase: string;
 	let walletName: string;
@@ -112,11 +113,14 @@
 					</div>
 				</div>
 			</div>
-			<button type="submit" class="btn btn-continue">
-				<span class="hidden sm:block">Continue</span>
-				<span class="block sm:hidden">Import</span>
-			</button>
-
+			<div class="btn-continue">
+				<Button>
+					<div slot="text">
+						<span class="hidden sm:block">Continue</span>
+						<span class="block sm:hidden">Import</span>
+					</div>
+				</Button>
+			</div>
 			<button type="button" class="btn btn-back">Back</button>
 		</form>
 	</div>
@@ -169,11 +173,8 @@
 	.password-input-wrapper {
 		@apply w-full flex items-center px-5 text-opacity-40 text-black dark:text-white dark:text-opacity-40;
 	}
-	:local(.btn) {
-		@apply w-96 h-14 mt-8 rounded-3xl text-center font-bold text-xl leading-6;
-	}
 	:local(.btn-continue) {
-		@apply sm:mt-12 text-white bg-light-orange;
+		@apply sm:mt-12 w-96 h-14 mt-8;
 	}
 	:local(.btn-back) {
 		@apply mb-9 sm:mb-48 sm:mt-11 text-light-grey dark:text-white;
