@@ -177,6 +177,6 @@
 		@apply sm:mt-12 w-96 h-14 mt-8;
 	}
 	:local(.btn-back) {
-		@apply mb-9 sm:mb-48 sm:mt-11 text-light-grey dark:text-white;
+		@apply my-9 sm:my-48 sm:mt-11 text-light-grey dark:text-white;
 	}
 </style>
