@@ -3,6 +3,7 @@
 	import LandingPage from '$lib/WalletHome/LandingPage/LandingPage.svelte';
 	import ActionPanel from '$lib/WalletHome/ActionPanel/ActionPanel.svelte';
 	import StakeForm from '$lib/WalletHome/ActionPanel/StakeForm.svelte';
+	import Unstake from '$lib/WalletHome/ActionPanel/Unstake.svelte';
 	let wallet = {
 		walletName: 'Wallet 1',
 		walletAddress: '0x5645gj4ju6kh47kkh7884kk74k43jt774',
@@ -54,6 +55,7 @@
 			},
 		],
 	};
+	let unstakeAmount: number = 15;
 </script>
 
 <GridLayout>
@@ -63,7 +65,7 @@
 	</div>
 	<div slot="last" class="last-column">
 		<ActionPanel>
-			<StakeForm />
+			<Unstake {unstakeAmount} />
 		</ActionPanel>
 	</div>
 </GridLayout>

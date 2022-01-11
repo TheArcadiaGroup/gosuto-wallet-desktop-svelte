@@ -31,8 +31,7 @@
 				class="w-7 h-7 rounded-full hidden md:flex items-center justify-center border-2 border-light-neutrals1
 				"
 			>
-				<!-- TODO fix the back arrow -->
-				<span class="w-4 h-4 text-light-neutrals4 bg-red-400">
+				<span class="w-3 h-3 text-light-neutrals4">
 					<ArrowLeftIcon />
 				</span>
 			</button>

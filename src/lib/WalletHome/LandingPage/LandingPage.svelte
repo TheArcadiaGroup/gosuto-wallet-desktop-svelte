@@ -7,8 +7,8 @@
 	export let stakePositions: StakePosition[];
 </script>
 
-<div class="w-full">
-	<div class="ml-[6%] mt-[15px]">
+<div class="w-full border-none">
+	<div class="ml-[6%] pt-[15px]">
 		<WalletHeader {walletName} {walletAddress} />
 	</div>
 	<div class="mt-[26px] md:mt-[35px] px-[37px]">
