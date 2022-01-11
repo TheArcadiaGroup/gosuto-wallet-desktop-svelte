@@ -1,54 +1,73 @@
 <script lang="ts">
 	import ArrowLeftIcon from '$icons/ArrowLeftIcon.svelte';
-	import ConfirmPopUp from '$lib/PopUps/Unstake/ConfirmPopUp.svelte';
-	import { convertDate } from '$utils';
 
 	let initialStake: number = 20;
 	let totalRewards: number = 20;
 	let claim: boolean = false;
 </script>
 
-<!-- {#if unstake}{
-    // <ConfirmPopUpWithUnstakeDate/>
-    Cl
-} -->
 {#if claim}
-	<ConfirmPopUp />
+	<!-- <ConfirmPopUp /> -->
 {/if}
-<div class="w-3/4 md:w-[85%] xl:w-3/4 mx-auto">
-	<div class="hidden md:flex flex-row items-center justify-start gap-x-2.5">
-		<button
-			class="w-7 h-7 rounded-full hidden md:flex items-center justify-center border-2 border-light-neutrals1
-				"
-		>
-			<span class="w-3 h-3 text-light-neutrals4">
+\
+<div class="wrapper">
+	<div class="header">
+		<button class="back-button">
+			<span>
 				<ArrowLeftIcon />
 			</span>
 		</button>
-		<h2
-			class="font-bold text-[18px] xl:text-3xl leading-[25px] text-center text-black dark:text-white"
-		>
-			Stake
-		</h2>
+		<h2>Stake</h2>
 	</div>
-	<div class="mt-16 md:mt-6 w-full flex flex-col gap-y-4 text-center">
-		<h2 class="font-bold text-2xl leading-8 text-black dark:text-white">Claim Rewards</h2>
-		<h2 class="font-normal text-base leading-6 text-light-grey dark:text-dark-gosutoIconGrey">
+	<div class="action-details">
+		<h2>Claim Rewards</h2>
+		<p class="font-normal">
 			Initial stake: {initialStake} CSPR
-		</h2>
-		<h2 class="font-bold text-base leading-6 text-light-grey dark:text-dark-gosutoIconGrey">
+		</p>
+		<p class="font-bold">
 			Total Rewards: {totalRewards} CSPR
-		</h2>
+		</p>
 	</div>
-	<div class="flex flex-col items-center w-full">
-		<button type="button" on:click={() => (claim = true)} class="unstake-button">Claim</button>
+	<div class="buttons">
+		<button type="button" on:click={() => (claim = true)} class="action-button">Claim</button>
 		<button class="cancel-button">Cancel</button>
 	</div>
 </div>
 
 <!-- Styles -->
 <style lang="postcss" global>
-	:local(.unstake-button) {
+	:local(.wrapper) {
+		@apply w-3/4 md:w-[85%] xl:w-3/4 mx-auto;
+	}
+
+	:local(.header) {
+		@apply hidden md:flex flex-row items-center justify-start gap-x-2.5;
+	}
+	.header > button {
+		@apply w-7 h-7 rounded-full hidden md:flex items-center justify-center border-2 border-light-neutrals1;
+	}
+	.header > button > span {
+		@apply w-3 h-3 text-light-neutrals4;
+	}
+	.header > h2 {
+		@apply font-bold text-[18px] xl:text-3xl leading-[25px] text-center text-black dark:text-white;
+	}
+	:local(.action-details) {
+		@apply mt-16 md:mt-6 w-full flex flex-col gap-y-4 text-center;
+	}
+	.action-details > h2 {
+		@apply font-bold text-2xl leading-8 text-black dark:text-white;
+	}
+	.action-details > p {
+		@apply text-base  leading-6 text-light-grey dark:text-dark-gosutoIconGrey;
+	}
+	:local(.unstake-wait) {
+		@apply font-normal md:tracking-tighter xl:tracking-normal;
+	}
+	:local(.buttons) {
+		@apply flex flex-col items-center w-full;
+	}
+	:local(.action-button) {
 		@apply px-12 py-2.5 md:w-full bg-light-orange rounded-[35px] leading-[26px] text-sm text-white font-bold mt-[75px] md:mt-[30px];
 	}
 	:local(.cancel-button) {

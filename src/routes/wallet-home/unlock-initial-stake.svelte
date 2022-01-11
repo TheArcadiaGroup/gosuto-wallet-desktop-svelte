@@ -2,7 +2,7 @@
 	import GridLayout from '$lib/Common/GridLayout.svelte';
 	import LandingPage from '$lib/WalletHome/LandingPage/LandingPage.svelte';
 	import ActionPanel from '$lib/WalletHome/ActionPanel/ActionPanel.svelte';
-	import Unstake from '$lib/WalletHome/ActionPanel/Unstake.svelte';
+	import UnlockInitialStake from '$lib/WalletHome/ActionPanel/UnlockInitialStake.svelte';
 	let wallet = {
 		walletName: 'Wallet 1',
 		walletAddress: '0x5645gj4ju6kh47kkh7884kk74k43jt774',
@@ -54,7 +54,8 @@
 			},
 		],
 	};
-	let unstakeAmount: number = 15;
+	let initialStake: number = 20;
+	let totalRewards: number = 20;
 </script>
 
 <GridLayout>
@@ -64,7 +65,7 @@
 	</div>
 	<div slot="last" class="last-column">
 		<ActionPanel>
-			<Unstake {unstakeAmount} />
+			<UnlockInitialStake />
 		</ActionPanel>
 	</div>
 </GridLayout>

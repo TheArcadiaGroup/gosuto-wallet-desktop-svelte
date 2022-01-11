@@ -57,7 +57,7 @@
 </script>
 
 <GridLayout>
-	<div slot="first" class="bg-gray-200 h-screen">First</div>
+	<div slot="first" class="bg-gray-200">First</div>
 	<div slot="mid">
 		<LandingPage {...wallet} />
 	</div>

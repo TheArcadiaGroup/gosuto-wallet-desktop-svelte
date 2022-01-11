@@ -1,16 +1,12 @@
 <script lang="ts">
 	import ArrowLeftIcon from '$icons/ArrowLeftIcon.svelte';
-	import ConfirmPopUp from '$lib/PopUps/Unstake/ConfirmPopUp.svelte';
-	import { convertDate } from '$utils';
 
-	export let unstakeAmount!: number;
-	// Set this Date
-	export let unstakingWaitDate: Date = new Date(Date.now());
-	let unstake: boolean = false;
+	let initialStake: number = 20;
+	let claim: boolean = false;
 </script>
 
-{#if unstake}
-	<ConfirmPopUp />
+{#if claim}
+	<!-- <ConfirmPopUp /> -->
 {/if}
 <div class="wrapper">
 	<div class="header">
@@ -22,18 +18,13 @@
 		<h2>Stake</h2>
 	</div>
 	<div class="action-details">
-		<h2>Unstake CSPR</h2>
-		<p class="font-bold">
-			Unstake: {unstakeAmount} CSPR
-		</p>
-		<p class="unstake-wait">
-			Unstaking will take until: <span class="text-light-orange">
-				{convertDate(unstakingWaitDate)}
-			</span>
+		<h2>Unlock initial stake</h2>
+		<p class="font-normal">
+			Initial stake: {initialStake} CSPR
 		</p>
 	</div>
 	<div class="buttons">
-		<button type="button" on:click={() => (unstake = true)} class="action-button">Unstake</button>
+		<button type="button" on:click={() => (claim = true)} class="action-button">Claim</button>
 		<button class="cancel-button">Cancel</button>
 	</div>
 </div>
@@ -72,7 +63,7 @@
 		@apply flex flex-col items-center w-full;
 	}
 	:local(.action-button) {
-		@apply px-12 py-2.5 md:w-full bg-light-orange rounded-[35px] leading-[26px] text-sm text-white font-bold mt-[75px] md:mt-[30px];
+		@apply px-12 py-2.5 md:w-full bg-light-orange rounded-[35px] leading-[26px] text-sm text-white font-bold mt-[114px] md:mt-[30px];
 	}
 	:local(.cancel-button) {
 		@apply p-0 hidden md:block bg-transparent rounded-[35px] leading-[25px] text-[18px] text-light-grey dark:text-white font-bold mt-6 md:mt-10;

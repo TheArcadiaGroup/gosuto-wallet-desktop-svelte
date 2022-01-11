@@ -2,8 +2,6 @@
 	import GridLayout from '$lib/Common/GridLayout.svelte';
 	import LandingPage from '$lib/WalletHome/LandingPage/LandingPage.svelte';
 	import ActionPanel from '$lib/WalletHome/ActionPanel/ActionPanel.svelte';
-	import StakeForm from '$lib/WalletHome/ActionPanel/StakeForm.svelte';
-	import Unstake from '$lib/WalletHome/ActionPanel/Unstake.svelte';
 	import ClaimRewards from '$lib/WalletHome/ActionPanel/ClaimRewards.svelte';
 	let wallet = {
 		walletName: 'Wallet 1',

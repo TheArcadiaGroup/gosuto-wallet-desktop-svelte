@@ -28,7 +28,7 @@
 				type="button"
 				on:click={() => (stake = true)}
 				disabled={!selectedValidator || !stakeAmount}
-				class="stake-button"
+				class="action-button"
 			>
 				Stake
 			</button>
@@ -69,7 +69,7 @@
 	:local(select) {
 		@apply w-full h-full bg-transparent px-7 py-3 border-0 resize-none focus:ring-0 sm:text-sm text-opacity-40 text-black dark:text-white;
 	}
-	:local(.stake-button) {
+	:local(.action-button) {
 		@apply px-12 py-2.5 md:w-full bg-light-orange rounded-[35px] leading-[26px] text-sm text-white font-bold mt-6 md:mt-10;
 	}
 	:local(.cancel-button) {
