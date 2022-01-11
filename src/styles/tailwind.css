@@ -1,7 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400&display=swap');
-
 @tailwind base;
 @tailwind components;
+
+@font-face {
+	font-family: 'Manrope';
+	src: local('fonts/Manrope.ttf') format('truetype');
+}
+
 @tailwind utilities;
 
 /* width */

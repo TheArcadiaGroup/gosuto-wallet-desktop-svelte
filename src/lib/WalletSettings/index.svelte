@@ -143,11 +143,11 @@
 	}
 
 	.confirm-button {
-		@apply text-white bg-light-orange border border-light-orange font-display;
+		@apply text-white bg-light-orange border border-light-orange;
 	}
 
 	.cancel-button {
-		@apply text-light-orange bg-white font-display;
+		@apply text-light-orange bg-white;
 		@apply border border-light-orange;
 	}
 
@@ -180,7 +180,7 @@
 	}
 
 	h2 {
-		@apply font-display font-bold text-base text-light-grey;
+		@apply font-bold text-base text-light-grey;
 	}
 
 	.button-holder {
