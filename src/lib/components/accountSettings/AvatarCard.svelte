@@ -4,8 +4,8 @@
 
 <div class="card-wrapper">
 	<img alt="avatar" src="images/png/avatarLarger.png" />
-	<div class="icon">
-		<PhotoIcon />
+	<div class="photoIcon-wrapper">
+		<PhotoIcon class="icon" />
 	</div>
 	<div class="card-bg" />
 </div>
@@ -14,7 +14,7 @@
 	.card-wrapper {
 		@apply grid place-items-center;
 		@apply relative;
-		@apply py-6 px-9 md:px-10 mb-4 4xl:mb-10 4xl:px-[72px];
+		@apply py-6 px-9 md:px-10 mb-4 4xl:mb-10 4xl:px-[4.5rem];
 		@apply bg-dark-brown rounded-3xl 4xl:rounded-[3rem];
 	}
 
@@ -23,9 +23,13 @@
 		@apply z-10;
 	}
 
-	.icon {
+	.photoIcon-wrapper {
 		@apply absolute;
 		@apply z-30;
+	}
+
+	.photoIcon-wrapper :global(.icon) {
+		@apply 4xl:w-40 4xl:h-40;
 	}
 
 	.card-bg {

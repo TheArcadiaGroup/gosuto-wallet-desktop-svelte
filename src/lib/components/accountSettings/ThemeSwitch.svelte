@@ -25,9 +25,9 @@
 	>
 		<div class="switch" class:dark>
 			{#if dark}
-				<DarkThemeIcon />
+				<DarkThemeIcon class="themeIcon" />
 			{:else}
-				<LightThemeIcon />
+				<LightThemeIcon class="themeIcon" />
 			{/if}
 		</div>
 	</button>
@@ -48,6 +48,10 @@
 		@apply grid place-items-center;
 		@apply rounded-full h-8 w-8 4xl:h-20 4xl:w-20;
 		@apply transition-all;
+	}
+
+	.switch .themeIcon {
+		@apply 4xl:w-12 4xl:h-12;
 	}
 
 	.switch:not(.dark) {
