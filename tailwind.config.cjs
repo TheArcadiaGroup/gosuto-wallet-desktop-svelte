@@ -34,6 +34,7 @@ module.exports = {
 					scrollBar: '#EAEAEA',
 					white: '#FFFFFF',
 					backgroundgray: '#FDFDDE',
+					buttonText: '#707070',
 				},
 			},
 			fill: {
