@@ -40,7 +40,7 @@
 
 <style lang="postcss">
 	.main {
-		@apply w-full pt-7 pb-8 pl-5;
+		@apply w-[90vw] md:w-full pt-7 pb-8 pl-5;
 	}
 
 	h4 {
@@ -64,11 +64,11 @@
 	}
 
 	.detail-title {
-		@apply text-light-gray min-w-max;
+		@apply text-light-gray md:min-w-max;
 	}
 
 	.detail-value {
-		@apply w-full text-right max-w-full mr-8;
+		@apply w-full text-right min-w-max md:min-w-0 md:max-w-full mr-8 transform translate-x-4 md:translate-x-0;
 	}
 
 	.top-border {

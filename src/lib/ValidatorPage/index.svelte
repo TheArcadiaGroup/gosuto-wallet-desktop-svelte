@@ -15,7 +15,7 @@
 
 <style lang="postcss">
 	.main {
-		@apply h-screen flex flex-col;
+		@apply h-screen w-screen flex flex-col px-4;
 	}
 
 	h3 {
