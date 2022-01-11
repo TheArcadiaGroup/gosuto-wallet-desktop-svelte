@@ -1,10 +1,8 @@
 <script lang="ts">
 	import Navbar from '$components/navbar/Navbar.svelte';
-
-	export let lastColumnActive: boolean = false;
 </script>
 
-<div class={lastColumnActive ? 'app-container withLastColumn' : 'app-container withoutLastColumn'}>
+<div class={$$slots.last ? 'app-container withLastColumn' : 'app-container withoutLastColumn'}>
 	<div class="navbar-container">
 		<Navbar />
 	</div>
@@ -14,7 +12,7 @@
 	<div class="mid-column">
 		<slot name="mid" />
 	</div>
-	{#if lastColumnActive}
+	{#if $$slots.last}
 		<div class="last-column">
 			<slot name="last" />
 		</div>
