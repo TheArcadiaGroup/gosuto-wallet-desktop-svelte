@@ -17,7 +17,7 @@
 	</div>
 </div>
 
-<style lang="postcss">
+<style lang="postcss" global>
 	.app-container {
 		@apply w-full grid gap-0 font-display;
 	}
@@ -42,5 +42,9 @@
 	.last-column {
 		@apply z-30;
 		box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.05);
+	}
+	.mid-column,
+	.last-column {
+		@apply dark:bg-dark-gosutoDark;
 	}
 </style>
