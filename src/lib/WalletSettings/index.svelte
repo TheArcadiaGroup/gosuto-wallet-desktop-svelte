@@ -1,4 +1,7 @@
 <script lang="ts">
+	import CopyIcon from '$icons/CopyIcon.svelte';
+	import CopyOrange from '$icons/CopyOrange.svelte';
+	import RightArrow from '$icons/RightArrow.svelte';
 	import TextInput from '$lib/Common/TextInput.svelte';
 	import PasswordToCopyPopup from '$lib/PopUps/WalletSettings/PasswordToCopyPopup.svelte';
 	import PasswordToExportPopup from '$lib/PopUps/WalletSettings/PasswordToExportPopup.svelte';
@@ -61,14 +64,26 @@
 		<div class="header">
 			<div class="left-holder">
 				<div class="back-btn">
-					<img src="/images/svg/rightArrow.svg" alt="back" />
+					<div class="img">
+						<RightArrow />
+					</div>
 					<h1>Wallet Settings</h1>
 				</div>
 				<div class="address">
 					<p>
 						{`${walletAddress.slice(0, 11)}...${walletAddress.slice(-4)}`}
 					</p>
-					<img src="/images/svg/copy.svg" alt="copy" />
+					<div class="img">
+						<CopyIcon />
+					</div>
+				</div>
+			</div>
+			<div class="address">
+				<p>
+					{`${walletAddress.slice(0, 11)}...${walletAddress.slice(-4)}`}
+				</p>
+				<div class="img">
+					<CopyIcon />
 				</div>
 			</div>
 			<button
@@ -85,13 +100,9 @@
 		<TextInput bind:value={publicKey} label="Public Key" type="text" />
 		<br />
 		<div class="private-container">
-			<img
-				src="/images/svg/copy-orange.svg"
-				alt="copy"
-				on:click={() => {
-					showCopyWalletPasswordPopup = true;
-				}}
-			/>
+			<div class="img">
+				<CopyOrange />
+			</div>
 			<TextInput bind:value={privateKey} label="Private Key" type="password" />
 		</div>
 		<br />
@@ -148,7 +159,7 @@
 		@apply flex items-center h-3/4;
 	}
 
-	.back-btn > img {
+	.back-btn > .img {
 		@apply cursor-pointer hidden md:block;
 	}
 
@@ -164,7 +175,7 @@
 		@apply font-normal md:font-medium text-base md:text-xl text-light-gardenText mr-2;
 	}
 
-	.address > img {
+	.address > .img {
 		@apply cursor-pointer;
 	}
 
@@ -192,7 +203,15 @@
 		@apply relative;
 	}
 
-	.private-container > img {
+	.private-container > .img {
 		@apply absolute z-40 transform translate-y-4 right-4 cursor-pointer;
+	}
+
+	.left-holder > .address {
+		@apply md:hidden;
+	}
+
+	.header > .address {
+		@apply hidden md:flex;
 	}
 </style>
