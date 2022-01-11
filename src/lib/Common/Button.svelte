@@ -5,6 +5,7 @@
 	class={$$slots.icon ? 'main has-icon' : 'main no-icon'}
 	class:selected={$$props.selected}
 	class:ring-btn={$$props.ring}
+	class:glow={$$props.glow}
 	on:click
 >
 	{#if $$slots.icon}
@@ -46,5 +47,9 @@
 
 	.img {
 		@apply w-4 h-4 mr-3;
+	}
+
+	.glow {
+		box-shadow: 0px 2px 15px #ff8266;
 	}
 </style>
