@@ -34,13 +34,22 @@
 		</h2>
 	</div>
 	<div class="mt-16 md:mt-6 w-full flex flex-col gap-y-4 text-center">
-		<h2 class="font-bold text-2xl leading-8 text-black ">Unstake CSPR</h2>
-		<p class="font-bold text-base leading-6 text-light-grey">Unstake: {unstakeAmount} CSPR</p>
-		<p class="font-normal text-base leading-6 text-light-grey">
+		<h2 class="font-bold text-2xl leading-8 text-black dark:text-white">Unstake CSPR</h2>
+		<h2
+			class="text-base leading-6 text-light-grey dark:text-dark-gosutoIconGrey"
+			style="font-weight: 700;"
+		>
+			Unstake: {unstakeAmount} CSPR
+		</h2>
+		<!-- TODO Fix size -->
+		<h2
+			class="text-base leading-6 text-light-grey dark:text-dark-gosutoIconGrey"
+			style="font-weight: 400;"
+		>
 			Unstaking will take until: <span class="text-light-orange">
 				{convertDate(unstakingWaitDate)}
 			</span>
-		</p>
+		</h2>
 	</div>
 	<div class="flex flex-col items-center w-full">
 		<button type="button" on:click={() => (unstake = true)} class="unstake-button">Unstake</button>
@@ -51,7 +60,7 @@
 <!-- Styles -->
 <style lang="postcss" global>
 	:local(.unstake-button) {
-		@apply px-12 py-2.5 md:w-full bg-light-orange rounded-[35px] leading-[26px] text-sm text-white font-bold mt-[75px] md:mt-10;
+		@apply px-12 py-2.5 md:w-full bg-light-orange rounded-[35px] leading-[26px] text-sm text-white font-bold mt-[75px] md:mt-[30px];
 	}
 	:local(.cancel-button) {
 		@apply p-0 hidden md:block bg-transparent rounded-[35px] leading-[25px] text-[18px] text-light-grey dark:text-white font-bold mt-6 md:mt-10;

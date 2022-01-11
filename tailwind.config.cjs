@@ -13,6 +13,7 @@ module.exports = {
 					brown: '#FECE80',
 					lightBlue: '#E1E3FF',
 					gosutoDark: '#363B46',
+					gosutoIconGrey: '#BDBDBE',
 					blue: '#313642',
 					lighterGray: ' #AEBBC4',
 				},
