@@ -122,10 +122,10 @@
 
 <style lang="postcss" global>
 	:local(.position-card) {
-		@apply font-display max-w-[351px] md:max-w-[620px] rounded-[21px] sm:rounded-[22px] bg-white dark:bg-dark-grey shadow-[0px-4px_9px_rgba(0,_0,_0,_0.05)] dark:shadow-[0px_4px_12px_rgba(0,_0,_0,_0.05)] hover:border hover:border-light-purple;
+		@apply font-display  xl:w-full rounded-[21px] sm:rounded-[22px] bg-white dark:bg-dark-grey shadow-[0px-4px_9px_rgba(0,_0,_0,_0.05)] dark:shadow-[0px_4px_12px_rgba(0,_0,_0,_0.05)] border border-transparent hover:border-light-purple;
 	}
 	.wallet-name {
-		@apply font-semibold sm:font-bold text-sm text-black dark:text-white text-left leading-[19px] ml-7 mt-[17px] sm:ml-8 sm:mt-[30px];
+		@apply font-semibold md:font-bold text-sm xl:text-xl text-black dark:text-white text-left leading-[19px] ml-7 mt-[17px] sm:ml-8 sm:mt-[30px];
 	}
 	:local(.position-details) {
 		@apply mt-[9px] flex flex-row items-center justify-between;

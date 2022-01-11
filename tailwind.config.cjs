@@ -20,6 +20,8 @@ module.exports = {
 				light: {
 					gray: '#A9A9A9',
 					grayShadeOne: '#AEBBC5',
+					grayShadeTwo: '#C1C1C1',
+					grayShadeThree: '#C4C4C4',
 					green: '#70CF98',
 					red: '#FF6666',
 					orange: '#FF8266',
@@ -34,6 +36,9 @@ module.exports = {
 					scrollBar: '#EAEAEA',
 					white: '#FFFFFF',
 					backgroundgray: '#FDFDDE',
+					neutrals1: '#E6E8EC',
+					neutrals2: '#23262F',
+					neutrals4: '#777E90',
 				},
 			},
 			fill: {

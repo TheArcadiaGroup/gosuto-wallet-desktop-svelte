@@ -5,20 +5,20 @@
 	export let walletName!: string;
 	export let walletAddress!: string;
 	export let stakePositions: StakePosition[];
-
-	// console.log(stakePositions);
 </script>
 
-<!-- TODO remove Font familly. To be applied globally -->
 <div class="w-full">
 	<div class="ml-[6%] mt-[15px]">
 		<WalletHeader {walletName} {walletAddress} />
 	</div>
-	<div class="flex flex-col justify-center px-[37px] gap-y-[25px]">
-		<!-- <StakePositions {stakePositions} /> -->
+	<div class="mt-[26px] md:mt-[35px] px-[37px]">
 		<StakePositions {stakePositions} />
 	</div>
 	<div class=" flex justify-center">
-		<button class="px-4 py-3 border border-neutral-300 rounded-[24px]">Show more</button>
+		<button
+			class="px-4 py-3 border border-light-neutrals-4 rounded-[24px] text-xs font-bold text-light-neutrals2 leading-4"
+		>
+			Show more
+		</button>
 	</div>
 </div>
