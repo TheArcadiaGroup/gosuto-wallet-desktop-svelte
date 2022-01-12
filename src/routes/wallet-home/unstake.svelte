@@ -1,80 +1,8 @@
 <script lang="ts">
-	import GridLayout from '$lib/Common/GridLayout.svelte';
-	import LandingPage from '$lib/WalletHome/LandingPage/LandingPage.svelte';
-	import ActionPanel from '$lib/WalletHome/ActionPanel/ActionPanel.svelte';
 	import Unstake from '$lib/WalletHome/ActionPanel/Unstake.svelte';
-	let wallet = {
-		walletName: 'Wallet 1',
-		walletAddress: '0x5645gj4ju6kh47kkh7884kk74k43jt774',
-		stakePositions: [
-			{
-				unstaked: false,
-				walletName: 'Wallet 1',
-				stakedAmount: 15,
-				unlockedAmount: 15,
-				percentage: 33,
-				stakedOn: '1 Dec 2021',
-				unstakedOn: '1 Dec 2021',
-				unlockedOn: '1 Dec 2021',
-				rewardOn: '1 Dec 2021',
-				reclaimOn: '1 Dec 2021',
-				timeOne: '19.12:53:27',
-				timeTwo: '19.12:53:27',
-				totalTimeUntilReward: '19.12:53:27',
-			},
-			{
-				unstaked: false,
-				walletName: 'Wallet 1',
-				stakedAmount: 15,
-				unlockedAmount: 15,
-				percentage: 50,
-				stakedOn: '1 Dec 2021',
-				unstakedOn: '1 Dec 2021',
-				unlockedOn: '1 Dec 2021',
-				rewardOn: '1 Dec 2021',
-				reclaimOn: '1 Dec 2021',
-				timeOne: '19.12:53:27',
-				timeTwo: '19.12:53:27',
-				totalTimeUntilReward: '19.12:53:27',
-			},
-			{
-				unstaked: false,
-				walletName: 'Wallet 1',
-				stakedAmount: 15,
-				unlockedAmount: 15,
-				percentage: 100,
-				stakedOn: '1 Dec 2021',
-				unstakedOn: '1 Dec 2021',
-				unlockedOn: '1 Dec 2021',
-				rewardOn: '1 Dec 2021',
-				reclaimOn: '1 Dec 2021',
-				timeOne: '19.12:53:27',
-				timeTwo: '19.12:53:27',
-				totalTimeUntilReward: '19.12:53:27',
-			},
-		],
-	};
-	let unstakeAmount: number = 15;
+	import WalletHome from '$lib/WalletHome/WalletHome.svelte';
 </script>
 
-<GridLayout>
-	<div slot="first" class="md:h-screen">First</div>
-	<div slot="mid" class="mid-column">
-		<LandingPage {...wallet} />
-	</div>
-	<div slot="last" class="last-column">
-		<ActionPanel>
-			<Unstake {unstakeAmount} />
-		</ActionPanel>
-	</div>
-</GridLayout>
-
-<!-- Styles -->
-<style lang="postcss" global>
-	:local(.mid-column) {
-		@apply dark:bg-dark-gosutoDark md:dark:bg-dark-grey border-none;
-	}
-	:local(.last-column) {
-		@apply dark:bg-dark-gosutoDark md:dark:bg-dark-blue h-full border-none;
-	}
-</style>
+<WalletHome>
+	<Unstake />
+</WalletHome>

@@ -3,9 +3,9 @@
 	import ConfirmPopUp from '$lib/PopUps/Unstake/ConfirmPopUp.svelte';
 	import { convertDate } from '$utils';
 
-	export let unstakeAmount!: number;
+	let unstakeAmount: number = 15;
 	// Set this Date
-	export let unstakingWaitDate: Date = new Date(Date.now());
+	let unstakingWaitDate: Date = new Date(Date.now());
 	let unstake: boolean = false;
 </script>
 
