@@ -9,7 +9,6 @@
 {#if claim}
 	<!-- <ConfirmPopUp /> -->
 {/if}
-\
 <div class="wrapper">
 	<div class="header">
 		<button class="back-button">

@@ -109,10 +109,12 @@
 				<div class={timeOne === '00:00:00:00' ? 'text-light-lighterOrange' : ''}>
 					{timeOne}
 				</div>
-				<div class="{timeTwo === '00:00:00:00' ? 'text-light-lighterOrange' : ''} pl-10">
+				<div class="divider" />
+				<div class={timeTwo === '00:00:00:00' ? 'text-light-lighterOrange' : ''}>
 					{timeTwo}
 				</div>
 			</div>
+			<div class="cross-stroke" />
 		</div>
 		<div class="time-left">
 			<p>Total Time Until Reward</p>
@@ -139,23 +141,28 @@
 	:local(.amount-details) {
 		@apply flex-row gap-x-2 xl:gap-x-5 justify-center text-xs xl:text-[1vmax] leading-[15px] text-left;
 	}
-	.progress-bar {
+	:local(.progress-bar) {
 		@apply mt-[3px] xl:mt-[1vmax] h-[17px] xl:h-[1vmax] rounded-full bg-neutral-200 dark:bg-black dark:bg-opacity-10;
 	}
-	.progress {
+	:local(.progress) {
 		@apply h-full rounded-full text-xs leading-none py-1 text-center text-white bg-light-orangeShadeOne;
 	}
 	:local(.date-details) {
 		@apply flex-col justify-center text-xs xl:text-[1vmax] leading-[15px] text-center  xl:gap-y-[1vmax];
 	}
-	.timers-wrapper {
+	:local(.timers-wrapper) {
 		@apply mt-[17px] xl:mt-[4vmax] text-xs xl:text-[1vmax] text-neutral-600 dark:text-light-grayShadeOne;
-		@apply border-b border-light-grey border-dashed;
 	}
-	.timers {
-		@apply justify-center space-x-10 divide-x divide-dashed divide-light-grey;
+	:local(.timers) {
+		@apply flex items-center justify-evenly h-6 xl:h-[1.5vmax];
 	}
-	.time-left {
+	:local(.divider) {
+		@apply w-1  h-full border-l border-light-grey border-dashed md:-mb-2;
+	}
+	:local(.cross-stroke) {
+		@apply w-full h-1 md:mt-2 border-t border-dashed border-light-grey;
+	}
+	:local(.time-left) {
 		@apply flex flex-col items-center gap-y-1 xl:gap-y-[1vmax] my-6 xl:my-[1.5vmax];
 		@apply text-xs xl:text-[1vmax] text-light-lighterOrange dark:text-light-grayShadeOne md:text-light-grey text-center;
 	}
