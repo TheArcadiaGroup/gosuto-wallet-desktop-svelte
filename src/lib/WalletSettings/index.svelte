@@ -137,7 +137,7 @@
 
 <style lang="postcss" global>
 	:local(.main) {
-		@apply w-screen min-h-screen flex md:flex-col md:items-center px-4 md:px-0 mt-8 md:mt-0;
+		@apply w-screen md:w-full min-h-screen flex md:flex-col md:items-center px-4 md:px-0 mt-8 md:mt-0;
 	}
 
 	:local(.settings-holder) {
