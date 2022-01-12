@@ -73,7 +73,12 @@
 					<p>
 						{`${walletAddress.slice(0, 11)}...${walletAddress.slice(-4)}`}
 					</p>
-					<div class="img">
+					<div
+						class="img"
+						on:click={() => {
+							// Add Code to copy Wallet address here
+						}}
+					>
 						<CopyIcon />
 					</div>
 				</div>
@@ -100,7 +105,12 @@
 		<TextInput bind:value={publicKey} label="Public Key" type="text" />
 		<br />
 		<div class="private-container">
-			<div class="img">
+			<div
+				class="img"
+				on:click={() => {
+					showCopyWalletPasswordPopup = true;
+				}}
+			>
 				<CopyOrange />
 			</div>
 			<TextInput bind:value={privateKey} label="Private Key" type="password" />
@@ -125,93 +135,91 @@
 	</div>
 </div>
 
-<style lang="postcss">
-	.main {
-		@apply w-full flex flex-col items-center px-4 md:px-0 mt-8 md:mt-0;
+<style lang="postcss" global>
+	:local(.main) {
+		@apply w-screen min-h-screen flex md:flex-col md:items-center px-4 md:px-0 mt-8 md:mt-0;
 	}
 
-	.settings-holder {
-		@apply w-full;
+	:local(.settings-holder) {
+		@apply w-full md:w-[65%];
 	}
 
-	.main > div {
-		@apply md:w-[65%];
-	}
-
-	.header {
+	:local(.header) {
 		@apply flex items-center justify-between h-12 md:my-[8vh];
 	}
 
-	.confirm-button {
+	:local(.confirm-button) {
 		@apply text-white bg-light-orange border border-light-orange;
 	}
 
-	.cancel-button {
-		@apply text-light-orange bg-white;
+	:local(.cancel-button) {
+		@apply text-light-orange bg-transparent;
 		@apply border border-light-orange;
 	}
 
-	.settings-btn {
+	:local(.settings-btn) {
 		@apply rounded-full text-xs md:text-base h-9 md:h-12 px-4 md:px-5;
 	}
 
-	.back-btn {
+	:local(.back-btn) {
 		@apply flex items-center h-3/4;
 	}
 
-	.back-btn > .img {
+	:local(.back-btn) > .img {
 		@apply cursor-pointer hidden md:block;
 	}
 
-	h1 {
+	:local(h1) {
 		@apply text-base md:text-xl font-bold md:ml-2;
+		@apply dark:text-white;
 	}
 
-	.address {
+	:local(.address) {
 		@apply flex;
 	}
 
-	.address > p {
+	:local(.address) > p {
 		@apply font-normal md:font-medium text-base md:text-xl text-light-gardenText mr-2;
+		@apply dark:text-white;
 	}
 
-	.address > .img {
+	:local(.address) > .img {
 		@apply cursor-pointer;
 	}
 
-	h2 {
-		@apply font-bold text-base text-light-grey;
+	:local(h2) {
+		@apply font-bold text-base text-light-grey dark:text-white;
 	}
 
-	.button-holder {
+	:local(.button-holder) {
 		@apply h-12;
 	}
 
-	.ok-cancel {
+	:local(.ok-cancel) {
 		@apply flex m-auto w-[68%] h-[50px] justify-between;
 	}
 
-	.ok-cancel > button {
-		@apply w-[42%] h-full rounded-[2vh] my-8 md:my-[8vh] mb-4;
+	:local(.ok-cancel) > button {
+		@apply w-[42%] h-full rounded-[2vh] my-4 md:my-[8vh] mb-4;
 	}
 
-	.left-holder {
+	:local(.left-holder) {
 		@apply flex flex-col md:flex-row;
 	}
 
-	.private-container {
+	:local(.private-container) {
 		@apply relative;
 	}
 
-	.private-container > .img {
+	:local(.private-container) > .img {
 		@apply absolute z-40 transform translate-y-4 right-4 cursor-pointer;
 	}
 
-	.left-holder > .address {
+	:local(.left-holder) > .address {
 		@apply md:hidden;
 	}
 
-	.header > .address {
+	:local(.header) > .address {
 		@apply hidden md:flex;
 	}
 </style>
