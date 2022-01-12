@@ -5,14 +5,29 @@
 	import TextInput from '$lib/Common/TextInput.svelte';
 	import Button from '$lib/Common/Button.svelte';
 	import SelectInput from '$lib/Common/SelectInput.svelte';
+	import Popup from '$lib/Common/Popup.svelte';
 
 	let dispatch = createEventDispatcher()
 
 	export let fromToken = 'USDT'
 	export let createNewToken = true
 
+	let showConfirm = false
+	let showSuccess = false
+	let showError = false
+
 	function deselectToken (): void {
 		dispatch('deselect')
+	}
+
+	function swapTokens (): void {
+		showConfirm = true
+	}
+
+	function confirmSwap (): void {
+		showConfirm = false
+		if (Math.random() >= 0.5) showSuccess = true
+		else showError = true
 	}
 </script>
 
@@ -49,10 +64,17 @@
 			</p>
 		{/if}
 		<div class='buttons'>
-			<Button><span class="landing-7 my-2">Swap</span></Button>
+			<Button on:click={swapTokens}><span class="landing-7 my-2">Swap</span></Button>
 			<Button on:click={deselectToken} color="none">Cancel</Button>
 		</div>
 	</form>
+	{#if showConfirm}
+		<Popup title='Are you sure you want to swap?' hasCancel={true} on:confirm={confirmSwap} on:cancel={() => {showConfirm = false}} />
+	{:else if showSuccess}
+		<Popup title='Swap Successful!' on:confirm={() => {showSuccess = false}}/>
+	{:else if showError}
+		<Popup title='Swap Failed!' on:confirm={() => {showError = false}}/>
+	{/if}
 </div>
 
 <style lang="postcss">

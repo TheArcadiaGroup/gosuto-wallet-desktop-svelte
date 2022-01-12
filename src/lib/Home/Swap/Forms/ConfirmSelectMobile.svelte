@@ -1,8 +1,6 @@
 <script>
 	import Button from '$lib/Common/Button.svelte';
 
-	// TODO: Finish this component & add this logic to swap route
-
 	export let cryptoName = 'Tether'
 	export let cryptoUnit = 'USDT'
 	export let cryptoAmount = 2000
@@ -17,7 +15,7 @@
 		</div>
 	</div>
 	<div class="button">
-		<Button>Select</Button>
+		<Button><span class="my-2">Select</span></Button>
 	</div>
 </div>
 
