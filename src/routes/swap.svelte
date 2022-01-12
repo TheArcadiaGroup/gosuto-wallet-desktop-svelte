@@ -2,6 +2,7 @@
 	import Swap from '$lib/Home/Swap/index.svelte';
 	import SelectCurrency from '$lib/Home/Swap/Forms/SelectCurrency.svelte';
 	import SwapCurrency from '$lib/Home/Swap/Forms/SwapCurrency.svelte';
+	import ConfirmSelectMobile from '$lib/Home/Swap/Forms/ConfirmSelectMobile.svelte';
 
 	let tokens = [
 		{
@@ -40,6 +41,7 @@
 	<div class="sidebar-placeholder"></div>
 	<div class="sidebar">
 		{#if selected === -1}
+			<!--<ConfirmSelectMobile />-->
 			<SelectCurrency />
 		{:else}
 			<SwapCurrency on:deselect={deselectToken} />

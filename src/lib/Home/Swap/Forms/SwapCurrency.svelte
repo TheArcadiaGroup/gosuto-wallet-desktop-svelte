@@ -66,6 +66,7 @@
 	.swap-currency::before {
 		content: '';
 		@apply absolute left-1/2 -translate-x-1/2 top-0 my-3 w-1/3 h-2 rounded-3xl bg-[#c4c4c41e];
+        @apply md:hidden;
 	}
 
 	.swap-form {

@@ -1,6 +1,6 @@
 
 <div class="select-currency dark:bg-dark-grey md:dark:bg-dark-blue">
-	<p class="select-text">Select currency you want to swap</p>
+	<p class="select-text text-[#C1C1C1] dark:opacity-50 md:opacity-100 md:text-dark-lightGray">Select currency you want to swap</p>
 </div>
 
 <style lang="postcss">
@@ -14,10 +14,11 @@
 	.select-currency::before {
 		content: '';
 		@apply absolute top-0 my-3 w-1/3 h-2 rounded-3xl bg-[#c4c4c41e];
+		@apply md:hidden;
 	}
 
 	.select-text {
-		@apply w-1/2 text-center font-semibold text-sm text-dark-lightGray;
+		@apply w-1/2 text-center font-semibold text-sm;
 	}
 
 </style>
