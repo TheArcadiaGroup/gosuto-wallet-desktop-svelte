@@ -26,6 +26,7 @@
 
 	:local(.has-icon) {
 		@apply w-20 h-20 md:w-auto md:h-auto;
+		@apply my-9 md:my-0;
 		@apply px-5 bg-white dark:bg-dark-grey rounded-xl;
 		@apply text-light-buttonText dark:text-white;
 		@apply hover:bg-opacity-70 hover:bg-light-purple hover:text-white transition duration-200;
@@ -40,7 +41,7 @@
 		@apply rounded-3xl;
 		@apply justify-center p-0 bg-light-orange text-white border border-light-orange;
 		@apply hover:bg-opacity-70 hover:border-opacity-0 transition duration-200;
-		@apply text-base;
+		@apply text-sm;
 	}
 
 	:local(.no-icon.ring-btn) {
