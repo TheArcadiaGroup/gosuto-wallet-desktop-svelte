@@ -33,7 +33,7 @@
 			grid-template-rows: auto auto auto;
 		}
 
-		:local(.app-container > div) {
+		:local(.app-container) > div {
 			@apply overflow-x-hidden;
 		}
 	}
