@@ -58,12 +58,22 @@
 
 <GridLayout>
 	<div slot="first" class="bg-gray-200">First</div>
-	<div slot="mid">
+	<div slot="mid" class="mid-column">
 		<LandingPage {...wallet} />
 	</div>
-	<div slot="last" class="first">
+	<div slot="last" class="last-column">
 		<ActionPanel>
 			<Unselected />
 		</ActionPanel>
 	</div>
 </GridLayout>
+
+<!-- Styles -->
+<style lang="postcss" global>
+	:local(.mid-column) {
+		@apply dark:bg-dark-gosutoDark md:dark:bg-dark-grey border-none;
+	}
+	:local(.last-column) {
+		@apply dark:bg-dark-gosutoDark md:dark:bg-dark-blue h-full border-none;
+	}
+</style>

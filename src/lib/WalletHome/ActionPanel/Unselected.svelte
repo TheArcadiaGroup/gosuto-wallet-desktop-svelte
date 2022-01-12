@@ -8,6 +8,6 @@
 		@apply md:h-screen min-h-[337px] flex-col flex items-center justify-center;
 	}
 	div > p {
-		@apply text-light-grayShadeThree font-medium text-[18px] leading-[25px] text-center;
+		@apply text-light-grayShadeThree font-medium text-[18px] xl:text-[1.25vmax] leading-[25px] text-center;
 	}
 </style>

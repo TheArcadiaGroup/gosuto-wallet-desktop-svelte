@@ -49,7 +49,7 @@
 <!-- Styles -->
 <style lang="postcss" global>
 	:local(.header-wrapper) {
-		@apply flex flex-col items-start text-left;
+		@apply flex flex-col items-start text-left mt-[90px];
 	}
 	.header-wrapper > div {
 		@apply flex flex-col md:flex-row justify-center items-start md:items-center;

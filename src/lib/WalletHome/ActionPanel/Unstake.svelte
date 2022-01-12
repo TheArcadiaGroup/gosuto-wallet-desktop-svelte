@@ -45,7 +45,7 @@
 	}
 
 	:local(.header) {
-		@apply hidden md:flex flex-row items-center justify-start gap-x-2.5 xl:gap-x-[1vmax];
+		@apply mt-[59px] hidden md:flex flex-row items-center justify-start gap-x-2.5 xl:gap-x-[1vmax];
 	}
 	.header > button {
 		@apply w-7 h-7 xl:w-[2vmax] xl:h-[2vmax] rounded-full hidden md:flex items-center justify-center border-2 border-light-neutrals1;
