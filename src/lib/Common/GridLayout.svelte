@@ -19,38 +19,42 @@
 	{/if}
 </div>
 
-<style lang="postcss">
-	.app-container {
+<style lang="postcss" global>
+	:local(.app-container) {
 		@apply w-full grid gap-0;
 	}
 
 	@media only screen and (max-width: 768px) {
-		.withLastColumn {
+		:local(.withLastColumn) {
 			grid-template-rows: auto auto auto auto;
 		}
 
-		.withoutLastColumn {
+		:local(.withoutLastColumn) {
 			grid-template-rows: auto auto auto;
 		}
 
-		.app-container > div {
+		:local(.app-container > div) {
 			@apply overflow-x-hidden;
 		}
 	}
 
 	@media only screen and (min-width: 768px) {
-		.withLastColumn {
+		:local(.withLastColumn) {
 			grid-template-columns: 5vw 25vw auto 25vw;
 		}
 
-		.withoutLastColumn {
+		:local(.withoutLastColumn) {
 			grid-template-columns: 5vw 25vw auto;
 		}
 	}
 
-	.first-column,
-	.last-column {
-		@apply z-30;
+	:local(.first-column),
+	:local(.last-column) {
+		@apply z-30 dark:bg-dark-blue;
 		box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.05);
+	}
+
+	:local(.mid-column) {
+		@apply dark:bg-dark-background;
 	}
 </style>
