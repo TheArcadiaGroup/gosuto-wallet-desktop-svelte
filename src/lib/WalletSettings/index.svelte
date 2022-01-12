@@ -1,7 +1,8 @@
 <script lang="ts">
+	import BackIcon from '$icons/BackIcon.svelte';
+
 	import CopyIcon from '$icons/CopyIcon.svelte';
 	import CopyOrange from '$icons/CopyOrange.svelte';
-	import RightArrow from '$icons/RightArrow.svelte';
 	import TextInput from '$lib/Common/TextInput.svelte';
 	import PasswordToCopyPopup from '$lib/PopUps/WalletSettings/PasswordToCopyPopup.svelte';
 	import PasswordToExportPopup from '$lib/PopUps/WalletSettings/PasswordToExportPopup.svelte';
@@ -65,7 +66,7 @@
 			<div class="left-holder">
 				<div class="back-btn">
 					<div class="img">
-						<RightArrow />
+						<BackIcon />
 					</div>
 					<h1>Wallet Settings</h1>
 				</div>
