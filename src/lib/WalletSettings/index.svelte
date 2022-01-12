@@ -118,9 +118,9 @@
 		<br />
 		<h2>Change Password</h2>
 		<br />
-		<TextInput bind:value={currentPassword} label="Current Password" type="text" />
+		<TextInput bind:value={currentPassword} label="Current Password" type="password" />
 		<br />
-		<TextInput bind:value={newPassword} label="New Password" type="text" />
+		<TextInput bind:value={newPassword} label="New Password" type="password" />
 		<br />
 		<TextInput bind:value={reEnterPassword} label="Re-Enter New Password" type="password" />
 		<br />
