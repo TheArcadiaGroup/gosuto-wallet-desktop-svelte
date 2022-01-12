@@ -16,6 +16,7 @@ module.exports = {
 					gosutoDark: '#363B46',
 					blue: '#313642',
 					lighterGray: ' #AEBBC4',
+					selectedButton: '#725DFF',
 				},
 				light: {
 					gray: '#A9A9A9',
