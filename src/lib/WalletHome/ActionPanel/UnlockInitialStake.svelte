@@ -2,13 +2,14 @@
 	import ActionPanelHeader from './ActionPanelComponents/ActionPanelHeader.svelte';
 	import ActionPanelDetails from './ActionPanelComponents/ActionPanelDetails.svelte';
 	import ActionPanelButtons from './ActionPanelComponents/ActionPanelButtons.svelte';
+	import SuccessPopup from '$lib/PopUps/Claim/SuccessPopup.svelte';
 
 	let initialStake: number = 20;
 	let action: boolean = false;
 </script>
 
 {#if action}
-	<!-- <ConfirmPopUp /> -->
+	<SuccessPopup />
 {/if}
 <ActionPanelHeader />
 <ActionPanelDetails title="Unlock initial stake">

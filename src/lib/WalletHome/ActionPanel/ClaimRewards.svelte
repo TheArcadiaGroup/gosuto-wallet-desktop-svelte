@@ -1,4 +1,5 @@
 <script lang="ts">
+	import SuccessPopup from '$lib/PopUps/Claim/SuccessPopup.svelte';
 	import ActionPanelButtons from './ActionPanelComponents/ActionPanelButtons.svelte';
 	import ActionPanelDetails from './ActionPanelComponents/ActionPanelDetails.svelte';
 	import ActionPanelHeader from './ActionPanelComponents/ActionPanelHeader.svelte';
@@ -9,7 +10,7 @@
 </script>
 
 {#if action}
-	<!-- <ConfirmPopUp /> -->
+	<SuccessPopup />
 {/if}
 <ActionPanelHeader />
 <ActionPanelDetails title="Claim Rewards">
