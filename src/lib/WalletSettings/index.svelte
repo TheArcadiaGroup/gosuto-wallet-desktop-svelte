@@ -7,6 +7,7 @@
 	import PasswordToCopyPopup from '$lib/PopUps/WalletSettings/PasswordToCopyPopup.svelte';
 	import PasswordToExportPopup from '$lib/PopUps/WalletSettings/PasswordToExportPopup.svelte';
 	import WalletCopiedPopup from '$lib/PopUps/WalletSettings/WalletCopiedPopup.svelte';
+	import Button from '$lib/Common/Button.svelte';
 
 	let walletName: string;
 	let publicKey: string;
@@ -92,14 +93,16 @@
 					<CopyIcon />
 				</div>
 			</div>
-			<button
-				class="confirm-button settings-btn"
-				on:click={() => {
-					showExportWalletFilePopup = true;
-				}}
-			>
-				Export Wallet File
-			</button>
+			<div class="confirm-button settings-btn">
+				<Button
+					glow={true}
+					on:click={() => {
+						showExportWalletFilePopup = true;
+					}}
+				>
+					<p slot="text" class="settings-btn-text">Export Wallet File</p>
+				</Button>
+			</div>
 		</div>
 		<TextInput bind:value={walletName} label="Wallet Name" type="text" />
 		<br />
@@ -126,12 +129,23 @@
 		<TextInput bind:value={reEnterPassword} label="Re-Enter New Password" type="password" />
 		<br />
 		<div class="button-holder">
-			<button class="confirm-button settings-btn">Change Password</button>
+			<div class="settings-btn">
+				<Button glow={true}>
+					<p slot="text" class="settings-btn-text">Change Password</p>
+				</Button>
+			</div>
 		</div>
 		<div class="ok-cancel">
-			<button class="confirm-button">Save</button>
-
-			<button class="cancel-button bg-light-orange">Cancel</button>
+			<div class="save-bt">
+				<Button>
+					<p slot="text" class="btn-text">Save</p>
+				</Button>
+			</div>
+			<div class="cancel-bt">
+				<Button ring={true}>
+					<p slot="text" class="btn-text">Cancel</p>
+				</Button>
+			</div>
 		</div>
 	</div>
 </div>
@@ -149,17 +163,13 @@
 		@apply flex items-center justify-between h-12 md:my-[8vh];
 	}
 
-	:local(.confirm-button) {
-		@apply text-white bg-light-orange border border-light-orange;
-	}
-
 	:local(.cancel-button) {
 		@apply text-light-orange bg-transparent;
 		@apply border border-light-orange;
 	}
 
 	:local(.settings-btn) {
-		@apply rounded-full text-xs md:text-base h-9 md:h-12 px-4 md:px-5;
+		@apply text-xs md:text-base h-9 md:h-12;
 	}
 
 	:local(.back-btn) {
@@ -197,11 +207,8 @@
 	}
 
 	:local(.ok-cancel) {
-		@apply flex m-auto w-[68%] h-[50px] justify-between;
-	}
-
-	:local(.ok-cancel) > button {
-		@apply w-[42%] h-full rounded-[2vh] my-4 md:my-[8vh] mb-4;
+		@apply flex m-auto md:w-[68%] h-[50px] justify-center md:justify-between;
+		@apply my-4 md:my-[4vh] mb-4;
 	}
 
 	:local(.left-holder) {
@@ -222,5 +229,25 @@
 
 	:local(.header) > .address {
 		@apply hidden md:flex;
+	}
+
+	:local(.save-bt) {
+		@apply w-full mr-4 md:mr-0 md:w-2/5 min-w-fit;
+	}
+
+	:local(.cancel-bt) {
+		@apply w-full md:w-2/5 min-w-fit;
+	}
+
+	:local(.btn-text) {
+		@apply py-3;
+	}
+
+	:local(.settings-btn-text) {
+		@apply px-4;
+	}
+
+	:local(.button-holder) {
+		@apply max-w-[45%] md:max-w-[25%];
 	}
 </style>
