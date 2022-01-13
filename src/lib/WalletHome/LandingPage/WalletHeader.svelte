@@ -66,7 +66,7 @@
 		@apply md:mr-[35px] md:pl-[9px] 2xl:mr-[2vmax] 2xl:pl-[0.5vmax] font-bold text-base md:text-2xl 2xl:text-[1.5vmax] leading-[22px] md:leading-8 text-black dark:text-white;
 	}
 	.header-wrapper > h2 {
-		@apply mt-[19px] 2xl:mt-[4vmax] font-bold text-black text-base md:text-[22px] 2xl:text-[1.5vmax] leading-[22px] md:leading-[30px] dark:text-white;
+		@apply mt-[19px] 2xl:mt-[2.5vmax] font-bold text-black text-base md:text-[22px] 2xl:text-[1.5vmax] leading-[22px] md:leading-[30px] dark:text-white;
 	}
 	:local(.address) {
 		@apply flex flex-row items-center gap-x-[11px] 2xl:gap-x-[1vmax] text-light-gardenText dark:text-white text-sm md:text-[18px] 2xl:text-[1.25vmax] font-medium;
