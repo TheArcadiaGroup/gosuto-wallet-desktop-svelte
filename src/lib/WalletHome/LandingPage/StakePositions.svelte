@@ -13,6 +13,6 @@
 <!-- Styles -->
 <style lang="postcss" global>
 	:local(div) {
-		@apply w-full flex flex-col justify-center gap-y-[25px] 2xl:gap-y-[1.5vmax];
+		@apply w-full flex flex-col justify-center gap-y-[25px] 2xl:gap-y-[1.75vw];
 	}
 </style>

@@ -51,27 +51,27 @@
 <!-- Styles -->
 <style lang="postcss" global>
 	:local(.header-wrapper) {
-		@apply flex flex-col items-start text-left mt-[90px];
+		@apply flex flex-col items-start text-left mt-4 md:mt-[90px] 2xl:mt-[6.25vw];
 	}
 	.header-wrapper > div {
 		@apply flex flex-col md:flex-row justify-center items-start md:items-center;
 	}
 	.header-wrapper > div > button {
-		@apply w-7 h-7 2xl:w-[2vmax] 2xl:h-[2vmax] rounded-full hidden md:flex items-center justify-center border-2 border-light-neutrals1;
+		@apply w-7 h-7 2xl:w-[2vw] 2xl:h-[2vw] rounded-full hidden md:flex items-center justify-center border-2 border-light-neutrals1;
 	}
 	:local(.arrow-left) {
-		@apply w-3 h-3 2xl:w-[1vmax] 2xl:h-[1vmax] text-light-neutrals4;
+		@apply w-3 h-3 2xl:w-[1vw] 2xl:h-[1vw] text-light-neutrals4;
 	}
 	.header-wrapper > div > h2 {
-		@apply md:mr-[35px] md:pl-[9px] 2xl:mr-[2vmax] 2xl:pl-[0.5vmax] font-bold text-base md:text-2xl 2xl:text-[1.5vmax] leading-[22px] md:leading-8 text-black dark:text-white;
+		@apply md:mr-[35px] md:pl-[9px] 2xl:mr-[2.5vw] 2xl:pl-[0.625vw] font-bold text-base md:text-2xl 2xl:text-[1.5vw] leading-[22px] md:leading-8  2xl:leading-[1.5vw] text-black dark:text-white;
 	}
 	.header-wrapper > h2 {
-		@apply mt-[19px] 2xl:mt-[2.5vmax] font-bold text-black text-base md:text-[22px] 2xl:text-[1.5vmax] leading-[22px] md:leading-[30px] dark:text-white;
+		@apply mt-[19px] 2xl:mt-[1.5vw] font-bold text-black text-base md:text-[22px] 2xl:text-[1.5vw] leading-[22px] md:leading-[30px] 2xl:leading-[2vw] dark:text-white;
 	}
 	:local(.address) {
-		@apply flex flex-row items-center gap-x-[11px] 2xl:gap-x-[1vmax] text-light-gardenText dark:text-white text-sm md:text-[18px] 2xl:text-[1.25vmax] font-medium;
+		@apply flex flex-row items-center gap-x-[11px] 2xl:gap-x-[0.75vw] text-light-gardenText dark:text-white text-sm md:text-[18px] 2xl:text-[1.25vw] font-medium;
 	}
 	.address > button {
-		@apply h-full 2xl:h-[1.25vmax] w-auto flex items-center justify-center;
+		@apply h-full 2xl:h-[1.25vw] w-auto flex items-center justify-center;
 	}
 </style>

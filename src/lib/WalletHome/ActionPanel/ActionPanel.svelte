@@ -3,7 +3,9 @@
 		<div class="bar" />
 	</div>
 	<div class="content-slot">
-		<slot />
+		<div class="content-wrapper">
+			<slot />
+		</div>
 	</div>
 </div>
 
@@ -20,5 +22,8 @@
 	}
 	:local(.content-slot) {
 		@apply flex items-center justify-center;
+	}
+	:local(.content-wrapper) {
+		@apply w-3/4 md:w-[85%] 2xl:w-3/4 mx-auto;
 	}
 </style>
