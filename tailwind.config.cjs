@@ -40,7 +40,7 @@ module.exports = {
 				grey: '#4F4F4F',
 				white: '#FFFFFF',
 			},
-			fontFamily: { display: 'Manrope' },
+			fontFamily: { display: "'Manrope', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'" },
 		},
 	},
 	variants: {
