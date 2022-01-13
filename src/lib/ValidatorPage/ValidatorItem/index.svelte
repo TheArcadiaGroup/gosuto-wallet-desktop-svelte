@@ -38,40 +38,40 @@
 	</div>
 </div>
 
-<style lang="postcss">
-	.main {
+<style lang="postcss" global>
+	:local(.main) {
 		@apply w-[90vw] md:w-full pt-7 pb-8 pl-5;
 	}
 
-	h4 {
-		@apply text-lg font-extrabold mr-5;
+	:local(h4) {
+		@apply text-sm md:text-lg font-extrabold mr-5 dark:text-white;
 	}
 
-	.header {
+	:local(.header) {
 		@apply flex mb-5;
 	}
 
-	.delegate {
+	:local(.delegate) {
 		@apply px-3 py-1 text-white bg-light-purple rounded-[46px] text-xs;
 	}
 
-	.details-holder {
+	:local(.details-holder) {
 		@apply flex flex-wrap;
 	}
 
-	.detail {
+	:local(.detail) {
 		@apply w-1/3 flex text-xs mb-1;
 	}
 
-	.detail-title {
-		@apply text-light-gray md:min-w-max;
+	:local(.detail-title) {
+		@apply text-light-gray md:min-w-max dark:text-white;
 	}
 
-	.detail-value {
-		@apply w-full text-right min-w-max md:min-w-0 md:max-w-full mr-8 transform translate-x-4 md:translate-x-0;
+	:local(.detail-value) {
+		@apply w-full text-right min-w-max md:min-w-0 md:max-w-full mr-4 md:mr-8 dark:text-white dark:md:opacity-50;
 	}
 
-	.top-border {
-		@apply border-t border-black border-opacity-10;
+	:local(.top-border) {
+		@apply border-t border-black dark:border-white border-opacity-10;
 	}
 </style>

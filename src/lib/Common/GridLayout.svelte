@@ -2,7 +2,7 @@
 	import Navbar from '$components/navbar/Navbar.svelte';
 </script>
 
-<div class="app-container">
+<div class={$$slots.last ? 'app-container withLastColumn' : 'app-container withoutLastColumn'}>
 	<div class="navbar-container">
 		<Navbar />
 	</div>
@@ -12,9 +12,11 @@
 	<div class="mid-column">
 		<slot name="mid" />
 	</div>
-	<div class="last-column">
-		<slot name="last" />
-	</div>
+	{#if $$slots.last}
+		<div class="last-column">
+			<slot name="last" />
+		</div>
+	{/if}
 </div>
 
 <style lang="postcss" global>
@@ -22,19 +24,27 @@
 		@apply w-full grid gap-0;
 	}
 
-	:local(.app-container) > div {
-		@apply overflow-hidden;
-	}
-
 	@media only screen and (max-width: 768px) {
-		:local(.app-container) {
+		:local(.withLastColumn) {
 			grid-template-rows: auto auto auto auto;
+		}
+
+		:local(.withoutLastColumn) {
+			grid-template-rows: auto auto auto;
+		}
+
+		:local(.app-container) > div {
+			@apply overflow-x-hidden;
 		}
 	}
 
 	@media only screen and (min-width: 768px) {
-		:local(.app-container) {
+		:local(.withLastColumn) {
 			grid-template-columns: 5vw 25vw auto 25vw;
+		}
+
+		:local(.withoutLastColumn) {
+			grid-template-columns: 5vw 25vw auto;
 		}
 	}
 

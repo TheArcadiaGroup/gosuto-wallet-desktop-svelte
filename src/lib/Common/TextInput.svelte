@@ -1,22 +1,41 @@
 <script lang="ts">
 	export let label: string = 'Input Your Text';
+	export let value: string | number = '';
 </script>
 
-<div class="input-holder">
-	<p>{label}</p>
-	<input type={$$props.type} />
-</div>
+{#if $$props.type === 'password'}
+	<div class="input-holder">
+		<p>{label}</p>
+		<input bind:value type="password" />
+	</div>
+{:else if $$props.type === 'email'}
+	<div class="input-holder">
+		<p>{label}</p>
+		<input bind:value type="email" />
+	</div>
+{:else if $$props.type === 'number'}
+	<div class="input-holder">
+		<p>{label}</p>
+		<input bind:value type="number" />
+	</div>
+{:else}
+	<div class="input-holder">
+		<p>{label}</p>
+		<input bind:value type="text" />
+	</div>
+{/if}
 
-<style lang="postcss">
-	.input-holder {
+<style lang="postcss" global>
+	:local(.input-holder) {
 		@apply relative mt-4;
 	}
 
-	input {
-		@apply border border-light-gray dark:border-white dark:border-opacity-30 h-[50px] px-2 w-full rounded-[12px] bg-white dark:bg-dark-background;
+	:local(input) {
+		@apply border border-light-gray h-[50px] px-2 w-full rounded-[12px] bg-white dark:bg-dark-background;
 	}
 
-	p {
-		@apply absolute bg-white dark:bg-dark-background transform translate-y-[-7px] translate-x-4 leading-none text-[14px] px-1 text-light-grey dark:text-white;
+	:local(p) {
+		@apply absolute bg-white transform translate-y-[-6px] md:translate-y-[-12px] translate-x-4 leading-none text-xs md:text-base px-1;
+		@apply dark:bg-dark-background dark:text-white;
 	}
 </style>
