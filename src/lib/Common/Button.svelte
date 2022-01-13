@@ -55,6 +55,6 @@
 	}
 
 	:local(.glow) {
-		box-shadow: 0px 2px 15px #ff8266;
+		box-shadow: 0px 2px 15px #ff826688;
 	}
 </style>
