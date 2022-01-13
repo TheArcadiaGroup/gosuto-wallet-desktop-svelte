@@ -2,7 +2,7 @@
 	import Navbar from '$components/navbar/Navbar.svelte';
 </script>
 
-<div class="app-container">
+<div class={$$slots.last ? 'app-container withLastColumn' : 'app-container withoutLastColumn'}>
 	<div class="navbar-container">
 		<Navbar />
 	</div>
@@ -12,35 +12,49 @@
 	<div class="mid-column">
 		<slot name="mid" />
 	</div>
-	<div class="last-column">
-		<slot name="last" />
-	</div>
+	{#if $$slots.last}
+		<div class="last-column">
+			<slot name="last" />
+		</div>
+	{/if}
 </div>
 
 <style lang="postcss" global>
-	.app-container {
+	:local(.app-container) {
 		@apply w-full grid gap-0 font-display;
 	}
 
-	.app-container > div {
-		@apply overflow-hidden;
-	}
-
 	@media only screen and (max-width: 768px) {
-		.app-container {
+		:local(.withLastColumn) {
 			grid-template-rows: auto auto auto auto;
+		}
+
+		:local(.withoutLastColumn) {
+			grid-template-rows: auto auto auto;
+		}
+
+		:local(.app-container) > div {
+			@apply overflow-x-hidden;
 		}
 	}
 
 	@media only screen and (min-width: 768px) {
-		.app-container {
+		:local(.withLastColumn) {
 			grid-template-columns: 5vw 25vw auto 25vw;
+		}
+
+		:local(.withoutLastColumn) {
+			grid-template-columns: 5vw 25vw auto;
 		}
 	}
 
-	.first-column,
-	.last-column {
-		@apply z-30;
+	:local(.first-column),
+	:local(.last-column) {
+		@apply z-30 dark:bg-dark-blue;
 		box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.05);
+	}
+
+	:local(.mid-column) {
+		@apply dark:bg-dark-background;
 	}
 </style>
