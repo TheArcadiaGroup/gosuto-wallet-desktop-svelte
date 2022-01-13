@@ -1,5 +1,4 @@
 <script lang="ts">
-	import ArrowLeftIcon from '$icons/ArrowLeftIcon.svelte';
 	import ConfirmPopUp from '$lib/PopUps/Unstake/ConfirmPopUp.svelte';
 	import { convertDate } from '$utils';
 	import ActionPanelButtons from './ActionPanelComponents/ActionPanelButtons.svelte';
@@ -9,7 +8,7 @@
 	let unstakeAmount: number = 15;
 	// Set this Date
 	let unstakingWaitDate: Date = new Date(Date.now());
-	let action: boolean = false;
+	let action: boolean;
 	export let unstaking: boolean = false;
 </script>
 
@@ -28,7 +27,7 @@
 	</p>
 </ActionPanelDetails>
 {#if !unstaking}
-	<ActionPanelButtons {action} actionButtonText="Unstake" />
+	<ActionPanelButtons bind:action>Unstake</ActionPanelButtons>
 {/if}
 
 <style lang="postcss" global>

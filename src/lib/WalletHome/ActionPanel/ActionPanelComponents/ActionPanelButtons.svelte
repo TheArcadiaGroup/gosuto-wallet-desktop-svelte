@@ -1,11 +1,10 @@
 <script lang="ts">
 	export let action: boolean;
-	export let actionButtonText!: string;
 </script>
 
 <div class="buttons">
 	<button type="button" on:click={() => (action = true)} class="action-button">
-		{actionButtonText}
+		<slot />
 	</button>
 	<button class="cancel-button">Cancel</button>
 </div>

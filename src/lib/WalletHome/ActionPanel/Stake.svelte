@@ -1,19 +1,22 @@
 <script lang="ts">
 	import ConfirmPopUp from '$lib/PopUps/Stake/ConfirmPopUp.svelte';
 
-	let stakeAmount!: number;
+	let amount: number = 20;
 	let selectedValidator!: string;
-	let validators = ['Arcadia', 'Binance', 'Coinbase'];
-	let stake: boolean = false;
+	let validators = ['Arcadia'];
+	let action: boolean = false;
 </script>
 
+{#if action}
+	<ConfirmPopUp {amount} />
+{/if}
 <div class="staking-wrapper">
 	<h2 class="heading">Stake CSPR</h2>
 	<div class="form-wrapper">
 		<form>
 			<div class="input-wrapper">
 				<label for="name">Enter CSPR Amount</label>
-				<input name="name" id="name" type="text" required bind:value={stakeAmount} />
+				<input name="name" id="name" type="text" required bind:value={amount} />
 				<h2 class="dollar-amount">$127 USD</h2>
 			</div>
 			<div class="input-wrapper validators">
@@ -27,16 +30,13 @@
 			</div>
 			<button
 				type="button"
-				on:click={() => (stake = true)}
-				disabled={!selectedValidator || !stakeAmount}
+				on:click={() => (action = true)}
+				disabled={!selectedValidator || !amount}
 				class="action-button"
 			>
 				Stake
 			</button>
 			<button type="button" class="cancel-button">Cancel</button>
-			{#if stake}
-				<ConfirmPopUp />
-			{/if}
 		</form>
 	</div>
 </div>

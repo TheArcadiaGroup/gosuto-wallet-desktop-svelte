@@ -17,5 +17,5 @@
 	</p>
 </ActionPanelDetails>
 <div class="mt-10">
-	<ActionPanelButtons {action} actionButtonText="Claim" />
+	<ActionPanelButtons bind:action>Claim</ActionPanelButtons>
 </div>

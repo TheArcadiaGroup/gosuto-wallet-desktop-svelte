@@ -20,4 +20,4 @@
 		Total Rewards: {totalRewards} CSPR
 	</p>
 </ActionPanelDetails>
-<ActionPanelButtons {action} actionButtonText="Claim" />
+<ActionPanelButtons bind:action>Claim</ActionPanelButtons>
