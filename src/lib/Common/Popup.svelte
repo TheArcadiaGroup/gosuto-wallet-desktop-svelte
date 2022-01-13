@@ -44,42 +44,45 @@
 	</div>
 </div>
 
-<style lang="postcss">
-	.popup {
+<style lang="postcss" global>
+	:local(.popup) {
 		@apply rounded-[34px] text-center px-4;
 		@apply w-full md:w-auto md:max-w-sm;
 	}
-	.pcontainer {
+
+	:local(.pcontainer) {
 		@apply py-8;
 	}
-	.popuptitle {
+
+	:local(.popuptitle) {
 		@apply font-bold mb-5 mx-12;
+		@apply dark:text-white;
 	}
 
-	.button-container {
+	:local(.button-container) {
 		@apply flex mt-5 justify-center;
 	}
 
-	.button-container > button {
+	:local(.button-container) > button {
 		@apply rounded-[50px] py-3 px-8;
 		@apply text-sm font-semibold;
 	}
 
-	.confirm-button {
+	:local(.confirm-button) {
 		@apply text-white bg-light-orange border border-light-orange;
 	}
 
-	.cancel-button {
-		@apply text-light-orange bg-white;
+	:local(.cancel-button) {
+		@apply text-light-orange bg-transparent;
 		@apply border border-light-orange;
 	}
 
-	.popup-holder {
+	:local(.popup-holder) {
 		@apply fixed top-0 left-0 right-0 bottom-0 h-screen w-screen z-50 px-4;
 		@apply justify-center items-center flex;
 	}
 
-	.darker {
+	:local(.darker) {
 		@apply fixed top-0 bottom-0 left-0 right-0 z-30 bg-[#00000077];
 	}
 </style>

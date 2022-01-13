@@ -1,3 +1,7 @@
+<script>
+	import Button from '$lib/Common/Button.svelte';
+</script>
+
 <div class="page-wrapper">
 	<div class="page-tracker">
 		<button class="active-page" />
@@ -11,7 +15,11 @@
 			Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
 			tincidunt ut laoreet dolore magna aliquam erat volutpat.
 		</div>
-		<button class="next-bt">Next</button>
+		<div class="next-bt">
+			<Button>
+				<p slot="text">Next</p>
+			</Button>
+		</div>
 	</div>
 </div>
 
@@ -55,9 +63,6 @@
 	}
 
 	.next-bt {
-		@apply text-lg text-white font-bold font-display;
-		@apply rounded-3xl;
-		@apply bg-light-orange;
 		@apply py-4 px-40;
 	}
 </style>
