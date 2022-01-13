@@ -5,6 +5,7 @@
 		stroke-width="2"
 		stroke-linecap="round"
 		stroke-linejoin="round"
+		class="stroke-[#707070] dark:stroke-white"
 	/>
 	<path
 		d="M4.16602 12.5H3.33268C2.89065 12.5 2.46673 12.3244 2.15417 12.0118C1.84161 11.6992 1.66602 11.2753 1.66602 10.8333V3.33329C1.66602 2.89127 1.84161 2.46734 2.15417 2.15478C2.46673 1.84222 2.89065 1.66663 3.33268 1.66663H10.8327C11.2747 1.66663 11.6986 1.84222 12.0112 2.15478C12.3238 2.46734 12.4993 2.89127 12.4993 3.33329V4.16663"
@@ -12,5 +13,6 @@
 		stroke-width="2"
 		stroke-linecap="round"
 		stroke-linejoin="round"
+		class="stroke-[#707070] dark:stroke-white"
 	/>
 </svg>

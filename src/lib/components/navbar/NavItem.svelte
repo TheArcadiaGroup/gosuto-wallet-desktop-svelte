@@ -2,20 +2,20 @@
 	export let active = false;
 </script>
 
-<div class="nav-item" class:active><slot /></div>
+<a class="nav-item" href={$$props.href || '!#'} class:active><slot /></a>
 
-<style lang="postcss">
-	:global(div.nav-item svg) {
+<style lang="postcss" global>
+	:global(.nav-item svg) {
 		@apply h-full;
 	}
 
-	div.nav-item {
-		@apply flex flex-col items-center;
+	:local(.nav-item) {
+		@apply flex flex-col items-center justify-center;
 		@apply w-12 h-12;
 		@apply fill-grey dark:fill-white;
 	}
 
-	div.nav-item.active {
+	.nav-item.active {
 		@apply bg-light-purple;
 
 		/* [✔️] TODO: There is a better way of achieving this. Might be an issue of specificity */

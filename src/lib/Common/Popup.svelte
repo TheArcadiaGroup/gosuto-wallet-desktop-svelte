@@ -46,7 +46,8 @@
 
 <style lang="postcss">
 	.popup {
-		@apply rounded-[34px] text-center max-w-sm w-1/2 px-4;
+		@apply rounded-[34px] text-center px-4;
+		@apply w-full md:w-auto md:max-w-sm;
 	}
 	.pcontainer {
 		@apply py-8;

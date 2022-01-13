@@ -22,13 +22,14 @@
 		"Chrome 89"
 	],
 	"dependencies": {
+		"@tailwindcss/forms": "^0.4.0",
 		"electron-context-menu": "^3.1.1",
 		"electron-serve": "^1.1.0",
 		"electron-window-state": "^5.0.3"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-static": "next",
-		"@sveltejs/kit": "next",
+		"@sveltejs/adapter-static": "1.0.0-next.22",
+		"@sveltejs/kit": "1.0.0-next.202",
 		"@types/electron-window-state": "^2.0.34",
 		"@typescript-eslint/eslint-plugin": "^5.8.0",
 		"@typescript-eslint/parser": "^5.8.0",
