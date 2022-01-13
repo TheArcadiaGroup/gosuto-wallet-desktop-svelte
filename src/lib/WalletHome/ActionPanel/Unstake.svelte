@@ -10,13 +10,14 @@
 	// Set this Date
 	let unstakingWaitDate: Date = new Date(Date.now());
 	let action: boolean = false;
+	export let unstaking: boolean = false;
 </script>
 
 {#if action}
 	<ConfirmPopUp />
 {/if}
 <ActionPanelHeader />
-<ActionPanelDetails title="Unstake CSPR">
+<ActionPanelDetails title={unstaking ? 'Unstaking CSPR' : 'Unstake CSPR'}>
 	<p class="font-bold">
 		Unstake: {unstakeAmount} CSPR
 	</p>
@@ -26,7 +27,9 @@
 		</span>
 	</p>
 </ActionPanelDetails>
-<ActionPanelButtons {action} actionButtonText="Unstake" />
+{#if !unstaking}
+	<ActionPanelButtons {action} actionButtonText="Unstake" />
+{/if}
 
 <style lang="postcss" global>
 	:local(.unstake-wait) {
