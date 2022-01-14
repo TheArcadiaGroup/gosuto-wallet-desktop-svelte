@@ -32,6 +32,7 @@
 
 	:local(input) {
 		@apply border border-light-gray h-[50px] px-2 w-full rounded-[12px] bg-white dark:bg-dark-background;
+		@apply dark:text-dark-lighterGray;
 	}
 
 	:local(p) {
