@@ -52,7 +52,7 @@
 		<div class="px-2 flex flex-row items-center">
 			<p class="font-bold text-base md:text-xl dark:text-white">Tokens in this wallet</p>
 			<div class="ml-auto">
-				<Button glow={true}>
+				<Button glow={true} on:click>
 					<div slot="text" class="inner-btn">
 						<PlusIcon />
 						<span>Add Token</span>
