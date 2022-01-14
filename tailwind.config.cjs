@@ -36,6 +36,7 @@ module.exports = {
 					white: '#FFFFFF',
 					backgroundgray: '#FDFDDE',
 					buttonText: '#707070',
+					inactiveText: '#C1C1C1',
 				},
 			},
 			fill: {
