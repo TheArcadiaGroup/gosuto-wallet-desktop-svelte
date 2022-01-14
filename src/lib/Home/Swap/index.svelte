@@ -34,12 +34,14 @@
 <div class="wallet-swap">
 	<ReturnHome />
 	<div class="my-6 md:my-12">
-		<div class="wallet-swap-title">
-			<p class="wallet-swap-title-text dark:text-white">Tokens in this wallet</p>
+		<div class="px-2 flex flex-row items-center">
+			<p class="font-bold text-base md:text-xl dark:text-white">Tokens in this wallet</p>
 			<div class="ml-auto">
 				<Button glow={true}>
-					<PlusIcon />
-					<span>Add Token</span>
+					<div slot="text" class="inner-btn">
+						<PlusIcon />
+						<span>Add Token</span>
+					</div>
 				</Button>
 			</div>
 		</div>
@@ -96,7 +98,11 @@
 	}
 
 	.mobile-scrollbar-dot {
-		@apply h-1.5 rounded-full transition-all duration-200;
+        @apply h-1.5 rounded-full transition-all duration-200;
+    }
+
+	.inner-btn {
+		@apply flex gap-1 items-center py-1 px-3.5 md:gap-2.5 md:py-2 md:px-5 md:text-base;
 	}
 
 	.scrollbar-hide {

@@ -63,9 +63,15 @@
 				USDC token will be added to this wallet upon swap
 			</p>
 		{/if}
-		<div class='buttons'>
-			<Button on:click={swapTokens}><span class="landing-7 my-2">Swap</span></Button>
-			<Button on:click={deselectToken} color="none">Cancel</Button>
+		<div class="buttons">
+			<Button on:click={swapTokens}>
+				<div slot="text" class="landing-7 my-2">Swap</div>
+			</Button>
+			<Button on:click={deselectToken}>
+				<div slot="text" class="landing-7 my-2">
+					Cancel
+				</div>
+			</Button>
 		</div>
 	</form>
 	{#if showConfirm}

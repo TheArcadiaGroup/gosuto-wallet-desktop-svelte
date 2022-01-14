@@ -3,6 +3,7 @@
 	import ChooseFileButton from '$components/accountSettings/ChooseFileButton.svelte';
 	import ChangeThemeBar from '$components/accountSettings/ChangeThemeBar.svelte';
 	import InfoInput from '$components/accountSettings/InfoInput.svelte';
+	import Button from '$lib/Common/Button.svelte';
 
 	let info: infoCategory[] = [
 		{ name: 'Name', placeholder: 'Jake Waterson' },
@@ -25,8 +26,16 @@
 				<ChangeThemeBar />
 			</div>
 			<div class="buttons">
-				<button class="save-bt">Save</button>
-				<button class="cancel-bt">Cancel</button>
+				<div class="save-bt">
+					<Button>
+						<p slot="text" class="btn-text">Save</p>
+					</Button>
+				</div>
+				<div class="cancel-bt">
+					<Button ring={true}>
+						<p slot="text" class="btn-text">Cancel</p>
+					</Button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -69,15 +78,14 @@
 	}
 
 	.save-bt {
-		@apply font-bold font-display text-white text-center;
-		@apply bg-light-orange rounded-3xl;
-		@apply w-2/5 py-3 min-w-fit;
+		@apply w-2/5 min-w-fit;
 	}
 
 	.cancel-bt {
-		@apply font-bold font-display text-light-orange text-center;
-		@apply bg-white dark:bg-dark-gosutoDark rounded-3xl;
-		@apply border border-light-orange;
-		@apply w-2/5 py-3 min-w-fit;
+		@apply w-2/5 min-w-fit;
+	}
+
+	.btn-text {
+		@apply py-3;
 	}
 </style>

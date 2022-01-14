@@ -24,8 +24,8 @@ function createWindow() {
 
 	const mainWindow = new BrowserWindow({
 		backgroundColor: 'whitesmoke',
-		titleBarStyle: 'customButtonsOnHover',
-		autoHideMenuBar: true,
+		// titleBarStyle: 'customButtonsOnHover',
+		// autoHideMenuBar: true,
 		trafficLightPosition: {
 			x: 17,
 			y: 32,

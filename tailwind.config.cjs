@@ -15,8 +15,9 @@ module.exports = {
 					lightBlue: '#E1E3FF',
 					gosutoDark: '#363B46',
 					blue: '#313642',
-					lighterGray: '#AEBBC4',
 					lightGray: '#BEBEBE',
+					lighterGray: ' #AEBBC4',
+					selectedButton: '#725DFF',
 				},
 				light: {
 					gray: '#A9A9A9',
@@ -35,13 +36,14 @@ module.exports = {
 					scrollBar: '#EAEAEA',
 					white: '#FFFFFF',
 					backgroundgray: '#FDFDDE',
+					buttonText: '#707070',
 				},
 			},
 			fill: {
 				grey: '#4F4F4F',
 				white: '#FFFFFF',
 			},
-			fontFamily: { display: 'Manrope' },
+			fontFamily: { display: "'Manrope', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'" },
 		},
 	},
 	variants: {
