@@ -1,25 +1,11 @@
 <script lang="ts">
 	import ArrowLeftIcon from '$icons/ArrowLeftIcon.svelte';
 	import CopyIcon from '$icons/CopyIcon.svelte';
-	import { onMount } from 'svelte';
+	import { copyToClipboard, truncateWalletAddress } from '$utils';
 
 	export let walletName!: string;
 	export let walletAddress!: string;
-	let displayedWalletAddress!: string;
-	onMount(() => {
-		truncateWalletAddress();
-	});
-	const truncateWalletAddress = () => {
-		displayedWalletAddress =
-			walletAddress.substr(0, 11) +
-			'...' +
-			walletAddress.substr(walletAddress.length - 3, walletAddress.length);
-	};
-	const copyWalletAddress = () => {
-		if (navigator.clipboard) {
-			navigator.clipboard.writeText(walletAddress);
-		}
-	};
+	let displayedWalletAddress: string = truncateWalletAddress(walletAddress);
 </script>
 
 <div class="w-full">
@@ -37,10 +23,13 @@
 			<!-- TODO  SF Pro Display source-->
 			<div class="address">
 				<p>{displayedWalletAddress}</p>
-				<button type="button" on:click={copyWalletAddress}>
-					<!-- <span class=""> -->
+				<button
+					type="button"
+					on:click={() => {
+						copyToClipboard(walletAddress);
+					}}
+				>
 					<CopyIcon />
-					<!-- </span> -->
 				</button>
 			</div>
 		</div>

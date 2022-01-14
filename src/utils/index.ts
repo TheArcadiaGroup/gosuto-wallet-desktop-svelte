@@ -72,3 +72,16 @@ function convertMiliseconds(miliseconds: number, format: string): string {
 export const decimalToPercentage = (decimal: number): number => {
 	return decimal * 100;
 };
+
+export const truncateWalletAddress = (walletAddress: string) => {
+	return (
+		walletAddress.substr(0, 11) +
+		'...' +
+		walletAddress.substr(walletAddress.length - 3, walletAddress.length)
+	);
+};
+export const copyToClipboard = (item: string | number) => {
+	if (navigator.clipboard) {
+		navigator.clipboard.writeText(<string>item);
+	}
+};
