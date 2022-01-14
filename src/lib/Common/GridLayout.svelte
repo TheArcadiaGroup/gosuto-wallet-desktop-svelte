@@ -30,7 +30,7 @@
 	}
 
 	:local(.app-container) {
-		@apply w-full grid gap-0;
+		@apply w-full grid gap-0 h-screen md:h-auto;
 	}
 
 	@media only screen and (max-width: 768px) {
