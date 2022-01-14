@@ -2,7 +2,7 @@
 	import GridLayout from '$lib/Common/GridLayout.svelte';
 	import CurrencyPerfomance from '$lib/components/CurrencyPerformance/CurrencyPerfomance.svelte';
 
-	// To be populated dynamically
+	// To be populated dynamically from the DB when this route is served.
 	let currencyPerfomance = [
 		{
 			tokenName: 'CSPR',

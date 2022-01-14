@@ -7,10 +7,7 @@
 	export let price: number;
 	export let percentageChange: number;
 	export let tokenName: string;
-	export let chartPrices: {
-		x: string;
-		y: number;
-	}[];
+	export let chartPrices: ChartPrice[];
 </script>
 
 <div class="card">
@@ -33,6 +30,6 @@
 		@apply w-[90%] mx-auto flex flex-row justify-between items-center;
 	}
 	:local(.currency-details) {
-		@apply w-full flex flex-col justify-start 2xl:gap-y-[0.5vw];
+		@apply flex flex-col justify-start 2xl:gap-y-[0.5vw];
 	}
 </style>

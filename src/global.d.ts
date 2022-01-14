@@ -17,3 +17,8 @@ interface SwapData {
 	toCryptoUnit: string;
 	toPriceUnit: string;
 }
+
+interface ChartPrice {
+	x: string;
+	y: number;
+}

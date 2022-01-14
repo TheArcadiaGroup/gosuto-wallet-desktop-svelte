@@ -4,11 +4,9 @@
 	import 'chartjs-adapter-date-fns';
 
 	let ctx: HTMLCanvasElement;
-	let isDarkTheme: boolean = false;
-	export let chartPrices = [{}];
-
+	export let chartPrices: ChartPrice[];
+	console.log(`Screen${window.innerWidth} Pixels ${Math.round((window.innerWidth * 7) / 1440)}`);
 	onMount(async () => {
-		chartColors();
 		chartRender();
 	});
 
@@ -19,11 +17,11 @@
 				datasets: [
 					{
 						borderColor: '#725DFF',
-						borderWidth: window.matchMedia('(min-width: 1536px)').matches
-							? 4
-							: window.matchMedia('(min-width: 768px)').matches
+						borderWidth: window.matchMedia('(max-width: 768)').matches
+							? 1
+							: window.matchMedia('(max-width: 1440px)').matches
 							? 2
-							: 1,
+							: Math.round((window.innerWidth * 2) / 1440),
 						pointRadius: 0,
 						data: chartPrices,
 						tension: 0.5,
@@ -48,21 +46,12 @@
 							},
 							color: '#AAB5C5',
 							font: {
-								size: window.matchMedia('(min-width: 1366)').matches
-									? 35
-									: window.matchMedia('(min-width: 1518)').matches
-									? 31
-									: window.matchMedia('(min-width: 1821)').matches
-									? 27
-									: window.matchMedia('(min-width: 2049)').matches
-									? 23
-									: window.matchMedia('(min-width: 2732)').matches
-									? 19
-									: window.matchMedia('(min-width: 4098)').matches
-									? 15
-									: window.matchMedia('(min-width: 5464)').matches
+								// Font size at 1440px  screen is 11px. To scale, on bigger screens, scale the font size pixels.
+								size: window.matchMedia('(max-width: 768)').matches
+									? 7
+									: window.matchMedia('(max-width: 1440px)').matches
 									? 11
-									: 7,
+									: Math.round((window.innerWidth * 11) / 1440),
 								lineHeight: '28px',
 								weight: 'bold',
 							},
@@ -70,7 +59,12 @@
 						grid: {
 							borderDash: [4],
 							borderWidth: 0,
-							color: isDarkTheme ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.1)',
+							color:
+								localStorage.theme === 'dark' ||
+								(!('theme' in localStorage) &&
+									window.matchMedia('(prefers-color-scheme: dark)').matches)
+									? 'rgba(255, 255, 255, 0.3)'
+									: 'rgba(0, 0, 0, 0.1)',
 						},
 					},
 					x: {
@@ -79,27 +73,23 @@
 						},
 						grid: {
 							display: false,
-							borderColor: isDarkTheme ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.1)',
+							borderColor:
+								localStorage.theme === 'dark' ||
+								(!('theme' in localStorage) &&
+									window.matchMedia('(prefers-color-scheme: dark)').matches)
+									? 'rgba(255, 255, 255, 0.3)'
+									: 'rgba(0, 0, 0, 0.1)',
 							borderWidth: 1,
 						},
 						ticks: {
 							color: '#AAB5C5',
 							font: {
-								size: window.matchMedia('(min-width: 5464)').matches
-									? 35
-									: window.matchMedia('(min-width: 4098)').matches
-									? 31
-									: window.matchMedia('(min-width: 2732)').matches
-									? 27
-									: window.matchMedia('(min-width: 2049)').matches
-									? 23
-									: window.matchMedia('(min-width: 1821)').matches
-									? 19
-									: window.matchMedia('(min-width: 1518)').matches
-									? 15
-									: window.matchMedia('(min-width: 1366)').matches
+								// Font size at 1440px  screen is 11px. To scale, on bigger screens, scale the font size pixels.
+								size: window.matchMedia('(max-width: 768)').matches
+									? 7
+									: window.matchMedia('(max-width: 1440px)').matches
 									? 11
-									: 7,
+									: Math.round((window.innerWidth * 11) / 1440),
 								lineHeight: '28px',
 								weight: 'bold',
 							},
@@ -125,17 +115,6 @@
 				},
 			},
 		});
-	};
-	// Check if dark theme is enabled.
-	const chartColors = () => {
-		if (
-			localStorage.theme === 'dark' ||
-			(!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-		) {
-			isDarkTheme = true;
-		} else {
-			isDarkTheme = false;
-		}
 	};
 </script>
 
