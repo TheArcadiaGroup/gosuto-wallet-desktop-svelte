@@ -6,7 +6,7 @@
 	import FailedPopup from '$lib/PopUps/CreateToken/FailedPopup.svelte';
 	import SuccessPopup from '$lib/PopUps/CreateToken/SuccessPopup.svelte';
 	import { toggleDarkMode } from '$utils/themeSettings';
-	import { fly } from 'svelte/transition';
+	import { fly, slide } from 'svelte/transition';
 	import { createEventDispatcher } from 'svelte';
 
 	export let active: boolean = false;
@@ -96,7 +96,7 @@
 			</div>
 
 			{#if creatingToken}
-				<div class="create-token">
+				<div class="create-token" transition:slide>
 					<TextInput bind:value={tokenName} label="Token Name" type="text" />
 					<br />
 					<TextInput bind:value={tokenTicker} label="Token Ticker" type="text" />
@@ -135,7 +135,7 @@
 					</div>
 				</div>
 			{:else}
-				<div class="import-token">Import</div>
+				<div class="import-token" transition:slide>Import</div>
 			{/if}
 		</div>
 	{:else}
