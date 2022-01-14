@@ -36,6 +36,7 @@ module.exports = {
 					white: '#FFFFFF',
 					backgroundgray: '#FDFDDE',
 					buttonText: '#707070',
+					checkBox: '#C4C4C4',
 				},
 			},
 			fill: {
