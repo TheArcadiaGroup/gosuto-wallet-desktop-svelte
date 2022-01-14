@@ -1,5 +1,7 @@
 <script lang="ts">
 	import Navbar from '$components/navbar/Navbar.svelte';
+	import LastColumnRectangle from '$icons/lastColumnRectangle.svelte';
+	import { slide } from 'svelte/transition';
 </script>
 
 <div class={$$slots.last ? 'app-container withLastColumn' : 'app-container withoutLastColumn'}>
@@ -13,7 +15,10 @@
 		<slot name="mid" />
 	</div>
 	{#if $$slots.last}
-		<div class="last-column">
+		<div class="last-column" transition:slide>
+			<div class="mobile">
+				<LastColumnRectangle />
+			</div>
 			<slot name="last" />
 		</div>
 	{/if}
@@ -64,9 +69,14 @@
 
 	:local(.last-column) {
 		@apply dark:bg-dark-background dark:border dark:border-dark-background;
+		@apply flex flex-col items-center pt-4 md:pt-0;
 	}
 
 	:local(.mid-column) {
 		@apply dark:bg-dark-background dark:border dark:border-dark-background;
+	}
+
+	:local(.mobile) {
+		@apply md:hidden;
 	}
 </style>
