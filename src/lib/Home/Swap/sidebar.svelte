@@ -135,7 +135,7 @@
 					</div>
 				</div>
 			{:else}
-				<div class="import-token" transition:slide>Import</div>
+				<div class="import-token" transition:slide />
 			{/if}
 		</div>
 	{:else}
