@@ -199,7 +199,7 @@
 
 <style lang="postcss" global>
 	:local(.main) {
-		@apply flex flex-col items-center pt-10 md:pt-20 px-4 h-screen;
+		@apply flex flex-col items-center md:pt-20 px-12 md:px-4 h-full md:h-screen w-full md:w-auto;
 	}
 
 	:local(.inactive-text) {
@@ -208,13 +208,14 @@
 
 	:local(h4) {
 		@apply font-bold text-xl md:mb-4 2xl:mb-12 dark:text-white;
+		@apply hidden md:block;
 	}
 
 	:local(.btn) {
 		@apply flex flex-col md:flex-row items-center justify-center;
 		@apply font-semibold text-sm 2xl:text-lg;
 		@apply rounded-3xl h-full;
-		@apply md:py-2 md:px-3 2xl:px-7;
+		@apply px-3 py-1 md:py-2 md:px-3 2xl:px-7;
 		@apply transition duration-300;
 	}
 
@@ -229,7 +230,7 @@
 	}
 
 	:local(.button-holder) {
-		@apply flex justify-center md:mb-4 2xl:mb-20 w-full gap-4;
+		@apply flex justify-center my-4 md:my-0 md:mb-4 2xl:mb-20 w-full gap-4;
 	}
 
 	:local(.sidebar-holder) {
@@ -250,12 +251,12 @@
 	}
 
 	:local(.cancel-holder) {
-		@apply flex justify-center items-center w-full cursor-pointer mt-4;
-		@apply text-lg font-semibold text-light-grey dark:text-white;
+		@apply flex justify-center items-center w-full cursor-pointer my-5;
+		@apply text-base md:text-lg font-semibold text-light-grey dark:text-white;
 	}
 
 	:local(.lower-btn-text) {
-		@apply text-lg;
-		@apply md:py-2;
+		@apply text-base md:text-lg;
+		@apply py-1 md:py-2;
 	}
 </style>
