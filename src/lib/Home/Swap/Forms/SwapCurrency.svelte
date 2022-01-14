@@ -31,16 +31,16 @@
 	}
 </script>
 
-<div class="swap-currency dark:bg-dark-blue">
-	<form class="swap-form" on:submit|preventDefault>
-		<h2 class="form-title dark:text-white">Swap</h2>
+<div class="swap-currency">
+	<form class="swap-form">
+		<h2 class="form-title">Swap</h2>
 		<div class="form-row">
 			<div class="row-text-input">
 				<TextInput label="From"/>
 			</div>
-			<p class="row-text light:text-light-grey dark:text-white">{fromToken}</p>
+			<p class="row-text">{fromToken}</p>
 		</div>
-		<p class="money-amount light:text-light-grey dark:text-white">$0.00 USD</p>
+		<p class="money-amount">$0.00 USD</p>
 		<div class="swap-icon">
 			<SwapTokensIcon />
 		</div>
@@ -56,7 +56,7 @@
 				</SelectInput>
 			</div>
 		</div>
-		<p class="money-amount light:text-light-grey dark:text-white">$0.00 USD</p>
+		<p class="money-amount">$0.00 USD</p>
 		{#if createNewToken}
 			<p class="create-token-warning">
 				This wallet currently does not contain USDC.
@@ -88,6 +88,7 @@
     .swap-currency {
         @apply relative min-h-[20rem] rounded-t-3xl h-full w-full;
 		@apply md:rounded-none;
+		@apply dark:bg-dark-blue;
         box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
     }
 
@@ -105,6 +106,7 @@
 	.form-title {
 		@apply text-xl font-bold text-center mt-16 mb-7;
 		@apply md:mt-20 md:mb-14;
+		@apply dark:text-white;
 	}
 
 	.form-row {
@@ -117,6 +119,7 @@
 
 	.row-text {
 		@apply mt-4 w-1/3 text-center font-bold text-sm;
+		@apply text-light-grey dark:text-white;
 	}
 
 	.row-token-select {
@@ -125,6 +128,7 @@
 
 	.money-amount {
 		@apply font-medium text-sm mt-5;
+		@apply text-light-grey dark:text-white;
 	}
 
 	.swap-icon {

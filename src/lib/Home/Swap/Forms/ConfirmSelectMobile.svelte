@@ -6,9 +6,9 @@
 	export let cryptoAmount = 2000
 	export let positive = true
 </script>
-<div class="select-currency dark:bg-dark-grey md:dark:bg-dark-blue">
+<div class="select-currency">
 	<div class="currency-info">
-		<p class="font-bold light:text-light-grey dark:text-white">{cryptoName} ({cryptoUnit})</p>
+		<p class="selected-crypto">{cryptoName} ({cryptoUnit})</p>
 		<div class="currency-amount { positive ? 'text-light-green' : 'text-light-red' }">
 			<p class="crypto-amount">{cryptoAmount} {cryptoUnit}</p>
 			<p class="real-amount" >$175 USD</p>
@@ -25,6 +25,7 @@
 		@apply relative h-full w-full min-h-[20rem] rounded-t-3xl px-16;
 		@apply flex flex-col items-center justify-center;
 		@apply md:rounded-none;
+		@apply dark:bg-dark-grey md:dark:bg-dark-blue;
 		box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
 	}
 
@@ -32,6 +33,11 @@
 		content: '';
 		@apply absolute top-0 my-3 w-1/3 h-2 rounded-3xl bg-[#c4c4c41e];
         @apply md:hidden;
+	}
+
+	.selected-crypto {
+		@apply font-bold;
+		@apply text-light-grey dark:text-white;
 	}
 
 	.currency-info {

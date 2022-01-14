@@ -16,10 +16,6 @@
 
 	export let selected = -1;
 
-	function selectToken(e: { detail: { id: number } }): void {
-		dispatch('select', e.detail)
-	}
-
 	function onScroll(event) {
 		if (!event.target || !event.target.scrollLeft || !event.target.clientWidth) return;
 		scroll = event.target.scrollLeft;
@@ -35,7 +31,7 @@
 	<ReturnHome />
 	<div class="my-6 md:my-12">
 		<div class="px-2 flex flex-row items-center">
-			<p class="font-bold text-base md:text-xl dark:text-white">Tokens in this wallet</p>
+			<p class="tokens-in-wallet-title">Tokens in this wallet</p>
 			<div class="ml-auto">
 				<Button glow={true}>
 					<div slot="text" class="inner-btn">
@@ -55,7 +51,7 @@
 						<TokenCard
 							cardId={i * 4 + y}
 							selected={selected === i * 4 + y}
-							on:select={selectToken}
+							on:select
 							{...token}
 						/>
 					{/each}
@@ -74,6 +70,10 @@
 
 	.wallet-swap {
 		@apply px-4 pt-10 md:px-11 md:pt-20;
+	}
+
+	.tokens-in-wallet-title {
+		@apply font-bold text-base md:text-xl dark:text-white;
 	}
 
 	.wallet-swap-title {

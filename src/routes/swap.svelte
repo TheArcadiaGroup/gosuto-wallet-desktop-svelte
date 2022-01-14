@@ -31,10 +31,9 @@
 		selected = -1
 	}
 
-
 </script>
 
-<div class="wallet-swap-page dark:bg-dark-background">
+<div class="wallet-swap-page">
 	<div class="main-view">
 		<Swap on:select={selectToken} bind:tokens={tokens} bind:selected={selected} />
 	</div>
@@ -52,6 +51,7 @@
 <style lang="postcss">
 	.wallet-swap-page {
 		@apply min-h-screen flex flex-col md:flex-row;
+		@apply dark:bg-dark-background;
 	}
 
 	.main-view {

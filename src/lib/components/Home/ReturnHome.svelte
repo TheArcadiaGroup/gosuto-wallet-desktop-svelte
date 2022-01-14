@@ -7,12 +7,12 @@
   <div class="back-button">
     <BackIcon />
   </div>
-  <p class="wallet-title dark:text-white">
+  <p class="wallet-title">
     Wallet 1
     <span class="hidden md:inline">Swap</span>
   </p>
   <div class="wallet-pub-key">
-    <p class="pub-key-text text-light-gardenText dark:text-white">0x9f98e01d3...4ed7</p>
+    <p class="pub-key-text">0x9f98e01d3...4ed7</p>
     <div class='cursor-pointer'>
       <CopyIcon />
     </div>
@@ -31,6 +31,7 @@
 
   .wallet-title {
     @apply font-bold md:text-2xl;
+    @apply dark:text-white;
   }
 
   .wallet-pub-key {
@@ -39,6 +40,7 @@
 
   .pub-key-text {
     @apply text-sm md:text-base;
+    @apply text-light-gardenText dark:text-white;
   }
 
 </style>

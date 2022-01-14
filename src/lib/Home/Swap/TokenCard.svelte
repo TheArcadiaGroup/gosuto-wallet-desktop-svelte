@@ -24,9 +24,9 @@
 	}
 </script>
 
-<div on:click={select} class="token-card {selected ? 'selected' : ''} dark:bg-dark-blue">
+<div on:click={select} class="token-card {selected ? 'selected' : ''}">
 	<div class="gap-1">
-		<p class="card-title light:text-light-grey dark:text-white">{cryptoName} ({cryptoUnit})</p>
+		<p class="card-title">{cryptoName} ({cryptoUnit})</p>
 		<p class="card-text-sm {positive ? 'text-light-green' : 'text-light-red'}">{cryptoAmount} {cryptoUnit}</p>
 		<p class="card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">{currencySymbol}{currencyAmount} {currencyUnit}</p>
 	</div>
@@ -46,8 +46,9 @@
 
 <style lang="postcss">
 	.token-card {
-		@apply px-3 py-2 flex flex-row rounded-2xl border border-[#F3F3F31A] cursor-pointer select-none
-				md:p-5 md:rounded-[1.375rem];
+		@apply px-3 py-2 flex flex-row rounded-2xl border border-[#F3F3F31A] cursor-pointer select-none;
+		@apply md:p-5 md:rounded-[1.375rem];
+		@apply dark:bg-dark-blue;
 		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
 
@@ -58,6 +59,7 @@
 
 	.card-title {
 		@apply text-xs font-bold mb-0.5 md:text-base;
+		@apply text-light-grey dark:text-white;
 	}
 
 	.card-text-xs {
