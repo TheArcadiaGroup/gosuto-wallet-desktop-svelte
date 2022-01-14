@@ -40,11 +40,11 @@
 
 	@media only screen and (min-width: 768px) {
 		:local(.withLastColumn) {
-			grid-template-columns: 5vw 25vw auto 25vw;
+			grid-template-columns: 5vw 20vw auto 20vw;
 		}
 
 		:local(.withoutLastColumn) {
-			grid-template-columns: 5vw 25vw auto;
+			grid-template-columns: 5vw 20vw auto;
 		}
 	}
 
