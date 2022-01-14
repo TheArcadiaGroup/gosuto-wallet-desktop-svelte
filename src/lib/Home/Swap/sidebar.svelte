@@ -3,8 +3,10 @@
 	import ToggleSwitch from '$lib/Common/ToggleSwitch.svelte';
 	import Button from '$lib/Common/Button.svelte';
 	import ConfirmPopup from '$lib/PopUps/CreateToken/ConfirmPopup.svelte';
-	import FailedPopup from '$lib/PopUps/CreateToken/FailedPopup.svelte';
-	import SuccessPopup from '$lib/PopUps/CreateToken/SuccessPopup.svelte';
+	import CreateFailedPopup from '$lib/PopUps/CreateToken/FailedPopup.svelte';
+	import CreateSuccessPopup from '$lib/PopUps/CreateToken/SuccessPopup.svelte';
+	import ImportFailedPopup from '$lib/PopUps/ImportToken/FailedPopup.svelte';
+	import ImportSuccessPopup from '$lib/PopUps/ImportToken/SuccessPopup.svelte';
 	import { toggleDarkMode } from '$utils/themeSettings';
 	import { fly, slide } from 'svelte/transition';
 	import { createEventDispatcher } from 'svelte';
@@ -22,12 +24,18 @@
 	let limitedSupplyChecked: boolean;
 	let mintableSupplyChecked: boolean;
 
-	let showConfirmPopup: boolean = false;
-	let showSuccessPopup: boolean = false;
-	let showFailedPopup: boolean = false;
+	let contractAddress: string;
+	let decimalsOfPrecision: string;
 
-	//Pass whether the creation is successful or not to this Variable below.
+	let showConfirmPopup: boolean = false;
+	let showCreateSuccessPopup: boolean = false;
+	let showCreateFailedPopup: boolean = false;
+	let showImportSuccessPopup: boolean = false;
+	let showImportFailedPopup: boolean = false;
+
+	//Pass whether the creation/Import is successful or not to this Variable below.
 	let successfulTokenCreation: boolean = true;
+	let successfulTokenImport: boolean = true;
 </script>
 
 <div class={!active ? 'main h-screen justify-center' : 'main'}>
@@ -40,9 +48,9 @@
 				showConfirmPopup = false;
 				if (successfulTokenCreation) {
 					// Add code to copy private key Here
-					showSuccessPopup = true;
+					showCreateSuccessPopup = true;
 				} else {
-					showFailedPopup = true;
+					showCreateFailedPopup = true;
 				}
 			}}
 			on:cancel={() => {
@@ -50,21 +58,36 @@
 			}}
 		/>
 	{/if}
-	{#if showSuccessPopup}
-		<SuccessPopup
+	{#if showCreateSuccessPopup}
+		<CreateSuccessPopup
 			on:confirm={() => {
-				showSuccessPopup = false;
+				showCreateSuccessPopup = false;
 			}}
 		/>
 	{/if}
-	{#if showFailedPopup}
-		<FailedPopup
+	{#if showCreateFailedPopup}
+		<CreateFailedPopup
 			on:confirm={() => {
-				showFailedPopup = false;
+				showCreateFailedPopup = false;
+			}}
+		/>
+	{/if}
+	{#if showImportSuccessPopup}
+		<ImportSuccessPopup
+			on:confirm={() => {
+				showImportSuccessPopup = false;
+			}}
+		/>
+	{/if}
+	{#if showImportFailedPopup}
+		<ImportFailedPopup
+			on:confirm={() => {
+				showImportFailedPopup = false;
 			}}
 		/>
 	{/if}
 
+	<!-- Layout -->
 	{#if active}
 		<div
 			class="sidebar-holder"
@@ -135,7 +158,38 @@
 					</div>
 				</div>
 			{:else}
-				<div class="import-token" transition:slide />
+				<div class="import-token" transition:slide>
+					<TextInput bind:value={contractAddress} label="Contract Address" type="text" />
+					<br />
+					<TextInput bind:value={tokenTicker} label="Token Ticker" type="text" />
+					<br />
+					<TextInput bind:value={decimalsOfPrecision} label="Decimals of Precision" type="text" />
+					<div class="lower-button-holder">
+						<Button
+							on:click={() => {
+								if (contractAddress && tokenTicker && decimalsOfPrecision) {
+									if (successfulTokenImport) {
+										showImportSuccessPopup = true;
+									} else {
+										showImportFailedPopup = true;
+									}
+								} else {
+									// What happens when user doesn't enter values
+								}
+							}}
+						>
+							<p class="lower-btn-text" slot="text">Create</p>
+						</Button>
+					</div>
+					<div
+						class="cancel-holder"
+						on:click={() => {
+							dispatch('closeSidebar');
+						}}
+					>
+						<p>Cancel</p>
+					</div>
+				</div>
 			{/if}
 		</div>
 	{:else}
@@ -182,7 +236,8 @@
 		@apply flex flex-col items-center h-full w-full;
 	}
 
-	:local(.create-token) {
+	:local(.create-token),
+	:local(.import-token) {
 		@apply w-full;
 	}
 
