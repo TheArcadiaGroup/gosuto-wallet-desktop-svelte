@@ -7,7 +7,7 @@
 	export let price: number;
 	export let percentageChange: number;
 	export let tokenName: string;
-	export let prices: {
+	export let chartPrices: {
 		x: string;
 		y: number;
 	}[];
@@ -22,17 +22,17 @@
 		<SelectMenu />
 	</div>
 
-	<Chart {prices} />
+	<Chart {chartPrices} />
 </div>
 
 <style lang="postcss" global>
-	.card {
-		@apply w-[375px] sm:w-[628px] rounded-[22px] pl-[21px] pr-[15px] sm:pl-[29px] sm:pr-[25px] pt-5 sm:pt-[34px]  pb-[30px] sm:pb-[19px] flex flex-col shadow-[0px_4px_13px_rgba(0,_0,_0,_0.05)] bg-white dark:bg-dark-grey;
+	:local(.card) {
+		@apply w-[85%] rounded-[22px] 2xl:rounded-[1.5vw] pt-5 md:pt-[34px] 2xl:pt-[2.5vw] pb-[30px] md:pb-[19px] 2xl:pb-[1.25vw] flex flex-col shadow-[0px_4px_13px_rgba(0,_0,_0,_0.05)] bg-white dark:bg-dark-blue;
 	}
-	.card-header {
-		@apply flex flex-row justify-between items-start;
+	:local(.card-header) {
+		@apply w-[90%] mx-auto flex flex-row justify-between items-center;
 	}
-	.currency-details {
-		@apply flex flex-col justify-start;
+	:local(.currency-details) {
+		@apply w-full flex flex-col justify-start 2xl:gap-y-[0.5vw];
 	}
 </style>

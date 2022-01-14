@@ -1,4 +1,5 @@
 <script lang="ts">
+	import GridLayout from '$lib/Common/GridLayout.svelte';
 	import CurrencyPerfomance from '$lib/components/CurrencyPerformance/CurrencyPerfomance.svelte';
 
 	// To be populated dynamically
@@ -7,7 +8,7 @@
 			tokenName: 'CSPR',
 			price: 52.248,
 			percentageChange: -2.12,
-			prices: [
+			chartPrices: [
 				{ x: '2022-01-03T09:00:00', y: 7 },
 				{ x: '2022-01-03T10:10:00', y: 9 },
 				{ x: '2022-01-03T11:18:00', y: 14 },
@@ -21,7 +22,7 @@
 			tokenName: 'Tether (USDT)',
 			price: 24.214,
 			percentageChange: 2.54,
-			prices: [
+			chartPrices: [
 				{ x: '2022-01-03T08:00:00', y: 7 },
 				{ x: '2022-01-03T08:10:00', y: 5 },
 				{ x: '2022-01-03T08:18:00', y: 9 },
@@ -34,10 +35,24 @@
 	];
 </script>
 
-<div class="font-display flex flex-col items-center justify-center gap-10 py-20">
-	<!-- <CurrencyPerfomance tokenName={'CSPR'} percentageChange={-2.12} price={52.248} />
-	<CurrencyPerfomance tokenName={'Tethet (USDT)'} percentageChange={2.54} price={25.214} /> -->
-	{#each currencyPerfomance as performance}
-		<CurrencyPerfomance {...performance} />
-	{/each}
-</div>
+<GridLayout>
+	<div slot="first" class="column-container" />
+	<div slot="mid" class="column-container">
+		<div class="card-container">
+			{#each currencyPerfomance as performance}
+				<CurrencyPerfomance {...performance} />
+			{/each}
+		</div>
+	</div>
+	<div slot="last" class="column-container" />
+</GridLayout>
+
+<!-- Styles -->
+<style lang="postcss" global>
+	:local(.column-container) {
+		@apply dark:bg-dark-gosutoDark border-none h-full;
+	}
+	:local(.card-container) {
+		@apply flex flex-col items-center justify-center gap-10 py-20;
+	}
+</style>

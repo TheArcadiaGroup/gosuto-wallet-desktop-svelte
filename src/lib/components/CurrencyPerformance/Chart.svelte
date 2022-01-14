@@ -5,15 +5,7 @@
 
 	let ctx: HTMLCanvasElement;
 	let isDarkTheme: boolean = false;
-	export let prices = [
-		{ x: '2022-01-03T09:00:00', y: 7 },
-		{ x: '2022-01-03T10:10:00', y: 9 },
-		{ x: '2022-01-03T11:18:00', y: 14 },
-		{ x: '2022-01-03T12:21:00', y: 11 },
-		{ x: '2022-01-03T12:27:00', y: 18 },
-		{ x: '2022-01-03T12:35:00', y: 20 },
-		{ x: '2022-01-03T13:00:00', y: 23 },
-	];
+	export let chartPrices = [{}];
 
 	onMount(async () => {
 		chartColors();
@@ -27,16 +19,20 @@
 				datasets: [
 					{
 						borderColor: '#725DFF',
-						borderWidth: window.matchMedia('(min-width: 640px)').matches ? 2 : 1,
+						borderWidth: window.matchMedia('(min-width: 1536px)').matches
+							? 4
+							: window.matchMedia('(min-width: 768px)').matches
+							? 2
+							: 1,
 						pointRadius: 0,
-						data: prices,
+						data: chartPrices,
 						tension: 0.5,
 					},
 				],
 			},
 			options: {
 				responsive: true,
-				aspectRatio: window.matchMedia('(min-width: 640px)').matches ? 2 : 1,
+				aspectRatio: window.matchMedia('(min-width: 768px)').matches ? 2 : 1,
 				maintainAspectRatio: false,
 				plugins: {
 					legend: {
@@ -47,12 +43,26 @@
 					y: {
 						offset: true,
 						ticks: {
-							callback: (value) => {
+							callback: (value: string) => {
 								return `$${value}k`;
 							},
 							color: '#AAB5C5',
 							font: {
-								size: 7,
+								size: window.matchMedia('(min-width: 1366)').matches
+									? 35
+									: window.matchMedia('(min-width: 1518)').matches
+									? 31
+									: window.matchMedia('(min-width: 1821)').matches
+									? 27
+									: window.matchMedia('(min-width: 2049)').matches
+									? 23
+									: window.matchMedia('(min-width: 2732)').matches
+									? 19
+									: window.matchMedia('(min-width: 4098)').matches
+									? 15
+									: window.matchMedia('(min-width: 5464)').matches
+									? 11
+									: 7,
 								lineHeight: '28px',
 								weight: 'bold',
 							},
@@ -69,24 +79,33 @@
 						},
 						grid: {
 							display: false,
-							borderColor: isDarkTheme
-								? 'rgba(255, 255, 255, 0.3)'
-								: 'rgba(0, 0, 0, 0.1)',
+							borderColor: isDarkTheme ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.1)',
 							borderWidth: 1,
 						},
 						ticks: {
 							color: '#AAB5C5',
 							font: {
-								size: 8,
+								size: window.matchMedia('(min-width: 5464)').matches
+									? 35
+									: window.matchMedia('(min-width: 4098)').matches
+									? 31
+									: window.matchMedia('(min-width: 2732)').matches
+									? 27
+									: window.matchMedia('(min-width: 2049)').matches
+									? 23
+									: window.matchMedia('(min-width: 1821)').matches
+									? 19
+									: window.matchMedia('(min-width: 1518)').matches
+									? 15
+									: window.matchMedia('(min-width: 1366)').matches
+									? 11
+									: 7,
 								lineHeight: '28px',
 								weight: 'bold',
 							},
 							callback: (tick: string) => {
 								let formattedTick: string = <string>tick;
-								if (
-									formattedTick.indexOf('A') === 1 ||
-									formattedTick.indexOf('P') === 1
-								) {
+								if (formattedTick.indexOf('A') === 1 || formattedTick.indexOf('P') === 1) {
 									formattedTick = '0' + formattedTick;
 								}
 								if (formattedTick.includes('AM')) {
@@ -107,12 +126,11 @@
 			},
 		});
 	};
-	// Check if dark them is enabled.
+	// Check if dark theme is enabled.
 	const chartColors = () => {
 		if (
 			localStorage.theme === 'dark' ||
-			(!('theme' in localStorage) &&
-				window.matchMedia('(prefers-color-scheme: dark)').matches)
+			(!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
 		) {
 			isDarkTheme = true;
 		} else {
@@ -125,11 +143,11 @@
 	<canvas class="chart" bind:this={ctx} />
 </div>
 
-<style>
-	.chart-wrapper {
-		@apply relative shrink-0 w-full h-full;
+<style lang="postcss" global>
+	:local(.chart-wrapper) {
+		@apply relative shrink-0 w-[90%] mx-auto h-full;
 	}
-	.chart {
+	:local(.chart) {
 		@apply w-full h-full;
 	}
 </style>
