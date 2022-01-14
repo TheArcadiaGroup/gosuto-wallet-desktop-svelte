@@ -67,6 +67,7 @@
 			<Button on:click={swapTokens}>
 				<div slot="text" class="landing-7 my-2">Swap</div>
 			</Button>
+			<!-- todo: add transparent bg -->
 			<Button on:click={deselectToken}>
 				<div slot="text" class="landing-7 my-2">
 					Cancel
@@ -94,7 +95,7 @@
 
 	.swap-currency::before {
 		content: '';
-		@apply absolute left-1/2 -translate-x-1/2 top-0 my-3 w-1/3 h-2 rounded-3xl bg-[#c4c4c41e];
+		@apply absolute left-1/2 -translate-x-1/2 top-0 my-3 w-1/3 h-2 rounded-3xl bg-light-transparentGrey12;
         @apply md:hidden;
 	}
 
@@ -137,7 +138,7 @@
 	}
 
 	.create-token-warning {
-		@apply text-[#BDBDBE] text-sm font-semibold mt-3;
+		@apply text-light-grey189 text-sm font-semibold mt-3;
 		@apply md:mt-6;
 	}
 

@@ -37,6 +37,10 @@ module.exports = {
 					white: '#FFFFFF',
 					backgroundgray: '#FDFDDE',
 					buttonText: '#707070',
+					grey189: '#BDBDBE',
+					grey193: '#C1C1C1',
+					transparentGrey10: '#F3F3F31A',
+					transparentGrey12: '#C4C4C41E',
 				},
 			},
 			fill: {

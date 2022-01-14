@@ -14,13 +14,13 @@
 
 	.select-currency::before {
 		content: '';
-		@apply absolute top-0 my-3 w-1/3 h-2 rounded-3xl bg-[#c4c4c41e];
+		@apply absolute top-0 my-3 w-1/3 h-2 rounded-3xl bg-light-transparentGrey12;
 		@apply md:hidden;
 	}
 
 	.select-text {
-		@apply w-1/2 text-center font-semibold text-sm text-[#C1C1C1] ;
-		@apply dark:opacity-50 md:opacity-100 md:text-dark-lightGray
+		@apply w-1/2 text-center font-semibold text-sm text-light-grey193;
+		@apply dark:opacity-50 md:opacity-100 md:text-dark-lightGray;
 	}
 
 </style>
