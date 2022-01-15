@@ -31,7 +31,7 @@
 	}
 
 	:local(input) {
-		@apply border border-light-gray h-[50px] px-2 w-full rounded-[12px] bg-white dark:bg-dark-background;
+		@apply border border-light-gray h-[50px] px-5 w-full rounded-2xl bg-white dark:bg-dark-background;
 	}
 
 	:local(p) {
