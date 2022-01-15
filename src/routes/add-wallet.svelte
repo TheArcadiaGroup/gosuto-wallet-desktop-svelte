@@ -3,6 +3,8 @@
 	import Button from '$lib/Common/Button.svelte';
 	import ChoiceCard from '$lib/components/AddWalletComponent/Landing/ChoiceCard.svelte';
 
+	let selected: choiceCard;
+
 	let choiceCards: choiceCard[] = [
 		{
 			id: 0,
@@ -24,7 +26,15 @@
 		},
 	];
 
-	let selectCard = (choiceCard: choiceCard) => {};
+	let selectCard = (choiceCard: choiceCard) => {
+		if (selected != undefined) {
+			if (selected.id === choiceCard.id) return;
+			selected.isSelected = false;
+		}
+		choiceCard.isSelected = true;
+		selected = choiceCard;
+		choiceCards = choiceCards;
+	};
 </script>
 
 <div class="wrapper">
@@ -86,7 +96,7 @@
 
 	:local(.choice-cards) {
 		@apply w-full;
-		@apply flex flex-col gap-5;
+		@apply flex flex-col gap-6;
 	}
 
 	:local(.bt) {
