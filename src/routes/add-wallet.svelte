@@ -50,11 +50,11 @@
 			{/each}
 		</div>
 		<div class="bt next-bt">
-			<Button>
+			<Button disabled={selected == undefined}>
 				<span slot="text" class="bt-text">Next</span>
 			</Button>
 		</div>
-		<button class="bt cancel-bt">
+		<button class="bt cancel-bt" disabled={selected == undefined}>
 			<span class="bt-text cancel-bt-text">Cancel</span>
 		</button>
 	</div>
@@ -68,45 +68,54 @@
 	}
 
 	.wrapper :global(.gosuto-logo) {
-		@apply w-32 h-10;
-		@apply absolute top-6 left-16;
+		@apply w-36 h-12 md:w-32 md:h-10 3xl:w-40 3xl:h-14 4xl:w-72 4xl:h-28;
+		@apply relative md:absolute top-6 md:left-16;
+		@apply place-self-center;
 	}
 
 	:local(.content) {
 		@apply flex flex-col place-items-center;
-		@apply mt-20;
-		@apply w-1/4;
+		@apply mt-10 md:mt-20;
+		@apply w-11/12 sm:w-3/4 md:w-1/2 lg:w-2/5 xl:w-1/4;
 	}
 
 	:local(.page-header) {
 		@apply text-center;
-		@apply mb-8;
+		@apply mb-8 4xl:mb-20;
 	}
 
 	:local(h1) {
-		@apply text-2xl font-display font-bold;
-		@apply mb-4;
+		@apply text-xl md:text-2xl 3xl:text-4xl 4xl:text-7xl font-display font-bold;
+		@apply mb-4 4xl:mb-8;
 		@apply text-dark-gray dark:text-white;
 	}
 
 	:local(.header-text) {
-		@apply text-sm font-display;
+		@apply text-xs md:text-sm 3xl:text-lg 4xl:text-[2rem] font-display;
 		@apply text-light-lighterGray dark:text-white dark:opacity-80;
 	}
 
 	:local(.choice-cards) {
 		@apply w-full;
-		@apply flex flex-col gap-6;
+		@apply flex flex-col gap-6 4xl:gap-12;
 	}
 
 	:local(.bt) {
-		@apply w-11/12 max-w-sm h-12;
-		@apply mt-10;
+		@apply w-11/12 max-w-2xl h-12 4xl:h-24;
+		@apply mt-10 4xl:mt-20;
 		@apply rounded-3xl;
 	}
 
+	:local(.bt:disabled) {
+		@apply opacity-50;
+	}
+
+	:local(.cancel-bt) {
+		@apply mb-5;
+	}
+
 	:local(.bt-text) {
-		@apply text-lg font-display font-semibold;
+		@apply text-base md:text-lg 3xl:text-2xl 4xl:text-5xl font-display font-semibold;
 	}
 
 	:local(.cancel-bt-text) {

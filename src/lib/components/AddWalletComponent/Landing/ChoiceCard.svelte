@@ -16,8 +16,7 @@
 <style type="postcss" global>
 	:local(.card) {
 		@apply w-full;
-		@apply rounded-3xl;
-		@apply py-6 px-6;
+		@apply py-6 4xl:py-16 px-6 4xl:px-16 rounded-3xl 4xl:rounded-[3rem];
 		@apply shadow;
 		@apply bg-white bg-opacity-10;
 		@apply transition-all;
@@ -33,11 +32,11 @@
 	}
 
 	:local(.circle) {
-		@apply w-5 h-5 rounded-full min-w-[1.25rem] min-h-[1.25rem];
-		@apply mr-6;
+		@apply w-5 4xl:w-10 h-5 4xl:h-10 rounded-full min-w-[1.25rem] min-h-[1.25rem];
+		@apply mr-4 md:mr-6;
 		@apply translate-y-[0.125rem];
 		@apply bg-light-checkBox dark:bg-white opacity-50;
-		@apply flex justify-center;
+		@apply grid place-items-center;
 	}
 
 	.card.selected :local(.circle) {
@@ -46,8 +45,7 @@
 
 	.card.selected :local(.circle::after) {
 		@apply content-[''];
-		@apply w-4 h-4 rounded-full;
-		@apply place-self-center;
+		@apply w-4 4xl:w-7 h-4 4xl:h-7 rounded-full;
 		@apply bg-black bg-opacity-50 dark:bg-opacity-100;
 	}
 
@@ -56,9 +54,8 @@
 	}
 
 	:local(h2) {
-		@apply text-dark-gray dark:text-white font-bold font-display;
-		@apply mb-3;
-		@apply place-self-start;
+		@apply text-dark-gray dark:text-white font-bold font-display text-sm md:text-base 3xl:text-xl 4xl:text-4xl;
+		@apply mb-3 4xl:mb-6 text-left;
 	}
 
 	.card.selected :local(h2) {
@@ -66,8 +63,7 @@
 	}
 
 	:local(.card-description) {
-		@apply text-sm font-display text-light-lighterGray dark:text-white dark:opacity-80;
-		@apply place-self-start;
+		@apply text-xs md:text-sm 3xl:text-lg 4xl:text-3xl font-display text-light-lighterGray dark:text-white dark:opacity-80;
 	}
 
 	.card.selected :local(.card-description) {
