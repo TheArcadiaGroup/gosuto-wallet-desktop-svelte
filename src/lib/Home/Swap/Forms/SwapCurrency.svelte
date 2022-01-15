@@ -12,23 +12,23 @@
 	export let fromToken = 'USDT'
 	export let createNewToken = true
 
-	let showConfirm = false
-	let showSuccess = false
-	let showError = false
-
-	function swapTokens (): void {
-		showConfirm = true
-	}
+	let popup = ''
+	let confirmPopup = false
 
 	function confirmSwap (): void {
-		showConfirm = false
-		if (Math.random() >= 0.5) showSuccess = true
-		else showError = true
+		confirmPopup = false
+		if (Math.random() >= 0.5) popup = 'Swap Failed!'
+		else popup = 'Swap Successful!'
+	}
+
+	function closePopup (): void {
+		confirmPopup = false
+		popup = ''
 	}
 </script>
 
 <div class="swap-currency">
-	<form class="swap-form" on:submit|preventDefault={swapTokens}>
+	<form class="swap-form" on:submit|preventDefault={ () => {popup = 'Are you sure you want to swap?'; confirmPopup = true; }}>
 		<h2 class="form-title">Swap</h2>
 		<div class="form-row">
 			<div class="row-text-input">
@@ -71,12 +71,8 @@
 			</Button>
 		</div>
 	</form>
-	{#if showConfirm}
-		<Popup title='Are you sure you want to swap?' hasCancel={true} on:confirm={confirmSwap} on:cancel={() => {showConfirm = false}} />
-	{:else if showSuccess}
-		<Popup title='Swap Successful!' on:confirm={() => {showSuccess = false}}/>
-	{:else if showError}
-		<Popup title='Swap Failed!' on:confirm={() => {showError = false}}/>
+	{#if popup}
+		<Popup title={popup} hasCancel={confirmPopup} on:confirm={() => { confirmPopup ? confirmSwap() : closePopup()} } on:cancel={closePopup} />
 	{/if}
 </div>
 
