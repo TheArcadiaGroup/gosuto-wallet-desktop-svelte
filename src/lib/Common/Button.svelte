@@ -2,11 +2,12 @@
 </script>
 
 <button
-	class={$$slots.icon ? 'main has-icon' : 'main no-icon'}
+	class={($$slots.icon ? 'main has-icon' : 'main no-icon') + ' ' + $$props.class}
 	class:selected={$$props.selected}
 	class:ring-btn={$$props.ring}
 	class:glow={$$props.glow}
 	on:click
+	type={$$props.type}
 >
 	{#if $$slots.icon}
 		<div class="img">

@@ -16,10 +16,6 @@
 	let showSuccess = false
 	let showError = false
 
-	function deselectToken (): void {
-		dispatch('deselect')
-	}
-
 	function swapTokens (): void {
 		showConfirm = true
 	}
@@ -32,7 +28,7 @@
 </script>
 
 <div class="swap-currency">
-	<form class="swap-form">
+	<form class="swap-form" on:submit|preventDefault={swapTokens}>
 		<h2 class="form-title">Swap</h2>
 		<div class="form-row">
 			<div class="row-text-input">
@@ -64,11 +60,11 @@
 			</p>
 		{/if}
 		<div class="buttons">
-			<Button on:click={swapTokens}>
+			<Button>
 				<div slot="text" class="landing-7 my-2">Swap</div>
 			</Button>
 			<!-- todo: add transparent bg -->
-			<Button on:click={deselectToken}>
+			<Button class="cancel-swap-button" type="button">
 				<div slot="text" class="landing-7 my-2">
 					Cancel
 				</div>

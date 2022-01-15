@@ -5,7 +5,9 @@
 
 <div class="return-home">
   <div class="back-button">
-    <BackIcon />
+    <a href="/">
+      <BackIcon />
+    </a>
   </div>
   <p class="wallet-title">
     Wallet 1

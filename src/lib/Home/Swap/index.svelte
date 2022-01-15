@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
 
 	import ReturnHome from '$components/Home/ReturnHome.svelte';
 	import PlusIcon from '$icons/PlusIcon.svelte';
@@ -25,9 +25,23 @@
 
 		currentPage = Math.round(scroll / (scrollWidth / totalPages));
 	}
+
+	function deselectListener(event: any): void {
+		if (!event.target) return
+		const isInToken = Boolean(event.target.closest('.token-card'))
+		if (!isInToken) selected = -1
+	}
+
+	function cancelButtonListener(event: any): void {
+		if (!event.target) return
+		const isInCancel = Boolean(event.target.closest('.cancel-swap-button'))
+		if (isInCancel) selected = -1
+	}
 </script>
 
-<div class="wallet-swap">
+<svelte:body on:click={cancelButtonListener} />
+
+<div class="wallet-swap" on:click={deselectListener}>
 	<ReturnHome />
 	<div class="my-6 md:my-12">
 		<div class="px-2 flex flex-row items-center">
