@@ -39,7 +39,7 @@
 	}
 
 	:local(.no-icon) {
-		@apply rounded-3xl 4xl:rounded-full;
+		@apply rounded-3xl 4xl:rounded-[3rem];
 		@apply justify-center p-0 bg-light-orange text-white border border-light-orange;
 		@apply hover:bg-opacity-70 hover:border-opacity-0 transition duration-200;
 		@apply text-sm;
