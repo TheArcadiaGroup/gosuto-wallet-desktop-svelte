@@ -36,6 +36,8 @@ module.exports = {
 					white: '#FFFFFF',
 					backgroundgray: '#FDFDDE',
 					buttonText: '#707070',
+					fadedText: '#A1A1A1',
+					greyInputIcons: '#121826',
 				},
 			},
 			fill: {
