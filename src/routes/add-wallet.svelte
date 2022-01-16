@@ -115,7 +115,7 @@
 	}
 
 	:local(.bt-text) {
-		@apply text-base md:text-lg 3xl:text-2xl 4xl:text-5xl font-display font-semibold;
+		@apply text-base md:text-lg 3xl:text-2xl 4xl:text-5xl font-display font-bold;
 	}
 
 	:local(.cancel-bt-text) {
