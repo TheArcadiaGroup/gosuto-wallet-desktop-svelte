@@ -4,8 +4,8 @@
 
 <button>
 	<div class="wrapper">
-		<div class="icon">
-			<ImportIcon />
+		<div class="icon-wrapper">
+			<ImportIcon class="import-icon" />
 		</div>
 		<span>Upload Private Key File</span>
 	</div>
@@ -17,11 +17,16 @@
 		@apply p-1;
 	}
 
-	.icon {
-		@apply mr-3;
+	.icon-wrapper {
+		@apply mr-3 4xl:mr-6;
+	}
+
+	.icon-wrapper :global(.import-icon) {
+		@apply 4xl:w-10 4xl:h-10;
 	}
 
 	span {
-		@apply text-light-orange font-display;
+		@apply text-sm 3xl:text-base 4xl:text-3xl;
+		@apply text-light-lighterOrange font-display;
 	}
 </style>
