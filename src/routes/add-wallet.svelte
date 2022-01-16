@@ -101,7 +101,7 @@
 	}
 
 	:local(.bt) {
-		@apply w-11/12 max-w-2xl h-12 4xl:h-24;
+		@apply w-11/12 max-w-2xl h-12 4xl:h-28;
 		@apply mt-10 4xl:mt-20;
 		@apply rounded-3xl;
 	}
