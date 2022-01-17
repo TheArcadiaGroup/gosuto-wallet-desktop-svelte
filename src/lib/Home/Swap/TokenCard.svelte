@@ -3,24 +3,24 @@
 	import ProfitUpIcon from '$icons/ProfitUpIcon.svelte';
 	import ProfitDownIcon from '$icons/ProfitDownIcon.svelte';
 
-	export let cardId: number
+	export let cardId: number;
 
-	export let cryptoName = 'Tether'
-	export let cryptoUnit = 'USDT'
+	export let cryptoName = 'Tether';
+	export let cryptoUnit = 'USDT';
 	export let cryptoAmount = 2000;
-	export let currencyUnit = 'USD'
-	export let currencySymbol = '$'
-	export let currencyAmount = 175
+	export let currencyUnit = 'USD';
+	export let currencySymbol = '$';
+	export let currencyAmount = 175;
 
-	export let selected = false
-	export let positive = true
+	export let selected = false;
+	export let positive = true;
 
 	const dispatch = createEventDispatcher();
 
 	function select(): void {
 		dispatch('select', {
-			id: cardId
-		})
+			id: cardId,
+		});
 	}
 </script>
 
@@ -50,7 +50,7 @@
 		@apply md:p-5 md:rounded-[1.375rem];
 		@apply dark:bg-dark-blue;
 		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
+	}
 
 	.token-card.selected {
 		@apply border border-light-purple;

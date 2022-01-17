@@ -16,7 +16,7 @@ module.exports = {
 					gosutoDark: '#363B46',
 					blue: '#313642',
 					lightGray: '#BEBEBE',
-					lighterGray: ' #AEBBC4',
+					iconGray: '#BDBDBE',
 					selectedButton: '#725DFF',
 				},
 				light: {
@@ -35,12 +35,12 @@ module.exports = {
 					lineColor: '#E6E8EC',
 					scrollBar: '#EAEAEA',
 					white: '#FFFFFF',
-					backgroundgray: '#FDFDDE',
 					buttonText: '#707070',
 					grey189: '#BDBDBE',
 					grey193: '#C1C1C1',
 					transparentGrey10: '#F3F3F31A',
 					transparentGrey12: '#C4C4C41E',
+					checkBox: '#C4C4C4',
 				},
 			},
 			fill: {
@@ -48,6 +48,15 @@ module.exports = {
 				white: '#FFFFFF',
 			},
 			fontFamily: { display: "'Manrope', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'" },
+		},
+		screens: {
+			sm: '640px',
+			md: '768px',
+			lg: '1024px',
+			xl: '1280px',
+			'2xl': '1536px',
+			'3xl': '2048px',
+			'4xl': '3840px',
 		},
 	},
 	variants: {
