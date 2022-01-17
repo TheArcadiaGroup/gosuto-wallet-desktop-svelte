@@ -13,7 +13,6 @@
 </script>
 
 <GridLayout>
-	<div slot="first" class="first" />
 	<div slot="mid" class="page-wrapper">
 		<div class="content">
 			<div class="left-side">
@@ -43,7 +42,6 @@
 			</div>
 		</div>
 	</div>
-	<div slot="last" class="last" />
 </GridLayout>
 
 <style type="postcss" global>
