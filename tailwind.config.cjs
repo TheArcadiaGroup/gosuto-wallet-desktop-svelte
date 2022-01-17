@@ -15,7 +15,8 @@ module.exports = {
 					lightBlue: '#E1E3FF',
 					gosutoDark: '#363B46',
 					blue: '#313642',
-					lighterGray: ' #AEBBC4',
+					lighterGray: '#AEBBC4',
+					iconGray: '#BDBDBE',
 					selectedButton: '#725DFF',
 				},
 				light: {
@@ -34,10 +35,10 @@ module.exports = {
 					lineColor: '#E6E8EC',
 					scrollBar: '#EAEAEA',
 					white: '#FFFFFF',
-					backgroundgray: '#FDFDDE',
 					buttonText: '#707070',
 					fadedText: '#A1A1A1',
 					greyInputIcons: '#121826',
+					checkBox: '#C4C4C4',
 				},
 			},
 			fill: {

@@ -7,6 +7,13 @@ interface infoCategory {
 	placeholder: string;
 }
 
+interface choiceCard {
+	id: number;
+	header: string;
+	description: string;
+	isSelected: boolean;
+}
+
 interface SwapData {
 	fromAmount: number;
 	toAmount: number;
@@ -16,4 +23,9 @@ interface SwapData {
 	fromPriceUnit: string;
 	toCryptoUnit: string;
 	toPriceUnit: string;
+}
+
+interface ChartPrice {
+	x: string;
+	y: number;
 }
