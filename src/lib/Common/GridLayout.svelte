@@ -16,7 +16,9 @@
 		</div>
 	{/if}
 	<div class="mid-column">
-		<slot name="mid" />
+		<div>
+			<slot name="mid" />
+		</div>
 	</div>
 	{#if $$slots.last}
 		<div class="last-column">
@@ -67,6 +69,40 @@
 
 		:local(.withoutLastColumn.withoutFirstColumn) {
 			grid-template-columns: 5vw auto;
+		}
+
+		:local(.withoutLastColumn.withoutFirstColumn) > .mid-column {
+			@apply flex flex-col items-center w-full;
+		}
+
+		:local(.withoutLastColumn.withoutFirstColumn) > .mid-column > div {
+			@apply w-full max-w-[50%];
+		}
+	}
+
+	@media only screen and (min-width: 1920px) {
+		:local(.withLastColumn.withFirstColumn) {
+			grid-template-columns: 5vw 20vw auto 20vw;
+		}
+
+		:local(.withoutLastColumn.withFirstColumn) {
+			grid-template-columns: 5vw 20vw auto;
+		}
+
+		:local(.withLastColumn.withoutFirstColumn) {
+			grid-template-columns: 5vw auto 20vw;
+		}
+
+		:local(.withoutLastColumn.withoutFirstColumn) {
+			grid-template-columns: 5vw auto;
+		}
+
+		:local(.withoutLastColumn.withoutFirstColumn) > .mid-column {
+			@apply flex flex-col items-center w-full;
+		}
+
+		:local(.withoutLastColumn.withoutFirstColumn) > .mid-column > div {
+			@apply w-full max-w-[50%];
 		}
 	}
 
