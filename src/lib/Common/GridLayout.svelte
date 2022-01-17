@@ -56,11 +56,11 @@
 
 	@media only screen and (min-width: 768px) {
 		:local(.withLastColumn.withFirstColumn) {
-			grid-template-columns: 5vw 25vw auto 25vw;
+			grid-template-columns: 5vw 20vw auto 25vw;
 		}
 
 		:local(.withoutLastColumn.withFirstColumn) {
-			grid-template-columns: 5vw 25vw auto;
+			grid-template-columns: 5vw 20vw auto;
 		}
 
 		:local(.withLastColumn.withoutFirstColumn) {
