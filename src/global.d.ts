@@ -32,4 +32,8 @@ interface StakePosition {
 	timeOne: string;
 	timeTwo: string;
 	totalTimeUntilReward: string;
+
+interface ChartPrice {
+	x: string;
+	y: number;
 }

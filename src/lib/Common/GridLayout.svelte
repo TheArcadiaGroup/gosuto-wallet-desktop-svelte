@@ -50,8 +50,16 @@
 
 	:local(.first-column),
 	:local(.last-column) {
-		@apply z-30 dark:bg-dark-blue;
+		@apply z-30 dark:md:bg-dark-blue;
 		box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.05);
+	}
+
+	:local(.first-column) {
+		@apply dark:bg-dark-background;
+	}
+
+	:local(.last-column) {
+		@apply dark:bg-dark-grey;
 	}
 
 	:local(.mid-column) {

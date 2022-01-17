@@ -17,7 +17,9 @@ module.exports = {
 					gosutoDark: '#363B46',
 					gosutoIconGrey: '#BDBDBE',
 					blue: '#313642',
-					lighterGray: ' #AEBBC4',
+					lighterGray: '#AEBBC4',
+					iconGray: '#BDBDBE',
+					selectedButton: '#725DFF',
 				},
 				light: {
 					gray: '#A9A9A9',
@@ -41,6 +43,7 @@ module.exports = {
 					neutrals1: '#E6E8EC',
 					neutrals2: '#23262F',
 					neutrals4: '#777E90',
+					buttonText: '#707070',
 				},
 			},
 			fill: {
@@ -48,6 +51,15 @@ module.exports = {
 				white: '#FFFFFF',
 			},
 			fontFamily: { display: "'Manrope', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'" },
+		},
+		screens: {
+			sm: '640px',
+			md: '768px',
+			lg: '1024px',
+			xl: '1280px',
+			'2xl': '1536px',
+			'3xl': '2048px',
+			'4xl': '3840px',
 		},
 	},
 	variants: {
