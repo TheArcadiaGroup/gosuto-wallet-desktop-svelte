@@ -1,5 +1,7 @@
 <script>
 	import StakingPositionCard from '$components/StakingPositionCard/StakingPositionCard.svelte';
+	import GridLayout from '$lib/Common/GridLayout.svelte';
+
 	let stakingCards = [
 		{
 			unstaked: false,
@@ -81,9 +83,11 @@
 </script>
 
 <div class="bg-gray-200">
-	<div class="mx-10 py-10 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
-		{#each stakingCards as stakingPositionCard}
-			<StakingPositionCard {...stakingPositionCard} />
-		{/each}
-	</div>
+	<GridLayout>
+		<div slot="mid" class="mx-10 py-10 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+			{#each stakingCards as stakingPositionCard}
+				<StakingPositionCard {...stakingPositionCard} />
+			{/each}
+		</div>
+	</GridLayout>
 </div>
