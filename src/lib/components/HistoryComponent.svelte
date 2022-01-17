@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+
 	import Amount from './HistoryComponent/Amount.svelte';
 
 	import Swap from './HistoryComponent/Swap.svelte';
@@ -15,52 +17,88 @@
 	export let price = 0.0;
 	export let cryptoUnit = 'USDT';
 	export let currencyUnit = 'USD';
+
+	export let index: number = 0;
+
+	export let clicked: boolean = false;
+
+	const dispatch = createEventDispatcher();
+
+	function select(): void {
+		dispatch('select', {
+			id: index,
+		});
+	}
 </script>
 
-<div
-	class="container {background == 'purple'
-		? 'bg-purple-500'
-		: 'dark:bg-dark-blue '} hover:cursor-pointer"
->
-	<div class="left">
-		<div class="leftcontent">
-			<div>
-				<span
-					class="status {background == 'purple'
-						? 'text-white'
-						: 'text-dark-grey dark:text-white'}"
-				>
-					{status}
-				</span>
-				<span class="wallet">Wallet</span>
-			</div>
-			<div>
-				<span
-					class="dateAndTime {background == 'purple'
-						? 'text-white'
-						: 'text-light-grey dark:text-white'}"
-				>
-					{dateAndTime}
-				</span>
+<div class="main {$$props.class}">
+	<div
+		class="container {background == 'purple'
+			? 'bg-purple-500'
+			: 'dark:bg-dark-blue '} hover:cursor-pointer"
+		class:clicked
+		on:click={select}
+	>
+		<div class="left">
+			<div class="leftcontent">
+				<div>
+					<span class="status">
+						{status}
+					</span>
+					<span class="wallet {clicked ? 'text-white' : 'text-light-grey'}">Wallet</span>
+				</div>
+				<div>
+					<span class="dateAndTime">
+						{dateAndTime}
+					</span>
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="right">
-		<div class="text-right">
-			{#if status == 'Swap'}
-				<Swap {background} {SwapData} />
-			{:else if status == 'Sent'}
-				<Amount type="negative" {background} {amount} {price} {cryptoUnit} {currencyUnit} />
-			{:else if status == 'Received'}
-				<Amount type="positive" {background} {amount} {price} {cryptoUnit} {currencyUnit} />
-			{:else if status == 'Stake'}
-				<Amount type="negative" {background} {amount} {price} {cryptoUnit} {currencyUnit} />
-			{/if}
+		<div class="right">
+			<div class="text-right">
+				{#if status == 'Swap'}
+					<Swap {background} {SwapData} {clicked} />
+				{:else if status == 'Sent'}
+					<Amount
+						type="negative"
+						{background}
+						{amount}
+						{price}
+						{cryptoUnit}
+						{currencyUnit}
+						{clicked}
+					/>
+				{:else if status == 'Received'}
+					<Amount
+						type="positive"
+						{background}
+						{amount}
+						{price}
+						{cryptoUnit}
+						{currencyUnit}
+						{clicked}
+					/>
+				{:else if status == 'Stake'}
+					<Amount
+						type="negative"
+						{background}
+						{amount}
+						{price}
+						{cryptoUnit}
+						{currencyUnit}
+						{clicked}
+					/>
+				{/if}
+			</div>
 		</div>
 	</div>
 </div>
 
-<style>
+<style lang="postcss">
+	.main {
+		@apply py-2;
+	}
+
 	.container {
 		@apply rounded-3xl flex justify-between m-1;
 	}
@@ -77,9 +115,15 @@
 		@apply text-xl font-bold;
 	}
 	.wallet {
-		@apply text-xs text-light-grey font-bold;
+		@apply text-xs font-bold;
 	}
 	.dateAndime {
 		@apply text-base;
+	}
+	.top-border {
+		@apply border-t border-black dark:border-white border-opacity-10;
+	}
+	.clicked {
+		@apply bg-light-purple text-white transition duration-300;
 	}
 </style>

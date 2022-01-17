@@ -7,11 +7,13 @@
 
 	export let background: String;
 	export let type: 'positive' | 'negative' = 'positive';
+
+	export let clicked: boolean = false;
 </script>
 
 <div>
 	<span
-		class="text-lg {background == 'white'
+		class="text-lg {!clicked
 			? type == 'negative'
 				? 'text-light-red'
 				: 'text-light-green'
@@ -22,7 +24,7 @@
 </div>
 <div>
 	<span
-		class="text-base {background == 'white'
+		class="text-base {!clicked
 			? type == 'negative'
 				? 'text-light-red'
 				: 'text-light-green'
