@@ -7,7 +7,6 @@
 	import CreateSuccessPopup from '$lib/PopUps/CreateToken/SuccessPopup.svelte';
 	import ImportFailedPopup from '$lib/PopUps/ImportToken/FailedPopup.svelte';
 	import ImportSuccessPopup from '$lib/PopUps/ImportToken/SuccessPopup.svelte';
-	import { toggleDarkMode } from '$utils/themeSettings';
 	import { fly, slide } from 'svelte/transition';
 	import { createEventDispatcher } from 'svelte';
 
@@ -94,7 +93,7 @@
 			in:fly={{ x: 200, duration: 500 }}
 			out:fly={{ x: 200, duration: 500 }}
 		>
-			<h4 on:click={toggleDarkMode}>Create Token</h4>
+			<h4>Create Token</h4>
 			<div class="button-holder">
 				<button
 					class={creatingToken ? 'btn orange-btn' : 'btn white-btn'}
