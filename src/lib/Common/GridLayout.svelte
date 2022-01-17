@@ -2,7 +2,11 @@
 	import Navbar from '$components/navbar/Navbar.svelte';
 </script>
 
-<div class={$$slots.last ? 'app-container withLastColumn' : 'app-container withoutLastColumn'}>
+<div
+	class={$$slots.last ? 'app-container withLastColumn' : 'app-container withoutLastColumn'}
+	class:withFirstColumn={$$slots.first}
+	class:withoutFirstColumn={!$$slots.first}
+>
 	<div class="navbar-container">
 		<Navbar />
 	</div>
@@ -27,12 +31,20 @@
 	}
 
 	@media only screen and (max-width: 768px) {
-		:local(.withLastColumn) {
+		:local(.withLastColumn.withFirstColumn) {
 			grid-template-rows: auto auto auto auto;
 		}
 
-		:local(.withoutLastColumn) {
+		:local(.withoutLastColumn.withFirstColumn) {
 			grid-template-rows: auto auto auto;
+		}
+
+		:local(.withLastColumn.withoutFirstColumn) {
+			grid-template-rows: auto auto auto;
+		}
+
+		:local(.withoutLastColumn.withoutFirstColumn) {
+			grid-template-rows: auto auto;
 		}
 
 		:local(.app-container) > div {
@@ -41,12 +53,20 @@
 	}
 
 	@media only screen and (min-width: 768px) {
-		:local(.withLastColumn) {
+		:local(.withLastColumn.withFirstColumn) {
 			grid-template-columns: 5vw 25vw auto 25vw;
 		}
 
-		:local(.withoutLastColumn) {
+		:local(.withoutLastColumn.withFirstColumn) {
 			grid-template-columns: 5vw 25vw auto;
+		}
+
+		:local(.withLastColumn.withoutFirstColumn) {
+			grid-template-columns: 5vw auto 25vw;
+		}
+
+		:local(.withoutLastColumn.withoutFirstColumn) {
+			grid-template-columns: 5vw auto;
 		}
 	}
 
