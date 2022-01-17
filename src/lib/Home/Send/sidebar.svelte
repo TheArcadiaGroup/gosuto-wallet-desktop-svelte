@@ -198,7 +198,7 @@
 
 <style lang="postcss" global>
 	:local(.main) {
-		@apply flex flex-col items-center md:pt-20 px-12 md:px-4 h-full md:h-screen w-full md:w-auto;
+		@apply flex flex-col items-center md:pt-20 px-12 md:px-5 h-full md:h-screen w-full;
 	}
 
 	:local(.inactive-text) {

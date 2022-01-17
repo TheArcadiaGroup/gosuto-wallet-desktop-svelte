@@ -7,6 +7,7 @@
 </script>
 
 <GridLayout>
+	<div class="left-sidebar" slot="first">Sidebar</div>
 	<Send
 		slot="mid"
 		on:click={() => {
