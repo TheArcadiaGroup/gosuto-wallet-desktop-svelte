@@ -35,7 +35,6 @@ module.exports = {
 					lineColor: '#E6E8EC',
 					scrollBar: '#EAEAEA',
 					white: '#FFFFFF',
-					backgroundgray: '#FDFDDE',
 					buttonText: '#707070',
 					checkBox: '#C4C4C4',
 				},
