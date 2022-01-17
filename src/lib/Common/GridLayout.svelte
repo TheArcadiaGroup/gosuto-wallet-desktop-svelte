@@ -6,9 +6,11 @@
 	<div class="navbar-container">
 		<Navbar />
 	</div>
-	<div class="first-column">
-		<slot name="first" />
-	</div>
+	{#if $$slots.first}
+		<div class="first-column">
+			<slot name="first" />
+		</div>
+	{/if}
 	<div class="mid-column">
 		<slot name="mid" />
 	</div>
