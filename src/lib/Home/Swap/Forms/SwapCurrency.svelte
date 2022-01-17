@@ -46,9 +46,9 @@
 			</div>
 			<div class="row-token-select">
 				<SelectInput label="">
-					<option value=''>USDC</option>
-					<option value=''>USDT</option>
-					<option value=''>CSPR</option>
+					<option value="">USDC</option>
+					<option value="">USDT</option>
+					<option value="">CSPR</option>
 				</SelectInput>
 			</div>
 		</div>

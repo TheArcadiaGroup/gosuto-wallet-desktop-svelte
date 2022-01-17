@@ -1,5 +1,5 @@
 <script lang="ts">
-    import CopyIcon from "$icons/CopyIcon.svelte";
+    import CopyIcon from '$icons/CopyIcon.svelte';
     import BackIcon from '$icons/BackIcon.svelte';
 </script>
 
@@ -15,7 +15,7 @@
   </p>
   <div class="wallet-pub-key">
     <p class="pub-key-text">0x9f98e01d3...4ed7</p>
-    <div class='cursor-pointer'>
+    <div class="cursor-pointer">
       <CopyIcon />
     </div>
   </div>

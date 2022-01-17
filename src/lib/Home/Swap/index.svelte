@@ -1,14 +1,10 @@
 <script lang="ts">
-	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
-
 	import ReturnHome from '$components/Home/ReturnHome.svelte';
 	import PlusIcon from '$icons/PlusIcon.svelte';
 	import TokenCard from '$lib/Home/Swap/TokenCard.svelte';
 	import Button from '$lib/Common/Button.svelte';
 
 	export let tokens = []
-
-	let dispatch = createEventDispatcher()
 
 	let scroll = 0;
 	let scrollWidth = 0;
