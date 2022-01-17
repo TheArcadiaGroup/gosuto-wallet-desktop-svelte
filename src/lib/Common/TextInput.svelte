@@ -31,12 +31,12 @@
 	}
 
 	:local(input) {
-		@apply border border-light-gray h-[50px] px-2 w-full rounded-[12px] bg-white dark:bg-dark-background;
-		@apply dark:text-dark-lighterGray;
+		@apply border border-light-gray h-[50px] 4xl:h-32 px-5 4xl:px-12 w-full rounded-2xl 4xl:rounded-[2.5rem] bg-white dark:bg-dark-background;
+		@apply 4xl:text-4xl dark:text-dark-lighterGray;
 	}
 
 	:local(p) {
-		@apply absolute bg-white transform translate-y-[-6px] md:translate-y-[-12px] translate-x-4 leading-none text-xs md:text-base px-1;
+		@apply absolute bg-white transform translate-y-[-6px] md:-translate-y-3 4xl:-translate-y-5 translate-x-4 4xl:translate-x-8 leading-none text-xs md:text-base 4xl:text-4xl px-1 4xl:px-3;
 		@apply dark:bg-dark-background dark:text-white;
 	}
 </style>

@@ -116,7 +116,7 @@
 			<div class="btn-continue">
 				<Button>
 					<div slot="text">
-						<span class="hidden sm:block">Continue</span>
+						<span class="hidden sm:block">Import</span>
 						<span class="block sm:hidden">Import</span>
 					</div>
 				</Button>

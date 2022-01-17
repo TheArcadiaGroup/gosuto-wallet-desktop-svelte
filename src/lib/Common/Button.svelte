@@ -6,6 +6,7 @@
 	class:selected={$$props.selected}
 	class:ring-btn={$$props.ring}
 	class:glow={$$props.glow}
+	disabled={$$props.disabled}
 	on:click
 >
 	{#if $$slots.icon}
@@ -38,7 +39,7 @@
 	}
 
 	:local(.no-icon) {
-		@apply rounded-3xl;
+		@apply rounded-3xl 4xl:rounded-[3rem];
 		@apply justify-center p-0 bg-light-orange text-white border border-light-orange;
 		@apply hover:bg-opacity-70 hover:border-opacity-0 transition duration-200;
 		@apply text-sm;
@@ -52,6 +53,10 @@
 	:local(.img) {
 		@apply w-4 h-4 mr-3;
 		@apply mb-3 md:mb-0;
+	}
+
+	:local(button:disabled) {
+		@apply opacity-50;
 	}
 
 	:local(.glow) {
