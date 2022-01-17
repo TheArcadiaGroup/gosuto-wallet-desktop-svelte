@@ -15,7 +15,8 @@ module.exports = {
 					lightBlue: '#E1E3FF',
 					gosutoDark: '#363B46',
 					blue: '#313642',
-					lighterGray: ' #AEBBC4',
+					lighterGray: '#AEBBC4',
+					iconGray: '#BDBDBE',
 					selectedButton: '#725DFF',
 				},
 				light: {
@@ -34,7 +35,6 @@ module.exports = {
 					lineColor: '#E6E8EC',
 					scrollBar: '#EAEAEA',
 					white: '#FFFFFF',
-					backgroundgray: '#FDFDDE',
 					buttonText: '#707070',
 					inactiveText: '#C1C1C1',
 				},
@@ -44,6 +44,15 @@ module.exports = {
 				white: '#FFFFFF',
 			},
 			fontFamily: { display: "'Manrope', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'" },
+		},
+		screens: {
+			sm: '640px',
+			md: '768px',
+			lg: '1024px',
+			xl: '1280px',
+			'2xl': '1536px',
+			'3xl': '2048px',
+			'4xl': '3840px',
 		},
 	},
 	variants: {
