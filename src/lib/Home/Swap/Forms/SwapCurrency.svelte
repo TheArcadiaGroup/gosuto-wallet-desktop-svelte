@@ -63,9 +63,8 @@
 			<Button>
 				<div slot="text" class="landing-7 my-2">Swap</div>
 			</Button>
-			<!-- todo: add transparent bg -->
 			<Button class="cancel-swap-button" type="button">
-				<div slot="text" class="landing-7 my-2">
+				<div slot="text" class="cancel-swap-button-text">
 					Cancel
 				</div>
 			</Button>
@@ -137,5 +136,14 @@
 	.buttons {
 		@apply w-3/4 mx-auto flex flex-col gap-4 mt-28 mb-16;
 		@apply md:mt-10 md:w-full md:gap-1;
+	}
+
+	:global(.cancel-swap-button) {
+		/* Important, because otherwise values inside button component overwrite these settings */
+		@apply bg-transparent border-transparent !important;
+	}
+
+	.cancel-swap-button-text {
+		@apply my-2 text-xs leading-7 font-bold text-dark-gray dark:text-white md:text-sm;
 	}
 </style>
