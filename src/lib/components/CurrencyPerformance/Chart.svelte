@@ -5,7 +5,6 @@
 
 	let ctx: HTMLCanvasElement;
 	export let chartPrices: ChartPrice[];
-	console.log(`Screen${window.innerWidth} Pixels ${Math.round((window.innerWidth * 7) / 1440)}`);
 	onMount(async () => {
 		chartRender();
 	});

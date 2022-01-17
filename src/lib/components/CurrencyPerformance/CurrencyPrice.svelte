@@ -25,6 +25,6 @@
 		@apply text-sm md:text-base 2xl:text-[1.25vw] text-light-grey dark:text-white;
 	}
 	:local(.percentage-change) {
-		@apply text-[10px] md:text-sm 2xl:text-[1vw];
+		@apply text-xs md:text-sm 2xl:text-[1vw];
 	}
 </style>
