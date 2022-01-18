@@ -18,6 +18,7 @@ module.exports = {
 					lighterGray: '#AEBBC4',
 					iconGray: '#BDBDBE',
 					selectedButton: '#725DFF',
+					textGray: '#979797',
 				},
 				light: {
 					gray: '#A9A9A9',

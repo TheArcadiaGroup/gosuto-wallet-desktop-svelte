@@ -11,7 +11,6 @@
 		toCryptoUnit: '',
 		toPriceUnit: '',
 	};
-	export let clicked: boolean;
 </script>
 
 <div class="inline-flex space-x-2 md:space-x-4 ">
@@ -25,11 +24,7 @@
 		/>
 	</div>
 	<div class="my-auto">
-		{#if !clicked}
-			<img src="images/svg/swap.svg" alt="swapIcon" />
-		{:else}
-			<img src="images/svg/swapWhite.svg" alt="swapWhiteIcon" />
-		{/if}
+		<img src="images/svg/swap.svg" alt="swapIcon" />
 	</div>
 	<div class="text-right">
 		<Amount

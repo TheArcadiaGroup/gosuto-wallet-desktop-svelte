@@ -11,13 +11,14 @@
 	</select>
 </div>
 
-<style lang="postcss">
-	select {
+<style lang="postcss" global>
+	:local(select) {
 		@apply border-0 bg-transparent p-3 m-0 w-full z-10 text-sm;
 	}
 
-	.select {
+	:local(.select) {
 		@apply min-w-max w-[30%] md:w-[20%] cursor-pointer bg-transparent rounded-3xl;
-		@apply border border-light-lighterGray;
+		@apply border border-light-lighterGray dark:border-white;
+		@apply dark:text-white;
 	}
 </style>

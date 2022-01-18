@@ -33,7 +33,7 @@
 
 <div class="main {$$props.class}" transition:slide>
 	<div
-		class="container {clicked ? 'bg-purple-500' : 'dark:bg-dark-blue '} hover:cursor-pointer"
+		class="container {clicked ? 'clicked' : ' '} hover:cursor-pointer"
 		class:clicked
 		on:click={select}
 	>
@@ -55,7 +55,7 @@
 		<div class="right">
 			<div class="text-right">
 				{#if status == 'Swap'}
-					<Swap {SwapData} {clicked} />
+					<Swap {SwapData} />
 				{:else if status == 'Sent'}
 					<Amount type="negative" {amount} {price} {cryptoUnit} {currencyUnit} {clicked} />
 				{:else if status == 'Received'}
@@ -68,35 +68,36 @@
 	</div>
 </div>
 
-<style lang="postcss">
-	.main {
+<style lang="postcss" global>
+	:local(.main) {
 		@apply py-2;
 	}
-	.container {
+	:local(.container) {
 		@apply rounded-3xl flex justify-between m-1;
+		@apply dark:bg-dark-blue dark:md:bg-transparent;
 	}
-	.left {
-		@apply md:p-3 mx-2 md:mx-3 my-1;
+	:local(.left) {
+		@apply pl-2 py-2 md:p-3 mx-2 md:mx-3 my-1;
 	}
-	.right {
-		@apply md:p-3 mx-2 md:mx-3 my-1;
+	:local(.right) {
+		@apply pr-2 py-2 md:p-3 mx-2 md:mx-3 my-1;
 	}
-	.leftcontent {
+	:local(.leftcontent) {
 		@apply text-left;
 	}
-	.status {
-		@apply text-sm md:text-xl font-bold;
+	:local(.status) {
+		@apply text-sm md:text-xl font-bold dark:text-white;
 	}
-	.wallet {
-		@apply text-xs md:font-bold;
+	:local(.wallet) {
+		@apply text-xs md:font-bold dark:text-dark-textGray;
 	}
-	.dateAndime {
-		@apply text-xs md:text-base text-light-gray;
+	:local(.dateAndime) {
+		@apply text-xs md:text-base text-light-gray dark:text-white;
 	}
-	.top-border {
-		@apply border-t border-black dark:border-white border-opacity-10;
+	:local(.top-border) {
+		@apply border-t border-black border-opacity-10 dark:border-opacity-10;
 	}
-	.clicked {
-		@apply bg-light-purple text-white transition duration-300;
+	:local(.clicked) {
+		@apply bg-light-purple dark:bg-light-purple text-white transition duration-300;
 	}
 </style>
