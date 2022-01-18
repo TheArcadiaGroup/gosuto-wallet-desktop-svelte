@@ -1,13 +1,15 @@
 <script lang="ts">
 	import HistoryComponent from '$lib/components/HistoryComponent.svelte';
 	import GridLayout from '$lib/Common/GridLayout.svelte';
-	import HistoryComponent from '$lib/components/HistoryComponent.svelte';
+	import RoundedSelect from '$lib/Common/RoundedSelect.svelte';
 
 	// import Sidebar from '$lib/History/sidebar.svelte';
 	// let sidebarActive: boolean = false;
 
-	export let validatorArray = Array(10);
-	let historyFilter: string = 'All';
+	export let historyArray = Array(10);
+	let optionsArray: string[] = ['All', 'Received', 'Sent', 'Swap', 'Stake'];
+	let filterId: number = 0;
+	$: historyFilter = optionsArray[filterId];
 
 	let selectedTokenIndex = -1;
 
@@ -17,11 +19,12 @@
 </script>
 
 <GridLayout>
-	<div class="main" slot="mid">
+	<div class="mid-holder" slot="mid">
 		<div class="main">
 			<h3>{historyFilter} History</h3>
-			<div class="validator-holder">
-				{#each validatorArray as validatorObject, i}
+			<RoundedSelect {optionsArray} bind:value={filterId} />
+			<div class="history-holder">
+				{#each historyArray as historyObject, i}
 					<HistoryComponent
 						class={i > 0 ? 'top-border' : ''}
 						on:select={selectToken}
@@ -33,18 +36,23 @@
 			<button>Show more</button>
 		</div>
 	</div>
+	<div class="sidebar" slot="last">Test</div>
 </GridLayout>
 
 <style lang="postcss" global>
+	:local(.mid-holder) {
+		@apply flex justify-end mr-[5vw];
+	}
+
 	:local(.main) {
-		@apply h-screen flex flex-col p-4 md:p-0;
+		@apply h-screen flex flex-col p-4 md:p-0 w-full max-w-[50vw];
 	}
 
 	:local(h3) {
-		@apply font-bold md:text-2xl ml-4 md:ml-0 mt-8 2xl:mt-16 dark:text-white;
+		@apply font-bold md:text-2xl ml-4 md:ml-0 my-8 2xl:mt-16 dark:text-white;
 	}
 
-	:local(.validator-holder) {
+	:local(.history-holder) {
 		@apply w-full min-w-max overflow-y-auto h-[85%] pr-6;
 	}
 
