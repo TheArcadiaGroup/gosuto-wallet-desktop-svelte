@@ -11,14 +11,13 @@
 		toCryptoUnit: '',
 		toPriceUnit: '',
 	};
-	export let background: String;
+	export let clicked: boolean;
 </script>
 
 <div class="inline-flex space-x-4 ">
 	<div class="text-right">
 		<Amount
 			type="negative"
-			{background}
 			amount={SwapData.fromAmount}
 			price={SwapData.fromPrice}
 			cryptoUnit={SwapData.fromCryptoUnit}
@@ -26,7 +25,7 @@
 		/>
 	</div>
 	<div class="my-auto">
-		{#if background == 'white'}
+		{#if !clicked}
 			<img src="images/svg/swap.svg" alt="swapIcon" />
 		{:else}
 			<img src="images/svg/swapWhite.svg" alt="swapWhiteIcon" />
@@ -34,7 +33,6 @@
 	</div>
 	<div class="text-right">
 		<Amount
-			{background}
 			amount={SwapData.toAmount}
 			price={SwapData.toPrice}
 			cryptoUnit={SwapData.toCryptoUnit}

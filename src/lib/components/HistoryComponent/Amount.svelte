@@ -4,8 +4,6 @@
 
 	export let cryptoUnit = 'USDT';
 	export let currencyUnit = 'USD';
-
-	export let background: String;
 	export let type: 'positive' | 'negative' = 'positive';
 
 	export let clicked: boolean = false;

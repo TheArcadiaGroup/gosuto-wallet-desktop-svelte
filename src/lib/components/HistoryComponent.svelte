@@ -5,8 +5,6 @@
 
 	import Swap from './HistoryComponent/Swap.svelte';
 
-	export let background: 'purple' | 'white' = 'white';
-
 	export let status: 'Received' | 'Sent' | 'Stake' | 'Swap' = 'Sent';
 
 	export let dateAndTime = 'Apr 01, 2021 07:15:20 am (CST)';
@@ -19,7 +17,6 @@
 	export let currencyUnit = 'USD';
 
 	export let index: number = 0;
-
 	export let clicked: boolean = false;
 
 	const dispatch = createEventDispatcher();
@@ -33,9 +30,7 @@
 
 <div class="main {$$props.class}">
 	<div
-		class="container {background == 'purple'
-			? 'bg-purple-500'
-			: 'dark:bg-dark-blue '} hover:cursor-pointer"
+		class="container {clicked ? 'bg-purple-500' : 'dark:bg-dark-blue '} hover:cursor-pointer"
 		class:clicked
 		on:click={select}
 	>
@@ -57,37 +52,13 @@
 		<div class="right">
 			<div class="text-right">
 				{#if status == 'Swap'}
-					<Swap {background} {SwapData} {clicked} />
+					<Swap {SwapData} {clicked} />
 				{:else if status == 'Sent'}
-					<Amount
-						type="negative"
-						{background}
-						{amount}
-						{price}
-						{cryptoUnit}
-						{currencyUnit}
-						{clicked}
-					/>
+					<Amount type="negative" {amount} {price} {cryptoUnit} {currencyUnit} {clicked} />
 				{:else if status == 'Received'}
-					<Amount
-						type="positive"
-						{background}
-						{amount}
-						{price}
-						{cryptoUnit}
-						{currencyUnit}
-						{clicked}
-					/>
+					<Amount type="positive" {amount} {price} {cryptoUnit} {currencyUnit} {clicked} />
 				{:else if status == 'Stake'}
-					<Amount
-						type="negative"
-						{background}
-						{amount}
-						{price}
-						{cryptoUnit}
-						{currencyUnit}
-						{clicked}
-					/>
+					<Amount type="negative" {amount} {price} {cryptoUnit} {currencyUnit} {clicked} />
 				{/if}
 			</div>
 		</div>
