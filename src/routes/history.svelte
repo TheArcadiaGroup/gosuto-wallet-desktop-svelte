@@ -2,14 +2,37 @@
 	import HistoryComponent from '$lib/components/HistoryComponent.svelte';
 	import GridLayout from '$lib/Common/GridLayout.svelte';
 	import RoundedSelect from '$lib/Common/RoundedSelect.svelte';
+	import { generateTransactions } from '$utils/historyDataSample';
+
+	let historyArray = generateTransactions();
+	let filteredArray;
 
 	// import Sidebar from '$lib/History/sidebar.svelte';
 	// let sidebarActive: boolean = false;
 
-	export let historyArray = Array(10);
 	let optionsArray: string[] = ['All', 'Received', 'Sent', 'Swap', 'Stake'];
 	let filterId: number = 0;
 	$: historyFilter = optionsArray[filterId];
+
+	$: switch (filterId) {
+		case 0:
+			filteredArray = historyArray;
+			break;
+		case 1:
+			filteredArray = historyArray.filter((obj) => obj.status === 'Received');
+			break;
+		case 2:
+			filteredArray = historyArray.filter((obj) => obj.status === 'Sent');
+			break;
+		case 3:
+			filteredArray = historyArray.filter((obj) => obj.status === 'Swap');
+			break;
+		case 4:
+			filteredArray = historyArray.filter((obj) => obj.status === 'Stake');
+			break;
+		default:
+			break;
+	}
 
 	let selectedTokenIndex = -1;
 
@@ -24,12 +47,20 @@
 			<h3>{historyFilter} History</h3>
 			<RoundedSelect {optionsArray} bind:value={filterId} />
 			<div class="history-holder">
-				{#each historyArray as historyObject, i}
+				<!-- Received -->
+				{#each filteredArray as historyObject, i}
 					<HistoryComponent
 						class={i > 0 ? 'top-border' : ''}
 						on:select={selectToken}
 						index={i}
 						clicked={selectedTokenIndex === i}
+						status={historyObject.status}
+						dateAndTime={historyObject.dateAndTime}
+						SwapData={historyObject.SwapData}
+						amount={historyObject.amount}
+						price={historyObject.price}
+						cryptoUnit={historyObject.cryptoUnit}
+						currencyUnit={historyObject.currencyUnit}
 					/>
 				{/each}
 			</div>
