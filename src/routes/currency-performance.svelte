@@ -36,7 +36,6 @@
 </script>
 
 <GridLayout>
-	<div slot="first" class="column-container" />
 	<div slot="mid" class="column-container">
 		<div class="card-container">
 			{#each currencyPerfomance as performance}
@@ -44,7 +43,6 @@
 			{/each}
 		</div>
 	</div>
-	<div slot="last" class="column-container" />
 </GridLayout>
 
 <!-- Styles -->

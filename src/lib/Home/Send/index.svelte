@@ -47,9 +47,7 @@
 </script>
 
 <div class="px-4 pt-10 md:px-11 md:pt-20 dark:bg-dark-background">
-	<ReturnHome>
-		<span class="hidden md:inline">Swap</span>
-	</ReturnHome>
+	<ReturnHome />
 	<div class="my-6 md:my-12">
 		<div class="px-2 flex flex-row items-center">
 			<p class="font-bold text-base md:text-xl dark:text-white">Tokens in this wallet</p>
