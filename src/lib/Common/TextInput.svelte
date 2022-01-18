@@ -32,7 +32,7 @@
 
 	:local(input) {
 		@apply border border-light-gray h-[50px] 4xl:h-32 px-5 4xl:px-12 w-full rounded-2xl 4xl:rounded-[2.5rem] bg-white dark:bg-dark-background;
-		@apply 4xl:text-4xl;
+		@apply 4xl:text-4xl dark:text-dark-lighterGray;
 	}
 
 	:local(p) {

@@ -3,6 +3,8 @@
 	import Button from '$lib/Common/Button.svelte';
 	import ChoiceCard from '$lib/components/AddWalletComponent/Landing/ChoiceCard.svelte';
 
+	import { goto } from '$app/navigation';
+
 	let selected: choiceCard;
 
 	let choiceCards: choiceCard[] = [
@@ -10,18 +12,21 @@
 			id: 0,
 			header: 'Add New Wallet',
 			description: 'Add new wallet to your account',
+			route: '/add-wallet/create-wallet/create-wallet',
 			isSelected: false,
 		},
 		{
 			id: 1,
 			header: 'Import From Seed',
 			description: 'Import wallet from seed phrase',
+			route: '/add-wallet/import-from-seed-phrase',
 			isSelected: false,
 		},
 		{
 			id: 2,
 			header: 'Import From File',
 			description: 'Import wallet from file',
+			route: '/add-wallet/import-from-file',
 			isSelected: false,
 		},
 	];
@@ -50,7 +55,7 @@
 			{/each}
 		</div>
 		<div class="bt next-bt">
-			<Button disabled={selected == undefined}>
+			<Button disabled={selected == undefined} on:click={() => goto(selected.route)}>
 				<span slot="text" class="bt-text">Next</span>
 			</Button>
 		</div>

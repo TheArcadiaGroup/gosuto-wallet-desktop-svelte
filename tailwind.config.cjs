@@ -38,6 +38,7 @@ module.exports = {
 					buttonText: '#707070',
 					fadedText: '#A1A1A1',
 					greyInputIcons: '#121826',
+					inactiveText: '#C1C1C1',
 					checkBox: '#C4C4C4',
 				},
 			},
