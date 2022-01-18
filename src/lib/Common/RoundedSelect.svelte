@@ -17,7 +17,7 @@
 	}
 
 	.select {
-		@apply min-w-max w-[20%] cursor-pointer bg-transparent rounded-3xl;
+		@apply min-w-max w-[30%] md:w-[20%] cursor-pointer bg-transparent rounded-3xl;
 		@apply border border-light-lighterGray;
 	}
 </style>

@@ -44,8 +44,10 @@
 <GridLayout>
 	<div class="mid-holder" slot="mid">
 		<div class="main">
-			<h3>{historyFilter} History</h3>
-			<RoundedSelect {optionsArray} bind:value={filterId} />
+			<div class="header">
+				<h3>{historyFilter} History</h3>
+				<RoundedSelect {optionsArray} bind:value={filterId} />
+			</div>
 			<div class="history-holder">
 				<!-- Received -->
 				{#each filteredArray as historyObject, i}
@@ -72,11 +74,11 @@
 
 <style lang="postcss" global>
 	:local(.mid-holder) {
-		@apply flex justify-end mr-[5vw];
+		@apply flex items-center md:justify-end mr-[5vw] w-full md:w-auto px-4;
 	}
 
 	:local(.main) {
-		@apply h-screen flex flex-col p-4 md:p-0 w-full max-w-[50vw];
+		@apply h-screen flex flex-col w-full md:max-w-[50vw];
 	}
 
 	:local(h3) {
@@ -84,7 +86,7 @@
 	}
 
 	:local(.history-holder) {
-		@apply w-full min-w-max overflow-y-auto h-[85%] pr-6;
+		@apply w-full md:min-w-max md:overflow-y-auto md:h-[85%] md:pr-6;
 	}
 
 	:local(button) {
@@ -92,5 +94,9 @@
 		@apply text-sm font-bold dark:text-white;
 		@apply my-6 py-2 px-4 self-center;
 		@apply hover:bg-light-purple hover:text-white hover:border-light-purple transition duration-500;
+	}
+
+	:local(.header) {
+		@apply flex items-center justify-between md:flex-col md:items-start md:justify-start;
 	}
 </style>

@@ -11,7 +11,7 @@
 
 <div>
 	<span
-		class="text-lg {!clicked
+		class="text-sm md:text-lg {!clicked
 			? type == 'negative'
 				? 'text-light-red'
 				: 'text-light-green'
@@ -22,7 +22,7 @@
 </div>
 <div>
 	<span
-		class="text-base {!clicked
+		class="text-xs md:text-base {!clicked
 			? type == 'negative'
 				? 'text-light-red'
 				: 'text-light-green'

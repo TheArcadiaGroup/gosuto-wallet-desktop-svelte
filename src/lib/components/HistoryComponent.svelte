@@ -6,6 +6,8 @@
 
 	import Swap from './HistoryComponent/Swap.svelte';
 
+	export let wallet = 'Wallet 1';
+
 	export let status: 'Received' | 'Sent' | 'Stake' | 'Swap' = 'Sent';
 
 	export let dateAndTime = 'Apr 01, 2021 07:15:20 am (CST)';
@@ -41,10 +43,10 @@
 					<span class="status">
 						{status}
 					</span>
-					<span class="wallet {clicked ? 'text-white' : 'text-light-grey'}">Wallet</span>
+					<span class="wallet {clicked ? 'text-white' : 'text-light-grey'}">{wallet}</span>
 				</div>
 				<div>
-					<span class="dateAndTime">
+					<span class="dateAndime">
 						{dateAndTime}
 					</span>
 				</div>
@@ -70,27 +72,26 @@
 	.main {
 		@apply py-2;
 	}
-
 	.container {
 		@apply rounded-3xl flex justify-between m-1;
 	}
 	.left {
-		@apply p-3 mx-3 my-1;
+		@apply md:p-3 mx-2 md:mx-3 my-1;
 	}
 	.right {
-		@apply p-3 mx-3 my-1;
+		@apply md:p-3 mx-2 md:mx-3 my-1;
 	}
 	.leftcontent {
 		@apply text-left;
 	}
 	.status {
-		@apply text-xl font-bold;
+		@apply text-sm md:text-xl font-bold;
 	}
 	.wallet {
-		@apply text-xs font-bold;
+		@apply text-xs md:font-bold;
 	}
 	.dateAndime {
-		@apply text-base;
+		@apply text-xs md:text-base text-light-gray;
 	}
 	.top-border {
 		@apply border-t border-black dark:border-white border-opacity-10;

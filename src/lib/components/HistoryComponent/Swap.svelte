@@ -14,7 +14,7 @@
 	export let clicked: boolean;
 </script>
 
-<div class="inline-flex space-x-4 ">
+<div class="inline-flex space-x-2 md:space-x-4 ">
 	<div class="text-right">
 		<Amount
 			type="negative"
@@ -40,3 +40,9 @@
 		/>
 	</div>
 </div>
+
+<style lang="postcss">
+	.my-auto {
+		@apply w-4;
+	}
+</style>
