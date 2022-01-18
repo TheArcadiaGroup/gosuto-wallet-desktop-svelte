@@ -33,7 +33,7 @@
 			</ul>
 		</div>
 		<div class="input-wrapper">
-			<TextInput label={'Wallet Name'} />
+			<TextInput label={'Wallet Name'} bind:value={walletName} />
 		</div>
 		<div class="password-input-wrapper password-new">
 			<p class="password-label">New Password</p>
@@ -85,7 +85,7 @@
 <style type="postcss" global>
 	:local(.wrapper) {
 		@apply absolute inset-0 overflow-auto;
-		@apply grid;
+		@apply grid 4xl:place-items-center;
 		@apply dark:bg-dark-gosutoDark;
 	}
 
@@ -141,12 +141,12 @@
 
 	.password-input-wrapper :global(.lock-icon) {
 		@apply absolute;
-		@apply top-[0.8rem] left-[4%];
+		@apply top-[0.8rem] left-[4%] 4xl:left-[40%];
 		@apply opacity-40 text-black dark:text-white;
 	}
 	.password-input-wrapper :global(.eye-wrapper) {
 		@apply absolute;
-		@apply top-[0.85rem] right-[4%];
+		@apply top-[0.85rem] right-[4%] 4xl:right-0;
 		@apply opacity-40 text-black dark:text-white;
 	}
 
