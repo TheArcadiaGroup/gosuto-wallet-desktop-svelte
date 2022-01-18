@@ -73,7 +73,7 @@
 			</label>
 		</div>
 		<div class="bt next-bt">
-			<Button>
+			<Button on:click={() => goto('/add-wallet/create-wallet/create-wallet-seed')}>
 				<span slot="text" class="bt-text">Continue</span>
 			</Button>
 		</div>
