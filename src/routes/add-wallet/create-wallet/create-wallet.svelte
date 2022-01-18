@@ -108,11 +108,10 @@
 	}
 
 	:local(.explanation-text) {
-		@apply text-light-fadedText opacity-80;
+		@apply text-light-fadedText dark:text-white opacity-80;
 		@apply text-xs font-display;
 		@apply relative;
 		@apply ml-3 md:ml-0;
-		@apply text-white opacity-80;
 	}
 
 	:local(h2) {
