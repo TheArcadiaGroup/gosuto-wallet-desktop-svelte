@@ -48,21 +48,21 @@
 	</div>
 </div>
 
-<style lang="postcss">
-	.wallet-swap-page {
+<style lang="postcss" global>
+	:local(.wallet-swap-page) {
 		@apply min-h-screen flex flex-col md:flex-row;
 		@apply dark:bg-dark-background;
 	}
 
-	.main-view {
+	:local(.main-view) {
 		@apply md:w-3/4;
 	}
 
-	.sidebar-placeholder {
+	:local(.sidebar-placeholder) {
 		@apply md:w-1/4;
 	}
 
-	.sidebar {
+	:local(.sidebar) {
 		@apply mt-auto;
 		@apply md:fixed md:right-0 md:h-screen md:w-1/4;
 	}

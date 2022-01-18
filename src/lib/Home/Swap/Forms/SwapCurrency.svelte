@@ -75,75 +75,75 @@
 	{/if}
 </div>
 
-<style lang="postcss">
+<style lang="postcss" global>
 
-    .swap-currency {
+    :local(.swap-currency) {
         @apply relative min-h-[20rem] rounded-t-3xl h-full w-full;
-		@apply md:rounded-none;
-		@apply dark:bg-dark-blue;
+				@apply md:rounded-none;
+				@apply dark:bg-dark-blue;
         box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
     }
 
-	.swap-currency::before {
+	:local(.swap-currency::before) {
 		content: '';
 		@apply absolute left-1/2 -translate-x-1/2 top-0 my-3 w-1/3 h-2 rounded-3xl bg-light-transparentGrey12;
-        @apply md:hidden;
+		@apply md:hidden;
 	}
 
-	.swap-form {
+	:local(.swap-form) {
 		@apply h-full w-full flex flex-col px-16;
 		@apply md:px-7;
 	}
 
-	.form-title {
+	:local(.form-title) {
 		@apply text-xl font-bold text-center mt-16 mb-7;
 		@apply md:mt-20 md:mb-14;
 		@apply dark:text-white;
 	}
 
-	.form-row {
+	:local(.form-row) {
 		@apply w-full flex flex-row gap-4 items-center justify-center;
 	}
 
-	.row-text-input {
+	:local(.row-text-input) {
 		@apply w-2/3;
 	}
 
-	.row-text {
+	:local(.row-text) {
 		@apply mt-4 w-1/3 text-center font-bold text-sm;
 		@apply text-light-grey dark:text-white;
 	}
 
-	.row-token-select {
+	:local(.row-token-select) {
 		@apply w-1/3;
 	}
 
-	.money-amount {
+	:local(.money-amount) {
 		@apply font-medium text-sm mt-5;
 		@apply text-light-grey dark:text-white;
 	}
 
-	.swap-icon {
+	:local(.swap-icon) {
 		@apply w-2/3 flex items-center justify-center py-6;
 		@apply md:w-full;
 	}
 
-	.create-token-warning {
+	:local(.create-token-warning) {
 		@apply text-light-grey189 text-sm font-semibold mt-3;
 		@apply md:mt-6;
 	}
 
-	.buttons {
+	:local(.buttons) {
 		@apply w-3/4 mx-auto flex flex-col gap-4 mt-28 mb-16;
 		@apply md:mt-10 md:w-full md:gap-1;
 	}
 
-	:global(.cancel-swap-button) {
+	.cancel-swap-button {
 		/* Important, because otherwise values inside button component overwrite these settings */
 		@apply bg-transparent border-transparent !important;
 	}
 
-	.cancel-swap-button-text {
+	:local(.cancel-swap-button-text) {
 		@apply my-2 text-xs leading-7 font-bold text-dark-gray dark:text-white md:text-sm;
 	}
 </style>

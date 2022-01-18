@@ -21,26 +21,26 @@
   </div>
 </div>
 
-<style lang="postcss">
+<style lang="postcss" global>
 
-  .return-home {
+  :local(.return-home) {
     @apply relative flex flex-col gap-x-8 px-2 md:flex-row md:items-center;
   }
 
-  .back-button {
+  :local(.back-button) {
     @apply hidden absolute right-full cursor-pointer md:block;
   }
 
-  .wallet-title {
+  :local(.wallet-title) {
     @apply font-bold md:text-2xl;
     @apply dark:text-white;
   }
 
-  .wallet-pub-key {
+  :local(.wallet-pub-key) {
     @apply flex gap-[0.75rem] items-center;
   }
 
-  .pub-key-text {
+  :local(.pub-key-text) {
     @apply text-sm md:text-base;
     @apply text-light-gardenText dark:text-white;
   }

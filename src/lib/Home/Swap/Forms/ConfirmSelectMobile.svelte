@@ -19,9 +19,9 @@
 	</div>
 </div>
 
-<style lang="postcss">
+<style lang="postcss" global>
 
-	.select-currency {
+	:local(.select-currency) {
 		@apply relative h-full w-full min-h-[20rem] rounded-t-3xl px-16;
 		@apply flex flex-col items-center justify-center;
 		@apply md:rounded-none;
@@ -29,34 +29,34 @@
 		box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
 	}
 
-	.select-currency::before {
+	:local(.select-currency::before) {
 		content: '';
 		@apply absolute top-0 my-3 w-1/3 h-2 rounded-3xl bg-light-transparentGrey12;
-        @apply md:hidden;
+		@apply md:hidden;
 	}
 
-	.selected-crypto {
+	:local(.selected-crypto) {
 		@apply font-bold;
 		@apply text-light-grey dark:text-white;
 	}
 
-	.currency-info {
+	:local(.currency-info) {
 		@apply w-full flex flex-row;
 	}
 
-	.currency-amount {
+	:local(.currency-amount) {
 		@apply ml-auto flex flex-col text-right;
 	}
 
-	.crypto-amount {
+	:local(.crypto-amount) {
 		@apply font-bold text-sm;
 	}
 
-	.real-amount {
+	:local(.real-amount) {
 		@apply font-bold text-xs;
 	}
 
-	.button {
+	:local(.button) {
         @apply w-1/2 mx-auto flex flex-col gap-4 pt-4;
         @apply md:mt-10 md:w-full md:gap-1;
     }

@@ -76,42 +76,42 @@
 	</div>
 </div>
 
-<style lang="postcss">
+<style lang="postcss" global>
 
-	.wallet-swap {
+	:local(.wallet-swap) {
 		@apply px-4 pt-10 md:px-11 md:pt-20;
 	}
 
-	.tokens-in-wallet-title {
+	:local(.tokens-in-wallet-title) {
 		@apply font-bold text-base md:text-xl dark:text-white;
 	}
 
-	.wallet-swap-title {
+	:local(.wallet-swap-title) {
 		@apply px-2 flex flex-row items-center;
 	}
 
-	.wallet-swap-title-text {
+	:local(.wallet-swap-title-text) {
 		@apply font-bold text-base md:text-xl;
 	}
 
-	.scroll-container {
+	:local(.scroll-container) {
 		@apply flex flex-row overflow-x-scroll gap-x-3.5 gap-y-5 px-2 py-8 snap-x;
 		@apply md:gap-8 md:flex-col md:overflow-auto;
 	}
 
-	.token-group {
+	:local(.token-group) {
 		@apply w-full shrink-0 snap-center grid grid-cols-2 grid-rows-2 gap-x-3.5 gap-y-5 md:gap-8;
 	}
 
-	.mobile-scrollbar {
+	:local(.mobile-scrollbar) {
 		@apply w-full mx-auto px-2 pb-2 flex flex-row justify-center gap-1 mb-7 md:hidden;
 	}
 
-	.mobile-scrollbar-dot {
+	:local(.mobile-scrollbar-dot) {
         @apply h-1.5 rounded-full transition-all duration-200;
     }
 
-	.inner-btn {
+	:local(.inner-btn) {
 		@apply flex gap-1 items-center py-1 px-3.5 md:gap-2.5 md:py-2 md:px-5 md:text-base;
 	}
 
