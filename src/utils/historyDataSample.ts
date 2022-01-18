@@ -6,7 +6,7 @@ export const generateTransactions = () => {
 		data.push({
 			status: statuses[Math.floor(Math.random() * 3)],
 			dateAndTime: `Apr ${Math.floor(Math.random() * 30 + 1)}, 2021 ${Math.floor(
-				Math.random() * 23 + 1,
+				Math.random() * 12 + 1,
 			)}:${Math.floor(Math.random() * 59 + 1)}:${Math.floor(Math.random() * 59 + 1)} ${
 				Math.floor(Math.random() * 2) > 1 ? 'am' : 'pm'
 			} (CST)`,
@@ -22,7 +22,7 @@ export const generateTransactions = () => {
 		data.push({
 			status: 'Swap',
 			dateAndTime: `Apr ${Math.floor(Math.random() * 30 + 1)}, 2021 ${Math.floor(
-				Math.random() * 23 + 1,
+				Math.random() * 12 + 1,
 			)}:${Math.floor(Math.random() * 59 + 1)}:${Math.floor(Math.random() * 59 + 1)} ${
 				Math.floor(Math.random() * 2) > 1 ? 'am' : 'pm'
 			} (CST)`,
