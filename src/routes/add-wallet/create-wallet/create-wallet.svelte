@@ -4,6 +4,7 @@
 	import TextInput from '$lib/Common/TextInput.svelte';
 	import EyeIcon from '$icons/EyeIcon.svelte';
 	import LockIcon from '$icons/LockIcon.svelte';
+	import { goto } from '$app/navigation';
 
 	let walletName: string;
 	let password: string;
@@ -76,7 +77,7 @@
 				<span slot="text" class="bt-text">Continue</span>
 			</Button>
 		</div>
-		<button class="bt cancel-bt">
+		<button class="bt cancel-bt" on:click={() => goto('/add-wallet')}>
 			<span class="bt-text cancel-bt-text">Back</span>
 		</button>
 	</div>
@@ -85,17 +86,17 @@
 <style type="postcss" global>
 	:local(.wrapper) {
 		@apply absolute inset-0 overflow-auto;
-		@apply grid 4xl:place-items-center;
+		@apply grid;
 		@apply dark:bg-dark-gosutoDark;
 	}
 
 	.wrapper :global(.gosuto-logo) {
-		@apply w-36 h-12 md:w-64 md:h-20 3xl:w-80 3xl:h-28 4xl:w-2/3 4xl:h-1/2;
+		@apply w-36 h-12 md:w-64 md:h-20 3xl:w-80 3xl:h-28 4xl:w-full 4xl:h-3/5;
 		@apply mb-8 4xl:mb-16;
 	}
 
 	:local(.content) {
-		@apply place-self-start justify-self-center;
+		@apply place-self-start justify-self-center 3xl:place-self-center;
 		@apply grid place-items-center;
 		@apply mt-10 md:mt-20;
 		@apply w-11/12 sm:w-3/4 md:w-1/2 lg:w-2/5 xl:w-1/4;
@@ -109,7 +110,7 @@
 
 	:local(.explanation-text) {
 		@apply text-light-fadedText dark:text-white opacity-80;
-		@apply text-xs font-display;
+		@apply text-xs font-display 4xl:text-2xl;
 		@apply relative;
 		@apply ml-3 md:ml-0;
 	}
@@ -141,24 +142,27 @@
 
 	.password-input-wrapper :global(.lock-icon) {
 		@apply absolute;
-		@apply top-[0.8rem] left-[4%] 4xl:left-[40%];
+		@apply top-[0.8rem] 4xl:top-10 left-[4%] 4xl:left-[3%];
+		@apply 4xl:w-14 4xl:h-14;
 		@apply opacity-40 text-black dark:text-white;
 	}
-	.password-input-wrapper :global(.eye-wrapper) {
+	.password-input-wrapper :global(.eye-icon) {
 		@apply absolute;
-		@apply top-[0.85rem] right-[4%] 4xl:right-0;
+		@apply top-[0.85rem] 4xl:top-10 right-[4%] 4xl:right-[3%];
+		@apply 4xl:w-14 4xl:h-14;
 		@apply opacity-40 text-black dark:text-white;
 	}
 
 	:local(.password-label) {
 		@apply absolute px-1 4xl:px-3;
-		@apply -top-[0.3rem] md:-top-3 left-4;
-		@apply leading-none font-display text-xs md:text-base 4xl:text-4xl;
-		@apply bg-white dark:bg-dark-background dark:text-white;
+		@apply -top-[0.3rem] md:-top-3 4xl:-top-4 left-4 4xl:left-8;
+		@apply dark:text-white leading-none font-display text-xs md:text-base 4xl:text-4xl;
+		@apply bg-white dark:bg-dark-background;
 	}
 
 	:local(.details-input) {
 		@apply border border-light-gray rounded-2xl 4xl:rounded-[2.5rem] bg-white dark:bg-dark-background;
+		@apply dark:text-dark-lighterGray;
 		@apply w-full h-[3.125rem] 4xl:h-32;
 		@apply px-12 4xl:px-24;
 		@apply 4xl:text-4xl;
@@ -176,19 +180,20 @@
 	:local(.checkbox) {
 		@apply focus:ring-0;
 		@apply dark:bg-dark-background;
-		@apply rounded-[0.3rem];
+		@apply rounded-[0.3rem] 4xl:rounded-xl;
 		@apply border-light-fadedText dark:border-white;
+		@apply 4xl:p-5 4xl:-translate-y-9 4xl:mt-16;
 	}
 
 	:local(.checkbox-label) {
 		@apply text-light-lighterGray dark:text-white;
-		@apply text-xs font-display;
-		@apply ml-px;
+		@apply text-xs 4xl:text-2xl font-display;
+		@apply ml-px 4xl:ml-4;
 	}
 
 	:local(.bt) {
-		@apply w-11/12 max-w-2xl h-12 4xl:h-28;
-		@apply mt-10 4xl:mt-20;
+		@apply w-11/12 max-w-3xl h-12 4xl:h-28;
+		@apply mt-10 4xl:mt-32;
 		@apply rounded-3xl;
 	}
 
@@ -197,7 +202,7 @@
 	}
 
 	:local(.next-bt) {
-		@apply mt-28 md:mt-10;
+		@apply mt-28 md:mt-10 4xl:mt-32;
 	}
 
 	:local(.cancel-bt) {
