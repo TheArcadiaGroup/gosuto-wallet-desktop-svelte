@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import { slide } from 'svelte/transition';
 
 	import Amount from './HistoryComponent/Amount.svelte';
 
@@ -28,7 +29,7 @@
 	}
 </script>
 
-<div class="main {$$props.class}">
+<div class="main {$$props.class}" transition:slide>
 	<div
 		class="container {clicked ? 'bg-purple-500' : 'dark:bg-dark-blue '} hover:cursor-pointer"
 		class:clicked
