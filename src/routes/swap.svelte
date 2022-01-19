@@ -32,13 +32,11 @@
 			addingTokenActive = false;
 		}}
 	>
-		<Sidebar
-			slot="mainSideBar"
-			cryptoUnit={selectedToken.cryptoUnit}
-			cryptoAmount={selectedToken.cryptoAmount}
-			currencyUnit={selectedToken.currencyUnit}
-			currencySymbol={selectedToken.currencySymbol}
-		/>
+		<!-- cryptoUnit={selectedToken.cryptoUnit} -->
+		<!-- cryptoAmount={selectedToken.cryptoAmount} -->
+		<!-- currencyUnit={selectedToken.currencyUnit} -->
+		<!-- currencySymbol={selectedToken.currencySymbol} -->
+		<Sidebar slot="mainSideBar" />
 		<p class="inactive-text" slot="inactiveTextSlot">Select currency you want to swap</p>
 	</AddTokenSidebar>
 </GridLayout>
