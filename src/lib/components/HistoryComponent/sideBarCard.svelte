@@ -105,8 +105,8 @@
 
 <style lang="postcss" global>
 	:local(.main) {
-		@apply pt-6 px-8 mb-4 md:mb-0 w-full md:border border-black border-opacity-10 rounded-3xl;
-		@apply bg-white flex flex-col;
+		@apply pt-6 px-8 mb-4 md:mb-0 w-full border border-black dark:border-white border-opacity-10 dark:border-opacity-40 rounded-3xl;
+		@apply bg-white dark:bg-dark-background flex flex-col dark:md:bg-dark-grey;
 		box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
 	}
 
@@ -115,7 +115,7 @@
 	}
 
 	:local(h5) {
-		@apply font-bold text-sm text-light-purple dark:text-white;
+		@apply font-bold text-sm text-light-purple;
 	}
 
 	:local(.header) {
@@ -135,11 +135,11 @@
 	}
 
 	:local(.to-from) {
-		@apply font-semibold text-sm;
+		@apply font-semibold text-sm dark:text-white dark:opacity-60;
 	}
 
 	:local(.address) {
-		@apply text-light-gray;
+		@apply text-light-gray dark:text-white;
 	}
 
 	:local(.date) {
@@ -148,7 +148,7 @@
 
 	:local(.amount-holder) {
 		@apply flex justify-between items-center py-4 mb-5;
-		@apply border-t border-b border-opacity-20 border-black;
+		@apply border-t border-b border-opacity-20 dark:border-opacity-30 border-black dark:border-white;
 	}
 
 	:local(.amount) {
