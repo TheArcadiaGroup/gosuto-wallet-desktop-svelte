@@ -52,7 +52,7 @@
 	}
 
 	.wrapper :global(.gosuto-logo) {
-		@apply w-36 h-12 md:w-64 md:h-20 3xl:w-80 3xl:h-28 4xl:w-full 4xl:h-3/5 max-w-7xl;
+		@apply w-36 h-12 md:w-64 md:h-20 3xl:w-80 3xl:h-28 4xl:w-full 4xl:h-3/5 max-w-5xl;
 		@apply mb-8 4xl:mb-16;
 	}
 
