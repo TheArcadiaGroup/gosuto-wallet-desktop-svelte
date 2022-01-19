@@ -105,7 +105,8 @@
 
 <style lang="postcss" global>
 	:local(.main) {
-		@apply pt-6 px-8 mb-4 md:mb-0 w-full border border-black dark:border-white border-opacity-10 dark:border-opacity-40 rounded-3xl;
+		@apply pt-6 px-8 mb-4 md:mb-0 w-full;
+		@apply border border-black dark:border-white dark:md:border-0 border-opacity-10 dark:border-opacity-40 rounded-3xl;
 		@apply bg-white dark:bg-dark-background flex flex-col dark:md:bg-dark-grey;
 		box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
 	}
