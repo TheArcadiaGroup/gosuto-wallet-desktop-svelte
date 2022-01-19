@@ -78,6 +78,11 @@
 		<RoundedSelect optionsArray={cryptoList} />
 	</div>
 	<p class="value">{`${currencySymbol}0.00 ${currencyUnit}`}</p>
+
+	<p class="notice">
+		This wallet currently does not contain USDC. USDC token will be added to this wallet upon swap
+	</p>
+
 	<div class="lower-button-holder">
 		<Button
 			on:click={() => {
@@ -156,11 +161,11 @@
 	}
 
 	:local(.swap-text-input-holder) > p {
-		@apply pr-5 text-sm;
+		@apply pr-8 text-sm dark:text-white;
 	}
 
 	:local(.value) {
-		@apply self-start;
+		@apply self-start dark:text-white;
 	}
 
 	:local(.icon-holder) {
@@ -173,5 +178,9 @@
 
 	:local(.swap-text-input-holder) > .input-holder {
 		@apply 2xl:w-[12vw] self-auto;
+	}
+
+	:local(.notice) {
+		@apply mt-6 text-dark-iconGray;
 	}
 </style>
