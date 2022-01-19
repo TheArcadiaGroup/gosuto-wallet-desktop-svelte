@@ -15,6 +15,8 @@ export const generateTransactions = () => {
 			cryptoUnit: 'USDT',
 			currencyUnit: 'USD',
 			SwapData: null,
+			toAccount: '0x9f98e01d2gj92ngn2g7gn24ed7',
+			fromAccount: '0x9f98e01d2gj92ngn2g7gn24ed7',
 		});
 	}
 
