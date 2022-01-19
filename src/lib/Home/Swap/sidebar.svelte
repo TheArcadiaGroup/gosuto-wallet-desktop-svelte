@@ -5,11 +5,11 @@
 	import TextInput from '$lib/Common/TextInput.svelte';
 	import SwapSidebarIcon from '$icons/SwapSidebarIcon.svelte';
 	import RoundedSelect from '$lib/Common/RoundedSelect.svelte';
+	import ConfirmPopup from '$lib/PopUps/Swap/ConfirmPopup.svelte';
+	import SwapFailedPopup from '$lib/PopUps/Swap/FailedPopup.svelte';
+	import SwapSuccessPopup from '$lib/PopUps/Swap/SuccessPopup.svelte';
 
 	const dispatch = createEventDispatcher();
-
-	let swapFrom: any = null;
-	let swapTo: any = null;
 
 	export let cryptoUnit = 'USDT';
 	export let cryptoAmount = 2000;
@@ -18,16 +18,53 @@
 
 	export let cryptoList = ['USDT', 'FIRO', 'CSPR'];
 
-	let swapAmount: number;
+	let swapFromAmount: number;
+	let swapToAmount: number;
 
 	let showConfirmPopup: boolean = false;
+	let showSuccessPopup: boolean = false;
+	let showFailedPopup: boolean = false;
+
+	let successfulSwap: boolean = true;
 </script>
+
+<!-- Popups -->
+{#if showConfirmPopup}
+	<ConfirmPopup
+		on:confirm={() => {
+			showConfirmPopup = false;
+			if (successfulSwap) {
+				// Add code to copy private key Here
+				showSuccessPopup = true;
+			} else {
+				showFailedPopup = true;
+			}
+		}}
+		on:cancel={() => {
+			showConfirmPopup = false;
+		}}
+	/>
+{/if}
+{#if showSuccessPopup}
+	<SwapSuccessPopup
+		on:confirm={() => {
+			showSuccessPopup = false;
+		}}
+	/>
+{/if}
+{#if showFailedPopup}
+	<SwapFailedPopup
+		on:confirm={() => {
+			showFailedPopup = false;
+		}}
+	/>
+{/if}
 
 <div class="sidebar-holder" in:fly={{ x: 200, duration: 500 }} out:fly={{ x: 200, duration: 500 }}>
 	<h4>Swap</h4>
 
 	<div class="swap-text-input-holder">
-		<TextInput bind:value={swapAmount} label="From" type="number" />
+		<TextInput bind:value={swapFromAmount} label="From" type="number" />
 		<p class="center-item">{cryptoUnit}</p>
 	</div>
 	<p class="value">{`${currencySymbol}0.00 ${currencyUnit}`}</p>
@@ -36,15 +73,15 @@
 		<SwapSidebarIcon />
 	</div>
 
-	<div class="swap-text-input-holder">
-		<TextInput bind:value={swapAmount} label="From" type="number" />
+	<div class="swap-text-input-holder relative-holder">
+		<TextInput bind:value={swapToAmount} label="From" type="number" />
 		<RoundedSelect optionsArray={cryptoList} />
 	</div>
 	<p class="value">{`${currencySymbol}0.00 ${currencyUnit}`}</p>
 	<div class="lower-button-holder">
 		<Button
 			on:click={() => {
-				if ((swapFrom || swapTo) && swapFrom <= cryptoAmount) {
+				if ((swapFromAmount || swapToAmount) && swapFromAmount <= cryptoAmount) {
 					showConfirmPopup = true;
 				} else {
 					// What happens when user doesn't enter values
@@ -110,6 +147,10 @@
 		@apply flex items-center justify-between w-full mb-4;
 	}
 
+	:local(.relative-holder) {
+		@apply relative;
+	}
+
 	:local(.swap-text-input-holder) > .center-item {
 		@apply transform translate-y-1;
 	}
@@ -124,5 +165,13 @@
 
 	:local(.icon-holder) {
 		@apply my-6;
+	}
+
+	:local(.swap-text-input-holder) > .select {
+		@apply w-[5vw] transform translate-y-2 right-0 -translate-x-2;
+	}
+
+	:local(.swap-text-input-holder) > .input-holder {
+		@apply 2xl:w-[12vw] self-auto;
 	}
 </style>
