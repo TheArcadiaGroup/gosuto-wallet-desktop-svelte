@@ -11,6 +11,7 @@
 		toCryptoUnit: '',
 		toPriceUnit: '',
 	};
+	export let smaller: boolean = false;
 </script>
 
 <div class="inline-flex space-x-2 md:space-x-4 ">
@@ -21,6 +22,7 @@
 			price={SwapData.fromPrice}
 			cryptoUnit={SwapData.fromCryptoUnit}
 			currencyUnit={SwapData.fromPriceUnit}
+			{smaller}
 		/>
 	</div>
 	<div class="my-auto">
@@ -32,6 +34,7 @@
 			price={SwapData.toPrice}
 			cryptoUnit={SwapData.toCryptoUnit}
 			currencyUnit={SwapData.toPriceUnit}
+			{smaller}
 		/>
 	</div>
 </div>

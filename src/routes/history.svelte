@@ -71,9 +71,10 @@
 			<button>Show more</button>
 		</div>
 	</div>
-	<div class="sidebar" slot="last">
-		<Sidebar historyObject={selectedTokenIndex !== -1 ? filteredArray[selectedTokenIndex] : null} />
-	</div>
+	<Sidebar
+		slot="last"
+		historyObject={selectedTokenIndex !== -1 ? filteredArray[selectedTokenIndex] : null}
+	/>
 </GridLayout>
 
 <style lang="postcss" global>

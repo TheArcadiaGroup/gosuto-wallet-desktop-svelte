@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
+	import SideBarCard from '$lib/components/HistoryComponent/sideBarCard.svelte';
 
 	export let historyObject = null;
 </script>
@@ -12,7 +13,15 @@
 			in:fly={{ x: 200, duration: 500 }}
 			out:fly={{ x: 200, duration: 500 }}
 		>
-			Test
+			<SideBarCard
+				status={historyObject.status}
+				dateAndTime={historyObject.dateAndTime}
+				SwapData={historyObject.SwapData}
+				amount={historyObject.amount}
+				price={historyObject.price}
+				cryptoUnit={historyObject.cryptoUnit}
+				currencyUnit={historyObject.currencyUnit}
+			/>
 		</div>
 	{:else}
 		<p class="inactive-text">Select an entry to view more info about it</p>
@@ -28,8 +37,7 @@
 		@apply text-lg text-light-inactiveText md:max-w-[60%] 2xl:max-w-[55%] text-center;
 	}
 
-	:local(h4) {
-		@apply font-bold text-xl md:mb-4 2xl:mb-12 dark:text-white;
-		@apply hidden md:block;
+	:local(.sidebar-holder) {
+		@apply flex flex-col items-center h-full w-full;
 	}
 </style>

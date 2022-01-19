@@ -7,11 +7,12 @@
 	export let type: 'positive' | 'negative' = 'positive';
 
 	export let clicked: boolean = false;
+	export let smaller: boolean = false;
 </script>
 
 <div>
 	<span
-		class="text-sm md:text-lg {!clicked
+		class="{smaller ? 'text-sm md:text-base' : 'text-sm md:text-lg'} {!clicked
 			? type == 'negative'
 				? 'text-light-red'
 				: 'text-light-green'
@@ -22,7 +23,7 @@
 </div>
 <div>
 	<span
-		class="text-xs md:text-base {!clicked
+		class="{smaller ? 'text-xs md:text-sm' : 'text-xs md:text-base'}  {!clicked
 			? type == 'negative'
 				? 'text-light-red'
 				: 'text-light-green'
@@ -31,3 +32,6 @@
 		{price}&nbsp;{currencyUnit}
 	</span>
 </div>
+
+<style>
+</style>
