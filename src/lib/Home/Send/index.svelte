@@ -1,8 +1,9 @@
 <script lang="ts">
 	import ReturnHome from '$components/Home/ReturnHome.svelte';
 	import PlusIcon from '$icons/PlusIcon.svelte';
-	import TokenCard from '$lib/Home/Swap/TokenCard.svelte';
+	import TokenCard from '$lib/components/Home/TokenCard.svelte';
 	import Button from '$lib/Common/Button.svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	export let tokens = [
 		{
@@ -25,6 +26,8 @@
 		{},
 	];
 
+	const dispatch = createEventDispatcher();
+
 	let scroll = 0;
 	let scrollWidth = 0;
 	let currentPage = 0;
@@ -33,6 +36,9 @@
 
 	function selectToken(e: { detail: { id: number } }): void {
 		selectedTokenIndex = e.detail.id;
+		dispatch('tokenSelected', {
+			selectedToken: tokens[selectedTokenIndex],
+		});
 	}
 
 	function onScroll(event) {

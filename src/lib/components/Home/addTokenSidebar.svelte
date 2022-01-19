@@ -1,0 +1,260 @@
+<script lang="ts">
+	import TextInput from '$lib/Common/TextInput.svelte';
+	import ToggleSwitch from '$lib/Common/ToggleSwitch.svelte';
+	import Button from '$lib/Common/Button.svelte';
+	import ConfirmPopup from '$lib/PopUps/CreateToken/ConfirmPopup.svelte';
+	import CreateFailedPopup from '$lib/PopUps/CreateToken/FailedPopup.svelte';
+	import CreateSuccessPopup from '$lib/PopUps/CreateToken/SuccessPopup.svelte';
+	import ImportFailedPopup from '$lib/PopUps/ImportToken/FailedPopup.svelte';
+	import ImportSuccessPopup from '$lib/PopUps/ImportToken/SuccessPopup.svelte';
+	import { fly, slide } from 'svelte/transition';
+	import { createEventDispatcher } from 'svelte';
+
+	export let addingTokenActive: boolean = false;
+	export let mainSidebarActive: boolean = false;
+
+	const dispatch = createEventDispatcher();
+
+	let creatingToken: boolean = true;
+
+	let tokenName: string;
+	let tokenTicker: string;
+	let contractString: string;
+	let price: number;
+	let limitedSupplyChecked: boolean;
+	let mintableSupplyChecked: boolean;
+
+	let contractAddress: string;
+	let decimalsOfPrecision: string;
+
+	let showConfirmPopup: boolean = false;
+	let showCreateSuccessPopup: boolean = false;
+	let showCreateFailedPopup: boolean = false;
+	let showImportSuccessPopup: boolean = false;
+	let showImportFailedPopup: boolean = false;
+
+	//Pass whether the creation/Import is successful or not to this Variable below.
+	let successfulTokenCreation: boolean = true;
+	let successfulTokenImport: boolean = true;
+</script>
+
+<div class={!addingTokenActive && !mainSidebarActive ? 'main h-screen justify-center' : 'main'}>
+	<!-- Popups -->
+	{#if showConfirmPopup}
+		<ConfirmPopup
+			{tokenName}
+			{price}
+			on:confirm={() => {
+				showConfirmPopup = false;
+				if (successfulTokenCreation) {
+					// Add code to copy private key Here
+					showCreateSuccessPopup = true;
+				} else {
+					showCreateFailedPopup = true;
+				}
+			}}
+			on:cancel={() => {
+				showConfirmPopup = false;
+			}}
+		/>
+	{/if}
+	{#if showCreateSuccessPopup}
+		<CreateSuccessPopup
+			on:confirm={() => {
+				showCreateSuccessPopup = false;
+			}}
+		/>
+	{/if}
+	{#if showCreateFailedPopup}
+		<CreateFailedPopup
+			on:confirm={() => {
+				showCreateFailedPopup = false;
+			}}
+		/>
+	{/if}
+	{#if showImportSuccessPopup}
+		<ImportSuccessPopup
+			on:confirm={() => {
+				showImportSuccessPopup = false;
+			}}
+		/>
+	{/if}
+	{#if showImportFailedPopup}
+		<ImportFailedPopup
+			on:confirm={() => {
+				showImportFailedPopup = false;
+			}}
+		/>
+	{/if}
+
+	<!-- Layout -->
+	{#if addingTokenActive}
+		<div
+			class="sidebar-holder"
+			in:fly={{ x: 200, duration: 500 }}
+			out:fly={{ x: 200, duration: 500 }}
+		>
+			<h4>Create Token</h4>
+			<div class="button-holder">
+				<button
+					class={creatingToken ? 'btn orange-btn' : 'btn white-btn'}
+					on:click={() => {
+						if (!creatingToken) {
+							creatingToken = true;
+						}
+					}}
+				>
+					Create Token
+				</button>
+				<button
+					class={creatingToken ? 'btn white-btn' : 'btn orange-btn'}
+					on:click={() => {
+						if (creatingToken) {
+							creatingToken = false;
+						}
+					}}
+				>
+					Import Token
+				</button>
+			</div>
+
+			{#if creatingToken}
+				<div class="create-token" transition:slide>
+					<TextInput bind:value={tokenName} label="Token Name" type="text" />
+					<br />
+					<TextInput bind:value={tokenTicker} label="Token Ticker" type="text" />
+					<br />
+					<TextInput bind:value={contractString} label="Contract String" type="text" />
+					<br />
+					<TextInput bind:value={price} label="Price (USD)" type="number" />
+					<div class="switch-holder">
+						<p>Limited supply</p>
+						<ToggleSwitch bind:checked={limitedSupplyChecked} />
+					</div>
+					<div class="switch-holder">
+						<p>Mintable supply</p>
+						<ToggleSwitch bind:checked={mintableSupplyChecked} />
+					</div>
+					<div class="lower-button-holder">
+						<Button
+							on:click={() => {
+								if (tokenName && tokenTicker && contractString && price) {
+									showConfirmPopup = true;
+								} else {
+									// What happens when user doesn't enter values
+								}
+							}}
+						>
+							<p class="lower-btn-text" slot="text">Create</p>
+						</Button>
+					</div>
+					<div
+						class="cancel-holder"
+						on:click={() => {
+							dispatch('closeSidebar');
+						}}
+					>
+						<p>Cancel</p>
+					</div>
+				</div>
+			{:else}
+				<div class="import-token" transition:slide>
+					<TextInput bind:value={contractAddress} label="Contract Address" type="text" />
+					<br />
+					<TextInput bind:value={tokenTicker} label="Token Ticker" type="text" />
+					<br />
+					<TextInput bind:value={decimalsOfPrecision} label="Decimals of Precision" type="text" />
+					<div class="lower-button-holder">
+						<Button
+							on:click={() => {
+								if (contractAddress && tokenTicker && decimalsOfPrecision) {
+									if (successfulTokenImport) {
+										showImportSuccessPopup = true;
+									} else {
+										showImportFailedPopup = true;
+									}
+								} else {
+									// What happens when user doesn't enter values
+								}
+							}}
+						>
+							<p class="lower-btn-text" slot="text">Create</p>
+						</Button>
+					</div>
+					<div
+						class="cancel-holder"
+						on:click={() => {
+							dispatch('closeSidebar');
+						}}
+					>
+						<p>Cancel</p>
+					</div>
+				</div>
+			{/if}
+		</div>
+	{:else if mainSidebarActive}
+		<slot name="mainSideBar" />
+	{:else}
+		<slot name="inactiveTextSlot" />
+	{/if}
+</div>
+
+<style lang="postcss" global>
+	:local(.main) {
+		@apply flex flex-col items-center md:pt-20 px-12 md:px-5 h-full md:h-screen w-full;
+	}
+
+	:local(h4) {
+		@apply font-bold text-xl md:mb-4 2xl:mb-12 dark:text-white;
+		@apply hidden md:block;
+	}
+
+	:local(.btn) {
+		@apply flex flex-col md:flex-row items-center justify-center;
+		@apply font-semibold text-sm 2xl:text-lg;
+		@apply rounded-3xl h-full;
+		@apply px-3 py-1 md:py-2 md:px-3 2xl:px-7;
+		@apply transition duration-300;
+	}
+
+	:local(.orange-btn) {
+		@apply bg-light-orange text-white;
+		box-shadow: 0px 2px 15px #ff826688;
+	}
+
+	:local(.white-btn) {
+		@apply text-light-grey dark:text-white;
+		box-shadow: 0px 2px 15px #0000001a;
+	}
+
+	:local(.button-holder) {
+		@apply flex justify-center my-4 md:my-0 md:mb-4 2xl:mb-20 w-full gap-4;
+	}
+
+	:local(.sidebar-holder) {
+		@apply flex flex-col items-center h-full w-full;
+	}
+
+	:local(.create-token),
+	:local(.import-token) {
+		@apply w-full;
+	}
+
+	:local(.switch-holder) {
+		@apply flex justify-between text-light-grey dark:text-white mt-4;
+	}
+
+	:local(.lower-button-holder) {
+		@apply w-full mt-12;
+	}
+
+	:local(.cancel-holder) {
+		@apply flex justify-center items-center w-full cursor-pointer my-5;
+		@apply text-base md:text-lg font-semibold text-light-grey dark:text-white;
+	}
+
+	:local(.lower-btn-text) {
+		@apply text-base md:text-lg;
+		@apply py-1 md:py-2;
+	}
+</style>
