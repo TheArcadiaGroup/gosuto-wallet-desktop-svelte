@@ -4,6 +4,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import TextInput from '$lib/Common/TextInput.svelte';
 	import SwapSidebarIcon from '$icons/SwapSidebarIcon.svelte';
+	import RoundedSelect from '$lib/Common/RoundedSelect.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -14,6 +15,8 @@
 	export let cryptoAmount = 2000;
 	export let currencyUnit = 'USD';
 	export let currencySymbol = '$';
+
+	export let cryptoList = ['USDT', 'FIRO', 'CSPR'];
 
 	let swapAmount: number;
 
@@ -35,7 +38,7 @@
 
 	<div class="swap-text-input-holder">
 		<TextInput bind:value={swapAmount} label="From" type="number" />
-		<p class="center-item">{cryptoUnit}</p>
+		<RoundedSelect optionsArray={cryptoList} />
 	</div>
 	<p class="value">{`${currencySymbol}0.00 ${currencyUnit}`}</p>
 	<div class="lower-button-holder">
