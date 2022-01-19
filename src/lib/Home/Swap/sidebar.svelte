@@ -131,7 +131,7 @@
 	}
 
 	:local(.sidebar-holder) {
-		@apply flex flex-col items-center h-full w-full;
+		@apply flex flex-col items-center h-full w-full mt-8;
 	}
 
 	:local(.lower-button-holder) {
@@ -157,7 +157,7 @@
 	}
 
 	:local(.swap-text-input-holder) > .center-item {
-		@apply transform translate-y-1;
+		@apply transform translate-y-2 md:translate-y-1;
 	}
 
 	:local(.swap-text-input-holder) > p {
@@ -173,11 +173,11 @@
 	}
 
 	:local(.swap-text-input-holder) > .select {
-		@apply w-[5vw] transform translate-y-2 right-0 -translate-x-2;
+		@apply md:w-[5vw] transform translate-y-2 right-0 md:-translate-x-2;
 	}
 
 	:local(.swap-text-input-holder) > .input-holder {
-		@apply 2xl:w-[12vw] self-auto;
+		@apply w-[50vw] md:w-auto 2xl:w-[12vw] self-auto;
 	}
 
 	:local(.notice) {
