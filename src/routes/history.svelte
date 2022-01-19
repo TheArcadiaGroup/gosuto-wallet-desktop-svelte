@@ -4,6 +4,7 @@
 	import RoundedSelect from '$lib/Common/RoundedSelect.svelte';
 	import { generateTransactions } from '$utils/historyDataSample';
 	import { toggleDarkMode } from '$utils/themeSettings';
+	import Sidebar from '$lib/components/HistoryComponent/sidebar.svelte';
 
 	let historyArray = generateTransactions();
 	let filteredArray;
@@ -70,7 +71,9 @@
 			<button>Show more</button>
 		</div>
 	</div>
-	<div class="sidebar" slot="last">Test</div>
+	<div class="sidebar" slot="last">
+		<Sidebar historyObject={selectedTokenIndex !== -1 ? filteredArray[selectedTokenIndex] : null} />
+	</div>
 </GridLayout>
 
 <style lang="postcss" global>
