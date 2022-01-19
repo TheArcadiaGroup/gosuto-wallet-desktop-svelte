@@ -2,13 +2,12 @@
 </script>
 
 <button
-	class={($$slots.icon ? 'main has-icon' : 'main no-icon') + ' ' + $$props.class}
+	class={$$slots.icon ? 'main has-icon' : 'main no-icon'}
 	class:selected={$$props.selected}
 	class:ring-btn={$$props.ring}
 	class:glow={$$props.glow}
 	disabled={$$props.disabled}
 	on:click
-	type={$$props.type}
 >
 	{#if $$slots.icon}
 		<div class="img">
@@ -32,7 +31,7 @@
 		@apply px-5 bg-white dark:bg-dark-grey rounded-xl;
 		@apply text-light-buttonText dark:text-white;
 		@apply hover:bg-opacity-70 hover:bg-light-purple hover:text-white transition duration-200;
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+		box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
 	}
 
 	:local(.has-icon.selected) {
