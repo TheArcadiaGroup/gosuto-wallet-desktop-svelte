@@ -36,6 +36,7 @@ module.exports = {
 					scrollBar: '#EAEAEA',
 					white: '#FFFFFF',
 					buttonText: '#707070',
+					inactiveText: '#C1C1C1',
 					checkBox: '#C4C4C4',
 				},
 			},

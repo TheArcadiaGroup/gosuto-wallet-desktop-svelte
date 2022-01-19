@@ -11,6 +11,7 @@ interface choiceCard {
 	id: number;
 	header: string;
 	description: string;
+	route: string;
 	isSelected: boolean;
 }
 
