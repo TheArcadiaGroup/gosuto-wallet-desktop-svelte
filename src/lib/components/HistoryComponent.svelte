@@ -33,6 +33,7 @@
 
 	function handleClickOutside(event: any) {
 		clicked = false;
+		dispatch('deselect');
 	}
 </script>
 

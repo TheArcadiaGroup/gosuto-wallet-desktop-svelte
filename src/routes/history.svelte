@@ -53,6 +53,9 @@
 				<!-- Received -->
 				{#each filteredArray as historyObject, i}
 					<HistoryComponent
+						on:deselect={() => {
+							selectedTokenIndex = -1;
+						}}
 						class={i > 0 ? 'top-border' : ''}
 						on:select={selectToken}
 						index={i}
