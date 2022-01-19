@@ -43,7 +43,7 @@
 		@apply absolute min-w-max w-[30%] md:w-[15%] cursor-pointer bg-white dark:bg-dark-background rounded-3xl;
 		@apply border border-light-lighterGray dark:border-white;
 		@apply z-10 text-sm dark:text-white;
-		@apply px-5 right-0 md:right-auto;
+		@apply px-4 md:px-5 right-0 md:right-auto;
 		@apply transform -translate-y-16 md:translate-y-0;
 	}
 	:local(.selection) {
