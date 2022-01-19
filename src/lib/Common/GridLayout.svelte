@@ -121,7 +121,7 @@
 
 	:local(.first-column),
 	:local(.last-column) {
-		@apply z-30 dark:md:bg-dark-blue;
+		@apply z-30 dark:md:bg-dark-blue min-w-max;
 		box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.2);
 	}
 

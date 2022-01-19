@@ -136,7 +136,7 @@
 	}
 
 	:local(.to-from) {
-		@apply font-semibold text-sm dark:text-white dark:opacity-60;
+		@apply font-semibold text-sm dark:text-white dark:opacity-60 mr-4;
 	}
 
 	:local(.address) {
