@@ -91,7 +91,7 @@
 	}
 
 	:local(.history-holder) {
-		@apply w-full md:min-w-max md:overflow-y-auto md:h-[85%] md:pr-6;
+		@apply w-full md:min-w-max md:overflow-y-auto md:h-[80%] md:pr-6 md:mt-16;
 	}
 
 	:local(button) {
@@ -102,6 +102,6 @@
 	}
 
 	:local(.header) {
-		@apply flex items-center justify-between md:flex-col md:items-start md:justify-start;
+		@apply relative items-center justify-between md:flex-col md:items-start md:justify-start;
 	}
 </style>
