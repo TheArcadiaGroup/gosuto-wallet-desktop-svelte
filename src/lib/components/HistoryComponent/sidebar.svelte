@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { fly } from 'svelte/transition';
+	import { slide } from 'svelte/transition';
 	import SideBarCard from '$lib/components/HistoryComponent/sideBarCard.svelte';
 
 	export let historyObject = null;
@@ -8,11 +8,7 @@
 <!-- Layout -->
 <div class={!historyObject ? 'main h-screen justify-center' : 'main'}>
 	{#if historyObject}
-		<div
-			class="sidebar-holder"
-			in:fly={{ x: 200, duration: 500 }}
-			out:fly={{ x: 200, duration: 500 }}
-		>
+		<div class="sidebar-holder" transition:slide>
 			<SideBarCard
 				status={historyObject.status}
 				dateAndTime={historyObject.dateAndTime}
@@ -34,7 +30,8 @@
 	}
 
 	:local(.inactive-text) {
-		@apply text-lg text-light-inactiveText md:max-w-[60%] 2xl:max-w-[55%] text-center;
+		@apply text-xs md:text-lg text-light-inactiveText max-w-[50%] md:max-w-[60%] 2xl:max-w-[55%] text-center;
+		@apply my-12;
 	}
 
 	:local(.sidebar-holder) {

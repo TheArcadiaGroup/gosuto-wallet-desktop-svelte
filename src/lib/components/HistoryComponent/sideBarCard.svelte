@@ -105,7 +105,7 @@
 
 <style lang="postcss" global>
 	:local(.main) {
-		@apply pt-6 px-8 w-full border border-black border-opacity-10 rounded-3xl;
+		@apply pt-6 px-8 mb-4 md:mb-0 w-full md:border border-black border-opacity-10 rounded-3xl;
 		@apply bg-white flex flex-col;
 		box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
 	}
@@ -119,7 +119,7 @@
 	}
 
 	:local(.header) {
-		@apply md:mb-4 2xl:mb-8 text-center;
+		@apply mb-5 md:mb-4 2xl:mb-8 text-center;
 	}
 
 	:local(.top-details) {
@@ -156,6 +156,6 @@
 	}
 
 	:local(a) {
-		@apply self-center mb-2 text-lg text-light-urlColor;
+		@apply self-center mb-2 text-sm text-light-orange md:text-light-urlColor;
 	}
 </style>

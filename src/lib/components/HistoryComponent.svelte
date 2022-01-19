@@ -55,7 +55,7 @@
 		<div class="right">
 			<div class="text-right">
 				{#if status == 'Swap'}
-					<Swap {SwapData} />
+					<Swap {SwapData} {clicked} />
 				{:else if status == 'Sent'}
 					<Amount type="negative" {amount} {price} {cryptoUnit} {currencyUnit} {clicked} />
 				{:else if status == 'Received'}
