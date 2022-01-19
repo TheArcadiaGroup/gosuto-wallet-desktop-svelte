@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { slide } from 'svelte/transition';
+	import { clickOutside } from '$utils/clickOutside';
 
 	import Amount from './HistoryComponent/Amount.svelte';
 
@@ -29,6 +30,10 @@
 			id: index,
 		});
 	}
+
+	function handleClickOutside(event: any) {
+		clicked = false;
+	}
 </script>
 
 <div class="main {$$props.class}" transition:slide>
@@ -36,6 +41,8 @@
 		class="container {clicked ? 'clicked' : ' '} hover:cursor-pointer"
 		class:clicked
 		on:click={select}
+		use:clickOutside
+		on:click_outside={handleClickOutside}
 	>
 		<div class="left">
 			<div class="leftcontent">
