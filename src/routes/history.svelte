@@ -3,7 +3,6 @@
 	import GridLayout from '$lib/Common/GridLayout.svelte';
 	import RoundedSelect from '$lib/Common/RoundedSelect.svelte';
 	import { generateTransactions } from '$utils/historyDataSample';
-	import { toggleDarkMode } from '$utils/themeSettings';
 	import Sidebar from '$lib/components/HistoryComponent/sidebar.svelte';
 
 	let historyArray = generateTransactions();
@@ -47,7 +46,7 @@
 	<div class="mid-holder" slot="mid">
 		<div class="main">
 			<div class="header">
-				<h3 on:click={toggleDarkMode}>{historyFilter} History</h3>
+				<h3>{historyFilter} History</h3>
 				<RoundedSelect {optionsArray} bind:value={filterId} />
 			</div>
 			<div class="history-holder">
