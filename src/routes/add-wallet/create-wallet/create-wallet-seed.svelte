@@ -1,9 +1,17 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-
+	import CopyOrange from '$icons/CopyOrange.svelte';
 	import GosutoLogoAndText from '$icons/GosutoLogoAndText.svelte';
 	import Button from '$lib/Common/Button.svelte';
 	import TextInput from '$lib/Common/TextInput.svelte';
+	import SeedWordBox from '$lib/components/AddWalletComponent/createWallet/seedWordBox.svelte';
+
+	let words: SeedWord[] = Array(12)
+		.fill(0)
+		.map(
+			(_, i) => ({ id: i + 1, word: 'Text'.repeat(Math.round(Math.random() * 2) + 1) } as SeedWord),
+		);
+	console.log(words);
 </script>
 
 <div class="wrapper">
@@ -19,8 +27,15 @@
 				<li>You will need this list to recover your wallet.</li>
 			</ul>
 		</div>
-		<div class="seed-phrase" />
-		<div class="clipboard-copy" />
+		<div class="seed-phrase">
+			{#each words as seedWord}
+				<SeedWordBox {seedWord} />
+			{/each}
+		</div>
+		<button class="clipboard-copy">
+			<span>Copy to clipboard</span>
+			<CopyOrange />
+		</button>
 		<div class="bt next-bt">
 			<Button on:click={() => goto('#')}>
 				<span slot="text" class="bt-text">Continue</span>
@@ -37,7 +52,7 @@
 	}
 
 	.wrapper :global(.gosuto-logo) {
-		@apply w-36 h-12 md:w-64 md:h-20 3xl:w-80 3xl:h-28 4xl:w-full 4xl:h-3/5;
+		@apply w-36 h-12 md:w-64 md:h-20 3xl:w-80 3xl:h-28 4xl:w-full 4xl:h-3/5 max-w-7xl;
 		@apply mb-8 4xl:mb-16;
 	}
 
@@ -45,7 +60,7 @@
 		@apply place-self-start justify-self-center 3xl:place-self-center;
 		@apply grid place-items-center;
 		@apply mt-10 md:mt-20;
-		@apply w-11/12 sm:w-3/4 md:w-1/2 lg:w-2/5 xl:w-1/4;
+		@apply w-full;
 	}
 
 	:local(h1) {
@@ -70,8 +85,19 @@
 		@apply list-item list-disc;
 	}
 
+	:local(.seed-phrase) {
+		@apply flex flex-wrap gap-2;
+		@apply w-3/5;
+		@apply my-10;
+	}
+
+	:local(.clipboard-copy) {
+		@apply text-light-lighterOrange text-sm font-display;
+		@apply flex gap-3;
+	}
+
 	:local(.bt) {
-		@apply w-11/12 max-w-3xl h-12 4xl:h-28;
+		@apply w-1/2 md:w-1/3 max-w-3xl h-12 4xl:h-28;
 		@apply mt-10 4xl:mt-32;
 		@apply rounded-3xl;
 	}

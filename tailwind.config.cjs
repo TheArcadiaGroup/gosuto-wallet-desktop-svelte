@@ -41,6 +41,7 @@ module.exports = {
 					greyInputIcons: '#121826',
 					grey189: '#BDBDBE',
 					grey193: '#C1C1C1',
+					grey241: '#F1F1F1',
 					transparentGrey10: '#F3F3F31A',
 					transparentGrey12: '#C4C4C41E',
 					inactiveText: '#C1C1C1',
