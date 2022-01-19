@@ -72,3 +72,7 @@ function convertMiliseconds(miliseconds: number, format: string): string {
 export const decimalToPercentage = (decimal: number): number => {
 	return decimal * 100;
 };
+
+export const shortenAddress = (address: string): string => {
+	return `${address.slice(0, 11)}...${address.slice(-4)}`;
+};
