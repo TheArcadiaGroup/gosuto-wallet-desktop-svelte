@@ -44,7 +44,8 @@
 
 <style lang="postcss" global>
 	:local(.container) {
-		@apply lg:aspect-[16/10] rounded-xl w-full shadow-lg overflow-hidden transition-all border hover:border-light-purple border-white hover:shadow-xl text-xs box-border relative dark:bg-dark-grey dark:border-dark-grey dark:shadow-sm dark:hover:shadow-md dark:hover:shadow-light-purple dark:shadow-light-purple;
+		@apply lg:aspect-[16/10] rounded-xl w-full overflow-hidden transition-all border hover:border-light-purple border-white text-xs box-border relative shadow-md hover:shadow-lg;
+		@apply dark:border-dark-grey dark:bg-dark-grey dark:shadow-sm dark:hover:shadow-md  dark:shadow-light-purple dark:hover:shadow-light-purple;
 	}
 
 	:local(.data-column) {
