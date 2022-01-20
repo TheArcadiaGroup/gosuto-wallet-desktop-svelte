@@ -61,7 +61,7 @@
 						<TokenCard
 							cardId={i * 4 + y}
 							selected={selected === i * 4 + y}
-							on:select
+							on:selectToken
 							{...token}
 						/>
 					{/each}
