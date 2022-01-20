@@ -36,7 +36,7 @@
 
 <GridLayout>
 	<div slot="mid">
-		<Swap on:select={selectToken} bind:tokens={tokens} bind:selected={selected}/>
+		<Swap on:selectToken={selectToken} bind:tokens={tokens} bind:selected={selected}/>
 	</div>
 	<div class="sidebar" slot="last">
 		{#if selected === -1}
