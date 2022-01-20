@@ -2,6 +2,7 @@
 	import Button from '$lib/Common/Button.svelte';
 	import ProfilePicture from '$lib/Common/ProfilePicture.svelte';
 	import CreditCard from './CreditCard.svelte';
+	import NavigationArrows from './NavigationArrows.svelte';
 </script>
 
 <div class="container ">
@@ -17,6 +18,9 @@
 		</Button>
 	</div>
 	<CreditCard />
+	<div class="h-6">
+		<NavigationArrows />
+	</div>
 </div>
 
 <style lang="postcss" global>
