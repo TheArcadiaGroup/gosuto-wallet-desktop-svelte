@@ -1,4 +1,4 @@
-<div class="w-full flex flex-col items-stretch gap-3">
+<div class="w-full flex flex-col items-stretch gap-2">
 	<!-- TODO add icons -->
 	<div class="menu-item">History</div>
 	<div class="menu-item">Send</div>
