@@ -3,15 +3,24 @@
 	import CopyOrange from '$icons/CopyOrange.svelte';
 	import GosutoLogoAndText from '$icons/GosutoLogoAndText.svelte';
 	import Button from '$lib/Common/Button.svelte';
-	import TextInput from '$lib/Common/TextInput.svelte';
 	import SeedWordBox from '$lib/components/AddWalletComponent/createWallet/seedWordBox.svelte';
+
+	let copied: boolean = false;
+	let seedPhrase: string = '';
 
 	let words: SeedWord[] = Array(12)
 		.fill(0)
 		.map(
 			(_, i) => ({ id: i + 1, word: 'Text'.repeat(Math.round(Math.random() * 2) + 1) } as SeedWord),
 		);
-	console.log(words);
+
+	let copyToClipboard = () => {
+		words.forEach((w) => {
+			if (w.id != 1) seedPhrase += ' ';
+			seedPhrase += w.word;
+		});
+		navigator.clipboard.writeText(seedPhrase);
+	};
 </script>
 
 <div class="wrapper">
@@ -32,9 +41,9 @@
 				<SeedWordBox {seedWord} />
 			{/each}
 		</div>
-		<button class="clipboard-copy">
+		<button class="clipboard-copy" on:click={copyToClipboard}>
 			<span>Copy to clipboard</span>
-			<CopyOrange />
+			<CopyOrange class="clipboard-copy-icon" />
 		</button>
 		<div class="bt next-bt">
 			<Button on:click={() => goto('#')}>
@@ -86,18 +95,22 @@
 	}
 
 	:local(.seed-phrase) {
-		@apply flex flex-wrap gap-2;
-		@apply w-3/5;
-		@apply my-10;
+		@apply flex flex-wrap justify-around gap-y-6 gap-x-2;
+		@apply w-4/5;
+		@apply my-10 4xl:my-24;
 	}
 
 	:local(.clipboard-copy) {
-		@apply text-light-lighterOrange text-sm font-display;
+		@apply text-light-lighterOrange text-sm 4xl:text-2xl font-display;
 		@apply flex gap-3;
 	}
 
+	.content :global(.clipboard-copy-icon) {
+		@apply 4xl:w-9 4xl:h-9;
+	}
+
 	:local(.bt) {
-		@apply w-1/2 md:w-1/3 max-w-3xl h-12 4xl:h-28;
+		@apply w-1/2 md:w-1/3 xl:w-1/4 max-w-3xl h-12 4xl:h-28;
 		@apply mt-10 4xl:mt-32;
 		@apply rounded-3xl;
 	}
