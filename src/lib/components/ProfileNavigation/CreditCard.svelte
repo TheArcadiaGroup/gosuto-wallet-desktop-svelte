@@ -44,7 +44,7 @@
 
 <style lang="postcss" global>
 	:local(.container) {
-		@apply lg:aspect-[16/10] rounded-xl w-full overflow-hidden transition-all border hover:border-light-purple border-white text-xs box-border relative shadow-md hover:shadow-lg aspect-[16/10] md:aspect-auto;
+		@apply lg:aspect-[16/10] rounded-xl w-full overflow-hidden transition-all border hover:border-light-purple border-white text-xs box-border relative shadow-md hover:shadow-lg aspect-[16/10] md:aspect-auto bg-white;
 		@apply dark:border-dark-grey dark:bg-dark-grey dark:shadow-sm dark:hover:shadow-md  dark:shadow-light-purple dark:hover:shadow-light-purple max-w-xs;
 	}
 
