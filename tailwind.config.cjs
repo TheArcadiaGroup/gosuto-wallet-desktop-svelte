@@ -8,6 +8,9 @@ module.exports = {
                 "2xs": ["10px", "12px"],
                 "3xs": ["8px", "10px"],
             },
+            boxShadow: {
+                design: "0px 4px 12px rgba(0, 0, 0, 0.05)",
+            },
             colors: {
                 ...require("tailwindcss/defaultTheme").colors,
                 dark: {
