@@ -1,8 +1,10 @@
 <script lang="ts">
 	import ArrowInCircle from '$lib/Common/ArrowInCircle.svelte';
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
 
 	function moveWallets(e: CustomEvent) {
-		// console.log(e.detail.direction);
+		dispatch('move', { direction: e.detail.direction === 'right' ? 1 : -1 });
 	}
 </script>
 
