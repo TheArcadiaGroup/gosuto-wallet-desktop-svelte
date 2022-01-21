@@ -3,11 +3,11 @@
 	import PurpleTriangle from '$icons/PurpleTriangle.svelte';
 	import ProfilePicture from '$lib/Common/ProfilePicture.svelte';
 
-	export let ppurl = 'https://miro.medium.com/fit/c/262/262/2*-cdwKPXyVI0ejgxpWkKBeA.jpeg';
-	export let name = 'Jake';
-	export let avalible = 5000;
-	export let staked = 2500;
-	export let unclaimed = 375;
+	export let ppurl = '';
+	export let name;
+	export let avalible = 0;
+	export let staked = 0;
+	export let unclaimed = 0;
 </script>
 
 <div class="container">
@@ -16,7 +16,7 @@
 			<div class="w-6 h-6 rounded-md overflow-hidden mb-1">
 				<ProfilePicture url={ppurl} />
 			</div>
-			<div class="text-xs font-bold text-light-purple">{name}'s wallet</div>
+			<div class="text-xs font-bold text-light-purple">{name.split(' ')[0]}'s wallet</div>
 		</div>
 		<div class="grow-0">
 			<div class="field-title">avalible</div>
