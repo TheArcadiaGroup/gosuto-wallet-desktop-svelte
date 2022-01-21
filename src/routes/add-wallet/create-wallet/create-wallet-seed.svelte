@@ -4,49 +4,92 @@
 	import GosutoLogoAndText from '$icons/GosutoLogoAndText.svelte';
 	import Button from '$lib/Common/Button.svelte';
 	import SeedWordBox from '$lib/components/AddWalletComponent/createWallet/seedWordBox.svelte';
+	import FailedPopup from '$lib/PopUps/NewToGosuto/FailedPopup.svelte';
 
 	let copied: boolean = false;
-	let seedPhrase: string = '';
+	let showPopup: boolean = false;
+	let seedPhrase: string[] = [];
+	let secondPage: boolean = false;
 
 	let words: SeedWord[] = Array(12)
 		.fill(0)
 		.map(
-			(_, i) => ({ id: i + 1, word: 'Text'.repeat(Math.round(Math.random() * 2) + 1) } as SeedWord),
+			(_, i) =>
+				({
+					id: i + 1,
+					word: 'Text'.repeat(Math.round(Math.random() * 2) + 1),
+					isEmpty: false,
+				} as SeedWord),
 		);
 
 	let copyToClipboard = () => {
-		words.forEach((w) => {
-			if (w.id != 1) seedPhrase += ' ';
-			seedPhrase += w.word;
-		});
-		navigator.clipboard.writeText(seedPhrase);
+		words.forEach((w) => seedPhrase.push(w.word));
+		console.log(seedPhrase);
+		navigator.clipboard.writeText(seedPhrase.join(' '));
+		copied = true;
+	};
+
+	let swapToSecond = () => {
+		if (!secondPage) {
+			if (copied === true) {
+				secondPage = true;
+				let numbers: Number[] = Array.from({ length: 10 }, (_, i) => i + 1);
+				let generatedMissing: Number[] = numbers.sort((a, b) => 0.5 - Math.random()).slice(0, 3);
+				words
+					.filter((w) => generatedMissing.includes(w.id))
+					.forEach((e) => {
+						e.isEmpty = true;
+						e.word = '';
+					});
+				words = words;
+			} else {
+				showPopup = true;
+			}
+		} else {
+			if (words.filter((w) => w.word === seedPhrase[w.id - 1]).length == 12) {
+				goto('#');
+			}
+		}
 	};
 </script>
 
 <div class="wrapper">
+	{#if showPopup}
+		<FailedPopup on:confirm={() => (showPopup = false)} />
+	{/if}
 	<div class="content">
 		<GosutoLogoAndText class="gosuto-logo" />
 		<h1>Create new wallet</h1>
 		<div class="explanation-text">
-			<h2>Your secret seed phrase</h2>
-			<ul>
-				<li>This list of words will allow you to access your wallet.</li>
-				<li>Write it down and keep it somewhere safe.</li>
-				<li>Anyone with the phrase can acces this wallet.</li>
-				<li>You will need this list to recover your wallet.</li>
-			</ul>
+			{#if secondPage}
+				<h2>Complete your seed phrase to continue</h2>
+				<ul>
+					<li>Type in the missing words</li>
+				</ul>
+			{:else}
+				<h2>Your secret seed phrase</h2>
+				<ul>
+					<li>This list of words will allow you to access your wallet.</li>
+					<li>Write it down and keep it somewhere safe.</li>
+					<li>Anyone with the phrase can acces this wallet.</li>
+					<li>You will need this list to recover your wallet.</li>
+				</ul>
+			{/if}
 		</div>
 		<div class="seed-phrase">
 			{#each words as seedWord}
 				<SeedWordBox {seedWord} />
 			{/each}
 		</div>
-		<button class="clipboard-copy" on:click={copyToClipboard}>
-			<span>Copy to clipboard</span>
-			<CopyOrange class="clipboard-copy-icon" />
-		</button>
+
+		{#if !secondPage}
+			<button class="clipboard-copy" on:click={copyToClipboard}>
+				<span>Copy to clipboard</span>
+				<CopyOrange class="clipboard-copy-icon" />
+			</button>
+		{/if}
 		<div class="bt next-bt">
-			<Button on:click={() => goto('#')}>
+			<Button on:click={swapToSecond}>
 				<span slot="text" class="bt-text">Continue</span>
 			</Button>
 		</div>
@@ -95,13 +138,13 @@
 	}
 
 	:local(.seed-phrase) {
-		@apply flex flex-wrap justify-around gap-y-6 gap-x-2;
-		@apply w-4/5;
-		@apply my-10 4xl:my-24;
+		@apply flex flex-wrap justify-center gap-y-6 gap-x-2 4xl:gap-8;
+		@apply w-5/6 md:w-[40rem] 2xl:w-1/3;
+		@apply mx-10 my-10 4xl:my-24;
 	}
 
 	:local(.clipboard-copy) {
-		@apply text-light-lighterOrange text-sm 4xl:text-2xl font-display;
+		@apply text-light-lighterOrange text-sm 4xl:text-3xl font-display;
 		@apply flex gap-3;
 	}
 

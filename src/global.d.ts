@@ -18,6 +18,7 @@ interface choiceCard {
 interface SeedWord {
 	id: number;
 	word: string;
+	isEmpty: boolean;
 }
 
 interface SwapData {
