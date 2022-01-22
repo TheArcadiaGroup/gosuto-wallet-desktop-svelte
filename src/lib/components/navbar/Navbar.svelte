@@ -13,76 +13,69 @@
 
 	// Variables
 	let active = true;
-	let dark = false;
 </script>
-
-<!-- [✔️] TODO: When creating navbar related components, its recommended to have these within a NavBar directory in the components folder -->
 
 <div class="navbar">
 	<div class="top">
-		<!-- [✔️] TODO: I'd recommend having a NavItem component here -->
-		<!-- Its easier to style and follow when working with your code -->
-		<!-- Also, it can just take a prop `active` and you get to reduce the size of this file -->
-		<!-- Especially the styles bundled in this single file -->
-		<!-- <NavItem> {other elements/components} </NavItem> -->
-		<NavItem href="/"><GosutoNavLogo /></NavItem>
-		<NavItem><NavFlameIcon {dark} /></NavItem>
-		<NavItem {active}><div class="avatar-img" /></NavItem>
-		<NavItem><NavBookmarkIcon /></NavItem>
-		<NavItem><NavStackIcon /></NavItem>
-		<NavItem href="/currency-performance"><NavActivityIcon {dark} /></NavItem>
+		<NavItem href="/"><GosutoNavLogo class="large-nav-icon" /></NavItem>
+		<NavItem reverse={true}><NavFlameIcon class="large-nav-icon" /></NavItem>
+		<NavItem><div class="avatar-img" /></NavItem>
+		<NavItem><NavBookmarkIcon class="nav-icon" /></NavItem>
+		<NavItem><NavStackIcon class="nav-icon" /></NavItem>
+		<NavItem href="/currency-performance"><NavActivityIcon class="nav-icon" /></NavItem>
 	</div>
 
 	<div class="bottom">
-		<NavItem href="/settings"><NavSettingsIcon /></NavItem>
-
-		<!-- [✔️] TODO: Not sure if this select would have been the best approach -->
-		<!-- Explaination: Select can be styled to our needs, also it respect the HTML tag structure -->
-		<!-- as it is not in line with the design when rendered -->
-		<!-- Maybe build a custom select component that we control using js and can style freely -->
-		<!-- Or explore ways of styling select components -->
-		<SelectItems items={{ en: 'EN', de: 'DE' }} />
-		<SelectItems items={{ usd: 'USD', eur: 'EUR', jpy: 'JPY' }} />
+		<NavItem href="/settings"><NavSettingsIcon class="nav-icon" /></NavItem>
+		<SelectItems class="select-items" items={{ en: 'EN', de: 'DE' }} />
+		<SelectItems class="select-items" items={{ usd: 'USD', eur: 'EUR', jpy: 'JPY' }} />
 	</div>
 </div>
 
-<style lang="postcss">
-	*,
-	*::before,
-	*::after {
-		box-sizing: border-box;
-	}
-
-	div.navbar {
+<style lang="postcss" global>
+	:local(div.navbar) {
 		@apply flex md:flex-col justify-between items-center z-50;
+		@apply sticky top-0;
 
 		@apply bg-white dark:bg-dark-grey;
-		@apply w-full py-4 md:py-0 md:h-screen;
+		@apply md:min-w-fit w-screen md:w-full py-4 md:py-0 md:h-screen;
+		@apply overflow-x-scroll md:overflow-visible;
 
 		box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.05);
+		-ms-overflow-style: none;
+		scrollbar-width: none;
 	}
 
-	@media only screen and (min-width: 768px) {
-		div.navbar div.top {
-			height: calc(100vh - 16.5em);
-		}
-
-		div.navbar div.bottom {
-			height: calc(100vh - 34.5em);
-		}
+	.navbar::-webkit-scrollbar {
+		@apply hidden;
 	}
 
-	div.navbar div.top {
-		@apply flex md:flex-col justify-evenly items-center;
+	:local(div.top) {
+		@apply flex md:flex-col justify-evenly items-center gap-x-2 md:gap-x-0;
+		@apply ml-1 md:ml-0;
+		@apply w-full md:h-3/5;
 	}
 
-	div.navbar div.bottom {
-		@apply flex md:flex-col justify-evenly items-center;
+	:local(div.bottom) {
+		@apply flex md:flex-col justify-evenly items-center md:gap-y-10;
+		@apply w-[8%] md:w-full md:h-1/5;
 		@apply md:pb-6;
 	}
 
-	div.navbar div.top div.avatar-img {
-		@apply w-3/4 h-12;
+	:global(.select-items) {
+		@apply hidden md:block;
+	}
+
+	.navbar :global(.nav-icon) {
+		@apply w-6 h-6 4xl:w-16 4xl:h-16;
+	}
+
+	.navbar :global(.large-nav-icon) {
+		@apply w-12 h-12 4xl:w-24 4xl:h-24;
+	}
+
+	:local(div.avatar-img) {
+		@apply min-w-full w-full h-12 4xl:h-28;
 
 		background-image: url('/images/png/avatar.png');
 		@apply bg-cover bg-center;
