@@ -4,7 +4,6 @@
 	import ProfilePicture from '$lib/Common/ProfilePicture.svelte';
 	import CardCarousel from './CardCarousel.svelte';
 	import CreditCard from './CreditCard.svelte';
-	import NavigationArrows from './NavigationArrows.svelte';
 	import ProfileMenu from './ProfileMenu.svelte';
 
 	export let name = 'Jake Waterson';
