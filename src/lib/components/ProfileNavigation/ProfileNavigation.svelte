@@ -13,23 +13,13 @@
 	export let staked = 2500;
 	export let unclaimed = 375;
 
-	let carouselPosition = 0;
-	let numberOfCards = 2; // TODO this will be later the length of an array with cards
-
-	function moveCardCarousel(e) {
-		const direction = e.detail.direction;
-		if (carouselPosition + direction >= 0 && carouselPosition + direction < numberOfCards) {
-			carouselPosition += direction;
-		}
-	}
-
 	function menuSelect(e) {
 		const selection = e.detail.menu_item;
 	}
 </script>
 
 <div class="container">
-	<div class="flex-col items-center gap-6 hidden md:flex">
+	<div class="flex-col items-center gap-6 hidden md:flex md:px-4">
 		<div class="w-16 h-16 rounded-xl overflow-hidden">
 			<ProfilePicture url={ppurl} />
 		</div>
@@ -38,17 +28,18 @@
 		</div>
 	</div>
 
-	<div class="mx-6 max-w-xs w-full not-on-mobile">
+	<div class="mx-6 max-w-xs w-full not-on-mobile md:px-4">
 		<Button>
 			<div slot="text" class="button">+ Add wallet</div>
 		</Button>
 	</div>
 
 	<div class="w-full flex items-center justify-center relative">
-		<!-- TODO give this overflow hidden somehow -->
-		<CardCarousel position={carouselPosition}>
-			<CreditCard {name} {ppurl} {avalible} {staked} {unclaimed} />
-		</CardCarousel>
+		<div class="w-full overflow-x-hidden px-6 md:px-4">
+			<CardCarousel>
+				<CreditCard {name} {ppurl} {avalible} {staked} {unclaimed} />
+			</CardCarousel>
+		</div>
 		<div class="absolute h-full aspect-[16/10] pointer-events-none">
 			<div
 				class="absolute z-10 w-12 h-12 -right-2 bg-light-orange grid place-items-center -bottom-2 md:hidden rounded-full pointer-events-auto cursor-pointer transition-all hover:scale-105"
@@ -58,22 +49,18 @@
 		</div>
 	</div>
 
-	<div class="h-6 w-full max-w-xs not-on-mobile">
-		<NavigationArrows on:move={moveCardCarousel} {carouselPosition} {numberOfCards} />
-	</div>
-
-	<div class="w-full not-on-mobile">
+	<div class="w-full not-on-mobile md:px-4">
 		<hr />
 	</div>
 
-	<div class="w-full md:max-w-xs">
+	<div class="w-full md:max-w-xs md:px-4">
 		<ProfileMenu on:click={menuSelect} />
 	</div>
 </div>
 
 <style lang="postcss" global>
 	:local(.container) {
-		@apply w-full h-full flex flex-col items-center gap-6 md:px-4 py-10;
+		@apply w-full h-full flex flex-col items-center gap-6 py-10;
 	}
 
 	:local(.button) {
