@@ -24,15 +24,6 @@
 	:local(.select-currency) {
 		@apply relative h-full w-full min-h-[20rem] rounded-t-3xl px-16;
 		@apply flex flex-col items-center justify-center;
-		@apply md:rounded-none;
-		@apply dark:bg-dark-grey md:dark:bg-dark-blue;
-		box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
-	}
-
-	:local(.select-currency::before) {
-		content: '';
-		@apply absolute top-0 my-3 w-1/3 h-2 rounded-3xl bg-light-transparentGrey12;
-		@apply md:hidden;
 	}
 
 	:local(.selected-crypto) {

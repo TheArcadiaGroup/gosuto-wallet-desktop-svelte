@@ -18,7 +18,7 @@
 	const dispatch = createEventDispatcher();
 
 	function select(): void {
-		dispatch('select', {
+		dispatch('selectToken', {
 			id: cardId,
 		});
 	}

@@ -55,7 +55,12 @@
 			{#each Array(Math.ceil(tokens.length / 4)) as _, i}
 				<div class="token-group">
 					{#each tokens.slice(i * 4, i * 4 + 4) as token, y}
-						<TokenCard cardId={i * 4 + y} selected={selected === i * 4 + y} on:select {...token} />
+						<TokenCard
+							cardId={i * 4 + y}
+							selected={selected === i * 4 + y}
+							on:selectToken
+							{...token}
+						/>
 					{/each}
 				</div>
 			{/each}
