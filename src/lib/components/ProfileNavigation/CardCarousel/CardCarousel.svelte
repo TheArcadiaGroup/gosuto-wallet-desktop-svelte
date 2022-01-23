@@ -1,11 +1,11 @@
 <script>
 	import { swipe } from 'svelte-gestures';
-	import NavigationArrows from './NavigationArrows.svelte';
+	import NavigationArrows from '../NavigationArrows.svelte';
 	let direction;
 	let target;
 
 	export let position = 0;
-	export let numberOfCards = 1; // TODO this will be later the length of an array with cards
+	export let numberOfCards = 0;
 
 	function handler(e) {
 		e.detail.direction = e.detail.direction === 'right' ? -1 : 1;
@@ -18,8 +18,6 @@
 			position += direction;
 		}
 	}
-
-	$: console.log('position', position);
 </script>
 
 <div
@@ -28,9 +26,7 @@
 	use:swipe={{ timeframe: 300, minSwipeDistance: 60 }}
 	on:swipe={handler}
 >
-	<div class="w-full flex-shrink-0 flex items-center justify-center snap-center">
-		<slot />
-	</div>
+	<slot />
 </div>
 
 <div class="h-6 w-full mt-4 not-on-mobile">
