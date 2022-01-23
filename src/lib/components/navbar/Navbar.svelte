@@ -12,21 +12,45 @@
 	import NavItem from './NavItem.svelte';
 
 	// Variables
-	let active = true;
+	let navItems: NavIcon[] = Array(7)
+		.fill(0)
+		.map((_, i) => ({ id: i, active: false } as NavIcon));
+
+	let activateItem = (navItem: NavIcon) => {
+		navItems.forEach((i) => (i.active = false));
+		navItem.active = true;
+		navItems = navItems;
+	};
 </script>
 
 <div class="navbar">
 	<div class="top">
-		<NavItem href="/"><GosutoNavLogo class="large-nav-icon" /></NavItem>
-		<NavItem reverse={true}><NavFlameIcon class="large-nav-icon" /></NavItem>
-		<NavItem><div class="avatar-img" /></NavItem>
-		<NavItem><NavBookmarkIcon class="nav-icon" /></NavItem>
-		<NavItem><NavStackIcon class="nav-icon" /></NavItem>
-		<NavItem href="/currency-performance"><NavActivityIcon class="nav-icon" /></NavItem>
+		<NavItem href="/" navItem={navItems[0]} on:click={() => activateItem(navItems[0])}
+			><GosutoNavLogo class="large-nav-icon" /></NavItem
+		>
+		<NavItem reverse={true} navItem={navItems[1]} on:click={() => activateItem(navItems[1])}
+			><NavFlameIcon class="large-nav-icon" /></NavItem
+		>
+		<NavItem navItem={navItems[2]} on:click={() => activateItem(navItems[2])}
+			><div class="avatar-img" /></NavItem
+		>
+		<NavItem navItem={navItems[3]} on:click={() => activateItem(navItems[3])}
+			><NavBookmarkIcon class="nav-icon" /></NavItem
+		>
+		<NavItem navItem={navItems[4]} on:click={() => activateItem(navItems[4])}
+			><NavStackIcon class="nav-icon" /></NavItem
+		>
+		<NavItem
+			href="/currency-performance"
+			navItem={navItems[5]}
+			on:click={() => activateItem(navItems[5])}><NavActivityIcon class="nav-icon" /></NavItem
+		>
 	</div>
 
 	<div class="bottom">
-		<NavItem href="/settings"><NavSettingsIcon class="nav-icon" /></NavItem>
+		<NavItem href="/settings" navItem={navItems[6]} on:click={() => activateItem(navItems[6])}
+			><NavSettingsIcon class="nav-icon" /></NavItem
+		>
 		<SelectItems class="select-items" items={{ en: 'EN', de: 'DE' }} />
 		<SelectItems class="select-items" items={{ usd: 'USD', eur: 'EUR', jpy: 'JPY' }} />
 	</div>
@@ -38,8 +62,8 @@
 		@apply sticky top-0;
 
 		@apply bg-white dark:bg-dark-grey;
-		@apply md:min-w-fit w-screen md:w-full py-4 md:py-0 md:h-screen;
-		@apply overflow-x-scroll md:overflow-visible;
+		@apply md:min-w-fit w-screen md:w-full py-4 md:py-0 md:h-screen min-h-fit;
+		@apply overflow-x-scroll md:overflow-auto;
 
 		box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.05);
 		-ms-overflow-style: none;
@@ -47,19 +71,19 @@
 	}
 
 	.navbar::-webkit-scrollbar {
-		@apply hidden;
+		@apply w-0 h-0;
 	}
 
 	:local(div.top) {
 		@apply flex md:flex-col justify-evenly items-center gap-x-2 md:gap-x-0;
-		@apply ml-1 md:ml-0;
-		@apply w-full md:h-3/5;
+		@apply ml-1 mr-4 md:mx-0;
+		@apply w-full min-w-[32rem] md:min-w-fit md:h-3/5 md:min-h-[32rem];
 	}
 
 	:local(div.bottom) {
 		@apply flex md:flex-col justify-evenly items-center md:gap-y-10;
-		@apply w-[8%] md:w-full md:h-1/5;
-		@apply md:pb-6;
+		@apply w-[8%] min-w-[2rem] md:w-full md:h-[30%] md:min-h-[16rem];
+		@apply mr-4 md:mr-0 md:pb-4;
 	}
 
 	:global(.select-items) {
