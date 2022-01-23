@@ -1,35 +1,39 @@
-<script>
+<script lang="ts">
 	import CardGraphics from '$icons/CardGraphics.svelte';
 	import PurpleTriangle from '$icons/PurpleTriangle.svelte';
 	import ProfilePicture from '$lib/Common/ProfilePicture.svelte';
 
 	export let ppurl = '';
-	export let name;
-	export let avalible = 0;
-	export let staked = 0;
-	export let unclaimed = 0;
+	export let name = 'unknown name';
+	export let wallet = {
+		avalible: 0,
+		staked: 0,
+		unclaimed: 0,
+	};
 </script>
 
 <div class="container">
 	<div class="data-column">
 		<div class="flex flex-row items-center gap-1">
 			<div class="w-6 h-6 rounded-md overflow-hidden mb-1">
-				<ProfilePicture url={ppurl} />
+				<ProfilePicture url={ppurl || ''} />
 			</div>
-			<div class="text-xs font-bold text-light-purple">{name.split(' ')[0]}'s wallet</div>
+			<div class="text-xs font-bold text-light-purple">
+				{name.split(' ')[0] || 'unknown name'}'s wallet
+			</div>
 		</div>
 		<div class="grow-0">
 			<div class="field-title">avalible</div>
-			<div class="amount">${avalible} USD</div>
+			<div class="amount">${wallet?.avalible || 0} USD</div>
 		</div>
 		<hr class="w-1/2" />
 		<div class="grow-0">
 			<div class="field-title">staked</div>
-			<div class="amount">${staked} USD</div>
+			<div class="amount">${wallet?.staked || 0} USD</div>
 		</div>
 		<div class="flex flex-row items-center gap-1 grow-0">
 			<div class="field-title">unclaimed rewards</div>
-			<div class="amount">${unclaimed} USD</div>
+			<div class="amount">${wallet?.unclaimed || 0} USD</div>
 		</div>
 	</div>
 	<div class="grapics-column relative py-4">
