@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Navbar from '$components/navbar/Navbar.svelte';
-	import LastColumnRectangle from '$icons/LastColumnRectangle.svelte';
+	import LastColumnRectangle from '$icons/lastColumnRectangle.svelte';
 	import { slide } from 'svelte/transition';
 </script>
 
@@ -85,7 +85,7 @@
 		}
 
 		:local(.withoutLastColumn.withoutFirstColumn) > .mid-column > div {
-			@apply w-full max-w-[50%];
+			@apply w-full max-w-[50%] h-full;
 		}
 	}
 
