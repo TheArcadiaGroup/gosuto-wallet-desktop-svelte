@@ -5,8 +5,8 @@
 	import { generateTransactions } from '$utils/historyDataSample';
 	import Sidebar from '$lib/components/HistoryComponent/sidebar.svelte';
 
-	let historyArray = generateTransactions();
-	let filteredArray;
+	let historyArray: HistoryObject[] = generateTransactions();
+	let filteredArray: HistoryObject[];
 
 	// import Sidebar from '$lib/History/sidebar.svelte';
 	// let sidebarActive: boolean = false;
