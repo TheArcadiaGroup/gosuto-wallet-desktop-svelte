@@ -12,7 +12,7 @@
 			id: 0,
 			header: 'Add New Wallet',
 			description: 'Add new wallet to your account',
-			route: '/add-wallet/create-wallet/create-wallet-password',
+			route: '/add-wallet/create-wallet',
 			isSelected: false,
 		},
 		{
