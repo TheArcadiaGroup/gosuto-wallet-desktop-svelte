@@ -14,12 +14,18 @@
 	}
 </script>
 
-<div
-	class="h-full aspect-square rounded-full border-transparent border-2 grid place-items-center dark:text-white transition-all {!disabled &&
-		'cursor-pointer dark:hover:border-white hover:border-light-gray'}"
-	on:click={click}
->
+<div class={!disabled ? 'disabled' : ''} on:click={click}>
 	<div class="w-1/2 {direction == 'right' && 'rotate-180'}">
 		<ArrowLeft />
 	</div>
 </div>
+
+<style lang="postcss" global>
+	:local(.main) {
+		@apply h-full aspect-square rounded-full border-transparent border-2 grid place-items-center dark:text-white transition-all;
+	}
+
+	:local(.disabled) {
+		@apply cursor-pointer dark:hover:border-white hover:border-light-gray;
+	}
+</style>
