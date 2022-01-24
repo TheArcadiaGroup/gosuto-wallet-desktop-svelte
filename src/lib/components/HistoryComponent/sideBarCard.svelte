@@ -41,7 +41,7 @@
 		</h5>
 	</div>
 	<div class="top-details">
-		{#if (status == 'Received') | (status == 'Sent')}
+		{#if status == 'Received' || status == 'Sent'}
 			<div class="address-holder">
 				<p class="to-from">To</p>
 				<p class="address">
@@ -49,7 +49,7 @@
 				</p>
 			</div>
 		{/if}
-		{#if (status == 'Initial Stake Unlocked') | (status == 'Unstake') | (status == 'Claimed Reward')}
+		{#if status == 'Initial Stake Unlocked' || status == 'Unstake' || status == 'Claimed Reward'}
 			<div class="address-holder">
 				<p class="to-from">Staked On</p>
 				<p class="address">
@@ -77,7 +77,7 @@
 		{:else}
 			<div class="amount">
 				<Amount
-					type={(status == 'Sent') | (status == 'Stake') ? 'negative' : 'positive'}
+					type={status == 'Sent' || status == 'Stake' ? 'negative' : 'positive'}
 					{amount}
 					{price}
 					{cryptoUnit}
