@@ -27,8 +27,14 @@
 <div on:click={select} class="token-card {selected ? 'selected' : ''}">
 	<div class="gap-1">
 		<p class="card-title">{cryptoName} ({cryptoUnit})</p>
-		<p class="card-text-sm {positive ? 'text-light-green' : 'text-light-red'}">{cryptoAmount} {cryptoUnit}</p>
-		<p class="card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">{currencySymbol}{currencyAmount} {currencyUnit}</p>
+		<p class="card-text-sm {positive ? 'text-light-green' : 'text-light-red'}">
+			{cryptoAmount}
+			{cryptoUnit}
+		</p>
+		<p class="card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">
+			{currencySymbol}{currencyAmount}
+			{currencyUnit}
+		</p>
 	</div>
 	<div class="ml-auto text-right">
 		<p class="card-text-sm card-text-flex {positive ? 'text-light-green' : 'text-light-red'}">
