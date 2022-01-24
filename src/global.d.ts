@@ -31,7 +31,7 @@ interface ChartPrice {
 	y: number;
 }
 
-interface HistoryArray {
+interface HistoryObject {
 	status: string;
 	dateAndTime: string;
 	amount: number;
