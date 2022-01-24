@@ -30,3 +30,15 @@ interface ChartPrice {
 	x: string;
 	y: number;
 }
+
+interface HistoryArray {
+	status: string;
+	dateAndTime: string;
+	amount: number;
+	price: number;
+	SwapData: SwapData;
+	toAccount: string;
+	fromAccount: string;
+	cryptoUnit: string;
+	currencyUnit: string;
+}
