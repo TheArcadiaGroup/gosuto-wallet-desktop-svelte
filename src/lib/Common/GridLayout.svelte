@@ -38,10 +38,14 @@
 	}
 
 	:local(.app-container) {
-		@apply w-full grid gap-0 h-screen md:h-auto;
+		@apply w-full grid gap-0 h-screen md:h-auto dark:bg-dark-background;
 	}
 
 	@media only screen and (max-width: 768px) {
+		:local(.last-column) {
+			@apply rounded-t-3xl;
+		}
+
 		:local(.withLastColumn.withFirstColumn) {
 			grid-template-rows: auto auto auto auto;
 		}
@@ -117,7 +121,7 @@
 
 	:local(.first-column),
 	:local(.last-column) {
-		@apply z-30 dark:md:bg-dark-blue;
+		@apply z-30 dark:md:bg-dark-blue min-w-max;
 		box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.2);
 	}
 
@@ -126,7 +130,7 @@
 	}
 
 	:local(.last-column) {
-		@apply dark:bg-dark-background dark:border dark:border-dark-background;
+		@apply dark:bg-dark-grey dark:md:bg-dark-background dark:border dark:border-dark-background;
 		@apply flex flex-col items-center pt-4 md:pt-0;
 	}
 
@@ -135,6 +139,6 @@
 	}
 
 	:local(.mobile) {
-		@apply md:hidden;
+		@apply md:hidden mb-4;
 	}
 </style>

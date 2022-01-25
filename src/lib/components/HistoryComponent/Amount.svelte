@@ -4,14 +4,15 @@
 
 	export let cryptoUnit = 'USDT';
 	export let currencyUnit = 'USD';
-
-	export let background: String;
 	export let type: 'positive' | 'negative' = 'positive';
+
+	export let clicked: boolean = false;
+	export let smaller: boolean = false;
 </script>
 
 <div>
 	<span
-		class="text-lg {background == 'white'
+		class="{smaller ? 'text-sm md:text-base' : 'text-sm md:text-lg'} {!clicked
 			? type == 'negative'
 				? 'text-light-red'
 				: 'text-light-green'
@@ -22,7 +23,7 @@
 </div>
 <div>
 	<span
-		class="text-base {background == 'white'
+		class="{smaller ? 'text-xs md:text-sm' : 'text-xs md:text-base'}  {!clicked
 			? type == 'negative'
 				? 'text-light-red'
 				: 'text-light-green'
@@ -31,3 +32,6 @@
 		{price}&nbsp;{currencyUnit}
 	</span>
 </div>
+
+<style>
+</style>

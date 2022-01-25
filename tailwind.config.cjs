@@ -19,6 +19,7 @@ module.exports = {
 					lighterGray: '#AEBBC4',
 					iconGray: '#BDBDBE',
 					selectedButton: '#725DFF',
+					textGray: '#979797',
 				},
 				light: {
 					gray: '#A9A9A9',
@@ -46,6 +47,7 @@ module.exports = {
 					transparentGrey12: '#C4C4C41E',
 					inactiveText: '#C1C1C1',
 					checkBox: '#C4C4C4',
+					urlColor: '#6DB9FF',
 				},
 			},
 			fill: {
