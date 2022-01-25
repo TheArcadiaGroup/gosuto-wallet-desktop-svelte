@@ -36,7 +36,7 @@
 	}
 
 	:local(p) {
-		@apply absolute bg-white transform translate-y-[-6px] md:-translate-y-3 4xl:-translate-y-5 translate-x-4 4xl:translate-x-8 leading-none text-xs md:text-base 4xl:text-4xl px-1 4xl:px-3;
+		@apply absolute bg-white transform translate-y-[-6px] md:-translate-y-3 4xl:-translate-y-5 translate-x-4 4xl:translate-x-8 leading-none text-xs md:text-base 4xl:text-4xl px-1 4xl:px-3 font-display;
 		@apply dark:bg-dark-background dark:text-white;
 	}
 </style>

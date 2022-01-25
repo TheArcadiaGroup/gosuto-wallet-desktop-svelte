@@ -3,6 +3,7 @@
 	import SelectCurrency from '$lib/Home/Swap/Forms/SelectCurrency.svelte';
 	import SwapCurrency from '$lib/Home/Swap/Forms/SwapCurrency.svelte';
 	import ConfirmSelectMobile from '$lib/Home/Swap/Forms/ConfirmSelectMobile.svelte';
+	import GridLayout from '$lib/Common/GridLayout.svelte';
 
 	let tokens = [
 		{
@@ -21,24 +22,22 @@
 		},
 	];
 
-	let selected = -1
+	let selected = -1;
 
 	function selectToken(e: { detail: { id: number } }): void {
 		selected = e.detail.id;
 	}
 
 	function deselectToken(): void {
-		selected = -1
+		selected = -1;
 	}
-
 </script>
 
-<div class="wallet-swap-page">
-	<div class="main-view">
-		<Swap on:select={selectToken} bind:tokens={tokens} bind:selected={selected} />
+<GridLayout>
+	<div slot="mid">
+		<Swap on:selectToken={selectToken} bind:tokens bind:selected />
 	</div>
-	<div class="sidebar-placeholder"></div>
-	<div class="sidebar">
+	<div class="sidebar" slot="last">
 		{#if selected === -1}
 			<!--<ConfirmSelectMobile />-->
 			<SelectCurrency />
@@ -46,7 +45,7 @@
 			<SwapCurrency on:deselect={deselectToken} />
 		{/if}
 	</div>
-</div>
+</GridLayout>
 
 <style lang="postcss" global>
 	:local(.wallet-swap-page) {
@@ -54,16 +53,8 @@
 		@apply dark:bg-dark-background;
 	}
 
-	:local(.main-view) {
-		@apply md:w-3/4;
-	}
-
-	:local(.sidebar-placeholder) {
-		@apply md:w-1/4;
-	}
-
 	:local(.sidebar) {
-		@apply mt-auto;
-		@apply md:fixed md:right-0 md:h-screen md:w-1/4;
+		@apply h-full w-full;
+		@apply md:right-0 md:h-screen;
 	}
 </style>

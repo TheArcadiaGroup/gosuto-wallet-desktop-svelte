@@ -7,12 +7,23 @@ interface infoCategory {
 	placeholder: string;
 }
 
+interface NavIcon {
+	id: number;
+	active: boolean;
+}
+
 interface choiceCard {
 	id: number;
 	header: string;
 	description: string;
 	route: string;
 	isSelected: boolean;
+}
+
+interface SeedWord {
+	id: number;
+	word: string;
+	isEmpty: boolean;
 }
 
 interface SwapData {
@@ -29,4 +40,16 @@ interface SwapData {
 interface ChartPrice {
 	x: string;
 	y: number;
+}
+
+interface HistoryObject {
+	status: string;
+	dateAndTime: string;
+	amount: number;
+	price: number;
+	SwapData: SwapData;
+	toAccount: string;
+	fromAccount: string;
+	cryptoUnit: string;
+	currencyUnit: string;
 }
