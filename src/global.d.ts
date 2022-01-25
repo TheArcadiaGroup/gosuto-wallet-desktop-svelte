@@ -20,6 +20,12 @@ interface choiceCard {
 	isSelected: boolean;
 }
 
+interface SeedWord {
+	id: number;
+	word: string;
+	isEmpty: boolean;
+}
+
 interface SwapData {
 	fromAmount: number;
 	toAmount: number;

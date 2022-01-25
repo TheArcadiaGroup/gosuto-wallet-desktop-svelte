@@ -3,7 +3,7 @@
 	import SelectCurrency from '$lib/Home/Swap/Forms/SelectCurrency.svelte';
 	import SwapCurrency from '$lib/Home/Swap/Forms/SwapCurrency.svelte';
 	import ConfirmSelectMobile from '$lib/Home/Swap/Forms/ConfirmSelectMobile.svelte';
-	import GridLayout from '$lib/Common/GridLayout.svelte'
+	import GridLayout from '$lib/Common/GridLayout.svelte';
 
 	let tokens = [
 		{
@@ -22,21 +22,20 @@
 		},
 	];
 
-	let selected = -1
+	let selected = -1;
 
 	function selectToken(e: { detail: { id: number } }): void {
 		selected = e.detail.id;
 	}
 
 	function deselectToken(): void {
-		selected = -1
+		selected = -1;
 	}
-
 </script>
 
 <GridLayout>
 	<div slot="mid">
-		<Swap on:selectToken={selectToken} bind:tokens={tokens} bind:selected={selected}/>
+		<Swap on:selectToken={selectToken} bind:tokens bind:selected />
 	</div>
 	<div class="sidebar" slot="last">
 		{#if selected === -1}
