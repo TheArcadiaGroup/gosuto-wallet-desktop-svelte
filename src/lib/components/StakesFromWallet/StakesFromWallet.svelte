@@ -3,6 +3,7 @@
 	import Button from '$lib/Common/Button.svelte';
 	import Duplicate from '$icons/Duplicate.svelte';
 	import StakeCard from './StakeCard.svelte';
+	import { goto } from '$app/navigation';
 
 	let stakeArray: {
 		name: string;
@@ -14,7 +15,7 @@
 	let wallet: any;
 
 	function backHandler() {
-		// TODO go back somehow
+		goto('/profile');
 	}
 
 	function copyPK() {
