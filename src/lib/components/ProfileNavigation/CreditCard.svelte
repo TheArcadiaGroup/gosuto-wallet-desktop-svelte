@@ -14,11 +14,11 @@
 
 <div class="container">
 	<div class="data-column">
-		<div class="flex flex-row items-center gap-1">
-			<div class="w-6 h-6 rounded-md overflow-hidden mb-1">
+		<div class="pp-and-name">
+			<div class="pp">
 				<ProfilePicture url={ppurl || ''} />
 			</div>
-			<div class="text-xs font-bold text-light-purple">
+			<div class="username">
 				{name.split(' ')[0] || 'unknown name'}'s wallet
 			</div>
 		</div>
@@ -31,13 +31,13 @@
 			<div class="field-title">staked</div>
 			<div class="amount">${wallet?.staked || 0} USD</div>
 		</div>
-		<div class="flex flex-row items-center gap-1 grow-0">
+		<div class="unclaimed grow-0">
 			<div class="field-title">unclaimed rewards</div>
 			<div class="amount">${wallet?.unclaimed || 0} USD</div>
 		</div>
 	</div>
-	<div class="grapics-column relative py-4">
-		<div class="w-full -mt-1 -mr-1 absolute right-0 top-0">
+	<div class="grapics-column">
+		<div class="purple-triangle">
 			<PurpleTriangle />
 		</div>
 		<div class="w-3/4 z-10">
@@ -65,6 +65,26 @@
 	}
 
 	:local(.grapics-column) {
-		@apply flex flex-col col-span-1 justify-center items-center h-full top-0 right-0 w-1/3 absolute;
+		@apply flex flex-col col-span-1 justify-center items-center h-full top-0 right-0 w-1/3 absolute py-4;
+	}
+
+	:local(.pp-and-name) {
+		@apply flex flex-row items-center gap-1;
+	}
+
+	:local(.pp) {
+		@apply w-6 h-6 rounded-md overflow-hidden mb-1;
+	}
+
+	:local(.username) {
+		@apply text-xs font-bold text-light-purple;
+	}
+
+	:local(.unclaimed) {
+		@apply flex flex-row items-center gap-1;
+	}
+
+	:local(.purple-triangle) {
+		@apply w-full -mt-1 -mr-1 absolute right-0 top-0;
 	}
 </style>

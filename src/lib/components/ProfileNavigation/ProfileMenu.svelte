@@ -12,9 +12,7 @@
 	}
 </script>
 
-<div
-	class="no-scrollbar py-3 px-6 md:px-0 md:py-0 w-full flex flex-row overflow-x-auto md:flex-col items-stretch gap-2"
->
+<div class="no-scrollbar main">
 	<div class="menu-item" on:click={() => click('history')}>
 		<div class="icon">
 			<Bookmark />
@@ -48,6 +46,10 @@
 </div>
 
 <style lang="postcss" global>
+	:local(.main) {
+		@apply py-3 px-6 md:px-0 md:py-0 w-full flex flex-row overflow-x-auto md:flex-col items-stretch gap-2;
+	}
+
 	:local(.menu-item) {
 		@apply rounded-lg hover:bg-light-purple hover:shadow-md transition-all px-4 py-3 text-xs text-light-grey hover:text-white dark:text-white cursor-pointer flex flex-row items-center gap-2 shadow-design md:shadow-none md:hover:shadow;
 		outline: none;

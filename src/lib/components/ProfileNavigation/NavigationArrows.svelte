@@ -11,7 +11,7 @@
 	}
 </script>
 
-<div class="w-full h-full flex flex-row items-center justify-center gap-2">
+<div class="main">
 	<ArrowInCircle direction="left" disabled={!(carouselPosition > 0)} on:click={moveWallets} />
 	<ArrowInCircle
 		direction="right"
@@ -19,3 +19,9 @@
 		on:click={moveWallets}
 	/>
 </div>
+
+<style lang="postcss" global>
+	:local(.main) {
+		@apply w-full h-full flex flex-row items-center justify-center gap-2;
+	}
+</style>

@@ -14,7 +14,7 @@
 	}
 </script>
 
-<div class={!disabled ? 'disabled' : ''} on:click={click}>
+<div class="{!disabled ? 'disabled' : ''} main" on:click={click}>
 	<div class="w-1/2 {direction == 'right' && 'rotate-180'}">
 		<ArrowLeft />
 	</div>
