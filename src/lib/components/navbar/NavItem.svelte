@@ -3,9 +3,9 @@
 	export let reverse = false;
 </script>
 
-<a class="nav-item" href={$$props.href || '/'} class:reverse class:active={navItem.active} on:click>
+<div class="nav-item" class:reverse class:active={navItem.active} on:click>
 	<slot />
-</a>
+</div>
 
 <style lang="postcss" global>
 	:local(.nav-item) {
