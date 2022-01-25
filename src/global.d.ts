@@ -7,6 +7,11 @@ interface infoCategory {
 	placeholder: string;
 }
 
+interface NavIcon {
+	id: number;
+	active: boolean;
+}
+
 interface choiceCard {
 	id: number;
 	header: string;
