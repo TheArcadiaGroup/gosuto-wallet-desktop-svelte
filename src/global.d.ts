@@ -7,12 +7,23 @@ interface infoCategory {
 	placeholder: string;
 }
 
+interface NavIcon {
+	id: number;
+	active: boolean;
+}
+
 interface choiceCard {
 	id: number;
 	header: string;
 	description: string;
 	route: string;
 	isSelected: boolean;
+}
+
+interface SeedWord {
+	id: number;
+	word: string;
+	isEmpty: boolean;
 }
 
 interface SwapData {
