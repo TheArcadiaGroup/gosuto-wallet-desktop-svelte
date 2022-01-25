@@ -7,32 +7,38 @@
 	import SelectInput from '$lib/Common/SelectInput.svelte';
 	import Popup from '$lib/Common/Popup.svelte';
 
-	let dispatch = createEventDispatcher()
+	let dispatch = createEventDispatcher();
 
-	export let fromToken = 'USDT'
-	export let createNewToken = true
+	export let fromToken = 'USDT';
+	export let createNewToken = true;
 
-	let popup = ''
-	let confirmPopup = false
+	let popup = '';
+	let confirmPopup = false;
 
-	function confirmSwap (): void {
-		confirmPopup = false
-		if (Math.random() >= 0.5) popup = 'Swap Failed!'
-		else popup = 'Swap Successful!'
+	function confirmSwap(): void {
+		confirmPopup = false;
+		if (Math.random() >= 0.5) popup = 'Swap Failed!';
+		else popup = 'Swap Successful!';
 	}
 
-	function closePopup (): void {
-		confirmPopup = false
-		popup = ''
+	function closePopup(): void {
+		confirmPopup = false;
+		popup = '';
 	}
 </script>
 
 <div class="swap-currency">
-	<form class="swap-form" on:submit|preventDefault={ () => {popup = 'Are you sure you want to swap?'; confirmPopup = true; }}>
+	<form
+		class="swap-form"
+		on:submit|preventDefault={() => {
+			popup = 'Are you sure you want to swap?';
+			confirmPopup = true;
+		}}
+	>
 		<h2 class="form-title">Swap</h2>
 		<div class="form-row">
 			<div class="row-text-input">
-				<TextInput label="From"/>
+				<TextInput label="From" />
 			</div>
 			<p class="row-text">{fromToken}</p>
 		</div>
@@ -55,8 +61,8 @@
 		<p class="money-amount">$0.00 USD</p>
 		{#if createNewToken}
 			<p class="create-token-warning">
-				This wallet currently does not contain USDC.
-				USDC token will be added to this wallet upon swap
+				This wallet currently does not contain USDC. USDC token will be added to this wallet upon
+				swap
 			</p>
 		{/if}
 		<div class="buttons">
@@ -64,21 +70,25 @@
 				<div slot="text" class="landing-7 my-2">Swap</div>
 			</Button>
 			<Button class="cancel-swap-button" type="button">
-				<div slot="text" class="cancel-swap-button-text">
-					Cancel
-				</div>
+				<div slot="text" class="cancel-swap-button-text">Cancel</div>
 			</Button>
 		</div>
 	</form>
 	{#if popup}
-		<Popup title={popup} hasCancel={confirmPopup} on:confirm={() => { confirmPopup ? confirmSwap() : closePopup()} } on:cancel={closePopup} />
+		<Popup
+			title={popup}
+			hasCancel={confirmPopup}
+			on:confirm={() => {
+				confirmPopup ? confirmSwap() : closePopup();
+			}}
+			on:cancel={closePopup}
+		/>
 	{/if}
 </div>
 
 <style lang="postcss" global>
-
 	:local(.swap-currency) {
-    @apply relative min-h-[20rem] rounded-t-3xl h-full w-full;
+		@apply relative min-h-[20rem] rounded-t-3xl h-full w-full;
 	}
 
 	:local(.swap-form) {

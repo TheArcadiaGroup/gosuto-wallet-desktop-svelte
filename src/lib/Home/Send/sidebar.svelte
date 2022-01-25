@@ -215,7 +215,7 @@
 		@apply font-semibold text-sm 2xl:text-lg;
 		@apply rounded-3xl h-full;
 		@apply px-3 py-1 md:py-2 md:px-3 2xl:px-7;
-		@apply transition duration-300;
+		@apply transition duration-300 min-w-max;
 	}
 
 	:local(.orange-btn) {

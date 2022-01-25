@@ -1,17 +1,18 @@
 <script>
 	import Button from '$lib/Common/Button.svelte';
 
-	export let cryptoName = 'Tether'
-	export let cryptoUnit = 'USDT'
-	export let cryptoAmount = 2000
-	export let positive = true
+	export let cryptoName = 'Tether';
+	export let cryptoUnit = 'USDT';
+	export let cryptoAmount = 2000;
+	export let positive = true;
 </script>
+
 <div class="select-currency">
 	<div class="currency-info">
 		<p class="selected-crypto">{cryptoName} ({cryptoUnit})</p>
-		<div class="currency-amount { positive ? 'text-light-green' : 'text-light-red' }">
+		<div class="currency-amount {positive ? 'text-light-green' : 'text-light-red'}">
 			<p class="crypto-amount">{cryptoAmount} {cryptoUnit}</p>
-			<p class="real-amount" >$175 USD</p>
+			<p class="real-amount">$175 USD</p>
 		</div>
 	</div>
 	<div class="button">
@@ -20,7 +21,6 @@
 </div>
 
 <style lang="postcss" global>
-
 	:local(.select-currency) {
 		@apply relative h-full w-full min-h-[20rem] rounded-t-3xl px-16;
 		@apply flex flex-col items-center justify-center;
@@ -48,7 +48,7 @@
 	}
 
 	:local(.button) {
-        @apply w-1/2 mx-auto flex flex-col gap-4 pt-4;
-        @apply md:mt-10 md:w-full md:gap-1;
-    }
+		@apply w-1/2 mx-auto flex flex-col gap-4 pt-4;
+		@apply md:mt-10 md:w-full md:gap-1;
+	}
 </style>
