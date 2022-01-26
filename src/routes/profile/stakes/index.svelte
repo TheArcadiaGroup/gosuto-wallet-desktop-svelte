@@ -14,9 +14,7 @@
 		<!-- passing wallet to stakes component -->
 		<StakesFromWallet />
 	</div>
-	<div slot="last" class="last-column">
-        Select a stake for more information
-	</div>
+	<div slot="last" class="last-column">Select a stake for more information</div>
 </GridLayout>
 
 <style lang="postcss" global>

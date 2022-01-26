@@ -16,9 +16,6 @@
 		<!-- passing wallet to stakes component -->
 		<StakesFromWallet />
 	</div>
-	<div slot="last" class="last-column">
-		<!-- stake info component -->
-	</div>
 </GridLayout>
 
 <style lang="postcss" global>
