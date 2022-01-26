@@ -1,7 +1,7 @@
 <script>
 	import GridLayout from '$lib/Common/GridLayout.svelte';
 	import StakesFromWallet from '$lib/profile/stake/StakesFromWallet.svelte';
-	import ProfileNavigation from '$components/ProfileNavigation/ProfileNavigation.svelte';
+	import ProfileNavigation from '$lib/profile/ProfileNavigation.svelte';
 	import { page } from '$app/stores';
 
 	$: slug = $page.params.slug;

@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import GridLayout from '$lib/Common/GridLayout.svelte';
 	import StakesFromWallet from '$lib/profile/stake/StakesFromWallet.svelte';
-	import ProfileNavigation from '$components/ProfileNavigation/ProfileNavigation.svelte';
+	import ProfileNavigation from '$lib/profile/ProfileNavigation.svelte';
 
 	// wallet bind on profile navigation component
 </script>
