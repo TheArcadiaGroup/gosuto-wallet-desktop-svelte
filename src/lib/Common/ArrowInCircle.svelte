@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
+
 	import ArrowLeft from '$icons/ArrowLeft.svelte';
 
 	export let direction: 'left' | 'right' = 'left';
@@ -18,7 +19,6 @@
 		<ArrowLeft />
 	</div>
 </div>
-
 <style lang="postcss" global>
 	:local(.main) {
 		@apply h-full aspect-square rounded-full border-transparent border-2 grid place-items-center dark:text-white transition-all;
