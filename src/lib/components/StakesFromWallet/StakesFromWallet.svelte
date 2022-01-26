@@ -30,7 +30,6 @@
 
 	stakeArray = Array(10).fill({
 		name: wallet?.name,
-		// progress: 30,
 		elapsedSeconds: 20,
 		fullSeconds: 69,
 		staked: 420,
