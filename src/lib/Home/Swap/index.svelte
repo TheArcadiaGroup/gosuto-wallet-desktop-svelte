@@ -4,7 +4,7 @@
 	import TokenCard from '$lib/Home/Swap/TokenCard.svelte';
 	import Button from '$lib/Common/Button.svelte';
 
-	export let tokens = []
+	export let tokens = [];
 
 	let scroll = 0;
 	let scrollWidth = 0;
@@ -23,15 +23,15 @@
 	}
 
 	function deselectListener(event: any): void {
-		if (!event.target) return
-		const isInToken = Boolean(event.target.closest('.token-card'))
-		if (!isInToken) selected = -1
+		if (!event.target) return;
+		const isInToken = Boolean(event.target.closest('.token-card'));
+		if (!isInToken) selected = -1;
 	}
 
 	function cancelButtonListener(event: any): void {
-		if (!event.target) return
-		const isInCancel = Boolean(event.target.closest('.cancel-swap-button'))
-		if (isInCancel) selected = -1
+		if (!event.target) return;
+		const isInCancel = Boolean(event.target.closest('.cancel-swap-button'));
+		if (isInCancel) selected = -1;
 	}
 </script>
 
@@ -51,17 +51,14 @@
 				</Button>
 			</div>
 		</div>
-		<div
-			on:scroll={onScroll}
-			class="scroll-container scrollbar-hide"
-		>
+		<div on:scroll={onScroll} class="scroll-container scrollbar-hide">
 			{#each Array(Math.ceil(tokens.length / 4)) as _, i}
 				<div class="token-group">
 					{#each tokens.slice(i * 4, i * 4 + 4) as token, y}
 						<TokenCard
 							cardId={i * 4 + y}
 							selected={selected === i * 4 + y}
-							on:select
+							on:selectToken
 							{...token}
 						/>
 					{/each}
@@ -70,14 +67,17 @@
 		</div>
 		<div class="mobile-scrollbar">
 			{#each Array(Math.ceil(tokens.length / 4)) as _, i}
-				<div class="mobile-scrollbar-dot {currentPage === i ? 'w-3 bg-light-orange' : 'w-1.5 bg-light-gray'}"></div>
+				<div
+					class="mobile-scrollbar-dot {currentPage === i
+						? 'w-3 bg-light-orange'
+						: 'w-1.5 bg-light-gray'}"
+				/>
 			{/each}
 		</div>
 	</div>
 </div>
 
 <style lang="postcss" global>
-
 	:local(.wallet-swap) {
 		@apply px-4 pt-10 md:px-11 md:pt-20;
 	}
@@ -108,8 +108,8 @@
 	}
 
 	:local(.mobile-scrollbar-dot) {
-        @apply h-1.5 rounded-full transition-all duration-200;
-    }
+		@apply h-1.5 rounded-full transition-all duration-200;
+	}
 
 	:local(.inner-btn) {
 		@apply flex gap-1 items-center py-1 px-3.5 md:gap-2.5 md:py-2 md:px-5 md:text-base;

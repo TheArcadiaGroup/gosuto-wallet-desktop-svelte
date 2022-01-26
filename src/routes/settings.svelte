@@ -45,12 +45,8 @@
 </GridLayout>
 
 <style type="postcss" global>
-	:local(.first) {
-		@apply dark:bg-dark-gosutoDark;
-		@apply h-full overflow-auto;
-	}
 	:local(.page-wrapper) {
-		@apply w-full h-full overflow-auto xl:overflow-hidden;
+		@apply w-full h-full overflow-auto;
 		@apply grid place-items-center;
 		@apply dark:bg-dark-gosutoDark;
 	}
@@ -115,10 +111,5 @@
 		@apply bg-white dark:bg-dark-gosutoDark rounded-3xl 4xl:rounded-[3rem];
 		@apply border border-light-orange;
 		@apply w-2/5 md:w-1/2 4xl:w-1/2 py-3 4xl:py-6 min-w-fit;
-	}
-
-	:local(.last) {
-		@apply dark:bg-dark-gosutoDark;
-		@apply h-full overflow-auto;
 	}
 </style>

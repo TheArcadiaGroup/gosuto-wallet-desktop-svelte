@@ -1,0 +1,106 @@
+<script lang="ts">
+	import HistoryComponent from '$lib/components/HistoryComponent.svelte';
+	import GridLayout from '$lib/Common/GridLayout.svelte';
+	import RoundedSelect from '$lib/Common/RoundedSelect.svelte';
+	import { generateTransactions } from '$utils/historyDataSample';
+	import Sidebar from '$lib/components/HistoryComponent/sidebar.svelte';
+
+	export let historyArray: HistoryObject[] = generateTransactions();
+	let filteredArray: HistoryObject[];
+
+	let optionsArray: string[] = ['All', 'Received', 'Sent', 'Swap', 'Stake'];
+	let filterId: number = 0;
+	$: historyFilter = optionsArray[filterId];
+
+	$: switch (filterId) {
+		case 0:
+			filteredArray = historyArray;
+			break;
+		case 1:
+			filteredArray = historyArray.filter((obj) => obj.status === 'Received');
+			break;
+		case 2:
+			filteredArray = historyArray.filter((obj) => obj.status === 'Sent');
+			break;
+		case 3:
+			filteredArray = historyArray.filter((obj) => obj.status === 'Swap');
+			break;
+		case 4:
+			filteredArray = historyArray.filter((obj) => obj.status === 'Stake');
+			break;
+		default:
+			break;
+	}
+
+	let selectedTokenIndex = -1;
+
+	function selectToken(e: { detail: { id: number } }): void {
+		selectedTokenIndex = e.detail.id;
+	}
+</script>
+
+<GridLayout>
+	<div class="mid-holder" slot="mid">
+		<div class="main">
+			<div class="header">
+				<h3>{historyFilter} History</h3>
+				<RoundedSelect {optionsArray} bind:value={filterId} />
+			</div>
+			<div class="history-holder">
+				<!-- Received -->
+				{#each filteredArray as historyObject, i}
+					<HistoryComponent
+						on:deselect={() => {
+							selectedTokenIndex = -1;
+						}}
+						class={i > 0 ? 'top-border' : ''}
+						on:select={selectToken}
+						index={i}
+						clicked={selectedTokenIndex === i}
+						status={historyObject.status}
+						dateAndTime={historyObject.dateAndTime}
+						SwapData={historyObject.SwapData}
+						amount={historyObject.amount}
+						price={historyObject.price}
+						cryptoUnit={historyObject.cryptoUnit}
+						currencyUnit={historyObject.currencyUnit}
+					/>
+				{/each}
+			</div>
+			<button>Show more</button>
+		</div>
+	</div>
+	<Sidebar
+		slot="last"
+		historyObject={selectedTokenIndex !== -1 ? filteredArray[selectedTokenIndex] : null}
+	/>
+</GridLayout>
+
+<style lang="postcss" global>
+	:local(.mid-holder) {
+		@apply flex items-center md:justify-end mr-[5vw] w-full md:w-auto px-4;
+	}
+
+	:local(.main) {
+		@apply h-screen flex flex-col w-full md:max-w-[50vw];
+	}
+
+	:local(h3) {
+		@apply font-bold md:text-2xl ml-4 md:ml-0 my-8 2xl:mt-16 dark:text-white;
+	}
+
+	:local(.history-holder) {
+		@apply w-full md:min-w-max md:overflow-y-auto md:h-[80%] md:pr-6 md:mt-16;
+	}
+
+	:local(button) {
+		@apply border-2 border-light-lineColor rounded-[90px];
+		@apply text-sm font-bold dark:text-white;
+		@apply my-6 py-2 px-4 self-center;
+		@apply hover:bg-light-purple hover:text-white hover:border-light-purple transition duration-500;
+	}
+
+	:local(.header) {
+		@apply relative items-center justify-between md:flex-col md:items-start md:justify-start;
+	}
+</style>

@@ -1,4 +1,11 @@
-<svg width="33" height="40" viewBox="0 0 33 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg
+	width="33"
+	height="40"
+	viewBox="0 0 33 40"
+	fill="none"
+	xmlns="http://www.w3.org/2000/svg"
+	class={$$props.class}
+>
 	<circle cx="16.1111" cy="23.8889" r="16.1111" fill="#FF8266" />
 	<rect x="8.88867" width="14.4444" height="5.55556" rx="2.77778" fill="#FF8266" />
 	<path
