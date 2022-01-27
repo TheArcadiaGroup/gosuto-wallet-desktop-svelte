@@ -9,6 +9,7 @@
 
 <GridLayout>
 	<div slot="first" class="size-full">
+		<!-- feed the user profile data to ProfileNavigation component -->
 		<ProfileNavigation />
 	</div>
 </GridLayout>
