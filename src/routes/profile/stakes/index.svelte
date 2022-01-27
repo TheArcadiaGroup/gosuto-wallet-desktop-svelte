@@ -1,6 +1,6 @@
 <script>
 	import GridLayout from '$lib/Common/GridLayout.svelte';
-	import ProfileNavigation from '$components/ProfileNavigation/ProfileNavigation.svelte';
+	import ProfileNavigation from '$lib/profile/ProfileNavigation.svelte';
 
 	// wallet bind on profile navigation component
 </script>
