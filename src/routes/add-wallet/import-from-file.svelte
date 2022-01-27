@@ -2,7 +2,7 @@
 	import GosutoLogoAndText from '$icons/GosutoLogoAndText.svelte';
 	import Button from '$lib/Common/Button.svelte';
 	import TextInput from '$lib/Common/TextInput.svelte';
-	import ImportPrivateKey from '$lib/components/AddWalletComponent/ImportFromFile/ImportPrivateKey.svelte';
+	import ImportPrivateKey from '$lib/AddWalletComponent/ImportFromFile/ImportPrivateKey.svelte';
 </script>
 
 <div class="wrapper">
