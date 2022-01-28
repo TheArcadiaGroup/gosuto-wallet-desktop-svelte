@@ -1,17 +1,40 @@
+<!--
+@component
+The wallet swap page mid column, this is where list of TokenCards is.
+This is where select & deselect logic is, and is passed to parent by dispatching selectToken event, so the parent can show different content in last grid column.
+@author marekvospel
+@see TokenCard
+-->
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte'
+
 	import ReturnHome from '$components/Home/ReturnHome.svelte';
 	import PlusIcon from '$icons/PlusIcon.svelte';
 	import TokenCard from '$lib/Home/Swap/TokenCard.svelte';
 	import Button from '$lib/Common/Button.svelte';
 
+	/**
+	 * An array of props passed to TokenCard components.
+	 * @see TokenCard
+	 */
 	export let tokens = [];
+
+	/**
+	 * Index of a TokenCard that is currently selected. Default is -1 = none selected
+	 * @type {number}
+	 */
+	export let selected = -1;
 
 	let scroll = 0;
 	let scrollWidth = 0;
 	let currentPage = 0;
 
-	export let selected = -1;
+	const dispatch = createEventDispatcher();
 
+	/**
+	 * A function updating internal scroll, scrollWidth and currentPage values, which are used to render a custom scrollbar
+	 * @param event a DOM scroll event
+	 */
 	function onScroll(event) {
 		if (!event.target || !event.target.scrollLeft || !event.target.clientWidth) return;
 		scroll = event.target.scrollLeft;
@@ -22,16 +45,28 @@
 		currentPage = Math.round(scroll / (scrollWidth / totalPages));
 	}
 
+	/**
+	 * A function that deselects token if user clicks inside wallet swap main column, but doesn't click on TokenCard
+	 * @param event a DOM MouseEvent
+	 */
 	function deselectListener(event: any): void {
 		if (!event.target) return;
 		const isInToken = Boolean(event.target.closest('.token-card'));
-		if (!isInToken) selected = -1;
+		if (!isInToken) dispatch('selectToken', {
+			id: -1,
+		});
 	}
 
+	/**
+	 * A function that deselects token if user clicks on deselect button inside SwapCurrency form component
+	 * @param event a DOM MouseEvent
+	 */
 	function cancelButtonListener(event: any): void {
 		if (!event.target) return;
 		const isInCancel = Boolean(event.target.closest('.cancel-swap-button'));
-		if (isInCancel) selected = -1;
+		if (isInCancel) dispatch('selectToken', {
+			id: -1,
+		});
 	}
 </script>
 
@@ -70,8 +105,7 @@
 				<div
 					class="mobile-scrollbar-dot {currentPage === i
 						? 'w-3 bg-light-orange'
-						: 'w-1.5 bg-light-gray'}"
-				/>
+						: 'w-1.5 bg-light-gray'}"></div>
 			{/each}
 		</div>
 	</div>
