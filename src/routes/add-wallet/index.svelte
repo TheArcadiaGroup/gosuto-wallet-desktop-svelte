@@ -1,7 +1,7 @@
 <script lang="ts">
 	import GosutoLogoAndText from '$icons/GosutoLogoAndText.svelte';
 	import Button from '$lib/Common/Button.svelte';
-	import ChoiceCard from '$lib/components/AddWalletComponent/Landing/ChoiceCard.svelte';
+	import ChoiceCard from '$lib/AddWalletComponent/Landing/ChoiceCard.svelte';
 
 	import { goto } from '$app/navigation';
 
@@ -55,11 +55,11 @@
 			{/each}
 		</div>
 		<div class="bt next-bt">
-			<Button disabled={selected == undefined} on:click={() => goto(selected.route)}>
+			<Button disabled={selected === undefined} on:click={() => goto(selected.route)}>
 				<span slot="text" class="bt-text">Next</span>
 			</Button>
 		</div>
-		<button class="bt cancel-bt" disabled={selected == undefined}>
+		<button class="bt cancel-bt" disabled={selected === undefined}>
 			<span class="bt-text cancel-bt-text">Cancel</span>
 		</button>
 	</div>
