@@ -1,8 +1,8 @@
 <script lang="ts">
-	import AvatarCard from '$components/accountSettings/AvatarCard.svelte';
-	import ChooseFileButton from '$components/accountSettings/ChooseFileButton.svelte';
-	import ChangeThemeBar from '$components/accountSettings/ChangeThemeBar.svelte';
-	import InfoInput from '$components/accountSettings/InfoInput.svelte';
+	import AvatarCard from '$lib/AccountSettings/AvatarCard.svelte';
+	import ChooseFileButton from '$lib/Common/ChooseFileButton.svelte';
+	import ChangeThemeBar from '$lib/AccountSettings/ChangeThemeBar.svelte';
+	import InfoInput from '$lib/AccountSettings/InfoInput.svelte';
 	import SelectItems from '$components/navbar/SelectItems.svelte';
 	import GridLayout from '$lib/Common/GridLayout.svelte';
 
