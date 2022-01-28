@@ -6,10 +6,12 @@
 <script lang="ts">
 	import Button from '$lib/Common/Button.svelte';
 
+	/**Function that claims the initial stake*/
 	function claim() {
 		// confirm stake
 	}
 
+	/**Function that cancels the stake and hides the component*/
 	function cancel() {
 		// cancel stake
 	}
