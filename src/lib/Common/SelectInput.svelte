@@ -1,17 +1,18 @@
 <script lang="ts">
 	export let label = '';
+	export let value: string;
 </script>
 
 <div class="input-holder">
 	<p>{label}</p>
-	<select>
+	<select bind:value>
 		<slot />
 	</select>
 </div>
 
 <style lang="postcss" global>
 	:local(.input-holder) {
-		@apply relative mt-4;
+		@apply relative mt-4 dark:text-white;
 	}
 
 	:local(select) {
