@@ -3,15 +3,16 @@
 	export let reverse = false;
 </script>
 
-<a class="nav-item" href={$$props.href || '/'} class:reverse class:active={navItem.active} on:click>
+<div class="nav-item" class:reverse class:active={navItem.active} on:click>
 	<slot />
-</a>
+</div>
 
 <style lang="postcss" global>
 	:local(.nav-item) {
 		@apply grid place-items-center;
 		@apply min-w-[3.5rem] min-h-[3.5rem] w-14 h-14 4xl:w-24 4xl:h-24 cursor-pointer;
 		@apply text-light-grey dark:text-white;
+		@apply transition-all;
 	}
 
 	:local(.nav-item.reverse) {

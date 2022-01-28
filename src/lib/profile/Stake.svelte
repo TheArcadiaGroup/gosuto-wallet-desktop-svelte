@@ -28,6 +28,7 @@
 		<!-- TODO add a router via svelte:component here -->
 		<!-- <div class="placeholder-text">Select a stake for more information</div> -->
 		<!-- <Confirm /> -->
+    <!-- <Confirm /> -->
 		<!-- <Form /> -->
 		<!-- <ClaimReward /> -->
 		<UnlockInitialStake />
