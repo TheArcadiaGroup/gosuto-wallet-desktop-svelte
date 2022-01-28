@@ -1,7 +1,11 @@
 <script lang="ts">
 	import Button from '$lib/Common/Button.svelte';
 
+	export let disabled = false;
+
 	function unstake() {
+		if (disabled) return;
+
 		// confirm stake
 	}
 
@@ -17,14 +21,16 @@
 		Unstaking will take until:
 		<div class="until-date">1 Dec 2021</div>
 	</div>
-	<div class="buttons">
-		<Button on:click={unstake}>
-			<div slot="text" class="button-text">Unstake</div>
-		</Button>
-		<Button on:click={cancel}>
-			<div slot="text" class="button-text">Cancel</div>
-		</Button>
-	</div>
+	{#if disabled}
+		<div class="buttons">
+			<Button on:click={unstake}>
+				<div slot="text" class="button-text">Unstake</div>
+			</Button>
+			<Button on:click={cancel}>
+				<div slot="text" class="button-text">Cancel</div>
+			</Button>
+		</div>
+	{/if}
 </div>
 
 <style lang="postcss" global>
