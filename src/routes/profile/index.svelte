@@ -1,17 +1,5 @@
 <script>
-	import GridLayout from '$lib/Common/GridLayout.svelte';
-	import StakesFromWallet from '$lib/profile/stake/StakesFromWallet.svelte';
-	import ProfileNavigation from '$lib/profile/ProfileNavigation.svelte';
+	import Profile from '$lib/profile/Profile.svelte';
 </script>
 
-<GridLayout>
-	<div slot="first" class="size-full">
-		<ProfileNavigation />
-	</div>
-</GridLayout>
-
-<style lang="postcss" global>
-	:local(.size-full) {
-		@apply w-full h-full;
-	}
-</style>
+<Profile />
