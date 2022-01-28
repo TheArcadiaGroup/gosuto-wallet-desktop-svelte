@@ -16,6 +16,16 @@
 	// wallet bind on profile navigation component
 
 	// stake bind StakesFromWallet
+
+	const lastCollumnContent = {
+		confirm: Confirm,
+		form: Form,
+		claimReward: ClaimReward,
+		unlockInitialStake: UnlockInitialStake,
+		unstake: Unstake,
+	};
+
+	let selectedLastCollumnContent = null;
 </script>
 
 <GridLayout>
@@ -23,15 +33,16 @@
 		<!-- feed the user profile data to ProfileNavigation component -->
 		<ProfileNavigation />
 	</div>
-	<div slot="mid" class="w-full h-full">StakesFromWallet component</div>
-	<div slot="last">
-		<!-- TODO add a router via svelte:component here -->
-		<!-- <div class="placeholder-text">Select a stake for more information</div> -->
-		<!-- <Confirm /> -->
-		<!-- <Form /> -->
-		<!-- <ClaimReward /> -->
-		<!-- <UnlockInitialStake /> -->
-		<!-- <Unstake /> -->
+	<div slot="mid" class="size-full">
+		<!-- Listener for clicked component and save that to selectedLastCollumnContent -->
+		StakesFromWallet component
+	</div>
+	<div slot="last" class="size-full">
+		{#if selectedLastCollumnContent}
+			<svelte:component this={lastCollumnContent[selectedLastCollumnContent]} />
+		{:else}
+			<div class="placeholder-text">Select a stake for more information</div>
+		{/if}
 	</div>
 </GridLayout>
 
