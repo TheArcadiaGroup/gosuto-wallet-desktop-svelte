@@ -24,14 +24,15 @@
 		<ProfileNavigation />
 	</div>
 	<div slot="mid" class="w-full h-full">StakesFromWallet component</div>
-	<div slot="last">
+	<div slot="last" class="size-full">
+		<!-- TODO add back button -->
 		<!-- TODO add a router via svelte:component here -->
-		<div class="placeholder-text">Select a stake for more information</div>
+		<!-- <div class="placeholder-text">Select a stake for more information</div> -->
 		<!-- <Confirm /> -->
 		<!-- <Form /> -->
 		<!-- <ClaimReward /> -->
 		<!-- <UnlockInitialStake /> -->
-		<!-- <Unstake /> -->
+		<Unstake />
 	</div>
 </GridLayout>
 
