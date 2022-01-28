@@ -26,11 +26,11 @@
 	<div slot="mid" class="w-full h-full">StakesFromWallet component</div>
 	<div slot="last">
 		<!-- TODO add a router via svelte:component here -->
-		<div class="placeholder-text">Select a stake for more information</div>
+		<!-- <div class="placeholder-text">Select a stake for more information</div> -->
 		<!-- <Confirm /> -->
 		<!-- <Form /> -->
 		<!-- <ClaimReward /> -->
-		<!-- <UnlockInitialStake /> -->
+		<UnlockInitialStake />
 		<!-- <Unstake /> -->
 	</div>
 </GridLayout>
