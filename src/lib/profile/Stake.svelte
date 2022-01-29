@@ -9,7 +9,6 @@
 	import ArrowInCircle from '$lib/Common/ArrowInCircle.svelte';
 
 	import Confirm from '$lib/profile/stake/detail/Confirm.svelte';
-	import Form from './stake/detail/Form.svelte';
 	import ClaimReward from './stake/detail/ClaimReward.svelte';
 	import UnlockInitialStake from './stake/detail/UnlockInitialStake.svelte';
 	import Unstake from './stake/detail/Unstake.svelte';
@@ -21,17 +20,15 @@
 
 	// wallet bind on profile navigation component
 
-	// stake bind StakesFromWallet
-
 	const lastCollumnContent = {
 		confirm: Confirm,
-		form: Form,
 		claimReward: ClaimReward,
 		unlockInitialStake: UnlockInitialStake,
 		unstake: Unstake,
 	};
 
-	let selectedLastCollumnContent = 'confirm';
+	// stake bind StakesFromWallet
+	let selectedLastCollumnContent = null;
 
 	function closeStake() {
 		selectedLastCollumnContent = null;

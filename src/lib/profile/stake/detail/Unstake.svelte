@@ -26,7 +26,7 @@
 			<Button on:click={unstake}>
 				<div slot="text" class="button-text">Unstake</div>
 			</Button>
-			<Button on:click={cancel}>
+			<Button on:click={cancel} transparent={true}>
 				<div slot="text" class="button-text">Cancel</div>
 			</Button>
 		</div>

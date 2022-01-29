@@ -24,7 +24,7 @@
 		<Button on:click={claim}>
 			<div slot="text" class="button-text">Claim</div>
 		</Button>
-		<Button on:click={cancel}>
+		<Button on:click={cancel} transparent={true}>
 			<div slot="text" class="button-text">Cancel</div>
 		</Button>
 	</div>
