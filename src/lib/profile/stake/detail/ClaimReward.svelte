@@ -1,1 +1,54 @@
-ClaimReward
+<!-- 
+    @component
+
+    A title and a button for claiming reward.
+-->
+<script lang="ts">
+	import Button from '$lib/Common/Button.svelte';
+
+	/**Function that claims the reward*/
+	function claim() {
+		// confirm claim
+	}
+
+	/**Function that cancels the claim and hides the component*/
+	function cancel() {
+		// cancel stake
+	}
+</script>
+
+<div class="claim-reward">
+	<div class="title">Claim Rewards</div>
+	<div class="text">Initital stake: 20 CSPR</div>
+	<div class="text">Total rewards: 20 CSPR</div>
+	<div class="buttons">
+		<Button on:click={claim}>
+			<div slot="text" class="button-text">Claim</div>
+		</Button>
+		<Button on:click={cancel}>
+			<div slot="text" class="button-text">Cancel</div>
+		</Button>
+	</div>
+</div>
+
+<style lang="postcss" global>
+	:local(.claim-reward) {
+		@apply w-full h-full flex flex-col items-stretch gap-2 py-6 px-2;
+	}
+
+	:local(.title) {
+		@apply font-semibold dark:text-white text-center;
+	}
+
+	:local(.text) {
+		@apply text-sm dark:text-white text-center;
+	}
+
+	:local(.buttons) {
+		@apply my-3 w-full flex flex-col gap-3;
+	}
+
+	:local(.button-text) {
+		@apply p-2;
+	}
+</style>
