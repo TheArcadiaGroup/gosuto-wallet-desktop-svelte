@@ -1,8 +1,13 @@
 <script lang="ts">
+	export let transparent = false;
 </script>
 
 <button
-	class={($$slots.icon ? 'main has-icon' : 'main no-icon') + ' ' + $$props.class}
+	class={($$slots.icon
+		? 'main has-icon'
+		: `main no-icon ${!transparent ? 'not-transparent' : 'transparent'}`) +
+		' ' +
+		$$props.class}
 	class:selected={$$props.selected}
 	class:ring-btn={$$props.ring}
 	class:glow={$$props.glow}
@@ -41,9 +46,18 @@
 
 	:local(.no-icon) {
 		@apply rounded-3xl 4xl:rounded-[3rem];
-		@apply justify-center p-0 bg-light-orange text-white border border-light-orange;
+		@apply justify-center p-0 text-white;
 		@apply hover:bg-opacity-70 hover:border-opacity-0 transition duration-200;
 		@apply text-sm;
+	}
+
+	:local(.not-transparent) {
+		@apply bg-light-orange border-light-orange border;
+	}
+
+	:local(.transparent) {
+		/* @apply hover:bg-light-grey189 hover:text-black; */
+		@apply border border-transparent hover:border-current;
 	}
 
 	:local(.no-icon.ring-btn) {
