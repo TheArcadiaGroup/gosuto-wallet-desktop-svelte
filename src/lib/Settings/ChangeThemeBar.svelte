@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ThemeSwitch from '$components/accountSettings/ThemeSwitch.svelte';
+	import ThemeSwitch from '$lib/Settings/ThemeSwitch.svelte';
 </script>
 
 <div class="theme-bar">

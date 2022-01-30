@@ -3,7 +3,7 @@
 	import CopyOrange from '$icons/CopyOrange.svelte';
 	import GosutoLogoAndText from '$icons/GosutoLogoAndText.svelte';
 	import Button from '$lib/Common/Button.svelte';
-	import SeedWordBox from '$lib/components/AddWalletComponent/createWallet/seedWordBox.svelte';
+	import SeedWordBox from '$lib/AddWalletComponent/createWallet/seedWordBox.svelte';
 	import FailedPopup from '$lib/PopUps/NewToGosuto/FailedPopup.svelte';
 
 	let copied: boolean = false;
