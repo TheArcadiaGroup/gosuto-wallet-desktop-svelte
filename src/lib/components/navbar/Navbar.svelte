@@ -24,7 +24,7 @@
 			return n;
 		});
 		navItem.active = true;
-		goto(route);
+		if (route != '') goto(route);
 	};
 </script>
 
@@ -40,9 +40,7 @@
 		<NavItem navItem={navItemsValues[3]} on:click={() => activateItem(navItemsValues[3], '')}
 			><NavBookmarkIcon class="nav-icon" /></NavItem
 		>
-		<NavItem
-			navItem={navItemsValues[4]}
-			on:click={() => activateItem(navItemsValues[4], '/history')}
+		<NavItem navItem={navItemsValues[4]} on:click={() => activateItem(navItemsValues[4], '')}
 			><NavStackIcon class="nav-icon" /></NavItem
 		>
 		<NavItem
