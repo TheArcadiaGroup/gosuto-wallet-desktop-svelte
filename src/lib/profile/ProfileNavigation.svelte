@@ -7,6 +7,8 @@
 	import CreditCard from './CreditCard.svelte';
 	import ProfileMenu from './ProfileMenu.svelte';
 
+	import { goto } from '$app/navigation';
+
 	let user: {
 		name: string;
 		ppurl: string;
@@ -18,9 +20,10 @@
 		}[];
 	};
 
+	/**Handler for clicking on a menu item in the menu and redirectin to the corresponding subroute*/
 	function menuSelect(e: CustomEvent) {
 		const selection = e.detail.menu_item;
-		// redirect to subpage
+		goto(`/profile/${selection}`);
 	}
 
 	function addWallet() {
