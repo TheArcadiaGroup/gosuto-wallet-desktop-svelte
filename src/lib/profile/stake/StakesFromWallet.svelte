@@ -28,8 +28,8 @@
 	}
 
 	/**Triggered when a stake card is cliked. Displatches an event of stake selection*/
-	function stakeSelect(stake: CustomEvent) {
-		dispatch('stakeSelect', { stake: stake.detail.stake || undefined });
+	function stakeSelect(e: CustomEvent) {
+		dispatch('stakeSelect', e.detail);
 	}
 
 	// DEV

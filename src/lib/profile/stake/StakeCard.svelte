@@ -17,12 +17,21 @@
 		return new Date((sec || 0) * 1000).toUTCString().split(' ')[4];
 	}
 
+	let open = false;
+
+	/**Function that is passed as an event property that closes this stake (hides the highlight border)*/
+	function closeStake() {
+		open = false;
+	}
+
+	/**Handler for clicking on the card that dispatches an event and shows the highlight border*/
 	function openStake() {
-		dispatch('click', { stake });
+		dispatch('click', { stake, closeStake });
+		open = true;
 	}
 </script>
 
-<div class="main" on:click={openStake}>
+<div class="main {open && 'open'}" on:click={openStake}>
 	<div class="name">
 		{stake?.name || 'unknown wallet name'}
 	</div>
@@ -65,7 +74,11 @@
 
 <style lang="postcss" global>
 	:local(.main) {
-		@apply w-full rounded-2xl shadow-md flex flex-col px-8 py-6 gap-2 max-w-2xl dark:bg-dark-grey dark:text-light-gray cursor-pointer transition-all hover:shadow-lg;
+		@apply w-full rounded-2xl shadow-md flex flex-col px-8 py-6 gap-2 max-w-2xl dark:bg-dark-grey dark:text-light-gray cursor-pointer transition-all hover:shadow-lg border border-transparent;
+	}
+
+	:local(.open) {
+		@apply border-light-orange;
 	}
 
 	:local(.name) {
