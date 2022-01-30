@@ -18,9 +18,9 @@
 		</div>
 	{/if}
 	<div class="mid-column">
-		<div>
-			<slot name="mid" />
-		</div>
+		<!-- <div> -->
+		<slot name="mid" />
+		<!-- </div> -->
 	</div>
 	{#if $$slots.last}
 		<div class="last-column" transition:slide>
