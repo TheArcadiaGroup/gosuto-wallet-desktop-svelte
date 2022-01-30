@@ -1,3 +1,8 @@
+<!-- 
+	@component
+	
+	A button for uploading the private wallet key from a file
+ -->
 <script lang="ts">
 	import ImportIcon from '$icons/ImportIcon.svelte';
 </script>

@@ -1,10 +1,16 @@
+<!-- 
+	@component
+	
+	A select component to create options with an each loop
+ -->
 <script>
+	/** Representing the select options */
 	export let items = {};
 </script>
 
 <select class={$$props.class}>
 	{#each Object.keys(items) as item}
-		<option value={item}>{items[item]}</option>
+		<option class="navbar-selectOptions" value={item}>{items[item]}</option>
 	{/each}
 </select>
 
@@ -17,7 +23,7 @@
 		@apply border-0 ring-0;
 	}
 
-	:local(option) {
+	.navbar-selectOptions {
 		@apply 4xl:text-sm;
 	}
 </style>

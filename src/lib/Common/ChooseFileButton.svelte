@@ -1,3 +1,8 @@
+<!-- 
+	@component
+	
+	A button to be used for importing a file
+ -->
 <script lang="ts">
 	import UploadIcon from '$icons/UploadIcon.svelte';
 </script>
