@@ -5,13 +5,18 @@
 	import StakeCard from './StakeCard.svelte';
 	import { goto } from '$app/navigation';
 
-	let stakeArray: {
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
+
+	interface Stake {
 		name: string;
 		elapsedSeconds: number;
 		fullSeconds: number;
 		staked: number;
 		unlocked: number;
-	}[];
+	}
+
+	let stakeArray: Stake[];
 	let wallet: any;
 
 	function backHandler() {
@@ -20,6 +25,11 @@
 
 	function copyPK() {
 		// TODO copy public key to clipboard (I assume that this is what this is supposed to do)
+	}
+
+	/**Triggered when a stake card is cliked. Displatches an event of stake selection*/
+	function stakeSelect(stake: CustomEvent) {
+		dispatch('stakeSelect', { stake: stake.detail.stake || undefined });
 	}
 
 	// DEV
@@ -59,7 +69,7 @@
 	</div>
 	<div class="stake-cards-container item">
 		{#each stakeArray as stake}
-			<StakeCard {stake} />
+			<StakeCard {stake} on:click={stakeSelect} />
 		{/each}
 	</div>
 	<div class="show-more-container">

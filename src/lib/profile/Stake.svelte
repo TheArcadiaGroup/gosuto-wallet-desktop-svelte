@@ -3,10 +3,11 @@
 	
 	A component with the whole grid for /profile/?{profile_id}?/stake	
 -->
-<script>
+<script lang="ts">
 	import GridLayout from '$lib/Common/GridLayout.svelte';
 	import ProfileNavigation from '$lib/profile/ProfileNavigation.svelte';
 	import ArrowInCircle from '$lib/Common/ArrowInCircle.svelte';
+	import StakesFromWallet from './stake/StakesFromWallet.svelte';
 
 	import Confirm from '$lib/profile/stake/detail/Confirm.svelte';
 	import ClaimReward from './stake/detail/ClaimReward.svelte';
@@ -28,10 +29,15 @@
 	};
 
 	// stake bind StakesFromWallet
-	let selectedLastCollumnContent = null;
+	let selectedLastCollumnContent: any = null;
 
 	function closeStake() {
 		selectedLastCollumnContent = null;
+	}
+
+	/**Event handler for clicking a stake in StakesFromWallet component that shows the detail of that stake in the third column*/
+	function stakeSelect(stake: CustomEvent) {
+		console.log(stake.detail.stake);
 	}
 </script>
 
@@ -41,8 +47,7 @@
 		<ProfileNavigation />
 	</div>
 	<div slot="mid" class="size-full">
-		<!-- Listener for clicked component and save that to selectedLastCollumnContent -->
-		StakesFromWallet component
+		<StakesFromWallet on:stakeSelect={stakeSelect} />
 	</div>
 	<div slot="last" class="size-full last-column">
 		{#if selectedLastCollumnContent}

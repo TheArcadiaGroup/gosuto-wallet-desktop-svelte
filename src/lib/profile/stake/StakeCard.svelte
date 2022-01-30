@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
+
 	import ProgressBar from '$lib/Common/ProgressBar.svelte';
 	export let stake: {
 		name: string;
@@ -15,7 +18,7 @@
 	}
 
 	function openStake() {
-		// open the clicked stake
+		dispatch('click', { stake });
 	}
 </script>
 
@@ -45,25 +48,16 @@
 		</div>
 	</div>
 	<div class="time-container">
-		<div
-			class="elapsed {stake?.elapsedSeconds ===
-				0 && 'text-highlight'}"
-		>
+		<div class="elapsed {stake?.elapsedSeconds === 0 && 'text-highlight'}">
 			{formatTime(stake?.elapsedSeconds || 0)}
 		</div>
-		<div
-			class="full {stake?.fullSeconds ===
-				0 && 'text-highlight'}"
-		>
+		<div class="full {stake?.fullSeconds === 0 && 'text-highlight'}">
 			{formatTime(stake?.fullSeconds || 0)}
 		</div>
 	</div>
 	<div class="footer">
 		<div class="footer-label">Total time until reward</div>
-		<div
-			class="footer-time {stake?.fullSeconds - stake?.elapsedSeconds === 0 &&
-				'text-highlight'}"
-		>
+		<div class="footer-time {stake?.fullSeconds - stake?.elapsedSeconds === 0 && 'text-highlight'}">
 			{formatTime(stake?.fullSeconds - stake?.elapsedSeconds || 0)}
 		</div>
 	</div>
