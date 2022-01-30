@@ -1,3 +1,8 @@
+<!--
+@component
+The wallet swap route, this is where the layout is, the currently selected token index and list of tokens is.
+@author marekvospel
+-->
 <script lang="ts">
 	import Swap from '$lib/Home/Swap/index.svelte';
 	import SelectCurrency from '$lib/Home/Swap/Forms/SelectCurrency.svelte';
@@ -5,6 +10,10 @@
 	import ConfirmSelectMobile from '$lib/Home/Swap/Forms/ConfirmSelectMobile.svelte';
 	import GridLayout from '$lib/Common/GridLayout.svelte';
 
+	/**
+	 * This is an array of tokens, which will be shown in the main column of the app's grid. Values inside this array will be passed on to TokenCard components inside Swap component
+	 * @see Swap
+	 */
 	let tokens = [
 		{
 			cryptoUnit: 'CSPR',
@@ -22,14 +31,19 @@
 		},
 	];
 
+	/**
+	 * This is the currently selected index of TokenCards.
+	 * @type {number}
+	 * @see Swap
+	 */
 	let selected = -1;
 
+	/**
+	 * A function changing the selected index value of this component.
+	 * @param e selectToken event with the selected TokenCard index
+	 */
 	function selectToken(e: { detail: { id: number } }): void {
 		selected = e.detail.id;
-	}
-
-	function deselectToken(): void {
-		selected = -1;
 	}
 </script>
 
@@ -42,7 +56,7 @@
 			<!--<ConfirmSelectMobile />-->
 			<SelectCurrency />
 		{:else}
-			<SwapCurrency on:deselect={deselectToken} />
+			<SwapCurrency />
 		{/if}
 	</div>
 </GridLayout>
