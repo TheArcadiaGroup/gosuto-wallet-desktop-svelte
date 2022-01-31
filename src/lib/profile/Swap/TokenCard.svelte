@@ -6,6 +6,7 @@ The Token card / button component used to select which token to select inside wa
 -->
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+
 	import ProfitUpIcon from '$icons/ProfitUpIcon.svelte';
 	import ProfitDownIcon from '$icons/ProfitDownIcon.svelte';
 
@@ -71,19 +72,19 @@ The Token card / button component used to select which token to select inside wa
 </script>
 
 <div on:click={select} class="token-card {selected ? 'selected' : ''}">
-	<div class="gap-1">
-		<p class="card-title">{cryptoName} ({cryptoUnit})</p>
-		<p class="card-text-sm {positive ? 'text-light-green' : 'text-light-red'}">
+	<div class="token-card-left-col">
+		<p class="token-card-title">{cryptoName} ({cryptoUnit})</p>
+		<p class="token-card-text-sm {positive ? 'text-light-green' : 'text-light-red'}">
 			{cryptoAmount}
 			{cryptoUnit}
 		</p>
-		<p class="card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">
+		<p class="token-card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">
 			{currencySymbol}{currencyAmount}
 			{currencyUnit}
 		</p>
 	</div>
-	<div class="ml-auto text-right">
-		<p class="card-text-sm card-text-flex {positive ? 'text-light-green' : 'text-light-red'}">
+	<div class="token-card-right-col">
+		<p class="token-card-text-sm token-card-text-flex {positive ? 'text-light-green' : 'text-light-red'}">
 			{#if positive}
 				<ProfitUpIcon />
 			{:else}
@@ -91,38 +92,56 @@ The Token card / button component used to select which token to select inside wa
 			{/if}
 			+15%
 		</p>
-		<p class="card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">897,000 CSPR</p>
-		<p class="card-text-xs text-light-gray">(24h)</p>
+		<p class="token-card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">897,000 CSPR</p>
+		<p class="token-card-text-xs text-light-gray">(24h)</p>
 	</div>
 </div>
 
 <style lang="postcss" global>
-	:local(.token-card) {
-		@apply px-3 py-2 flex flex-row rounded-2xl border border-light-transparentGrey10 cursor-pointer select-none;
+	.token-card {
+		@apply flex flex-row;
+		@apply px-3 py-2;
+		@apply rounded-2xl border border-light-transparentGrey10 cursor-pointer select-none;
 		@apply md:p-5 md:rounded-[1.375rem];
 		@apply dark:bg-dark-blue;
 		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 	}
 
-	:local(.token-card.selected) {
+	.token-card.selected {
 		@apply border border-light-purple;
 		box-shadow: 0 4px 12px rgba(114, 93, 255, 0.3);
 	}
 
-	:local(.card-title) {
-		@apply text-xs font-bold mb-0.5 md:text-base;
-		@apply text-light-grey dark:text-white;
+	.token-card-left-col {
+		@apply flex flex-col;
+		@apply gap-0.5;
+		@apply md:gap-1;
 	}
 
-	:local(.card-text-xs) {
-		@apply text-xs font-bold md:text-base;
+	.token-card-right-col {
+		@apply ml-auto text-right;
 	}
 
-	:local(.card-text-sm) {
-		@apply text-sm font-bold md:text-2xl;
+	.token-card-title {
+		@apply text-xs font-bold;
+		@apply text-light-grey;
+		@apply mb-0.5 md:text-base;
+		@apply dark:text-white;
 	}
 
-	:local(.card-text-flex) {
-		@apply inline-flex flex-row items-center justify-end gap-1 md:gap-2;
+	.token-card-text-xs {
+		@apply text-xs font-bold;
+		@apply md:text-base;
+	}
+
+	.token-card-text-sm {
+		@apply text-sm font-bold;
+		@apply md:text-2xl;
+	}
+
+	.token-card-text-flex {
+		@apply inline-flex flex-row items-center justify-end;
+		@apply gap-1;
+		@apply md:gap-2;
 	}
 </style>

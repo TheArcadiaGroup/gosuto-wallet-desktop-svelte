@@ -5,12 +5,12 @@ The wallet swap route, this is where the layout is, the currently selected token
 -->
 
 <script lang="ts">
-	import Swap from '$lib/Home/Swap/index.svelte';
-	import SelectCurrency from '$lib/Home/Swap/Forms/SelectCurrency.svelte';
-	import SwapCurrency from '$lib/Home/Swap/Forms/SwapCurrency.svelte';
-	import ConfirmSelectMobile from '$lib/Home/Swap/Forms/ConfirmSelectMobile.svelte';
 	import GridLayout from '$lib/Common/GridLayout.svelte';
 	import ProfileNavigation from '$lib/profile/ProfileNavigation.svelte'
+	import Swap from '$lib/profile/Swap/index.svelte';
+	import SelectCurrency from '$lib/profile/Swap/Forms/SelectCurrency.svelte';
+	import SwapCurrency from '$lib/profile/Swap/Forms/SwapCurrency.svelte';
+	import ConfirmSelectMobile from '$lib/profile/Swap/Forms/ConfirmSelectMobile.svelte';
 
 	/**
 	 * This is an array of tokens, which will be shown in the main column of the app's grid. Values inside this array will be passed on to TokenCard components inside Swap component
@@ -50,13 +50,13 @@ The wallet swap route, this is where the layout is, the currently selected token
 </script>
 
 <GridLayout>
-	<div slot="first" class="size-full">
+	<div slot="first" class="swap-size-full">
 		<ProfileNavigation />
 	</div>
 	<div slot="mid">
 		<Swap on:selectToken={selectToken} bind:tokens bind:selected />
 	</div>
-	<div class="sidebar" slot="last">
+	<div class="swap-sidebar" slot="last">
 		{#if selected === -1}
 			<!--<ConfirmSelectMobile />-->
 			<SelectCurrency />
@@ -67,17 +67,13 @@ The wallet swap route, this is where the layout is, the currently selected token
 </GridLayout>
 
 <style lang="postcss" global>
-	:local(.wallet-swap-page) {
-		@apply min-h-screen flex flex-col md:flex-row;
-		@apply dark:bg-dark-background;
-	}
 
-	:local(.size-full) {
+	.swap-size-full {
 		@apply w-full h-full;
 	}
 
-	:local(.sidebar) {
+	.swap-sidebar {
 		@apply h-full w-full;
-		@apply md:right-0 md:h-screen;
+		@apply lg:h-screen;
 	}
 </style>

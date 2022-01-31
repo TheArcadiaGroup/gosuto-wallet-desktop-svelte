@@ -46,47 +46,55 @@ It is currently not used, and is only on mobile version inside of the app design
 </script>
 
 <div class="select-currency">
-	<div class="currency-info">
-		<p class="selected-crypto">{cryptoName} ({cryptoUnit})</p>
-		<div class="currency-amount {positive ? 'text-light-green' : 'text-light-red'}">
-			<p class="crypto-amount">{cryptoAmount} {cryptoUnit}</p>
-			<p class="real-amount">{currencySymbol}{currencyAmount} {currencyAmount}</p>
+	<div class="select-currency-info">
+		<p class="select-currency-selected-crypto">{cryptoName} ({cryptoUnit})</p>
+		<div class="select-currency-amount {positive ? 'text-light-green' : 'text-light-red'}">
+			<p class="select-currency-crypto-amount">{cryptoAmount} {cryptoUnit}</p>
+			<p class="select-currency-real-amount">{currencySymbol}{currencyAmount} {currencyAmount}</p>
 		</div>
 	</div>
-	<div class="button">
+	<div class="select-currency-button">
 		<Button><span class="my-2">Select</span></Button>
 	</div>
 </div>
 
 <style lang="postcss" global>
-	:local(.select-currency) {
-		@apply relative h-full w-full min-h-[20rem] rounded-t-3xl px-16;
+	.select-currency {
+		@apply relative;
+		@apply h-full w-full min-h-[20rem];
 		@apply flex flex-col items-center justify-center;
+		@apply px-16;
+		@apply rounded-t-3xl;
 	}
 
-	:local(.selected-crypto) {
-		@apply font-bold;
-		@apply text-light-grey dark:text-white;
+	.select-currency-selected-crypto {
+		@apply font-bold text-light-grey;
+		@apply dark:text-white;
 	}
 
-	:local(.currency-info) {
-		@apply w-full flex flex-row;
+	.select-currency-info {
+		@apply w-full;
+		@apply flex flex-row;
 	}
 
-	:local(.currency-amount) {
-		@apply ml-auto flex flex-col text-right;
+	.select-currency-amount {
+		@apply flex flex-col;
+		@apply ml-auto;
+		@apply text-right;
 	}
 
-	:local(.crypto-amount) {
+	.select-currency-crypto-amount {
 		@apply font-bold text-sm;
 	}
 
-	:local(.real-amount) {
+	.select-currency-real-amount {
 		@apply font-bold text-xs;
 	}
 
-	:local(.button) {
-		@apply w-1/2 mx-auto flex flex-col gap-4 pt-4;
+	.select-currency-button {
+		@apply w-1/2;
+		@apply flex flex-col;
+		@apply mx-auto gap-4 pt-4;
 		@apply md:mt-10 md:w-full md:gap-1;
 	}
 </style>
