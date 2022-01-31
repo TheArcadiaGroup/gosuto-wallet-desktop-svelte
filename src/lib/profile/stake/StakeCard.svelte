@@ -17,7 +17,7 @@
 		return new Date((sec || 0) * 1000).toUTCString().split(' ')[4];
 	}
 
-	let open = false;
+  let open = false;
 
 	/**Function that is passed as an event property that closes this stake (hides the highlight border)*/
 	function closeStake() {

@@ -1,5 +1,4 @@
 <script lang="ts">
-	// Icons
 	import NavActivityIcon from '$icons/NavActivityIcon.svelte';
 	import NavBookmarkIcon from '$icons/NavBookmarkIcon.svelte';
 	import NavSettingsIcon from '$icons/NavSettingsIcon.svelte';
@@ -7,48 +6,54 @@
 	import NavStackIcon from '$icons/NavStackIcon.svelte';
 	import GosutoNavLogo from '$icons/NavLogo.svelte';
 
-	// Components
 	import SelectItems from './SelectItems.svelte';
 	import NavItem from './NavItem.svelte';
 
-	// Variables
-	let navItems: NavIcon[] = Array(7)
-		.fill(0)
-		.map((_, i) => ({ id: i, active: false } as NavIcon));
+	import { goto } from '$app/navigation';
+	import { navItems } from '$stores/NavbarActive';
 
-	let activateItem = (navItem: NavIcon) => {
-		navItems.forEach((i) => (i.active = false));
+	let navItemsValues: NavIcon[];
+
+	navItems.subscribe((value) => {
+		navItemsValues = value;
+	});
+
+	let activateItem = (navItem: NavIcon, route: string) => {
+		navItems.update((n) => {
+			n.forEach((e) => (e.active = false));
+			return n;
+		});
 		navItem.active = true;
-		navItems = navItems;
+		if (route != '') goto(route);
 	};
 </script>
 
 <div class="navbar">
 	<div class="top">
-		<NavItem href="/" navItem={navItems[0]} on:click={() => activateItem(navItems[0])}
-			><GosutoNavLogo class="large-nav-icon" /></NavItem
-		>
-		<NavItem reverse={true} navItem={navItems[1]} on:click={() => activateItem(navItems[1])}
+		<NavItem navItem={navItemsValues[0]}><GosutoNavLogo class="large-nav-icon" /></NavItem>
+		<NavItem reverse={true} navItem={navItemsValues[1]}
 			><NavFlameIcon class="large-nav-icon" /></NavItem
 		>
-		<NavItem navItem={navItems[2]} on:click={() => activateItem(navItems[2])}
+		<NavItem navItem={navItemsValues[2]} on:click={() => activateItem(navItemsValues[2], '')}
 			><div class="avatar-img" /></NavItem
 		>
-		<NavItem navItem={navItems[3]} on:click={() => activateItem(navItems[3])}
+		<NavItem navItem={navItemsValues[3]} on:click={() => activateItem(navItemsValues[3], '')}
 			><NavBookmarkIcon class="nav-icon" /></NavItem
 		>
-		<NavItem navItem={navItems[4]} on:click={() => activateItem(navItems[4])}
+		<NavItem navItem={navItemsValues[4]} on:click={() => activateItem(navItemsValues[4], '')}
 			><NavStackIcon class="nav-icon" /></NavItem
 		>
 		<NavItem
-			href="/currency-performance"
-			navItem={navItems[5]}
-			on:click={() => activateItem(navItems[5])}><NavActivityIcon class="nav-icon" /></NavItem
+			navItem={navItemsValues[5]}
+			on:click={() => activateItem(navItemsValues[5], '/currency-performance')}
+			><NavActivityIcon class="nav-icon" /></NavItem
 		>
 	</div>
 
 	<div class="bottom">
-		<NavItem href="/settings" navItem={navItems[6]} on:click={() => activateItem(navItems[6])}
+		<NavItem
+			navItem={navItemsValues[6]}
+			on:click={() => activateItem(navItemsValues[6], '/settings')}
 			><NavSettingsIcon class="nav-icon" /></NavItem
 		>
 		<SelectItems class="select-items" items={{ en: 'EN', de: 'DE' }} />
