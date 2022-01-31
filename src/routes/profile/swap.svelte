@@ -10,6 +10,7 @@ The wallet swap route, this is where the layout is, the currently selected token
 	import SwapCurrency from '$lib/Home/Swap/Forms/SwapCurrency.svelte';
 	import ConfirmSelectMobile from '$lib/Home/Swap/Forms/ConfirmSelectMobile.svelte';
 	import GridLayout from '$lib/Common/GridLayout.svelte';
+	import ProfileNavigation from '$lib/profile/ProfileNavigation.svelte'
 
 	/**
 	 * This is an array of tokens, which will be shown in the main column of the app's grid. Values inside this array will be passed on to TokenCard components inside Swap component
@@ -49,6 +50,9 @@ The wallet swap route, this is where the layout is, the currently selected token
 </script>
 
 <GridLayout>
+	<div slot="first" class="size-full">
+		<ProfileNavigation />
+	</div>
 	<div slot="mid">
 		<Swap on:selectToken={selectToken} bind:tokens bind:selected />
 	</div>
@@ -66,6 +70,10 @@ The wallet swap route, this is where the layout is, the currently selected token
 	:local(.wallet-swap-page) {
 		@apply min-h-screen flex flex-col md:flex-row;
 		@apply dark:bg-dark-background;
+	}
+
+	:local(.size-full) {
+		@apply w-full h-full;
 	}
 
 	:local(.sidebar) {
