@@ -26,25 +26,25 @@
 		@apply relative;
 		@apply flex flex-col;
 		@apply gap-x-8 px-2;
-		@apply md:flex-row md:items-center;
+		@apply lg:flex-row lg:items-center;
 	}
 
 	.return-back-button {
 		@apply absolute right-full;
 		@apply hidden;
 		@apply cursor-pointer;
-		@apply md:block;
+		@apply lg:block;
 	}
 
 	.return-wallet-title {
 		@apply font-bold;
 		@apply dark:text-white;
-		@apply md:text-2xl;
+		@apply lg:text-2xl;
 	}
 
 	.return-swap-text {
 		@apply hidden;
-		@apply md:inline;
+		@apply lg:inline;
 	}
 
 	.return-wallet-pub-key {
@@ -54,7 +54,7 @@
 
 	.return-pub-key-text {
 		@apply text-sm text-light-gardenText;
-		@apply md:text-base;
+		@apply lg:text-base;
 		@apply dark:text-white;
 	}
 </style>

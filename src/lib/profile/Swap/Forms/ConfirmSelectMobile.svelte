@@ -95,6 +95,6 @@ It is currently not used, and is only on mobile version inside of the app design
 		@apply w-1/2;
 		@apply flex flex-col;
 		@apply mx-auto gap-4 pt-4;
-		@apply md:mt-10 md:w-full md:gap-1;
+		@apply lg:mt-10 lg:w-full lg:gap-1;
 	}
 </style>

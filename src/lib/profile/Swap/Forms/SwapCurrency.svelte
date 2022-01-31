@@ -116,13 +116,13 @@ The logic whether this component is shown or not is handled by it's parents
 		@apply h-full w-full;
 		@apply flex flex-col;
 		@apply px-16;
-		@apply md:px-7;
+		@apply lg:px-7;
 	}
 
 	.swap-currency-form-title {
 		@apply mt-16 mb-7;
 		@apply text-xl font-bold text-center;
-		@apply md:mt-20 md:mb-14;
+		@apply lg:mt-20 lg:mb-14;
 		@apply dark:text-white;
 	}
 
@@ -157,20 +157,20 @@ The logic whether this component is shown or not is handled by it's parents
 		@apply w-2/3;
 		@apply flex items-center justify-center;
 		@apply py-6;
-		@apply md:w-full;
+		@apply lg:w-full;
 	}
 
 	.swap-currency-create-token-warning {
 		@apply mt-3;
 		@apply text-light-grey189 text-sm font-semibold;
-		@apply md:mt-6;
+		@apply lg:mt-6;
 	}
 
 	.swap-currency-buttons {
 		@apply w-3/4;
 		@apply flex flex-col;
 		@apply mx-auto gap-4 mt-28 mb-16;
-		@apply md:mt-10 md:w-full md:gap-1;
+		@apply lg:mt-10 lg:w-full lg:gap-1;
 	}
 
 	.swap-currency-cancel-swap-button {
@@ -181,7 +181,7 @@ The logic whether this component is shown or not is handled by it's parents
 	.swap-currency-cancel-swap-button-text {
 		@apply my-2;
 		@apply text-xs leading-7 font-bold text-dark-gray;
-		@apply md:text-sm;
+		@apply lg:text-sm;
 		@apply dark:text-white;
 	}
 </style>

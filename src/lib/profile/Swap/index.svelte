@@ -63,7 +63,7 @@ This is where select & deselect logic is, and is passed to parent by dispatching
 	 */
 	function cancelButtonListener(event: any): void {
 		if (!event.target) return;
-		const isInCancel = Boolean(event.target.closest('.cancel-swap-button'));
+		const isInCancel = Boolean(event.target.closest('.swap-currency-cancel-swap-button'));
 		if (isInCancel) dispatch('selectToken', {
 			id: -1,
 		});
@@ -113,12 +113,13 @@ This is where select & deselect logic is, and is passed to parent by dispatching
 
 <style lang="postcss" global>
 	.swap-wallet-swap {
+		@apply min-h-screen;
 		@apply px-4 pt-10;
-		@apply md:px-11 md:pt-20;
+		@apply lg:px-11 lg:pt-20;
 	}
 
 	.swap-container {
-		@apply my-6 md:my-12;
+		@apply my-6 lg:my-12;
 	}
 
 	.swap-title-row {
@@ -128,7 +129,7 @@ This is where select & deselect logic is, and is passed to parent by dispatching
 
 	.swap-tokens-in-wallet-title {
 		@apply font-bold text-base;
-		@apply md:text-xl;
+		@apply lg:text-xl;
 		@apply dark:text-white;
 	}
 
@@ -136,7 +137,7 @@ This is where select & deselect logic is, and is passed to parent by dispatching
 		@apply flex flex-row;
 		@apply px-2 py-8 gap-x-3.5 gap-y-5;
 		@apply snap-x overflow-x-scroll;
-		@apply md:gap-8 md:flex-col md:overflow-auto;
+		@apply lg:gap-8 lg:flex-col lg:overflow-auto;
 	}
 
 	.swap-token-group {
@@ -144,14 +145,14 @@ This is where select & deselect logic is, and is passed to parent by dispatching
 		@apply grid grid-cols-2 grid-rows-2;
 		@apply gap-x-3.5 gap-y-5;
 		@apply snap-center;
-		@apply md:gap-8;
+		@apply lg:gap-8;
 	}
 
 	.swap-mobile-scrollbar {
 		@apply w-full;
 		@apply flex flex-row justify-center;
 		@apply mx-auto px-2 pb-2 gap-1 mb-7;
-		@apply md:hidden;
+		@apply lg:hidden;
 	}
 
 	.swap-mobile-scrollbar-dot {
@@ -163,7 +164,7 @@ This is where select & deselect logic is, and is passed to parent by dispatching
 	.swap-inner-btn {
 		@apply flex items-center;
 		@apply gap-1 py-1 px-3.5;
-		@apply md:gap-2.5 md:py-2 md:px-5 md:text-base;
+		@apply lg:gap-2.5 lg:py-2 lg:px-5 lg:text-base;
 	}
 
 	.swap-scrollbar-hide {

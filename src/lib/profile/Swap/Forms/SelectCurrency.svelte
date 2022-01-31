@@ -19,6 +19,7 @@ All logic of this component (whether it is shown or not) is handled by it's pare
 	.select-currency-text {
 		@apply w-1/2;
 		@apply text-center font-semibold text-sm text-light-grey193;
-		@apply dark:opacity-50 md:opacity-100 md:text-dark-lightGray;
+		@apply lg:opacity-100 lg:text-dark-lightGray;
+		@apply dark:opacity-50;
 	}
 </style>

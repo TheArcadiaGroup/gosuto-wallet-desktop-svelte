@@ -102,7 +102,7 @@ The Token card / button component used to select which token to select inside wa
 		@apply flex flex-row;
 		@apply px-3 py-2;
 		@apply rounded-2xl border border-light-transparentGrey10 cursor-pointer select-none;
-		@apply md:p-5 md:rounded-[1.375rem];
+		@apply lg:p-5 lg:rounded-[1.375rem];
 		@apply dark:bg-dark-blue;
 		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 	}
@@ -115,7 +115,7 @@ The Token card / button component used to select which token to select inside wa
 	.token-card-left-col {
 		@apply flex flex-col;
 		@apply gap-0.5;
-		@apply md:gap-1;
+		@apply lg:gap-1;
 	}
 
 	.token-card-right-col {
@@ -125,23 +125,24 @@ The Token card / button component used to select which token to select inside wa
 	.token-card-title {
 		@apply text-xs font-bold;
 		@apply text-light-grey;
-		@apply mb-0.5 md:text-base;
+		@apply mb-0.5;
+		@apply lg:text-base;
 		@apply dark:text-white;
 	}
 
 	.token-card-text-xs {
 		@apply text-xs font-bold;
-		@apply md:text-base;
+		@apply lg:text-base;
 	}
 
 	.token-card-text-sm {
 		@apply text-sm font-bold;
-		@apply md:text-2xl;
+		@apply lg:text-2xl;
 	}
 
 	.token-card-text-flex {
 		@apply inline-flex flex-row items-center justify-end;
 		@apply gap-1;
-		@apply md:gap-2;
+		@apply lg:gap-2;
 	}
 </style>
