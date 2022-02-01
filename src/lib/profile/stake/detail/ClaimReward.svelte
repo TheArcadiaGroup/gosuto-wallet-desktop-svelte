@@ -1,17 +1,16 @@
-<!-- 
-    @component
-
-    A title and a button for claiming reward.
+<!-- @component 
+	Describtion:
+	> A stake detail component (fills the third column on /profile/stakes routes) that claims the reward from a specified stake.
 -->
 <script lang="ts">
 	import Button from '$lib/Common/Button.svelte';
 
-	/**Function that claims the reward*/
+	/**Handler for clicking the "Claim" button. Claims the reward*/
 	function claim() {
 		// confirm claim
 	}
 
-	/**Function that cancels the claim and hides the component*/
+	/**Handler for clicking the "Cancel" button. Cancels the claim and hides the component*/
 	function cancel() {
 		// cancel stake
 	}

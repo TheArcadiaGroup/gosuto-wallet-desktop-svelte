@@ -1,5 +1,19 @@
+<!-- @component 
+	Describtion:
+	> A card component representing individual stakes in the StakesFromWallet component.
+	
+	Props:
+	- `stake` = An object with data of the stake (name, staked amount, etc.)
+	
+	Events:
+	- `click` = Dispatched when the card is clicked. Passes the stake data and the `closeStake()` function via the event details.
+-->
 <script lang="ts">
 	import ProgressBar from '$lib/Common/ProgressBar.svelte';
+
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
+
 	export let stake: {
 		name: string;
 		elapsedSeconds: number;
@@ -8,18 +22,28 @@
 		unlocked: number;
 	};
 
-	$: progress = stake?.elapsedSeconds / stake?.fullSeconds;
+	$: progress = stake?.elapsedSeconds / stake?.fullSeconds; // progress in % of the stake
 
+	/**Function that formats time from seconds to specified displaying format*/
 	function formatTime(sec: number) {
 		return new Date((sec || 0) * 1000).toUTCString().split(' ')[4];
 	}
 
+	let open = false; // Boolean variable that determines if the stake is open (it's details are shown in the third column). Used for deciding whether to show the highligh border.
+
+	/**Function that is passed as an event property that closes this stake (hides the highlight border)*/
+	function closeStake() {
+		open = false;
+	}
+
+	/**Handler for clicking on the card that dispatches an event and shows the highlight border*/
 	function openStake() {
-		// open the clicked stake
+		dispatch('click', { stake, closeStake });
+		open = true;
 	}
 </script>
 
-<div class="main" on:click={openStake}>
+<div class="main {open && 'open'}" on:click={openStake}>
 	<div class="name">
 		{stake?.name || 'unknown wallet name'}
 	</div>
@@ -62,7 +86,11 @@
 
 <style lang="postcss" global>
 	:local(.main) {
-		@apply w-full rounded-2xl shadow-md flex flex-col px-8 py-6 gap-2 max-w-2xl dark:bg-dark-grey dark:text-light-gray cursor-pointer transition-all hover:shadow-lg;
+		@apply w-full rounded-2xl shadow-md flex flex-col px-8 py-6 gap-2 max-w-2xl dark:bg-dark-grey dark:text-light-gray cursor-pointer transition-all hover:shadow-lg border border-transparent;
+	}
+
+	:local(.open) {
+		@apply border-light-orange;
 	}
 
 	:local(.name) {

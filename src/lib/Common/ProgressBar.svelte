@@ -1,3 +1,10 @@
+<!-- @component 
+	Describtion:
+	> A component that displays a progress bar with specified value.
+	
+	Props:
+	- `value` = Value in % of the progress. Determines the size of the inner bar.
+-->
 <script>
 	export let value = 0;
 </script>

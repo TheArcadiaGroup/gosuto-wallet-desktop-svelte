@@ -9,7 +9,7 @@
 	class:withFirstColumn={$$slots.first}
 	class:withoutFirstColumn={!$$slots.first}
 >
-	<div class="navbar-container">
+	<div class="navbar-container overflow-hidden">
 		<Navbar />
 	</div>
 	{#if $$slots.first}
