@@ -3,7 +3,6 @@
 The wallet swap route, this is where the layout is, the currently selected token index and list of tokens is.
 @author marekvospel
 -->
-
 <script lang="ts">
 	import Swap from '$lib/Home/Swap/index.svelte';
 	import SelectCurrency from '$lib/Home/Swap/Forms/SelectCurrency.svelte';

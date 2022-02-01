@@ -42,7 +42,6 @@ It is currently not used, and is only on mobile version inside of the app design
 	 * Amount of the real currency shown inside this component
 	 */
 	export let currencyAmount = 175;
-
 </script>
 
 <div class="select-currency">

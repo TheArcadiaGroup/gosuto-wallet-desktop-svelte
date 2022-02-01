@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Navbar from '$components/navbar/Navbar.svelte';
+	import Navbar from '$components/Navbar/Navbar.svelte';
 	import LastColumnRectangle from '$icons/LastColumnRectangle.svelte';
 	import { slide } from 'svelte/transition';
 </script>

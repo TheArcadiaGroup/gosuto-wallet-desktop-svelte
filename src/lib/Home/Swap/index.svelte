@@ -6,7 +6,7 @@ This is where select & deselect logic is, and is passed to parent by dispatching
 @see TokenCard
 -->
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte'
+	import { createEventDispatcher } from 'svelte';
 
 	import ReturnHome from '$components/Home/ReturnHome.svelte';
 	import PlusIcon from '$icons/PlusIcon.svelte';
@@ -52,9 +52,10 @@ This is where select & deselect logic is, and is passed to parent by dispatching
 	function deselectListener(event: any): void {
 		if (!event.target) return;
 		const isInToken = Boolean(event.target.closest('.token-card'));
-		if (!isInToken) dispatch('selectToken', {
-			id: -1,
-		});
+		if (!isInToken)
+			dispatch('selectToken', {
+				id: -1,
+			});
 	}
 
 	/**
@@ -64,9 +65,10 @@ This is where select & deselect logic is, and is passed to parent by dispatching
 	function cancelButtonListener(event: any): void {
 		if (!event.target) return;
 		const isInCancel = Boolean(event.target.closest('.cancel-swap-button'));
-		if (isInCancel) dispatch('selectToken', {
-			id: -1,
-		});
+		if (isInCancel)
+			dispatch('selectToken', {
+				id: -1,
+			});
 	}
 </script>
 
@@ -105,7 +107,8 @@ This is where select & deselect logic is, and is passed to parent by dispatching
 				<div
 					class="mobile-scrollbar-dot {currentPage === i
 						? 'w-3 bg-light-orange'
-						: 'w-1.5 bg-light-gray'}"></div>
+						: 'w-1.5 bg-light-gray'}"
+				/>
 			{/each}
 		</div>
 	</div>
