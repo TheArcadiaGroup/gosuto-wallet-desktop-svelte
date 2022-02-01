@@ -64,7 +64,7 @@ It is currently not used, and is only on mobile version inside of the app design
 		@apply h-full w-full min-h-[20rem];
 		@apply flex flex-col items-center justify-center;
 		@apply px-16;
-		@apply rounded-t-3xl;
+		@apply dark:bg-dark-grey;
 	}
 
 	.select-currency-selected-crypto {

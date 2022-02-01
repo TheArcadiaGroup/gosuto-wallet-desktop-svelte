@@ -109,7 +109,7 @@ The logic whether this component is shown or not is handled by it's parents
 	.swap-currency {
 		@apply relative;
 		@apply min-h-[20rem] h-full w-full;
-		@apply rounded-t-3xl;
+		@apply dark:bg-dark-grey;
 	}
 
 	.swap-currency-form {

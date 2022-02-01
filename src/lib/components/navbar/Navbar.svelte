@@ -80,12 +80,16 @@
 	}
 
 	:local(div.top) {
+		@apply max-w-[5rem];
+
 		@apply flex md:flex-col justify-evenly items-center gap-x-2 md:gap-x-0;
 		@apply ml-1 mr-4 md:mx-0;
 		@apply w-full min-w-[32rem] md:min-w-fit md:h-3/5 md:min-h-[32rem];
 	}
 
 	:local(div.bottom) {
+		@apply max-w-[5rem];
+
 		@apply flex md:flex-col justify-evenly items-center md:gap-y-10;
 		@apply w-[8%] min-w-[2rem] md:w-full md:h-[30%] md:min-h-[16rem];
 		@apply mr-4 md:mr-0 md:pb-4;

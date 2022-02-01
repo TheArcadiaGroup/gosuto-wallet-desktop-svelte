@@ -113,13 +113,14 @@ This is where select & deselect logic is, and is passed to parent by dispatching
 
 <style lang="postcss" global>
 	.swap-wallet-swap {
-		@apply min-h-screen;
+		@apply h-max min-h-screen;
 		@apply px-4 pt-10;
+		@apply bg-dark-gosutoDark;
 		@apply lg:px-11 lg:pt-20;
 	}
 
 	.swap-container {
-		@apply my-6 lg:my-12;
+		@apply py-6 lg:py-12;
 	}
 
 	.swap-title-row {
@@ -142,7 +143,7 @@ This is where select & deselect logic is, and is passed to parent by dispatching
 
 	.swap-token-group {
 		@apply w-full shrink-0;
-		@apply grid grid-cols-2 grid-rows-2;
+		@apply grid grid-cols-2 auto-rows-fr;
 		@apply gap-x-3.5 gap-y-5;
 		@apply snap-center;
 		@apply lg:gap-8;

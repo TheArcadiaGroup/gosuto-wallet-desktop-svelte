@@ -41,6 +41,10 @@
 		@apply w-full grid gap-0 h-screen md:h-auto dark:bg-dark-background;
 	}
 
+	:local(.navbar-container) {
+		@apply w-20;
+	}
+
 	@media only screen and (max-width: 768px) {
 		:local(.last-column) {
 			@apply rounded-t-3xl;

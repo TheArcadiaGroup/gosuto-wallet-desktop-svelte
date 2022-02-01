@@ -13,7 +13,7 @@ All logic of this component (whether it is shown or not) is handled by it's pare
 		@apply relative;
 		@apply h-full w-full;
 		@apply flex items-center justify-center;
-		@apply rounded-t-3xl;
+		@apply dark:bg-dark-grey;
 	}
 
 	.select-currency-text {
