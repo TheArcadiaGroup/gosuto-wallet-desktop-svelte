@@ -1,16 +1,25 @@
+<!-- @component 
+	Describtion:
+	> A stake detail component (fills the third column on /profile/stakes routes) for confirming the stake
+
+	Bindables:
+	- `amount` = Amount from the amount input.
+	- `recipient` = Value form the recipient selection.
+-->
 <script lang="ts">
 	import Button from '$lib/Common/Button.svelte';
-
 	import SelectInput from '$lib/Common/SelectInput.svelte';
 	import TextInput from '$lib/Common/TextInput.svelte';
 
 	export let amount: number;
 	export let recipient: string;
 
+	/**Handler for clicking the "Confirm" button. Confirms the stake.*/
 	function confirmStake() {
 		// confirm stake
 	}
 
+	/**Handler for clicking the "Cancel" button. Cancels the stake.*/
 	function cancelStake() {
 		// cancel stake
 	}
@@ -19,7 +28,7 @@
 <div class="confirm">
 	<div class="title">Stake CSPR</div>
 	<div class="input-container">
-		<TextInput label={'Enter CSPR amount'} bind:value={amount} />
+		<TextInput type="number" label={'Enter CSPR amount'} bind:value={amount} />
 	</div>
 	<div class="w-full text-sm dark:text-white">$127 USD</div>
 	<div class="select-container">

@@ -3,7 +3,6 @@
 The wallet swap route, this is where the layout is, the currently selected token index and list of tokens is.
 @author marekvospel
 -->
-
 <script lang="ts">
 	import GridLayout from '$lib/Common/GridLayout.svelte';
 	import ProfileNavigation from '$lib/profile/ProfileNavigation.svelte'

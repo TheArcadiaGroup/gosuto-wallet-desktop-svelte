@@ -6,7 +6,7 @@ This is where select & deselect logic is, and is passed to parent by dispatching
 @see TokenCard
 -->
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte'
+	import { createEventDispatcher } from 'svelte';
 
 	import ReturnHome from '$components/Home/ReturnHome.svelte';
 	import Button from '$lib/Common/Button.svelte';
@@ -52,9 +52,10 @@ This is where select & deselect logic is, and is passed to parent by dispatching
 	function deselectListener(event: any): void {
 		if (!event.target) return;
 		const isInToken = Boolean(event.target.closest('.token-card'));
-		if (!isInToken) dispatch('selectToken', {
-			id: -1,
-		});
+		if (!isInToken)
+			dispatch('selectToken', {
+				id: -1,
+			});
 	}
 
 	/**

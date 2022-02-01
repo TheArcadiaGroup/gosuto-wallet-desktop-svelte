@@ -1,3 +1,12 @@
+<!-- @component 
+	Describtion:
+	> A credit card UI component that displays the data of the wallet (such as balance) on a visual credit card. This component is mainly visual - has no functionality.
+	
+	Props:
+	- `ppurl` = URL of the profile picture.
+	- `name` = Name of the wallet holder.
+	- `wallet` = Object with data (like balance, staked, etc.) of the wallet.
+-->
 <script lang="ts">
 	import CardGraphics from '$icons/CardGraphics.svelte';
 	import PurpleTriangle from '$icons/PurpleTriangle.svelte';
