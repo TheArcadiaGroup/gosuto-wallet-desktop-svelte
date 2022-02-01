@@ -1,3 +1,9 @@
+<!--
+@component
+The wallet swap last column. This component informs user that no Token is selected and if they want to swap Tokens, they have to select one.
+All logic of this component (whether it is shown or not) is handled by it's parents
+@author marekvospel
+-->
 <div class="select-currency">
 	<p class="select-text">Select currency you want to swap</p>
 </div>
