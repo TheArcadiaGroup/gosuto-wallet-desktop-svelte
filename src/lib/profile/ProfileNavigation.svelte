@@ -1,3 +1,10 @@
+<!-- @component 
+	Describtion:
+	> Component that fills the first column of the grid layout on /profile routes.
+	
+	Props:
+	- `user` = Object with user's data such as name, profile picture url, etc. Also includes his wallets and data from the wallets (names, balance, etc.).
+-->
 <script lang="ts">
 	import PlusIcon from '$icons/PlusIcon.svelte';
 	import Button from '$lib/Common/Button.svelte';
@@ -20,12 +27,13 @@
 		}[];
 	};
 
-	/**Handler for clicking on a menu item in the menu and redirectin to the corresponding subroute*/
+	/**Handler for clicking on a menu item in the menu and redirectin to the corresponding subroute.*/
 	function menuSelect(e: CustomEvent) {
 		const selection = e.detail.menu_item;
 		goto(`/profile/${selection}`);
 	}
 
+	/**Handler for clicking "Add wallet" button, that prompts user with add wallet UI flow.*/
 	function addWallet() {
 		// add wallet
 	}

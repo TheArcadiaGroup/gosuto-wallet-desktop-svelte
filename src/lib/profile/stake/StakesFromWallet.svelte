@@ -1,3 +1,15 @@
+<!-- @component 
+	Describtion:
+	> Content on the middle column on /profile/stakes routes. Displays stakes from a specific wallet.
+	
+	Props:
+	- `stakeArray` = Array with object of data about individual stakes from a specific wallet (staked amount, etc.).
+	- `wallet` = Object with data of the wallet (name & public key).
+	
+	Events:
+	- `stakeSelect` = Dispatched when a stake card is clicked. Passes the stake data via event details.
+-->
+
 <script lang="ts">
 	import ArrowInCircle from '$lib/Common/ArrowInCircle.svelte';
 	import Button from '$lib/Common/Button.svelte';
@@ -16,18 +28,20 @@
 		unlocked: number;
 	}
 
-	let stakeArray: Stake[];
-	let wallet: any;
+	export let stakeArray: Stake[];
+	export let wallet: any;
 
+	/**Handler for clicking the back button in the middle column. Redirects back from `/profile/stakes` to `/profile`*/
 	function backHandler() {
 		goto('/profile');
 	}
 
+	/**Handler for clicking the public key that copies the PK to user's clipboard.*/
 	function copyPK() {
 		// TODO copy public key to clipboard (I assume that this is what this is supposed to do)
 	}
 
-	/**Triggered when a stake card is cliked. Displatches an event of stake selection*/
+	/**Triggered when a stake card is clicked. Dispatches an event of stake selection*/
 	function stakeSelect(e: CustomEvent) {
 		dispatch('stakeSelect', e.detail);
 	}
@@ -63,7 +77,7 @@
 		<div class="title-label">Stakes from this wallet</div>
 		<div>
 			<Button>
-				<div slot="text" class="my-2 mx-4">+ Stake</div>
+				<div slot="text" class="button-label">+ Stake</div>
 			</Button>
 		</div>
 	</div>
@@ -105,6 +119,10 @@
 
 	:local(.title-label) {
 		@apply text-lg font-semibold;
+	}
+
+	:local(.button-label) {
+		@apply my-2 mx-4;
 	}
 
 	:local(.stake-cards-container) {

@@ -16,6 +16,7 @@
 
 	// wallet bind on profile navigation component
 
+	/**Object of all possible components for the stake detail column (the last column)*/
 	const lastCollumnContent = {
 		confirm: Confirm,
 		claimReward: ClaimReward,

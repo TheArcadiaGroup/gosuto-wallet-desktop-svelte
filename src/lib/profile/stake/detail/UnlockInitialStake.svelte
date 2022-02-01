@@ -1,17 +1,16 @@
-<!-- 
-    @component
-
-    A column form with a title and a button for claiming intial stake.
- -->
+<!-- @component 
+	Describtion:
+	> A stake detail component (fills the third column on /profile/stakes routes) that unlocks the inital stake.
+-->
 <script lang="ts">
 	import Button from '$lib/Common/Button.svelte';
 
-	/**Function that claims the initial stake*/
+	/**Handler for clicking the "Claim" button. Claims the initial stake*/
 	function claim() {
-		// confirm stake
+		// confirm claim
 	}
 
-	/**Function that cancels the stake and hides the component*/
+	/**Handler for clicking the "Cancel" button. Cancels the claim and hides the component*/
 	function cancel() {
 		// cancel stake
 	}

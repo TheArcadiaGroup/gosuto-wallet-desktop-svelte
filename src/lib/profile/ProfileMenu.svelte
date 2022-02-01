@@ -1,3 +1,10 @@
+<!-- @component 
+	Describtion:
+	> Component with menu for the first column of /profile routes.
+	
+	Events:
+	- `click` = Dispatched when a menu item is clicked. Dispatches the menu item name via event details.
+-->
 <script lang="ts">
 	import Bookmark from '$icons/Bookmark.svelte';
 	import PaperAirplane from '$icons/PaperAirplane.svelte';
@@ -6,11 +13,12 @@
 	import Wallet from '$icons/Wallet.svelte';
 
 	import { page } from '$app/stores';
-	$: currentSubroute = $page.path.split('/')[2] || '';
+	$: currentSubroute = $page.path.split('/')[2] || ''; // variable that determines what subroute the user is currently on and highlightes the coresponding menu element
 
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 
+	/**Handler for clicking a menu item. Dispatches the menu item name via event details.*/
 	function click(menu_item: string) {
 		dispatch('click', { menu_item });
 	}
