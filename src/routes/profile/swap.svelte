@@ -3,9 +3,8 @@
 The wallet swap route, this is where the layout is, the currently selected token index and list of tokens is.
 @author marekvospel
 -->
-
 <script lang="ts">
-	import Navbar from '$components/navbar/Navbar.svelte'
+	import Navbar from '$components/Navbar/Navbar.svelte'
 	import ProfileNavigation from '$lib/profile/ProfileNavigation.svelte'
 
 	import Swap from '$lib/profile/Swap/index.svelte';

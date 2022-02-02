@@ -1,14 +1,23 @@
+<!-- @component 
+	Describtion:
+	> A stake detail component (fills the third column on /profile/stakes routes) that unstakes the stake.
+
+	Props:
+	- `disabled` = A boolean variable. When true, the buttons aren't showed and unstaking is diabled.
+-->
 <script lang="ts">
 	import Button from '$lib/Common/Button.svelte';
 
 	export let disabled = false;
 
+	/**Handler for clicking the "Unstake" button. Unstakes the stake.*/
 	function unstake() {
 		if (disabled) return;
 
 		// confirm stake
 	}
 
+	/**Handler for clicking the "Cancel" button. Cancels the unstake and hides the component.*/
 	function cancel() {
 		// cancel stake
 	}

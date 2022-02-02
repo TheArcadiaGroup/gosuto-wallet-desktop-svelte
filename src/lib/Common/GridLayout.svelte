@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Navbar from '$components/navbar/Navbar.svelte';
+	import Navbar from '$components/Navbar/Navbar.svelte';
 	import LastColumnRectangle from '$icons/LastColumnRectangle.svelte';
 	import { slide } from 'svelte/transition';
 </script>
@@ -9,7 +9,7 @@
 	class:withFirstColumn={$$slots.first}
 	class:withoutFirstColumn={!$$slots.first}
 >
-	<div class="navbar-container">
+	<div class="navbar-container overflow-hidden">
 		<Navbar />
 	</div>
 	{#if $$slots.first}

@@ -29,7 +29,6 @@ The Token card / button component used to select which token to select inside wa
 	 */
 	export let positive = true;
 
-
 	/**
 	 * Name of the token shown inside this component
 	 * @type {string}

@@ -12,12 +12,14 @@
 	import { goto } from '$app/navigation';
 	import { navItems } from '$stores/NavbarActive';
 
+	/** An array representing the values of navItems */
 	let navItemsValues: NavIcon[];
 
 	navItems.subscribe((value) => {
 		navItemsValues = value;
 	});
 
+	/** A function for updating the navItems array*/
 	let activateItem = (navItem: NavIcon, route: string) => {
 		navItems.update((n) => {
 			n.forEach((e) => (e.active = false));
@@ -29,13 +31,13 @@
 </script>
 
 <div class="navbar">
-	<div class="top">
+	<div class="navbar-top">
 		<NavItem navItem={navItemsValues[0]}><GosutoNavLogo class="large-nav-icon" /></NavItem>
 		<NavItem reverse={true} navItem={navItemsValues[1]}
 			><NavFlameIcon class="large-nav-icon" /></NavItem
 		>
 		<NavItem navItem={navItemsValues[2]} on:click={() => activateItem(navItemsValues[2], '')}
-			><div class="avatar-img" /></NavItem
+			><div class="navbar-avatar-img" /></NavItem
 		>
 		<NavItem navItem={navItemsValues[3]} on:click={() => activateItem(navItemsValues[3], '')}
 			><NavBookmarkIcon class="nav-icon" /></NavItem
@@ -50,19 +52,19 @@
 		>
 	</div>
 
-	<div class="bottom">
+	<div class="navbar-bottom">
 		<NavItem
 			navItem={navItemsValues[6]}
 			on:click={() => activateItem(navItemsValues[6], '/settings')}
 			><NavSettingsIcon class="nav-icon" /></NavItem
 		>
-		<SelectItems class="select-items" items={{ en: 'EN', de: 'DE' }} />
-		<SelectItems class="select-items" items={{ usd: 'USD', eur: 'EUR', jpy: 'JPY' }} />
+		<SelectItems class="navbar-select-items" items={{ en: 'EN', de: 'DE' }} />
+		<SelectItems class="navbar-select-items" items={{ usd: 'USD', eur: 'EUR', jpy: 'JPY' }} />
 	</div>
 </div>
 
 <style lang="postcss" global>
-	:local(div.navbar) {
+	div.navbar {
 		@apply flex md:flex-col justify-between items-center z-50;
 		@apply sticky top-0;
 
@@ -79,23 +81,31 @@
 		@apply w-0 h-0;
 	}
 
+<<<<<<< HEAD
 	:local(div.top) {
 		@apply max-w-[5rem];
 
+=======
+	.navbar-top {
+>>>>>>> origin/main
 		@apply flex md:flex-col justify-evenly items-center gap-x-2 md:gap-x-0;
 		@apply ml-1 mr-4 md:mx-0;
 		@apply w-full min-w-[32rem] md:min-w-fit md:h-3/5 md:min-h-[32rem];
 	}
 
+<<<<<<< HEAD
 	:local(div.bottom) {
 		@apply max-w-[5rem];
 
+=======
+	.navbar-bottom {
+>>>>>>> origin/main
 		@apply flex md:flex-col justify-evenly items-center md:gap-y-10;
 		@apply w-[8%] min-w-[2rem] md:w-full md:h-[30%] md:min-h-[16rem];
 		@apply mr-4 md:mr-0 md:pb-4;
 	}
 
-	:global(.select-items) {
+	.navbar-select-items {
 		@apply hidden md:block;
 	}
 
@@ -107,7 +117,7 @@
 		@apply w-12 h-12 4xl:w-24 4xl:h-24;
 	}
 
-	:local(div.avatar-img) {
+	.navbar-avatar-img {
 		@apply min-w-full w-full h-12 4xl:h-28;
 
 		background-image: url('/images/png/avatar.png');
