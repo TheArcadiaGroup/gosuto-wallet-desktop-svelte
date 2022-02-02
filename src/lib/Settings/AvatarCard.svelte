@@ -1,7 +1,7 @@
 <!-- 
 	@component
 	
-	A card with a background to serve as a profile picture showcase in the UI
+	A card with a background to serve as a Profile picture showcase in the UI
  -->
 <script lang="ts">
 	import PhotoIcon from '$icons/PhotoIcon.svelte';

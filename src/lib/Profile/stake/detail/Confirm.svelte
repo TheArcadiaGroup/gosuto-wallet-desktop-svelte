@@ -1,6 +1,6 @@
 <!-- @component 
 	Describtion:
-	> A stake detail component (fills the third column on /profile/stakes routes) for confirming the stake
+	> A stake detail component (fills the third column on /Profile/stakes routes) for confirming the stake
 
 	Bindables:
 	- `amount` = Amount from the amount input.

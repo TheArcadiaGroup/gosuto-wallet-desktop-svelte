@@ -1,6 +1,6 @@
 <!-- @component 
 	Describtion:
-	> Component with menu for the first column of /profile routes.
+	> Component with menu for the first column of /Profile routes.
 	
 	Events:
 	- `click` = Dispatched when a menu item is clicked. Dispatches the menu item name via event details.

@@ -1,6 +1,6 @@
 <!-- @component 
 	Describtion:
-	> A stake detail component (fills the third column on /profile/stakes routes) that unstakes the stake.
+	> A stake detail component (fills the third column on /Profile/stakes routes) that unstakes the stake.
 
 	Props:
 	- `disabled` = A boolean variable. When true, the buttons aren't showed and unstaking is diabled.
