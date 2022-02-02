@@ -51,6 +51,7 @@
 	}[];
 	$: menuItems = menuItemsOptions[forRoute];
 
+	export let user: {
 		name: string;
 		ppurl: string;
 		wallets: {
@@ -71,26 +72,6 @@
 	function addWallet() {
 		// add wallet
 	}
-
-	// DEV
-	user = {
-		name: 'Jake Waterson',
-		ppurl: 'https://miro.medium.com/fit/c/262/262/2*-cdwKPXyVI0ejgxpWkKBeA.jpeg',
-		wallets: [
-			{
-				name: 'Wallet 1',
-				avalible: 5000,
-				staked: 2500,
-				unclaimed: 375,
-			},
-			{
-				name: 'Wallet 1',
-				avalible: 5000,
-				staked: 2500,
-				unclaimed: 375,
-			},
-		],
-	};
 </script>
 
 <div class="main">
@@ -103,34 +84,40 @@
 				{user?.name || 'unknown name'}
 			</div>
 		</div>
-		<div class="button-container not-on-mobile">
-			<div class="w-full" on:click={addWallet}>
-				<Button>
-					<div slot="text" class="button">+ Add wallet</div>
-				</Button>
-			</div>
-		</div>
-		<div class="carousel-container">
-			<div class="carousel">
-				<CardCarousel numberOfCards={user?.wallets.length || 0}>
-					{#each user?.wallets as wallet}
-						<CarouselItem>
-							<CreditCard name={user?.name || 'unknown name'} ppurl={user?.ppurl || ''} {wallet} />
-						</CarouselItem>
-					{/each}
-				</CardCarousel>
-			</div>
-			<div class="plus-container">
-				<div class="plus" on:click={addWallet}>
-					<PlusIcon />
+		{#if forRoute === 'profile'}
+			<div class="button-container not-on-mobile">
+				<div class="w-full" on:click={addWallet}>
+					<Button>
+						<div slot="text" class="button">+ Add wallet</div>
+					</Button>
 				</div>
 			</div>
-		</div>
+			<div class="carousel-container">
+				<div class="carousel">
+					<CardCarousel numberOfCards={user?.wallets.length || 0}>
+						{#each user?.wallets as wallet}
+							<CarouselItem>
+								<CreditCard
+									name={user?.name || 'unknown name'}
+									ppurl={user?.ppurl || ''}
+									{wallet}
+								/>
+							</CarouselItem>
+						{/each}
+					</CardCarousel>
+				</div>
+				<div class="plus-container">
+					<div class="plus" on:click={addWallet}>
+						<PlusIcon />
+					</div>
+				</div>
+			</div>
+		{/if}
 		<div class="hr not-on-mobile">
 			<hr />
 		</div>
 		<div class="profile-menu">
-			<ProfileMenu on:click={menuSelect} />
+			<ProfileMenu on:click={menuSelect} {menuItems} />
 		</div>
 	</div>
 </div>
