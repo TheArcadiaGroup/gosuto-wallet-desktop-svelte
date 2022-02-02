@@ -1,6 +1,6 @@
 <!-- @component 
 	Describtion:
-	> Component that shows Profile picture from given URL.
+	> Component that shows profile picture from given URL.
 	
 	Props:
 	- `url` = URL of the image, that is to be displayed. Size of the image doesn't matter as it will be automatically scale to fit, althought for shorter load times use smaller resolution picture for smaller display size.

@@ -1,6 +1,6 @@
 <!-- @component 
 	Describtion:
-	> Content on the middle column on /Profile/stakes routes. Displays stakes from a specific wallet.
+	> Content on the middle column on /profile/stakes routes. Displays stakes from a specific wallet.
 	
 	Props:
 	- `stakeArray` = Array with object of data about individual stakes from a specific wallet (staked amount, etc.).
@@ -31,9 +31,9 @@
 	export let stakeArray: Stake[];
 	export let wallet: any;
 
-	/**Handler for clicking the back button in the middle column. Redirects back from `/Profile/stakes` to `/Profile`*/
+	/**Handler for clicking the back button in the middle column. Redirects back from `/profile/stakes` to `/profile`*/
 	function backHandler() {
-		goto('/Profile');
+		goto('/profile');
 	}
 
 	/**Handler for clicking the public key that copies the PK to user's clipboard.*/

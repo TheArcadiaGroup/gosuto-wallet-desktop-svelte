@@ -1,6 +1,6 @@
 <!-- @component 
 	Describtion:
-	> Arrows (left and right) used for moving the card carousel in the first column of /Profile routes on desktop.
+	> Arrows (left and right) used for moving the card carousel in the first column of /profile routes on desktop.
 	
 	Props:
 	- `carouselPositon` = Index of the postition of the card carousel. Is used for determining if the an arrow should be disabled.

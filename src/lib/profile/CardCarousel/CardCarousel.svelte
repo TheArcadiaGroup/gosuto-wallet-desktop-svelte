@@ -1,6 +1,6 @@
 <!-- @component 
 	Describtion:
-	> Carousel for card in the first column of /Profile routes. Includes arrows for switching them and supports swiping on mobile.
+	> Carousel for card in the first column of /profile routes. Includes arrows for switching them and supports swiping on mobile.
 	
 	Props:
 	- `position` = Index in the array of cards.

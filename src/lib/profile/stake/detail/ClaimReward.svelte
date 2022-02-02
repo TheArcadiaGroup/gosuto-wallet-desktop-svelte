@@ -1,11 +1,11 @@
 <!-- @component 
 	Describtion:
-	> A stake detail component (fills the third column on /Profile/stakes routes) that unlocks the inital stake.
+	> A stake detail component (fills the third column on /profile/stakes routes) that claims the reward from a specified stake.
 -->
 <script lang="ts">
 	import Button from '$lib/Common/Button.svelte';
 
-	/**Handler for clicking the "Claim" button. Claims the initial stake*/
+	/**Handler for clicking the "Claim" button. Claims the reward*/
 	function claim() {
 		// confirm claim
 	}
@@ -16,9 +16,10 @@
 	}
 </script>
 
-<div class="unlock-initial-stake">
-	<div class="title">Unlock initial Stake</div>
+<div class="claim-reward">
+	<div class="title">Claim Rewards</div>
 	<div class="text">Initital stake: 20 CSPR</div>
+	<div class="text">Total rewards: 20 CSPR</div>
 	<div class="buttons">
 		<Button on:click={claim}>
 			<div slot="text" class="button-text">Claim</div>
@@ -30,7 +31,7 @@
 </div>
 
 <style lang="postcss" global>
-	:local(.unlock-initial-stake) {
+	:local(.claim-reward) {
 		@apply w-full h-full flex flex-col items-stretch gap-2 py-6 px-2;
 	}
 

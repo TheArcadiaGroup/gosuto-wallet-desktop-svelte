@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-/** An array of items representing the 7 Navbar icons */
+/** An array of items representing the 7 navbar icons */
 export const navItems = writable(
 	Array(7)
 		.fill(0)

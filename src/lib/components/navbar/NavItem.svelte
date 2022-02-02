@@ -1,10 +1,10 @@
 <!-- 
 	@component
 
-	A component encasing every Navbar item to ease styling
+	A component encasing every navbar item to ease styling
  -->
 <script lang="ts">
-	/** A variable representing a NavIcon object to help with setting a Navbar icon as active */
+	/** A variable representing a NavIcon object to help with setting a navbar icon as active */
 	export let navItem: NavIcon;
 	/** A variable representing a boolean value to indicate reverse colouring for dark and light themes */
 	export let reverse = false;

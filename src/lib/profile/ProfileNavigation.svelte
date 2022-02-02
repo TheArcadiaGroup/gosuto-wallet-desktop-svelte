@@ -1,9 +1,9 @@
 <!-- @component 
 	Describtion:
-	> Component that fills the first column of the grid layout on /Profile routes.
+	> Component that fills the first column of the grid layout on /profile routes.
 	
 	Props:
-	- `user` = Object with user's data such as name, Profile picture url, etc. Also includes his wallets and data from the wallets (names, balance, etc.).
+	- `user` = Object with user's data such as name, profile picture url, etc. Also includes his wallets and data from the wallets (names, balance, etc.).
 -->
 <script lang="ts">
 	import PlusIcon from '$icons/PlusIcon.svelte';
