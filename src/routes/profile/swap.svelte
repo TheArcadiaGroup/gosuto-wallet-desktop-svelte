@@ -51,7 +51,7 @@ The wallet swap route, this is where the layout is, the currently selected token
 	}
 </script>
 
-<div class="global-grid-container">
+<div class="swap-page-container">
 	<div class="global-grid-nav">
 		<Navbar />
 	</div>
@@ -72,6 +72,10 @@ The wallet swap route, this is where the layout is, the currently selected token
 </div>
 
 <style lang="postcss" global>
+
+	.swap-page-container {
+		@apply flex flex-row;
+	}
 
 	.swap-sidebar {
 		@apply h-full w-full;
