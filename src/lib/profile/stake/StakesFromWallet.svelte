@@ -9,7 +9,6 @@
 	Events:
 	- `stakeSelect` = Dispatched when a stake card is clicked. Passes the stake data via event details.
 -->
-
 <script lang="ts">
 	import ArrowInCircle from '$lib/Common/ArrowInCircle.svelte';
 	import Button from '$lib/Common/Button.svelte';
@@ -45,20 +44,6 @@
 	function stakeSelect(e: CustomEvent) {
 		dispatch('stakeSelect', e.detail);
 	}
-
-	// DEV
-	wallet = {
-		name: 'Wallet 1',
-		publicKey: '0x9f98e01d2...4ed7',
-	};
-
-	stakeArray = Array(10).fill({
-		name: wallet?.name,
-		elapsedSeconds: 20,
-		fullSeconds: 69,
-		staked: 420,
-		unlocked: 69,
-	});
 </script>
 
 <div class="main">

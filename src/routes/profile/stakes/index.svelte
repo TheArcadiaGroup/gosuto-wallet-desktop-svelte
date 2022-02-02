@@ -44,6 +44,18 @@
 		// DEV
 		selectedLastCollumnContent = 'confirm';
 	}
+	const wallet = {
+		name: 'Wallet 1',
+		publicKey: '0x9f98e01d2...4ed7',
+	};
+
+	const stakeArray = Array(10).fill({
+		name: wallet?.name,
+		elapsedSeconds: 20,
+		fullSeconds: 69,
+		staked: 420,
+		unlocked: 69,
+	});
 </script>
 
 <GridLayout>
@@ -52,7 +64,7 @@
 		<ProfileNavigation />
 	</div>
 	<div slot="mid" class="size-full">
-		<StakesFromWallet on:stakeSelect={stakeSelect} />
+		<StakesFromWallet on:stakeSelect={stakeSelect} {wallet} {stakeArray} />
 	</div>
 	<div slot="last" class="size-full last-column">
 		{#if selectedLastCollumnContent}
