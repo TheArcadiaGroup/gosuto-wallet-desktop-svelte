@@ -4,6 +4,7 @@
 	
 	Props:
 	- `user` = Object with user's data such as name, profile picture url, etc. Also includes his wallets and data from the wallets (names, balance, etc.).
+	- `forRoute` = Either `profile` OR `all-stakes`. Used for deciding what to show in the UI.
 -->
 <script lang="ts">
 	import PlusIcon from '$icons/PlusIcon.svelte';
@@ -24,6 +25,8 @@
 	import Checklist from '$icons/Checklist.svelte';
 
 	import { goto } from '$app/navigation';
+
+	export let forRoute: 'profile' | 'all-stakes' = 'profile';
 
 	/**Options for the content of the menu. Either 'profile' or 'all-stakes'.*/
 	const menuItemsOptions: {
@@ -65,7 +68,7 @@
 	/**Handler for clicking on a menu item in the menu and redirectin to the corresponding subroute.*/
 	function menuSelect(e: CustomEvent) {
 		const selection = e.detail.menu_item;
-		goto(`/profile/${selection}`);
+		goto(`/${forRoute}/${selection}`);
 	}
 
 	/**Handler for clicking "Add wallet" button, that prompts user with add wallet UI flow.*/
