@@ -1,46 +1,60 @@
 <script lang="ts">
-	import CopyIcon from '$icons/CopyIcon.svelte';
 	import BackIcon from '$icons/BackIcon.svelte';
+	import CopyIcon from '$icons/CopyIcon.svelte';
 </script>
 
 <div class="return-home">
-	<div class="back-button">
+	<div class="return-back-button">
 		<a href="/">
 			<BackIcon />
 		</a>
 	</div>
-	<p class="wallet-title">
+	<p class="return-wallet-title">
 		Wallet 1
-		<span class="hidden md:inline">Swap</span>
+		<span class="return-swap-text">Swap</span>
 	</p>
-	<div class="wallet-pub-key">
-		<p class="pub-key-text">0x9f98e01d3...4ed7</p>
-		<div class="cursor-pointer">
+	<div class="return-wallet-pub-key">
+		<p class="return-pub-key-text">0x9f98e01d3...4ed7</p>
+		<div class="return-cursor-pointer">
 			<CopyIcon />
 		</div>
 	</div>
 </div>
 
 <style lang="postcss" global>
-	:local(.return-home) {
-		@apply relative flex flex-col gap-x-8 px-2 md:flex-row md:items-center;
+	.return-home {
+		@apply relative;
+		@apply flex flex-col;
+		@apply gap-x-8 px-2;
+		@apply lg:flex-row lg:items-center;
 	}
 
-	:local(.back-button) {
-		@apply hidden absolute right-full cursor-pointer md:block;
+	.return-back-button {
+		@apply absolute right-full;
+		@apply hidden;
+		@apply cursor-pointer;
+		@apply lg:block;
 	}
 
-	:local(.wallet-title) {
-		@apply font-bold md:text-2xl;
+	.return-wallet-title {
+		@apply font-bold;
 		@apply dark:text-white;
+		@apply lg:text-2xl;
 	}
 
-	:local(.wallet-pub-key) {
-		@apply flex gap-[0.75rem] items-center;
+	.return-swap-text {
+		@apply hidden;
+		@apply lg:inline;
 	}
 
-	:local(.pub-key-text) {
-		@apply text-sm md:text-base;
-		@apply text-light-gardenText dark:text-white;
+	.return-wallet-pub-key {
+		@apply flex items-center;
+		@apply gap-[0.75rem];
+	}
+
+	.return-pub-key-text {
+		@apply text-sm text-light-gardenText;
+		@apply lg:text-base;
+		@apply dark:text-white;
 	}
 </style>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ReturnHome from '$components/Home/ReturnHome.svelte';
 	import PlusIcon from '$icons/PlusIcon.svelte';
-	import TokenCard from '$lib/Home/Swap/TokenCard.svelte';
+	import TokenCard from '$lib/Profile/Swap/TokenCard.svelte';
 	import Button from '$lib/Common/Button.svelte';
 
 	export let tokens = [
