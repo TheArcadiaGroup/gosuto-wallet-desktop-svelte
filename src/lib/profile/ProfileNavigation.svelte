@@ -14,9 +14,43 @@
 	import CreditCard from './CreditCard.svelte';
 	import ProfileMenu from './ProfileMenu.svelte';
 
+	// MENU IMPORTS
+	import Bookmark from '$icons/Bookmark.svelte';
+	import PaperAirplane from '$icons/PaperAirplane.svelte';
+	import Stake from '$icons/Stake.svelte';
+	import Swap from '$icons/Swap.svelte';
+	import Wallet from '$icons/Wallet.svelte';
+	import ChartPie from '$icons/ChartPie.svelte';
+	import Checklist from '$icons/Checklist.svelte';
+
 	import { goto } from '$app/navigation';
 
-	let user: {
+	/**Options for the content of the menu. Either 'profile' or 'all-stakes'.*/
+	const menuItemsOptions: {
+		profile: typeof menuItems;
+		'all-stakes': typeof menuItems;
+	} = {
+		profile: [
+			{ name: 'history', label: 'History', icon: Bookmark },
+			{ name: 'send', label: 'Send', icon: PaperAirplane },
+			{ name: 'stakes', label: 'Stakes', icon: Stake },
+			{ name: 'settings', label: 'Wallet Settings', icon: Wallet },
+			{ name: 'swap', label: 'Swap', icon: Swap },
+		],
+		'all-stakes': [
+			{ name: 'all-positions', label: 'All positions', icon: ChartPie },
+			{ name: 'validators', label: 'Validators', icon: Checklist },
+		],
+	};
+
+	/**Array of objects that are displayed as menu items.*/
+	let menuItems: {
+		name: string;
+		label: string;
+		icon: any;
+	}[];
+	$: menuItems = menuItemsOptions[forRoute];
+
 		name: string;
 		ppurl: string;
 		wallets: {
