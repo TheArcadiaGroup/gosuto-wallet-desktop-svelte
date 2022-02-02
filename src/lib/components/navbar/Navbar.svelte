@@ -42,7 +42,9 @@
 		<NavItem navItem={navItemsValues[3]} on:click={() => activateItem(navItemsValues[3], '')}
 			><NavBookmarkIcon class="nav-icon" /></NavItem
 		>
-		<NavItem navItem={navItemsValues[4]} on:click={() => activateItem(navItemsValues[4], '')}
+		<NavItem
+			navItem={navItemsValues[4]}
+			on:click={() => activateItem(navItemsValues[4], 'all-stakes')}
 			><NavStackIcon class="nav-icon" /></NavItem
 		>
 		<NavItem
