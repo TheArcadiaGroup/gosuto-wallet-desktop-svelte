@@ -11,7 +11,7 @@ This is where select & deselect logic is, and is passed to parent by dispatching
 	import ReturnHome from '$components/Home/ReturnHome.svelte';
 	import Button from '$lib/Common/Button.svelte';
 	import PlusIcon from '$icons/PlusIcon.svelte';
-	import TokenCard from '$lib/profile/Swap/TokenCard.svelte';
+	import TokenCard from '$lib/Profile/Swap/TokenCard.svelte';
 
 	/**
 	 * An array of props passed to TokenCard components.
