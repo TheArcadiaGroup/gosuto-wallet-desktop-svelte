@@ -160,7 +160,7 @@
 	}
 
 	:local(.header) {
-		@apply flex items-center justify-between h-12 md:my-[8vh];
+		@apply flex justify-center items-center h-12 md:my-[8vh] gap-8;
 	}
 
 	:local(.cancel-button) {
@@ -169,7 +169,7 @@
 	}
 
 	:local(.settings-btn) {
-		@apply text-xs md:text-base h-9 md:h-12;
+		@apply text-xs md:text-base h-9 md:h-12 min-w-fit;
 	}
 
 	:local(.back-btn) {
