@@ -19,6 +19,8 @@
 	@apply bg-light-scrollBar rounded-[39px];
 }
 
+/* Global app grid */
+
 .global-grid-nav {
 	@apply w-20 max-h-screen overflow-x-hidden;
 	@apply overflow-y-auto;
