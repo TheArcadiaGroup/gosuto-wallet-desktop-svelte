@@ -1,3 +1,15 @@
+<!-- @component 
+	Description:
+	> Container for a single validator Object data in the validator page.
+	
+	Props:
+	- `validatorName` = A string value. Name of validator.
+	- `uptime` = A number value.
+	- `validatorCommission` = A number value.
+	- `votingPower` = A number value.
+	- `selfDelegation` = A number value.
+	- `delegationReturn` = A number value.
+-->
 <script lang="ts">
 	import { decimalToPercentage } from '$utils';
 
