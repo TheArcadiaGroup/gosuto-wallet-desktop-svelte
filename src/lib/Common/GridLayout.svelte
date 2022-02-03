@@ -8,9 +8,10 @@
 	- `last` = Right most column on PC and Bottom most column on mobile.
 -->
 <script lang="ts">
+	import { slide } from 'svelte/transition';
+
 	import Navbar from '$components/Navbar/Navbar.svelte';
 	import LastColumnRectangle from '$icons/LastColumnRectangle.svelte';
-	import { slide } from 'svelte/transition';
 </script>
 
 <div

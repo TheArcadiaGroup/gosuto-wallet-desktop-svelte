@@ -19,6 +19,7 @@
 -->
 <script lang="ts">
 	import { shortenAddress } from '$utils/index';
+
 	import Amount from '$lib/components/HistoryComponent/Amount.svelte';
 	import Swap from '$lib/components/HistoryComponent/Swap.svelte';
 

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import BackIcon from '$icons/BackIcon.svelte';
-
 	import CopyIcon from '$icons/CopyIcon.svelte';
 	import CopyOrange from '$icons/CopyOrange.svelte';
+
 	import TextInput from '$lib/Common/TextInput.svelte';
 	import PasswordToCopyPopup from '$lib/PopUps/WalletSettings/PasswordToCopyPopup.svelte';
 	import PasswordToExportPopup from '$lib/PopUps/WalletSettings/PasswordToExportPopup.svelte';

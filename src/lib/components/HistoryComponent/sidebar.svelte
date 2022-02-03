@@ -7,6 +7,7 @@
 -->
 <script lang="ts">
 	import { slide } from 'svelte/transition';
+
 	import SideBarCard from '$lib/components/HistoryComponent/sideBarCard.svelte';
 
 	export let historyObject: HistoryObject | null = null;
