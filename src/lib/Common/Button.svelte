@@ -1,3 +1,19 @@
+<!-- @component 
+	Describtion:
+	> General reusable Button for most instances in the website.. 
+	
+	Props:
+	- `class` = A String value. Any additional classes you may want to pass.
+	- `transparent` = A Boolean value. Determines if the buttons bacground is transparent.
+	- `selected` = A Boolean value. Determines if button is selected or not. (To be used for tab buttons).
+	- `ring` = A boolean value. Determines if button is to have a ring around it.
+	- `glow` = A boolean value. Determines if button has a glow effect around it.
+	- `disabled` = A boolean value. Determines if button is in disabled state.
+	- `string` = A boolean value. Determines type of button.
+
+	Events:
+	- `click` = Is dispatched when user clicks the button. Direction of the arrow is passed via the event details.
+-->
 <script lang="ts">
 	export let transparent = false;
 </script>
