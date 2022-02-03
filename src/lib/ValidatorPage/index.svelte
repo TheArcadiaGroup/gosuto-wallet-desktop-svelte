@@ -1,3 +1,10 @@
+<!-- @component 
+	Description:
+	> Container for a single validator Object data in the validator page.
+	
+	Props:
+	- `validatorArray` = An Array of validatorObjects. Array of the validatorObjects to be displayed in the page.
+-->
 <script>
 	import ValidatorItem from './ValidatorItem/index.svelte';
 	export let validatorArray = Array(10);
