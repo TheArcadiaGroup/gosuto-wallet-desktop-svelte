@@ -5,13 +5,6 @@
 	Props:
 	- `optionsArray` = An array of strings value. Array of the choices the user can pick from.
 	- `value` = An number value. Index of the default option selected. Also this can be bound to a variable in the parent to keep track of what the user picks.
-
-	Slots:
-	- Pass the content inside the popup here.
-
-	Events:
-	- `confirm` = is dispatched when the user clicks the button to the left.
-	- `cancel` = is dispatched when the user clicks the button to the right.
 -->
 <script lang="ts">
 	import RoundedSelectIcon from '$icons/RoundedSelectIcon.svelte';
