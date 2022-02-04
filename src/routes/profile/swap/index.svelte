@@ -4,9 +4,11 @@ The wallet swap route, this is where the layout is, the currently selected token
 @author marekvospel
 -->
 <script lang="ts">
-	import GridLayout from '$lib/Common/GridLayout.svelte';
+	import Navbar from '$components/Navbar/Navbar.svelte'
 	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte'
+
 	import Swap from '$lib/Profile/Swap/index.svelte';
+
 	import SelectCurrency from '$lib/Profile/Swap/Forms/SelectCurrency.svelte';
 	import SwapCurrency from '$lib/Profile/Swap/Forms/SwapCurrency.svelte';
 	import ConfirmSelectMobile from '$lib/Profile/Swap/Forms/ConfirmSelectMobile.svelte';
@@ -48,14 +50,17 @@ The wallet swap route, this is where the layout is, the currently selected token
 	}
 </script>
 
-<GridLayout>
-	<div slot="first" class="swap-size-full">
+<div class="swap-page-container">
+	<div class="global-grid-nav">
+		<Navbar />
+	</div>
+	<div class="global-grid-left">
 		<ProfileNavigation />
 	</div>
-	<div slot="mid">
+	<div class="global-grid-mid">
 		<Swap on:selectToken={selectToken} bind:tokens bind:selected />
 	</div>
-	<div class="swap-sidebar" slot="last">
+	<div class="global-grid-right swap-sidebar" >
 		{#if selected === -1}
 			<!--<ConfirmSelectMobile />-->
 			<SelectCurrency />
@@ -63,12 +68,12 @@ The wallet swap route, this is where the layout is, the currently selected token
 			<SwapCurrency />
 		{/if}
 	</div>
-</GridLayout>
+</div>
 
 <style lang="postcss" global>
 
-	.swap-size-full {
-		@apply w-full h-full;
+	.swap-page-container {
+		@apply flex flex-row;
 	}
 
 	.swap-sidebar {
