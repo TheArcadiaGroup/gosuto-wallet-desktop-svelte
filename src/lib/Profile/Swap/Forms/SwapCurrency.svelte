@@ -6,15 +6,11 @@ The logic whether this component is shown or not is handled by it's parents
 @author marekvospel
 -->
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-
-	import SwapTokensIcon from '$icons/SwapTokensIcon.svelte';
 	import TextInput from '$lib/Common/TextInput.svelte';
-	import Button from '$lib/Common/Button.svelte';
+	import SwapTokensIcon from '$icons/SwapTokensIcon.svelte';
 	import SelectInput from '$lib/Common/SelectInput.svelte';
+	import Button from '$lib/Common/Button.svelte';
 	import Popup from '$lib/Common/Popup.svelte';
-
-	let dispatch = createEventDispatcher();
 
 	/**
 	 * Code of the token user has selected, and is swapping from.
@@ -52,28 +48,28 @@ The logic whether this component is shown or not is handled by it's parents
 
 <div class="swap-currency">
 	<form
-		class="swap-form"
+		class="swap-currency-form"
 		on:submit|preventDefault={() => {
 			popup = 'Are you sure you want to swap?';
 			confirmPopup = true;
 		}}
 	>
-		<h2 class="form-title">Swap</h2>
-		<div class="form-row">
-			<div class="row-text-input">
+		<h2 class="swap-currency-form-title">Swap</h2>
+		<div class="swap-currency-form-row">
+			<div class="swap-currency-row-text-input">
 				<TextInput label="From" />
 			</div>
-			<p class="row-text">{fromToken}</p>
+			<p class="swap-currency-row-text">{fromToken}</p>
 		</div>
-		<p class="money-amount">$0.00 USD</p>
-		<div class="swap-icon">
+		<p class="swap-currency-money-amount">$0.00 USD</p>
+		<div class="swap-currency-swap-icon">
 			<SwapTokensIcon />
 		</div>
-		<div class="form-row">
-			<div class="row-text-input">
+		<div class="swap-currency-form-row">
+			<div class="swap-currency-row-text-input">
 				<TextInput label="To" />
 			</div>
-			<div class="row-token-select">
+			<div class="swap-currency-row-token-select">
 				<SelectInput label="">
 					<option value="">USDC</option>
 					<option value="">USDT</option>
@@ -81,19 +77,19 @@ The logic whether this component is shown or not is handled by it's parents
 				</SelectInput>
 			</div>
 		</div>
-		<p class="money-amount">$0.00 USD</p>
+		<p class="swap-currency-money-amount">$0.00 USD</p>
 		{#if createNewToken}
-			<p class="create-token-warning">
+			<p class="swap-currency-create-token-warning">
 				This wallet currently does not contain USDC. USDC token will be added to this wallet upon
 				swap
 			</p>
 		{/if}
-		<div class="buttons">
+		<div class="swap-currency-buttons">
 			<Button>
-				<div slot="text" class="landing-7 my-2">Swap</div>
+				<div slot="text" class="leading-7 my-2">Swap</div>
 			</Button>
-			<Button class="cancel-swap-button" type="button">
-				<div slot="text" class="cancel-swap-button-text">Cancel</div>
+			<Button class="swap-currency-cancel-swap-button" type="button">
+				<div slot="text" class="swap-currency-cancel-swap-button-text">Cancel</div>
 			</Button>
 		</div>
 	</form>
@@ -110,64 +106,82 @@ The logic whether this component is shown or not is handled by it's parents
 </div>
 
 <style lang="postcss" global>
-	:local(.swap-currency) {
-		@apply relative min-h-[20rem] rounded-t-3xl h-full w-full;
+	.swap-currency {
+		@apply relative;
+		@apply min-h-[20rem] h-full w-full;
+		@apply dark:bg-dark-grey;
 	}
 
-	:local(.swap-form) {
-		@apply h-full w-full flex flex-col px-16;
-		@apply md:px-7;
+	.swap-currency-form {
+		@apply h-full w-full;
+		@apply flex flex-col;
+		@apply px-16;
+		@apply lg:px-7;
 	}
 
-	:local(.form-title) {
-		@apply text-xl font-bold text-center mt-16 mb-7;
-		@apply md:mt-20 md:mb-14;
+	.swap-currency-form-title {
+		@apply mt-16 mb-7;
+		@apply text-xl font-bold text-center;
+		@apply lg:mt-20 lg:mb-14;
 		@apply dark:text-white;
 	}
 
-	:local(.form-row) {
-		@apply w-full flex flex-row gap-4 items-center justify-center;
+	.swap-currency-form-row {
+		@apply w-full;
+		@apply flex flex-row items-center justify-center;
+		@apply gap-4;
 	}
 
-	:local(.row-text-input) {
+	.swap-currency-row-text-input {
 		@apply w-2/3;
 	}
 
-	:local(.row-text) {
-		@apply mt-4 w-1/3 text-center font-bold text-sm;
-		@apply text-light-grey dark:text-white;
+	.swap-currency-row-text {
+		@apply w-1/3;
+		@apply text-center font-bold text-sm text-light-grey;
+		@apply mt-4;
+		@apply dark:text-white;
 	}
 
-	:local(.row-token-select) {
+	.swap-currency-row-token-select {
 		@apply w-1/3;
 	}
 
-	:local(.money-amount) {
-		@apply font-medium text-sm mt-5;
-		@apply text-light-grey dark:text-white;
+	.swap-currency-money-amount {
+		@apply mt-5;
+		@apply font-medium text-sm text-light-grey;
+		@apply dark:text-white;
 	}
 
-	:local(.swap-icon) {
-		@apply w-2/3 flex items-center justify-center py-6;
-		@apply md:w-full;
+	.swap-currency-swap-icon {
+		@apply w-2/3;
+		@apply flex items-center justify-center;
+		@apply py-6;
+		@apply lg:w-full;
 	}
 
-	:local(.create-token-warning) {
-		@apply text-light-grey189 text-sm font-semibold mt-3;
-		@apply md:mt-6;
+	.swap-currency-create-token-warning {
+		@apply mt-3;
+		@apply text-light-grey189 text-sm font-semibold;
+		@apply lg:mt-6;
 	}
 
-	:local(.buttons) {
-		@apply w-3/4 mx-auto flex flex-col gap-4 mt-28 mb-16;
-		@apply md:mt-10 md:w-full md:gap-1;
+	.swap-currency-buttons {
+		@apply w-3/4;
+		@apply flex flex-col;
+		@apply mx-auto gap-4 mt-28 mb-16;
+		@apply lg:mt-10 lg:w-full lg:gap-1;
 	}
 
-	.cancel-swap-button {
+	.swap-currency-cancel-swap-button {
 		/* Important, because otherwise values inside button component overwrite these settings */
 		@apply bg-transparent border-transparent !important;
 	}
 
-	:local(.cancel-swap-button-text) {
-		@apply my-2 text-xs leading-7 font-bold text-dark-gray dark:text-white md:text-sm;
+	.swap-currency-cancel-swap-button-text {
+		@apply my-2;
+		@apply text-xs leading-7 font-bold text-dark-gray;
+		@apply lg:text-sm;
+		@apply dark:text-white;
 	}
 </style>
