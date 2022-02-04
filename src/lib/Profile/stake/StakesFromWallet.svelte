@@ -29,10 +29,11 @@
 
 	export let stakeArray: Stake[];
 	export let wallet: any;
+	export let forRoute: 'profile' | 'all-stakes' = 'profile';
 
 	/**Handler for clicking the back button in the middle column. Redirects back from `/profile/stakes` to `/profile`*/
 	function backHandler() {
-		goto('/profile');
+		goto(`/${forRoute}`);
 	}
 
 	/**Handler for clicking the public key that copies the PK to user's clipboard.*/

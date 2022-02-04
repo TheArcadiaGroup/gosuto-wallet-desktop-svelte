@@ -75,10 +75,10 @@
 <GridLayout>
 	<div slot="first" class="size-full">
 		<!-- feed the user profile data to ProfileNavigation component -->
-		<ProfileNavigation forRoute={'all-stakes'} {user} />
+		<ProfileNavigation forRoute={"all-stakes"} {user} />
 	</div>
 	<div slot="mid" class="size-full">
-		<StakesFromWallet on:stakeSelect={stakeSelect} {wallet} {stakeArray} />
+		<StakesFromWallet forRoute={"all-stakes"} on:stakeSelect={stakeSelect} {wallet} {stakeArray} />
 	</div>
 	<div slot="last" class="size-full last-column">
 		{#if selectedLastCollumnContent}
