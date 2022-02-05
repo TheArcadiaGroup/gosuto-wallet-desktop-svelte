@@ -1,6 +1,6 @@
 <!--
 @component
-The wallet swap route, this is where the layout is, the currently selected token index and list of tokens is.
+The wallet send route, this is where the layout is, the currently selected token index and list of tokens is.
 @author marekvospel
 -->
 <script lang="ts">
@@ -12,8 +12,8 @@ The wallet swap route, this is where the layout is, the currently selected token
   import SendCurrency from '$lib/Profile/Send/Forms/SendCurrency.svelte'
 
   /**
-   * This is an array of tokens, which will be shown in the main column of the app's grid. Values inside this array will be passed on to TokenCard components inside Swap component
-   * @see Swap
+   * This is an array of tokens, which will be shown in the main column of the app's grid. Values inside this array will be passed on to TokenCard components inside Send component
+   * @see Send
    */
   let tokens = [
     {
@@ -35,7 +35,7 @@ The wallet swap route, this is where the layout is, the currently selected token
   /**
    * This is the currently selected index of TokenCards.
    * @type {number}
-   * @see Swap
+   * @see Send
    */
   let selected = -1;
 

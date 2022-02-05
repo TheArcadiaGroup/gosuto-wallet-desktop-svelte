@@ -19,6 +19,16 @@
 	@apply bg-light-scrollBar rounded-[39px];
 }
 
+/* Hide scrollbar */
+.scrollbar-hide {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+	display: none;
+}
+
 /* Global app grid */
 
 .global-grid-nav {

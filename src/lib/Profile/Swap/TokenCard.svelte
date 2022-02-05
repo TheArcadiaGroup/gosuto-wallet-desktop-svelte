@@ -3,6 +3,7 @@
 The Token card / button component used to select which token to select inside wallet swap.
 @author marekvospel
 @see Swap
+@see Select
 -->
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
