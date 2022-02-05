@@ -27,6 +27,7 @@
 
 <style lang="postcss" global>
 	:local(.input-holder) {
+		@apply w-full;
 		@apply relative mt-4;
 	}
 

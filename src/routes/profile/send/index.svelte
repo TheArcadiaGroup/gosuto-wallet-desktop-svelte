@@ -1,1 +1,80 @@
-send
+<!--
+@component
+The wallet swap route, this is where the layout is, the currently selected token index and list of tokens is.
+@author marekvospel
+-->
+<script lang="ts">
+  import Navbar from '$components/Navbar/Navbar.svelte'
+  import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte'
+  import Send from '$lib/Profile/Send/index.svelte';
+
+  import SelectCurrency from '$lib/Profile/Send/Forms/SelectCurrency.svelte'
+  import SendCurrency from '$lib/Profile/Send/Forms/SendCurrency.svelte'
+
+  /**
+   * This is an array of tokens, which will be shown in the main column of the app's grid. Values inside this array will be passed on to TokenCard components inside Swap component
+   * @see Swap
+   */
+  let tokens = [
+    {
+      cryptoUnit: 'CSPR',
+      cryptoName: 'Casper',
+      positive: false,
+    },
+    {},
+    {},
+    {
+      positive: false,
+    },
+    {
+      cryptoName: 'Test',
+      cryptoUnit: 'TST',
+    },
+  ];
+
+  /**
+   * This is the currently selected index of TokenCards.
+   * @type {number}
+   * @see Swap
+   */
+  let selected = -1;
+
+  /**
+   * A function changing the selected index value of this component.
+   * @param e selectToken event with the selected TokenCard index
+   */
+  function selectToken(e: { detail: { id: number } }): void {
+    selected = e.detail.id;
+  }
+</script>
+
+<div class="page-container">
+  <div class="global-grid-nav">
+    <Navbar />
+  </div>
+  <div class="global-grid-left">
+    <ProfileNavigation />
+  </div>
+  <div class="global-grid-mid">
+    <Send on:selectToken={selectToken} bind:tokens bind:selected />
+  </div>
+  <div class="global-grid-right sidebar" >
+    {#if selected === -1}
+      <SelectCurrency />
+    {:else}
+      <SendCurrency />
+    {/if}
+  </div>
+</div>
+
+<style lang="postcss" global>
+
+    :local(.page-container) {
+        @apply flex flex-row;
+    }
+
+    :local(.sidebar) {
+        @apply h-full w-full;
+        @apply lg:h-screen;
+    }
+</style>

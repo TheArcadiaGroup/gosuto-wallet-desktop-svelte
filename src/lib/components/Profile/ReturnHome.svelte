@@ -1,6 +1,10 @@
 <script lang="ts">
 	import BackIcon from '$icons/BackIcon.svelte';
 	import CopyIcon from '$icons/CopyIcon.svelte';
+
+	export let profileLocation = 'History'
+
+	export let walletNumber = '1'
 </script>
 
 <div class="return-home">
@@ -10,8 +14,8 @@
 		</a>
 	</div>
 	<p class="return-wallet-title">
-		Wallet 1
-		<span class="return-swap-text">Swap</span>
+		Wallet { walletNumber }
+		<span class="return-swap-text">{ profileLocation }</span>
 	</p>
 	<div class="return-wallet-pub-key">
 		<p class="return-pub-key-text">0x9f98e01d3...4ed7</p>

@@ -8,7 +8,7 @@ This is where select & deselect logic is, and is passed to parent by dispatching
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 
-	import ReturnHome from '$components/Home/ReturnHome.svelte';
+	import ReturnHome from '$components/Profile/ReturnHome.svelte';
 	import Button from '$lib/Common/Button.svelte';
 	import PlusIcon from '$icons/PlusIcon.svelte';
 	import TokenCard from '$lib/Profile/Swap/TokenCard.svelte';
@@ -74,7 +74,7 @@ This is where select & deselect logic is, and is passed to parent by dispatching
 <svelte:body on:click={cancelButtonListener} />
 
 <div class="swap-wallet-swap" on:click={deselectListener}>
-	<ReturnHome />
+	<ReturnHome profileLocation='Swap' />
 	<div class="swap-container">
 		<div class="swap-title-row">
 			<p class="swap-tokens-in-wallet-title">Tokens in this wallet</p>
