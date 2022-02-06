@@ -4,9 +4,9 @@ export async function post(params: any): Promise<any> {
 
 	const newProfile: IWallet = {
 		walletName: walletData.walletName,
-		walletPassword: walletData.password,
+		walletPassword: '',
 		walletImage: '',
-		seedPhrase: walletData.seedPhrase.split(' '),
+		seedPhrase: [],
 		availableBalanceUSD: 0.0,
 		stakedBalance: 0.0,
 		unclaimedRewards: 0.0,

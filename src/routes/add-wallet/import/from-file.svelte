@@ -7,6 +7,59 @@
 	import ImportPrivateKey from '$lib/AddWalletComponent/ImportFromFile/ImportPrivateKey.svelte';
 
 	import { goto } from '$app/navigation';
+	import type { JSONString } from '@sveltejs/kit/types/helper';
+
+	let walletName: string;
+
+	/** function for opening the file and getting data private key or json data
+		to be implemented*/
+	let openFile = () => {
+		let jsonWallet = {
+			address: '',
+			id: '',
+			version: '',
+			Crypto: {
+				cipher: '',
+				cipherparams: {
+					iv: '',
+				},
+				ciphertext: '',
+				kdf: '',
+				kdfparams: {
+					salt: '',
+					n: '',
+					dklen: '',
+					p: '',
+					r: '',
+				},
+				mac: '',
+			},
+		};
+
+		let privateKey = 'e308a23beba3be185e707effd05dde3445a3f9ad30a350b703631bb9a79eaf2b';
+
+		postData();
+	};
+
+	/** Sends wallet creation data to api route to create a wallet */
+	const postData = async (object = { walletName }) => {
+		let profiles: JSONString[] | null[] = [];
+
+		const response = fetch('/api/create-wallet/file', {
+			method: 'POST',
+			body: JSON.stringify(object),
+		})
+			.then((response) => response.json())
+			.then((response) => {
+				profiles.push(response);
+				profiles = profiles.concat(JSON.parse(localStorage.getItem('profiles') || '[]'));
+				localStorage.setItem('profiles', JSON.stringify(profiles));
+			})
+			.then(() => goto('/profile'))
+			.catch((error) => {
+				console.error('error:', error);
+			});
+	};
 </script>
 
 <div class="fileImport-wrapper">
@@ -20,7 +73,7 @@
 	</div>
 	<div class="fileImport-buttons">
 		<div class="fileImport-bt next-bt">
-			<Button>
+			<Button on:click={openFile}>
 				<span slot="text" class="fileImport-bt-text">Import</span>
 			</Button>
 		</div>

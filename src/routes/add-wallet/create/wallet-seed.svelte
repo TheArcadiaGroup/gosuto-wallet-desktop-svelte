@@ -105,8 +105,8 @@
 				profiles = profiles.concat(JSON.parse(localStorage.getItem('profiles') || '[]'));
 				console.log(profiles);
 				localStorage.setItem('profiles', JSON.stringify(profiles));
-				goto('/profile');
 			})
+			.then(() => goto('/profile'))
 			.catch((error) => {
 				console.error('error:', error);
 			});
