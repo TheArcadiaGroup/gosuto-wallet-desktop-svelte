@@ -1,8 +1,6 @@
 <script>
 	import GridLayout from '$lib/Common/GridLayout.svelte';
-	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
-
-	// Show a specific profile page based global
+	import ProfileNavigation from '$lib/profile/ProfileNavigation.svelte';
 
 	// DEV
 	const user = {
@@ -28,7 +26,11 @@
 <GridLayout>
 	<div slot="first" class="size-full">
 		<!-- feed the user profile data to ProfileNavigation component -->
-		<ProfileNavigation {user} />
+		<ProfileNavigation forRoute={'all-stakes'} {user} />
+	</div>
+	<div slot="mid" class="size-full">
+		<!-- TODO add validators -->
+		Validators
 	</div>
 </GridLayout>
 

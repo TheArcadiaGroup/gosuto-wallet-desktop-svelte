@@ -2,16 +2,13 @@
 	Describtion:
 	> Component with menu for the first column of /profile routes.
 	
+	Props:
+	- `menuItems` = An array of object ({ name: string, label: string, icon: SvelteComponent}) that is displayed in the menu.
+
 	Events:
 	- `click` = Dispatched when a menu item is clicked. Dispatches the menu item name via event details.
 -->
 <script lang="ts">
-	import Bookmark from '$icons/Bookmark.svelte';
-	import PaperAirplane from '$icons/PaperAirplane.svelte';
-	import Stake from '$icons/Stake.svelte';
-	import Swap from '$icons/Swap.svelte';
-	import Wallet from '$icons/Wallet.svelte';
-
 	import { page } from '$app/stores';
 	$: currentSubroute = $page.path.split('/')[2] || ''; // variable that determines what subroute the user is currently on and highlightes the coresponding menu element
 
@@ -23,13 +20,11 @@
 		dispatch('click', { menu_item });
 	}
 
-	const menuItems = [
-		{ name: 'history', label: 'History', icon: Bookmark },
-		{ name: 'send', label: 'Send', icon: PaperAirplane },
-		{ name: 'stakes', label: 'Stakes', icon: Stake },
-		{ name: 'settings', label: 'Wallet Settings', icon: Wallet },
-		{ name: 'swap', label: 'Swap', icon: Swap },
-	];
+	export let menuItems: {
+		name: string;
+		label: string;
+		icon: any;
+	}[];
 </script>
 
 <div class="no-scrollbar main">
