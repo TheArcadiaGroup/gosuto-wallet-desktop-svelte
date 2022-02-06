@@ -1,6 +1,6 @@
 {
-	"appId": "com.example.app",
-	"productName": "Svelte Electron",
+	"appId": "com.gosuto.app",
+	"productName": "Gosuto Wallet",
 	"directories": {
 		"output": "dist"
 	},
