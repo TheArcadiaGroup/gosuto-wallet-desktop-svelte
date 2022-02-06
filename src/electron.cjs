@@ -1,8 +1,8 @@
-const windowStateManager = require('electron-window-state');
-const contextMenu = require('electron-context-menu');
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const serve = require('electron-serve');
+const windowStateManager = require('electron-win-state').default;
+const contextMenu = require('electron-context-menu');
 
 try {
 	require('electron-reloader')(module);
@@ -10,28 +10,31 @@ try {
 	console.error(e);
 }
 
-const serveURL = serve({ directory: '.' });
-const port = process.env.PORT || 3000;
-console.log(process.env.NODE_ENV);
 const dev = process.env.NODE_ENV === 'development' || !app.isPackaged;
+const port = process.env.PORT || 3000;
+const serveURL = serve({ directory: '.' });
+
 let mainWindow;
 
-function createWindow() {
-	let windowState = windowStateManager({
+const createWindow = () => {
+	let windowState = new windowStateManager({
 		defaultWidth: 1024,
-		defaultHeight: 600,
+		defaultHeight: 800,
 	});
 
-	const mainWindow = new BrowserWindow({
-		backgroundColor: 'whitesmoke',
-		// titleBarStyle: 'customButtonsOnHover',
-		// autoHideMenuBar: true,
+	mainWindow = new BrowserWindow({
 		trafficLightPosition: {
 			x: 17,
 			y: 32,
 		},
+		backgroundColor: 'whitesmoke',
+		minWidth: 1024,
 		minHeight: 800,
-		minWidth: 1200,
+		width: windowState.width,
+		height: windowState.height,
+		x: windowState.x,
+		y: windowState.y,
+		frame: true, // remove this when creating custom app window
 		webPreferences: {
 			enableRemoteModule: true,
 			contextIsolation: true,
@@ -39,26 +42,28 @@ function createWindow() {
 			spellcheck: false,
 			devTools: dev,
 		},
-		x: windowState.x,
-		y: windowState.y,
-		width: windowState.width,
-		height: windowState.height,
-		icon: path.join('../static/images/png/logo.png'),
+		icon: path.join('../static/favicon.png'),
 	});
-
-	windowState.manage(mainWindow);
 
 	mainWindow.once('ready-to-show', () => {
 		mainWindow.show();
 		mainWindow.focus();
 	});
 
-	mainWindow.on('close', () => {
-		windowState.saveState(mainWindow);
-	});
+	mainWindow.on('close', () => {});
 
 	return mainWindow;
-}
+};
+
+// ---- VITE ---
+const loadVite = (port) => {
+	mainWindow.loadURL(`http://localhost:${port}`).catch((e) => {
+		console.log('Error loading URL, retrying', e);
+		setTimeout(() => {
+			loadVite(port);
+		}, 200);
+	});
+};
 
 contextMenu({
 	showLookUpSelection: false,
@@ -71,16 +76,7 @@ contextMenu({
 	],
 });
 
-function loadVite(port) {
-	mainWindow.loadURL(`http://localhost:${port}`).catch((e) => {
-		console.log('Error loading URL, retrying', e);
-		setTimeout(() => {
-			loadVite(port);
-		}, 200);
-	});
-}
-
-function createMainWindow() {
+const createMainWindow = () => {
 	mainWindow = createWindow();
 	mainWindow.once('close', () => {
 		mainWindow = null;
@@ -90,15 +86,27 @@ function createMainWindow() {
 	else serveURL(mainWindow);
 
 	// if (dev) mainWindow.openDevTools();
-}
+};
 
-app.once('ready', createMainWindow);
-app.on('activate', () => {
-	// On macos it is common for windows to be recreated, as such, check if the window is already present before creating another.
-	if (!mainWindow) {
-		createMainWindow();
+// This method will be called when Electron has finished
+// initialization and is ready to create browser windows.
+// Some APIs can only be used after this event occurs.
+
+app.on('ready', createMainWindow);
+
+// Quit when all windows are closed.
+app.on('window-all-closed', () => {
+	// On OS X it is common for applications and their menu bar
+	// to stay active until the user quits explicitly with Cmd + Q
+	if (process.platform !== 'darwin') {
+		app.quit();
 	}
 });
-app.on('window-all-closed', () => {
-	if (process.platform !== 'darwin') app.quit();
+
+app.on('activate', () => {
+	// On OS X it's common to re-create a window in the app when the
+	// dock icon is clicked and there are no other windows open.
+	if (BrowserWindow.getAllWindows().length === 0) {
+		createWindow();
+	}
 });
