@@ -4,6 +4,8 @@ The wallet swap route, this is where the layout is, the currently selected token
 @author marekvospel
 -->
 <script lang="ts">
+	import { onMount } from 'svelte'
+
 	import Navbar from '$components/Navbar/Navbar.svelte'
 	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte'
 
@@ -17,22 +19,7 @@ The wallet swap route, this is where the layout is, the currently selected token
 	 * This is an array of tokens, which will be shown in the main column of the app's grid. Values inside this array will be passed on to TokenCard components inside Swap component
 	 * @see Swap
 	 */
-	let tokens = [
-		{
-			cryptoUnit: 'CSPR',
-			cryptoName: 'Casper',
-			positive: false,
-		},
-		{},
-		{},
-		{
-			positive: false,
-		},
-		{
-			cryptoName: 'Test',
-			cryptoUnit: 'TST',
-		},
-	];
+	let tokens = [];
 
 	/**
 	 * This is the currently selected index of TokenCards.
@@ -48,6 +35,13 @@ The wallet swap route, this is where the layout is, the currently selected token
 	function selectToken(e: { detail: { id: number } }): void {
 		selected = e.detail.id;
 	}
+
+	// Maybe could be server side rendered?
+  onMount(async () => {
+    // not an error, this makes my IDE shut up
+    // @ts-ignore
+    tokens = await (await fetch('/api/tokens/1')).json()
+  })
 </script>
 
 <div class="swap-page-container">
