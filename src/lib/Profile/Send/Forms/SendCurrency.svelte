@@ -27,6 +27,11 @@ The logic whether this component is shown or not is handled by it's parents
 	let popupContent = '';
 	let confirmPopup = false;
 
+	let tokenAmount = 0;
+	let recipientAddress = '';
+	let note = '';
+	let network = '';
+
 	/**
 	 * A function run when user clicks confirm inside the 'are you sure' popup.
 	 * It has 50% chance to show Swap successful and 50% chance to show Swap failed, because web3 is not implemented yet
@@ -56,13 +61,17 @@ The logic whether this component is shown or not is handled by it's parents
 		class="currency-form"
 		on:submit|preventDefault={() => {
 			popup = 'Send CSPR';
-			popupContent = 'You are about to send 50 CSPR to 4e32r8932hdi32hurh8hri3hior2io3r32rj3iofj on the CSPR network.';
+			popupContent =
+				'You are about to send 50 CSPR to 4e32r8932hdi32hurh8hri3hior2io3r32rj3iofj on the CSPR network.';
 			confirmPopup = true;
 		}}
 	>
-		<h2 class="currency-form-title">Send { selectedTokenName } ({ selectedToken })</h2>
+		<h2 class="currency-form-title">Send {selectedTokenName} ({selectedToken})</h2>
 		<div class="currency-form-row">
-			<TextInput class="send-currency-dark-sidebar-input" label="Enter { selectedTokenName } amount" />
+			<TextInput
+				class="send-currency-dark-sidebar-input"
+				label="Enter {selectedTokenName} amount"
+			/>
 		</div>
 		<div class="currency-money-amount">
 			<p>$0.00 USD</p>

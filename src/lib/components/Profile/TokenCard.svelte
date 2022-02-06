@@ -34,17 +34,17 @@ The Token card / button component used to select which token to select inside wa
 	 * Name of the token shown inside this component
 	 * @type {string}
 	 */
-	export let cryptoName = 'Tether';
+	export let tokenName = 'Tether';
 	/**
 	 * Code of the token shown inside this component
 	 * @type {string}
 	 */
-	export let cryptoUnit = 'USDT';
+	export let tokenTicker = 'USDT';
 	/**
 	 * Amount of the token shown inside this component
 	 * @type {number}
 	 */
-	export let cryptoAmount = 2000;
+	export let tokenAmountHeld = 2000;
 
 	/**
 	 * Code of the real currency shown inside this component
@@ -60,7 +60,7 @@ The Token card / button component used to select which token to select inside wa
 	 * Amount of the real currency shown inside this component
 	 * @type {number}
 	 */
-	export let currencyAmount = 175;
+	export let tokenAmountHeldUSD = 175;
 
 	const dispatch = createEventDispatcher();
 
@@ -73,18 +73,22 @@ The Token card / button component used to select which token to select inside wa
 
 <div on:click={select} class="token-card {selected ? 'selected' : ''}">
 	<div class="token-card-left-col">
-		<p class="token-card-title">{cryptoName} ({cryptoUnit})</p>
+		<p class="token-card-title">{tokenName} ({tokenTicker})</p>
 		<p class="token-card-text-sm {positive ? 'text-light-green' : 'text-light-red'}">
-			{cryptoAmount}
-			{cryptoUnit}
+			{tokenAmountHeld}
+			{tokenTicker}
 		</p>
 		<p class="token-card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">
-			{currencySymbol}{currencyAmount}
+			{currencySymbol}{tokenAmountHeldUSD}
 			{currencyUnit}
 		</p>
 	</div>
 	<div class="token-card-right-col">
-		<p class="token-card-text-sm token-card-text-flex {positive ? 'text-light-green' : 'text-light-red'}">
+		<p
+			class="token-card-text-sm token-card-text-flex {positive
+				? 'text-light-green'
+				: 'text-light-red'}"
+		>
 			{#if positive}
 				<ProfitUpIcon />
 			{:else}
@@ -92,7 +96,9 @@ The Token card / button component used to select which token to select inside wa
 			{/if}
 			+15%
 		</p>
-		<p class="token-card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">897,000 CSPR</p>
+		<p class="token-card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">
+			897,000 CSPR
+		</p>
 		<p class="token-card-text-xs text-light-gray">(24h)</p>
 	</div>
 </div>

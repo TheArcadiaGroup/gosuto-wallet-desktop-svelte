@@ -1,7 +1,7 @@
 <script lang="ts">
 	import GridLayout from '$lib/Common/GridLayout.svelte';
 
-	import ProfileNavigation from '$lib/profile/ProfileNavigation.svelte';
+	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
 	import Settings from '$lib/WalletSettings/index.svelte';
 </script>
 
