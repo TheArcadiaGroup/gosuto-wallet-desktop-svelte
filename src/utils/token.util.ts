@@ -30,6 +30,7 @@ export function sendToken(
 	wallet: string,
 	contractAddress: string,
 	tokenAmount: number,
+	recipientAddress: string,
 	network: string,
 	note?: string,
 ): boolean {

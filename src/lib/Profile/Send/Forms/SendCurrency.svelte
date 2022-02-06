@@ -6,8 +6,9 @@ The logic whether this component is shown or not is handled by it's parents
 @author marekvospel
 -->
 <script lang="ts">
+	import { sendToken } from '$utils/token.util';
+
 	import TextInput from '$lib/Common/TextInput.svelte';
-	import SwapTokensIcon from '$icons/SwapTokensIcon.svelte';
 	import SelectInput from '$lib/Common/SelectInput.svelte';
 	import Button from '$lib/Common/Button.svelte';
 	import Popup from '$lib/Common/Popup.svelte';
@@ -23,6 +24,8 @@ The logic whether this component is shown or not is handled by it's parents
 	 */
 	export let selectedToken = 'USDT';
 
+	export let selectedTokenAddress = '';
+
 	let popup = '';
 	let popupContent = '';
 	let confirmPopup = false;
@@ -30,19 +33,51 @@ The logic whether this component is shown or not is handled by it's parents
 	let tokenAmount = 0;
 	let recipientAddress = '';
 	let note = '';
-	let network = '';
+	let network = 'cspr-network';
+
+	function sendCurrency(): void {
+		popup = 'Send CSPR';
+		popupContent = `You are about to send ${tokenAmount} ${selectedToken} to ${recipientAddress} on the ${network}.`;
+		confirmPopup = true;
+	}
 
 	/**
 	 * A function run when user clicks confirm inside the 'are you sure' popup.
 	 * It has 50% chance to show Swap successful and 50% chance to show Swap failed, because web3 is not implemented yet
 	 */
-	function confirmSwap(): void {
+	async function confirmSend(): Promise<void> {
 		confirmPopup = false;
 		popupContent = '';
-		if (Math.random() >= 0.5) popup = 'Send Failed!';
+
+		/*
+		// @ts-ignore
+		const result = await fetch('/api/tokens/send', {
+			method: 'post',
+			body: JSON.stringify({
+				wallet: '1',
+				contractAddress: selectedTokenAddress,
+				tokenAmount,
+				recipientAddress,
+				network,
+				note
+			})
+		})
+		const resultData = await result.json()
+*/
+
+		const result = sendToken(
+			'1',
+			selectedTokenAddress,
+			tokenAmount,
+			recipientAddress,
+			network,
+			note,
+		);
+
+		if (!result) popup = 'Send Failed!';
 		else {
 			popup = 'Success';
-			popupContent = 'You sent 50 CSPR to 4e32r8932hdi32hurh8hri3hior2io3r32rj3iofj';
+			popupContent = `You sent ${tokenAmount} ${selectedToken} to ${recipientAddress}`;
 		}
 	}
 
@@ -57,19 +92,13 @@ The logic whether this component is shown or not is handled by it's parents
 </script>
 
 <div class="currency">
-	<form
-		class="currency-form"
-		on:submit|preventDefault={() => {
-			popup = 'Send CSPR';
-			popupContent =
-				'You are about to send 50 CSPR to 4e32r8932hdi32hurh8hri3hior2io3r32rj3iofj on the CSPR network.';
-			confirmPopup = true;
-		}}
-	>
+	<form class="currency-form" on:submit|preventDefault={sendCurrency}>
 		<h2 class="currency-form-title">Send {selectedTokenName} ({selectedToken})</h2>
 		<div class="currency-form-row">
 			<TextInput
+				bind:value={tokenAmount}
 				class="send-currency-dark-sidebar-input"
+				type="number"
 				label="Enter {selectedTokenName} amount"
 			/>
 		</div>
@@ -77,18 +106,26 @@ The logic whether this component is shown or not is handled by it's parents
 			<p>$0.00 USD</p>
 			<p class="money-right">2.5% Fee</p>
 		</div>
-		<p class="currency-money-amount">Recipient receives: 0 Tether (0 USD)</p>
+		<p class="currency-money-amount">Recipient receives: {tokenAmount ?? 0} Tether (0 USD)</p>
 		<div class="currency-form-row">
-			<TextInput class="send-currency-dark-sidebar-input" label="Recipient Address" />
+			<TextInput
+				bind:value={recipientAddress}
+				class="send-currency-dark-sidebar-input"
+				label="Recipient Address"
+			/>
 		</div>
 		<div class="currency-form-row">
-			<TextInput class="send-currency-dark-sidebar-input" label="Note (optional)" />
+			<TextInput
+				bind:value={note}
+				class="send-currency-dark-sidebar-input"
+				label="Note (optional)"
+			/>
 		</div>
 		<div class="currency-form-row">
-			<SelectInput class="send-currency-dark-sidebar-input" label="Network">
+			<SelectInput bind:value={network} class="send-currency-dark-sidebar-input" label="Network">
 				<option value="cspr-network">CSPR Network</option>
-				<option value="cspr-network">CSPR Network</option>
-				<option value="cspr-network">CSPR Network</option>
+				<option value="cspr-network2">CSPR Network 2</option>
+				<option value="cspr-network3">CSPR Network 3</option>
 			</SelectInput>
 		</div>
 		<div class="currency-buttons">
@@ -105,7 +142,7 @@ The logic whether this component is shown or not is handled by it's parents
 			title={popup}
 			hasCancel={confirmPopup}
 			on:confirm={() => {
-				confirmPopup ? confirmSwap() : closePopup();
+				confirmPopup ? confirmSend() : closePopup();
 			}}
 			on:cancel={closePopup}
 		>
@@ -177,5 +214,17 @@ The logic whether this component is shown or not is handled by it's parents
 
 	.send-currency-dark-sidebar-input {
 		@apply dark:bg-dark-grey !important;
+	}
+
+	/* hide number input arrows */
+
+	.send-currency-dark-sidebar-input[type='number']::-webkit-outer-spin-button,
+	.send-currency-dark-sidebar-input[type='number']::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+
+	.send-currency-dark-sidebar-input[type='number'] {
+		-moz-appearance: textfield;
 	}
 </style>
