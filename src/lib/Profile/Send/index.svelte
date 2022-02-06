@@ -11,7 +11,7 @@ This is where select & deselect logic is, and is passed to parent by dispatching
   import ReturnHome from '$components/Profile/ReturnHome.svelte';
   import Button from '$lib/Common/Button.svelte';
   import PlusIcon from '$icons/PlusIcon.svelte';
-  import TokenCard from '$lib/Profile/Send/TokenCard.svelte';
+  import TokenCard from '$components/Profile/TokenCard.svelte';
 
   /**
    * An array of props passed to TokenCard components.
@@ -116,7 +116,7 @@ This is where select & deselect logic is, and is passed to parent by dispatching
     :local(.wallet-swap) {
         @apply h-max min-h-screen;
         @apply px-4 pt-10;
-        @apply bg-dark-gosutoDark;
+        @apply dark:bg-dark-gosutoDark;
         @apply lg:px-11 lg:pt-20;
     }
 

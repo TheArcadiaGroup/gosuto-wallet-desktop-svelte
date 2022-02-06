@@ -1,6 +1,6 @@
 <!--
 @component
-The Token card / button component used to select which token to select inside wallet swap.
+The Token card / button component used to select which token to select inside wallet swap and send pages.
 @author marekvospel
 @see Swap
 @see Select

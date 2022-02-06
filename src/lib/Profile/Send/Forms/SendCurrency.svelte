@@ -62,7 +62,7 @@ The logic whether this component is shown or not is handled by it's parents
 	>
 		<h2 class="currency-form-title">Send { selectedTokenName } ({ selectedToken })</h2>
 		<div class="currency-form-row">
-			<TextInput label="Enter { selectedTokenName } amount" />
+			<TextInput class="send-currency-dark-sidebar-input" label="Enter { selectedTokenName } amount" />
 		</div>
 		<div class="currency-money-amount">
 			<p>$0.00 USD</p>
@@ -70,13 +70,13 @@ The logic whether this component is shown or not is handled by it's parents
 		</div>
 		<p class="currency-money-amount">Recipient receives: 0 Tether (0 USD)</p>
 		<div class="currency-form-row">
-			<TextInput label="Recipient Address" />
+			<TextInput class="send-currency-dark-sidebar-input" label="Recipient Address" />
 		</div>
 		<div class="currency-form-row">
-			<TextInput label="Note (optional)" />
+			<TextInput class="send-currency-dark-sidebar-input" label="Note (optional)" />
 		</div>
 		<div class="currency-form-row">
-			<SelectInput label="Network">
+			<SelectInput class="send-currency-dark-sidebar-input" label="Network">
 				<option value="cspr-network">CSPR Network</option>
 				<option value="cspr-network">CSPR Network</option>
 				<option value="cspr-network">CSPR Network</option>
@@ -164,5 +164,9 @@ The logic whether this component is shown or not is handled by it's parents
 		@apply text-xs leading-7 font-bold text-dark-gray;
 		@apply lg:text-sm;
 		@apply dark:text-white;
+	}
+
+	.send-currency-dark-sidebar-input {
+		@apply dark:bg-dark-grey !important;
 	}
 </style>

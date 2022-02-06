@@ -5,23 +5,23 @@
 
 {#if $$props.type === 'password'}
 	<div class="input-holder">
-		<p>{label}</p>
-		<input bind:value type="password" />
+		<p class={$$props.class}>{label}</p>
+		<input class={$$props.class} bind:value type="password" />
 	</div>
 {:else if $$props.type === 'email'}
 	<div class="input-holder">
-		<p>{label}</p>
-		<input bind:value type="email" />
+		<p class={$$props.class}>{label}</p>
+		<input class={$$props.class} bind:value type="email" />
 	</div>
 {:else if $$props.type === 'number'}
 	<div class="input-holder">
-		<p>{label}</p>
-		<input bind:value type="number" />
+		<p class={$$props.class}>{label}</p>
+		<input class={$$props.class} bind:value type="number" />
 	</div>
 {:else}
 	<div class="input-holder">
-		<p>{label}</p>
-		<input bind:value type="text" />
+		<p class={$$props.class}>{label}</p>
+		<input class={$$props.class} bind:value type="text" />
 	</div>
 {/if}
 
