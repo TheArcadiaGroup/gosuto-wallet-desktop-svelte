@@ -16,21 +16,21 @@
 			id: 0,
 			header: 'Add New Wallet',
 			description: 'Add new wallet to your account',
-			route: '/add-wallet/create-wallet',
+			route: '/add-wallet/create',
 			isSelected: false,
 		},
 		{
 			id: 1,
 			header: 'Import From Seed',
 			description: 'Import wallet from seed phrase',
-			route: '/add-wallet/import-from-seed-phrase',
+			route: '/add-wallet/import/from-seed-phrase',
 			isSelected: false,
 		},
 		{
 			id: 2,
 			header: 'Import From File',
 			description: 'Import wallet from file',
-			route: '/add-wallet/import-from-file',
+			route: '/add-wallet/import/from-file',
 			isSelected: false,
 		},
 	];
@@ -69,9 +69,6 @@
 				<span slot="text" class="addWallet-bt-text">Next</span>
 			</Button>
 		</div>
-		<button class="addWallet-bt addWallet-cancel-bt" disabled={selected === undefined}>
-			<span class="addWallet-bt-text addWallet-cancel-bt-text">Cancel</span>
-		</button>
 	</div>
 </div>
 
@@ -117,7 +114,7 @@
 
 	.addWallet-bt {
 		@apply w-11/12 max-w-2xl h-12 4xl:h-28;
-		@apply mt-10 4xl:mt-20;
+		@apply mt-20 4xl:mt-32;
 		@apply rounded-3xl;
 	}
 
@@ -125,15 +122,7 @@
 		@apply opacity-50;
 	}
 
-	.addWallet-cancel-bt {
-		@apply mb-5;
-	}
-
 	.addWallet-bt-text {
 		@apply text-base md:text-lg 3xl:text-2xl 4xl:text-5xl font-display font-bold;
-	}
-
-	.addWallet-cancel-bt-text {
-		@apply text-dark-gray dark:text-white;
 	}
 </style>

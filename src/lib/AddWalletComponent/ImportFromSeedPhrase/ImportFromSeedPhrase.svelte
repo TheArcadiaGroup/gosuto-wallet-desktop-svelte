@@ -5,6 +5,9 @@
 	import GosutoLogoAndText from '$icons/GosutoLogoAndText.svelte';
 	import LockIcon from '$icons/LockIcon.svelte';
 
+	import { goto } from '$app/navigation';
+	import type { JSONString } from '@sveltejs/kit/types/helper';
+
 	let seedPhrase: string;
 	let walletName: string;
 	let password: string;
@@ -35,6 +38,28 @@
 			seedPhrase = await navigator.clipboard.readText();
 		}
 	};
+
+	/** Sends wallet creation data to api route to create a wallet*/
+	const postData = async (object = { walletName, seedPhrase, password } as WalletCreationData) => {
+		let profiles: JSONString[] | null[] = [];
+
+		const response = fetch('/api/create-wallet/seed-phrase', {
+			method: 'POST',
+			body: JSON.stringify(object),
+		})
+			.then((response) => response.json())
+			.then((response) => {
+				profiles.push(response);
+				profiles = profiles.concat(JSON.parse(localStorage.getItem('profiles') || '[]'));
+				localStorage.setItem('profiles', JSON.stringify(profiles));
+				goto('/profile');
+			})
+			.catch((error) => {
+				console.error('error:', error);
+			});
+	};
+
+	//TODO: input restrictions
 </script>
 
 <div class="seedImport-wrapper">
@@ -50,7 +75,7 @@
 		</ul>
 	</div>
 	<div class="seedImport-form-wrapper">
-		<form>
+		<div class="form">
 			<div class="seedImport-form-inputs">
 				<div class="seedImport-input-wrapper h-56 px-3 py-2">
 					<label class="seedImport-label" for="name">Seed Phrase</label>
@@ -122,15 +147,21 @@
 				</div>
 			</div>
 			<div class="seedImport-btn-continue">
-				<Button>
+				<Button on:click={() => postData()}>
 					<div slot="text">
 						<span class="hidden sm:block">Import</span>
 						<span class="block sm:hidden">Import</span>
 					</div>
 				</Button>
 			</div>
-			<button type="button" class="seedImport-btn seedImport-btn-back">Back</button>
-		</form>
+			<button
+				type="button"
+				class="seedImport-btn seedImport-btn-back"
+				on:click={() => goto('/add-wallet')}
+			>
+				Back
+			</button>
+		</div>
 	</div>
 </div>
 
@@ -153,7 +184,7 @@
 	.seedImport-form-wrapper {
 		@apply mt-8 sm:mt-14 mx-auto;
 	}
-	:local(form) {
+	:local(.form) {
 		@apply flex flex-col items-center;
 	}
 	.seedImport-form-inputs {
@@ -163,7 +194,7 @@
 		@apply relative items-center w-96  border border-black border-opacity-10 dark:border-white dark:border-opacity-40 rounded-3xl;
 	}
 	.seedImport-label {
-		@apply absolute -top-2 left-5 -mt-px inline-block px-1 text-xs font-medium text-light-grey dark:text-white dark:bg-dark-background;
+		@apply absolute -top-2 left-5 -mt-px inline-block px-1 text-xs font-medium text-light-grey bg-white dark:text-white dark:bg-dark-background;
 	}
 	.seedImport-seedphrase {
 		@apply block w-full h-full bg-transparent py-3 border-0 resize-none focus:ring-0 sm:text-sm text-opacity-40 text-black dark:text-white dark:text-opacity-40;

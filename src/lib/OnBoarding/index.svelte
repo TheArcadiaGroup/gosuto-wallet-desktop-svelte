@@ -1,8 +1,12 @@
 <script>
+	import { goto } from '$app/navigation';
+
 	import Button from '$lib/Common/Button.svelte';
+
+	import { fade } from 'svelte/transition';
 </script>
 
-<div class="onboarding-page-wrapper">
+<div class="onboarding-page-wrapper" in:fade>
 	<div class="onboarding-page-tracker">
 		<button class="onboarding-active-page" />
 		<button class="onboarding-inactive-page" />
@@ -16,7 +20,7 @@
 			tincidunt ut laoreet dolore magna aliquam erat volutpat.
 		</div>
 		<div class="onboarding-next-bt">
-			<Button>
+			<Button on:click={() => goto('/add-wallet')}>
 				<p slot="text">Next</p>
 			</Button>
 		</div>
@@ -26,7 +30,7 @@
 <style lang="postcss" global>
 	.onboarding-page-wrapper {
 		@apply absolute inset-0;
-		@apply dark:bg-dark-grey;
+		@apply dark:bg-dark-background;
 	}
 
 	.onboarding-page-tracker {
@@ -57,12 +61,12 @@
 	}
 
 	.onboarding-small-text {
-		@apply text-lg text-light-lighterGray dark:text-white;
+		@apply text-lg font-display text-light-lighterGray dark:text-white;
 		@apply mb-10;
 		@apply max-w-lg;
 	}
 
 	.onboarding-next-bt {
-		@apply py-4 px-40;
+		@apply h-8 w-1/2;
 	}
 </style>

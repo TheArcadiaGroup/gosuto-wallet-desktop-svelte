@@ -5,6 +5,8 @@
 	import GosutoLogoAndText from '$icons/GosutoLogoAndText.svelte';
 
 	import ImportPrivateKey from '$lib/AddWalletComponent/ImportFromFile/ImportPrivateKey.svelte';
+
+	import { goto } from '$app/navigation';
 </script>
 
 <div class="fileImport-wrapper">
@@ -22,7 +24,7 @@
 				<span slot="text" class="fileImport-bt-text">Import</span>
 			</Button>
 		</div>
-		<button class="fileImport-bt fileImport-cancel-bt">
+		<button class="fileImport-bt fileImport-cancel-bt" on:click={() => goto('/add-wallet')}>
 			<span class="fileImport-bt-text fileImport-cancel-bt-text">Back</span>
 		</button>
 	</div>
