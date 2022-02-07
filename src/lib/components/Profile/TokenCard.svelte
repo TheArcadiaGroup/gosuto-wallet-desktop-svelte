@@ -6,7 +6,9 @@ The Token card / button component used to select which token to select inside wa
 @see Select
 -->
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
+
+	import { getTokenValue } from '$utils/token.util.ts';
 
 	import ProfitUpIcon from '$icons/ProfitUpIcon.svelte';
 	import ProfitDownIcon from '$icons/ProfitDownIcon.svelte';
@@ -46,6 +48,8 @@ The Token card / button component used to select which token to select inside wa
 	 */
 	export let tokenAmountHeld = 2000;
 
+	export let contractAddress = 'abc';
+
 	/**
 	 * Code of the real currency shown inside this component
 	 * @type {string}
@@ -61,6 +65,13 @@ The Token card / button component used to select which token to select inside wa
 	 * @type {number}
 	 */
 	export let tokenAmountHeldUSD = 175;
+
+	let usdValue = 0;
+
+	onMount(() => {
+		// @ts-ignore
+		const result = fetch(`/api/tokens/value/${encodeURIComponent(contractAddress)}`);
+	});
 
 	const dispatch = createEventDispatcher();
 
@@ -97,7 +108,8 @@ The Token card / button component used to select which token to select inside wa
 			+15%
 		</p>
 		<p class="token-card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">
-			897,000 CSPR
+			{currencySymbol}{getTokenValue(contractAddress)}
+			{currencyUnit}
 		</p>
 		<p class="token-card-text-xs text-light-gray">(24h)</p>
 	</div>
