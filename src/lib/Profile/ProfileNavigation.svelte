@@ -59,7 +59,7 @@
 		ppurl: string;
 		wallets: {
 			name: string;
-			avalible: number;
+			available: number;
 			staked: number;
 			unclaimed: number;
 		}[];

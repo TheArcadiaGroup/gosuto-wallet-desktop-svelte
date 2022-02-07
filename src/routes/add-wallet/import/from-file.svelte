@@ -5,6 +5,62 @@
 	import GosutoLogoAndText from '$icons/GosutoLogoAndText.svelte';
 
 	import ImportPrivateKey from '$lib/AddWalletComponent/ImportFromFile/ImportPrivateKey.svelte';
+
+	import { goto } from '$app/navigation';
+	import type { JSONString } from '@sveltejs/kit/types/helper';
+
+	let walletName: string;
+
+	/** function for opening the file and getting data private key or json data
+		| to be implemented*/
+	let openFile = () => {
+		let jsonWallet = {
+			address: (Math.random() + 1).toString(36).substring(7),
+			id: '',
+			version: '',
+			Crypto: {
+				cipher: '',
+				cipherparams: {
+					iv: '',
+				},
+				ciphertext: '',
+				kdf: '',
+				kdfparams: {
+					salt: '',
+					n: '',
+					dklen: '',
+					p: '',
+					r: '',
+				},
+				mac: '',
+			},
+		};
+
+		let address = jsonWallet.address;
+		let privateKey = 'e308a23beba3be185e707effd05dde3445a3f9ad30a350b703631bb9a79eaf2b';
+
+		postData({ walletName, walletAdress: address });
+	};
+
+	/** Sends wallet creation data to api route to create a wallet */
+	const postData = async (object: { walletName: string; walletAdress: string }) => {
+		let profiles: JSONString[] | null[] = [];
+
+		fetch('/api/create-wallet/file', {
+			method: 'POST',
+			body: JSON.stringify(object),
+		})
+			.then((response) => response.json())
+			.then((response) => {
+				profiles.push(response);
+				profiles = profiles.concat(JSON.parse(localStorage.getItem('profiles') || '[]'));
+				localStorage.setItem('profiles', JSON.stringify(profiles));
+			})
+			.then(() => goto('/profile'))
+			.catch((error) => {
+				console.error('error:', error);
+			});
+	};
 </script>
 
 <div class="fileImport-wrapper">
@@ -12,17 +68,17 @@
 		<GosutoLogoAndText class="gosuto-logo" />
 		<h1 class="fileImport-header">Import From File</h1>
 		<div class="fileImport-input-wrapper">
-			<TextInput label={'Wallet Name'} />
+			<TextInput label={'Wallet Name'} bind:value={walletName} />
 		</div>
 		<ImportPrivateKey />
 	</div>
 	<div class="fileImport-buttons">
 		<div class="fileImport-bt next-bt">
-			<Button>
+			<Button on:click={openFile}>
 				<span slot="text" class="fileImport-bt-text">Import</span>
 			</Button>
 		</div>
-		<button class="fileImport-bt fileImport-cancel-bt">
+		<button class="fileImport-bt fileImport-cancel-bt" on:click={() => goto('/add-wallet')}>
 			<span class="fileImport-bt-text fileImport-cancel-bt-text">Back</span>
 		</button>
 	</div>

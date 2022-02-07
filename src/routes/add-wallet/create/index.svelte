@@ -6,15 +6,18 @@
 	import EyeIcon from '$icons/EyeIcon.svelte';
 	import LockIcon from '$icons/LockIcon.svelte';
 
+	import { walletName } from '$stores/WalletCreation';
+	import { password } from '$stores/WalletCreation';
+
 	import { goto } from '$app/navigation';
 
-	let walletName: string;
-	let password: string;
+	let walletNameValue: string;
+	let passwordValue: string;
 	let confirmPassword: string;
 
 	/**
 	 * @function
-	 * A function to toggle whether is password in the input field is visible or hidden
+	 * A function to toggle whether password in the input field is visible or hidden
 	 */
 	const togglePasswordVisibility = () => {
 		let passwordInput = <HTMLInputElement>document.getElementById('password');
@@ -27,6 +30,13 @@
 			confirmpasswordInput.type = 'text';
 		}
 	};
+
+	const setValues = () => {
+		walletName.set(walletNameValue);
+		password.set(passwordValue);
+	};
+
+	//TODO: input restrictions
 </script>
 
 <div class="createWallet-wrapper">
@@ -40,7 +50,7 @@
 			</ul>
 		</div>
 		<div class="createWallet-input-wrapper">
-			<TextInput label={'Wallet Name'} bind:value={walletName} />
+			<TextInput label={'Wallet Name'} bind:value={walletNameValue} />
 		</div>
 		<div class="createWallet-password-input-wrapper createWallet-password-new">
 			<p class="createWallet-password-label">New Password</p>
@@ -51,7 +61,7 @@
 				type="password"
 				placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
 				class="createWallet-details-input"
-				bind:value={password}
+				bind:value={passwordValue}
 			/>
 			<button class="createWallet-eye-wrapper" type="button" on:click={togglePasswordVisibility}>
 				<EyeIcon class="createWallet-eye-icon" />
@@ -79,7 +89,12 @@
 			</label>
 		</div>
 		<div class="createWallet-bt createWallet-next-bt">
-			<Button on:click={() => goto('/add-wallet/create-wallet/create-wallet-seed')}>
+			<Button
+				on:click={() => {
+					setValues();
+					goto('/add-wallet/create/wallet-seed');
+				}}
+			>
 				<span slot="text" class="createWallet-bt-text">Continue</span>
 			</Button>
 		</div>
