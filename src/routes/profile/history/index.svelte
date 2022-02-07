@@ -41,14 +41,12 @@
 	};
 </script>
 
-<!-- <HistoryPage historyArray={data.data} hideNavbar={false} /> -->
-
 <GridLayout>
 	<div slot="first" class="size-full">
 		<ProfileNavigation {user} />
 	</div>
 	<div slot="mid">
-		<HistoryPage historyArray={data.data} isInProfileRoute={true} />
+		<HistoryPage historyArray={data.data} isInProfileRoute={false} />
 	</div>
 </GridLayout>
 
