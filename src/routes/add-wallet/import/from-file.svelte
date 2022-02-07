@@ -12,7 +12,7 @@
 	let walletName: string;
 
 	/** function for opening the file and getting data private key or json data
-		to be implemented*/
+		| to be implemented*/
 	let openFile = () => {
 		let jsonWallet = {
 			address: '',
@@ -67,7 +67,7 @@
 		<GosutoLogoAndText class="gosuto-logo" />
 		<h1 class="fileImport-header">Import From File</h1>
 		<div class="fileImport-input-wrapper">
-			<TextInput label={'Wallet Name'} />
+			<TextInput label={'Wallet Name'} bind:value={walletName} />
 		</div>
 		<ImportPrivateKey />
 	</div>
