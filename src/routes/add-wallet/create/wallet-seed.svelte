@@ -7,7 +7,11 @@
 	import SeedWordBox from '$lib/AddWalletComponent/CreateWallet/seedWordBox.svelte';
 	import FailedPopup from '$lib/PopUps/NewToGosuto/FailedPopup.svelte';
 
+	import { walletName } from '$stores/WalletCreation';
+	import { password } from '$stores/WalletCreation';
+
 	import { goto } from '$app/navigation';
+	import type { JSONString } from '@sveltejs/kit/types/helper';
 
 	/** True if user copied seed phrase*/
 	let copied: boolean = false;
@@ -15,7 +19,7 @@
 	/** Used for showing warning popup when user doesn't copy seed phrase*/
 	let showPopup: boolean = false;
 
-	/** An array of strings representing the seed phrase*/
+	/** A backup array of strings representing the seed phrase*/
 	let seedPhrase: string[] = [];
 
 	/** True if user is in filling missing words phase*/
@@ -33,13 +37,23 @@
 				} as SeedWord),
 		);
 
+	let walletNameValue: string;
+	let passwordValue: string;
+
+	walletName.subscribe((value) => {
+		walletNameValue = value;
+	});
+
+	password.subscribe((value) => {
+		passwordValue = value;
+	});
+
 	/**
 	 * @function
 	 * A function handling copying to clipboard on button click
 	 */
 	let copyToClipboard = () => {
 		words.forEach((w) => seedPhrase.push(w.word));
-		console.log(seedPhrase);
 		navigator.clipboard.writeText(seedPhrase.join(' '));
 		copied = true;
 	};
@@ -65,10 +79,37 @@
 				showPopup = true;
 			}
 		} else {
-			if (words.filter((w) => w.word === seedPhrase[w.id - 1]).length == 12) {
-				goto('#');
+			if (words.filter((w) => w.word === seedPhrase[w.id - 1]).length === 12) {
+				postData();
 			}
 		}
+	};
+
+	/** Sends wallet creation data to api route to create a wallet*/
+	const postData = async (
+		object = {
+			walletName: walletNameValue,
+			seedPhrase: seedPhrase.join(' '),
+			password: passwordValue,
+		} as WalletCreationData,
+	) => {
+		let profiles: JSONString[] | null[] = [];
+
+		const response = fetch('/api/create-wallet', {
+			method: 'POST',
+			body: JSON.stringify(object),
+		})
+			.then((response) => response.json())
+			.then((response) => {
+				profiles.push(response);
+				profiles = profiles.concat(JSON.parse(localStorage.getItem('profiles') || '[]'));
+				console.log(profiles);
+				localStorage.setItem('profiles', JSON.stringify(profiles));
+			})
+			.then(() => goto('/profile'))
+			.catch((error) => {
+				console.error('error:', error);
+			});
 	};
 </script>
 

@@ -1,5 +1,5 @@
-<script>
-	import GridLayout from '$lib/Common/GridLayout.svelte';
+<script lang="ts">
+	import SplashScreen from '$lib/SplashScreen/index.svelte';
 </script>
 
-<GridLayout />
+<SplashScreen />
