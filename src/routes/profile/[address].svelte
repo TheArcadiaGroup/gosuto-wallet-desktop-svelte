@@ -1,11 +1,12 @@
 <script context="module">
-	import { generateTransactions } from '$utils/historyDataSample';
-	export const load = async () => {
-		//Connect to history API here
-		let data = generateTransactions();
+	export const load = async ({ fetch, page }) => {
+		const address = page.params.address;
+		const res = await fetch('../api/allHistory.json');
+		const data = await res.json();
 
 		return {
 			props: {
+				address,
 				data,
 			},
 		};
@@ -14,11 +15,13 @@
 
 <script lang="ts">
 	import GridLayout from '$lib/Common/GridLayout.svelte';
-
 	import HistoryPage from '$lib/components/HistoryPage.svelte';
 	import ProfileNavigation from '$lib/profile/ProfileNavigation.svelte';
 
+	import { shortenAddress } from '$utils';
+
 	export let data;
+	export let address: string;
 
 	// DEV
 	const user = {
@@ -32,26 +35,13 @@
 				unclaimed: 375,
 			},
 			{
-				name: 'Wallet 1',
+				name: 'Wallet 2',
 				avalible: 5000,
 				staked: 2500,
 				unclaimed: 375,
 			},
 		],
 	};
-
-	const wallet = {
-		name: 'Wallet 1',
-		publicKey: '0x9f98e01d2...4ed7',
-	};
-
-	const stakeArray = Array(10).fill({
-		name: wallet?.name,
-		elapsedSeconds: 20,
-		fullSeconds: 69,
-		staked: 420,
-		unlocked: 69,
-	});
 </script>
 
 <GridLayout>
@@ -59,7 +49,11 @@
 		<ProfileNavigation {user} />
 	</div>
 	<div slot="mid">
-		<HistoryPage historyArray={data} />
+		<HistoryPage
+			historyArray={data.data}
+			isInProfileRoute={true}
+			address={shortenAddress(address)}
+		/>
 	</div>
 </GridLayout>
 

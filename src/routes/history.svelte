@@ -1,8 +1,8 @@
 <script context="module">
-	import { generateTransactions } from '$utils/historyDataSample';
 	export const load = async () => {
 		//Connect to history API here
-		let data = generateTransactions();
+		const res = await fetch('../api/history.json');
+		const data = await res.json();
 
 		return {
 			props: {
@@ -18,4 +18,4 @@
 	export let data;
 </script>
 
-<HistoryPage historyArray={data} />
+<HistoryPage historyArray={data.data} hideNavbar={false} />

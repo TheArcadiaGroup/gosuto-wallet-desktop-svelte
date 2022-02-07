@@ -1,6 +1,10 @@
 <script lang="ts">
 	import BackIcon from '$icons/BackIcon.svelte';
 	import CopyIcon from '$icons/CopyIcon.svelte';
+
+	export let wallet: string = 'Wallet 1';
+	export let address: string = '0x9f98e01d3...4ed7';
+	export let hideSwapText: boolean = false;
 </script>
 
 <div class="return-home">
@@ -10,11 +14,13 @@
 		</a>
 	</div>
 	<p class="return-wallet-title">
-		Wallet 1
-		<span class="return-swap-text">Swap</span>
+		{wallet}
+		{#if !hideSwapText}
+			<span class="return-swap-text">Swap</span>
+		{/if}
 	</p>
 	<div class="return-wallet-pub-key">
-		<p class="return-pub-key-text">0x9f98e01d3...4ed7</p>
+		<p class="return-pub-key-text">{address}</p>
 		<div class="return-cursor-pointer">
 			<CopyIcon />
 		</div>
