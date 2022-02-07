@@ -36,10 +36,14 @@
 		<NavItem reverse={true} navItem={navItemsValues[1]}
 			><NavFlameIcon class="large-nav-icon" /></NavItem
 		>
-		<NavItem navItem={navItemsValues[2]} on:click={() => activateItem(navItemsValues[2], '')}
+		<NavItem
+			navItem={navItemsValues[2]}
+			on:click={() => activateItem(navItemsValues[2], '/profile')}
 			><div class="navbar-avatar-img" /></NavItem
 		>
-		<NavItem navItem={navItemsValues[3]} on:click={() => activateItem(navItemsValues[3], '')}
+		<NavItem
+			navItem={navItemsValues[3]}
+			on:click={() => activateItem(navItemsValues[3], '/history')}
 			><NavBookmarkIcon class="nav-icon" /></NavItem
 		>
 		<NavItem
