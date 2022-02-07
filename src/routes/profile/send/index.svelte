@@ -10,8 +10,9 @@ The wallet send route, this is where the layout is, the currently selected token
 	/*import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte'*/
 	import Send from '$lib/Profile/Send/index.svelte';
 
-	import SelectCurrency from '$lib/Profile/Send/Forms/SelectCurrency.svelte';
+	import TextSidebar from '$components/Profile/TextSidebar.svelte';
 	import SendCurrency from '$lib/Profile/Send/Forms/SendCurrency.svelte';
+	import CreateToken from '$lib/Profile/CreateToken/CreateToken.svelte';
 
 	/**
 	 * This is an array of tokens, which will be shown in the main column of the app's grid. Values inside this array will be passed on to TokenCard components inside Send component
@@ -24,7 +25,7 @@ The wallet send route, this is where the layout is, the currently selected token
 	 * @type {number}
 	 * @see Send
 	 */
-	let selected = -1;
+	let selected = -2;
 
 	/**
 	 * A function changing the selected index value of this component.
@@ -53,8 +54,10 @@ The wallet send route, this is where the layout is, the currently selected token
 		<Send on:selectToken={selectToken} bind:tokens bind:selected />
 	</div>
 	<div class="global-grid-right sidebar">
-		{#if selected === -1}
-			<SelectCurrency />
+		{#if selected === -2}
+			<CreateToken on:selectToken={selectToken} />
+		{:else if selected === -1}
+			<TextSidebar>Select a currency to send</TextSidebar>
 		{:else}
 			<SendCurrency />
 		{/if}

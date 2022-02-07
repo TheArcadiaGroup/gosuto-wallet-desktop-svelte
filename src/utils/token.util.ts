@@ -45,10 +45,16 @@ export function sendToken(
 	tokenObject.tokenAmountHeld -= tokenAmount;
 
 	// TODO: recalculate tokenAmountHeldUSD
+	const tokenUSDValue = getTokenValue(contractAddress);
+	tokenObject.tokenAmountHeld = tokenUSDValue * tokenObject.tokenAmountHeld;
 
 	localStorage.setItem('tokens:' + wallet + ':' + contractAddress, JSON.stringify(tokenAmount));
 
 	// send token to a wallet & add it to history
 
 	return true;
+}
+
+export function getTokenValue(contractAddress: string): number {
+	return Math.floor(Math.random() * 123456) / 10000;
 }

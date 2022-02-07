@@ -4,11 +4,7 @@ export const get = async () => {
 	return {
 		status: 200,
 		body: [
-			{
-				cryptoUnit: 'CSPR',
-				cryptoName: 'Casper',
-				positive: false,
-			},
+			{},
 			{
 				tokenName: 'Casper',
 				tokenTicker: 'CSPR',
@@ -22,13 +18,8 @@ export const get = async () => {
 				decimalsOfPrecision: 16,
 			},
 			{},
-			{
-				positive: false,
-			},
-			{
-				cryptoName: 'Test',
-				cryptoUnit: 'TST',
-			},
+			{},
+			{},
 		],
 	};
 };

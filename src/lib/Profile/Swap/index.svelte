@@ -52,7 +52,8 @@ This is where select & deselect logic is, and is passed to parent by dispatching
 	function deselectListener(event: any): void {
 		if (!event.target) return;
 		const isInToken = Boolean(event.target.closest('.token-card'));
-		if (!isInToken)
+		const isInAdd = Boolean(event.target.closest('.add-token-button'));
+		if (!isInToken && !isInAdd)
 			dispatch('selectToken', {
 				id: -1,
 			});
@@ -65,21 +66,26 @@ This is where select & deselect logic is, and is passed to parent by dispatching
 	function cancelButtonListener(event: any): void {
 		if (!event.target) return;
 		const isInCancel = Boolean(event.target.closest('.swap-currency-cancel-swap-button'));
-		if (isInCancel) dispatch('selectToken', {
-			id: -1,
-		});
+		if (isInCancel)
+			dispatch('selectToken', {
+				id: -1,
+			});
 	}
 </script>
 
 <svelte:body on:click={cancelButtonListener} />
 
 <div class="swap-wallet-swap" on:click={deselectListener}>
-	<ReturnHome profileLocation='Swap' />
+	<ReturnHome profileLocation="Swap" />
 	<div class="swap-container">
 		<div class="swap-title-row">
 			<p class="swap-tokens-in-wallet-title">Tokens in this wallet</p>
 			<div class="ml-auto">
-				<Button glow={true}>
+				<Button
+					class="add-token-button"
+					on:click={() => dispatch('selectToken', { id: -2 })}
+					glow={true}
+				>
 					<div slot="text" class="swap-inner-btn">
 						<PlusIcon />
 						<span>Add Token</span>
@@ -106,7 +112,8 @@ This is where select & deselect logic is, and is passed to parent by dispatching
 				<div
 					class="swap-mobile-scrollbar-dot {currentPage === i
 						? 'w-3 bg-light-orange'
-						: 'w-1.5 bg-light-gray'}"></div>
+						: 'w-1.5 bg-light-gray'}"
+				/>
 			{/each}
 		</div>
 	</div>
