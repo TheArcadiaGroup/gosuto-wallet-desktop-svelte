@@ -1,6 +1,6 @@
-/** Handles a request with wallet data from the wallet creation process and returns a wallet  */
+/** Handles a request with wallet data from the import wallet file process and returns a wallet  */
 export async function post(params: any): Promise<any> {
-	const walletData: WalletCreationData = await JSON.parse(params.body);
+	const walletData: { walletName: string; walletAdress: string } = await JSON.parse(params.body);
 
 	const newProfile: IWallet = {
 		walletName: walletData.walletName,
@@ -13,7 +13,7 @@ export async function post(params: any): Promise<any> {
 		walletTokens: [[]],
 		walletStakes: [[]],
 		walletHistory: [[]],
-		walletAddress: '',
+		walletAddress: walletData.walletAdress,
 	};
 
 	return {

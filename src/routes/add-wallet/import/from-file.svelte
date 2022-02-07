@@ -15,7 +15,7 @@
 		| to be implemented*/
 	let openFile = () => {
 		let jsonWallet = {
-			address: '',
+			address: (Math.random() + 1).toString(36).substring(7),
 			id: '',
 			version: '',
 			Crypto: {
@@ -36,16 +36,17 @@
 			},
 		};
 
+		let address = jsonWallet.address;
 		let privateKey = 'e308a23beba3be185e707effd05dde3445a3f9ad30a350b703631bb9a79eaf2b';
 
-		postData();
+		postData({ walletName, walletAdress: address });
 	};
 
 	/** Sends wallet creation data to api route to create a wallet */
-	const postData = async (object = { walletName }) => {
+	const postData = async (object: { walletName: string; walletAdress: string }) => {
 		let profiles: JSONString[] | null[] = [];
 
-		const response = fetch('/api/create-wallet/file', {
+		fetch('/api/create-wallet/file', {
 			method: 'POST',
 			body: JSON.stringify(object),
 		})

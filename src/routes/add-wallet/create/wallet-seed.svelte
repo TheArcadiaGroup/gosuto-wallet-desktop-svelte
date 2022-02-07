@@ -95,7 +95,7 @@
 	) => {
 		let profiles: JSONString[] | null[] = [];
 
-		const response = fetch('/api/create-wallet', {
+		fetch('/api/create-wallet', {
 			method: 'POST',
 			body: JSON.stringify(object),
 		})

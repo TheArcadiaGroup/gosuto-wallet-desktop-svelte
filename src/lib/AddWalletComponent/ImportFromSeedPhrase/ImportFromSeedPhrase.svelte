@@ -43,7 +43,7 @@
 	const postData = async (object = { walletName, seedPhrase, password } as WalletCreationData) => {
 		let profiles: JSONString[] | null[] = [];
 
-		const response = fetch('/api/create-wallet/seed-phrase', {
+		fetch('/api/create-wallet/seed-phrase', {
 			method: 'POST',
 			body: JSON.stringify(object),
 		})
