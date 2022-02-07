@@ -1,7 +1,7 @@
 <script context="module">
 	export const load = async ({ fetch, page }) => {
 		const address = page.params.address;
-		const res = await fetch('../api/allHistory.json');
+		const res = await fetch(`../api/walletHistory.json/?address=${address}`);
 		const data = await res.json();
 
 		return {
