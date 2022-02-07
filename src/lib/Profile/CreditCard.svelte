@@ -15,7 +15,7 @@
 	export let ppurl = '';
 	export let name = 'unknown name';
 	export let wallet = {
-		avalible: 0,
+		available: 0,
 		staked: 0,
 		unclaimed: 0,
 	};
@@ -33,7 +33,7 @@
 		</div>
 		<div class="grow-0">
 			<div class="field-title">avalible</div>
-			<div class="amount">${wallet?.avalible || 0} USD</div>
+			<div class="amount">${wallet?.available || 0} USD</div>
 		</div>
 		<hr class="w-1/2" />
 		<div class="grow-0">

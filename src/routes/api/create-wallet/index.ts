@@ -13,7 +13,8 @@ export async function post(params: any): Promise<any> {
 		walletTokens: [[]],
 		walletStakes: [[]],
 		walletHistory: [[]],
-		walletAddress: '',
+		//random test address
+		walletAddress: (Math.random() + 1).toString(36).substring(7),
 	};
 
 	return {

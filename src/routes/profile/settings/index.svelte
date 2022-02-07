@@ -3,11 +3,30 @@
 
 	import ProfileNavigation from '$lib/profile/ProfileNavigation.svelte';
 	import Settings from '$lib/WalletSettings/index.svelte';
+
+	const user = {
+		name: 'Jake Waterson',
+		ppurl: 'https://miro.medium.com/fit/c/262/262/2*-cdwKPXyVI0ejgxpWkKBeA.jpeg',
+		wallets: [
+			{
+				name: 'Wallet 1',
+				available: 5000,
+				staked: 2500,
+				unclaimed: 375,
+			},
+			{
+				name: 'Wallet 1',
+				available: 5000,
+				staked: 2500,
+				unclaimed: 375,
+			},
+		],
+	};
 </script>
 
 <GridLayout>
 	<div slot="first" class="size-full">
-		<ProfileNavigation />
+		<ProfileNavigation {user} />
 	</div>
 	<div slot="mid">
 		<Settings />

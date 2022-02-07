@@ -1,39 +1,106 @@
-<script>
-	import GridLayout from '$lib/Common/GridLayout.svelte';
-	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
+<script lang="ts">
+	import CreditCard from '$lib/profile/CreditCard.svelte';
+	import Navbar from '$components/Navbar/Navbar.svelte';
+	import Button from '$lib/Common/Button.svelte';
 
-	// Show a specific profile page based global
+	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
 
-	// DEV
-	const user = {
-		name: 'Jake Waterson',
-		ppurl: 'https://miro.medium.com/fit/c/262/262/2*-cdwKPXyVI0ejgxpWkKBeA.jpeg',
-		wallets: [
-			{
-				name: 'Wallet 1',
-				avalible: 5000,
-				staked: 2500,
-				unclaimed: 375,
-			},
-			{
-				name: 'Wallet 1',
-				avalible: 5000,
-				staked: 2500,
-				unclaimed: 375,
-			},
-		],
+	let existingProfiles: IWallet[] = JSON.parse(localStorage.getItem('profiles') || '[]');
+	let defaultWalletIndex: number = Number(localStorage.getItem('defaultWalletIndex'));
+
+	onMount(() => {
+		if (existingProfiles.length == 1) {
+			postData(existingProfiles[0]);
+		} else if (existingProfiles.length > 1 && defaultWalletIndex) {
+			postData(existingProfiles[defaultWalletIndex - 1]);
+		}
+	});
+
+	/** post selected profile data to that profile's api route */
+	const postData = async (object: IWallet) => {
+		fetch('/api/profile/' + object.walletAddress, {
+			method: 'POST',
+			body: JSON.stringify(object),
+		})
+			.then(() => goto('/profile/' + object.walletAddress))
+			.catch((error) => {
+				console.error('error:', error);
+			});
 	};
 </script>
 
-<GridLayout>
-	<div slot="first" class="size-full">
-		<!-- feed the user profile data to ProfileNavigation component -->
-		<ProfileNavigation {user} />
+<div class="flex">
+	<div class="global-grid-nav">
+		<Navbar />
 	</div>
-</GridLayout>
+	<div class="global-grid-mid">
+		<div class="mid-content">
+			<div class="content-header">
+				<h1>Select Wallet</h1>
+				<div class="button-wrapper" on:click={() => goto('/add-wallet')}>
+					<Button>
+						<div slot="text" class="button">+ Add wallet</div>
+					</Button>
+				</div>
+			</div>
+			<div class="credit-card-wrapper">
+				{#each existingProfiles as p, i}
+					<div
+						class="single-card-wrap"
+						on:click={() => {
+							localStorage.setItem('defaultWalletIndex', (i + 1).toString());
+							postData(p);
+						}}
+					>
+						<CreditCard
+							name={p.walletName}
+							wallet={{
+								available: p.availableBalanceUSD,
+								staked: p.stakedBalance,
+								unclaimed: p.unclaimedRewards,
+							}}
+						/>
+					</div>
+				{/each}
+			</div>
+		</div>
+	</div>
+</div>
 
 <style lang="postcss" global>
-	:local(.size-full) {
-		@apply w-full h-full;
+	:local(.global-grid-mid) {
+		@apply dark:bg-dark-background;
+		@apply flex justify-center;
+		@apply overflow-y-hidden;
+	}
+
+	:local(.mid-content) {
+		@apply h-full w-1/2 overflow-y-scroll;
+		@apply flex flex-col align-middle items-center gap-10;
+		@apply mt-20;
+	}
+
+	:local(.content-header) {
+		@apply flex justify-around gap-4;
+		@apply w-1/2;
+	}
+
+	:local(h1) {
+		@apply font-display font-bold text-2xl text-center dark:text-white;
+	}
+
+	:local(.button-wrapper) {
+		@apply w-1/3 h-full;
+		@apply font-display font-bold text-sm;
+	}
+
+	:local(.credit-card-wrapper) {
+		@apply flex flex-col place-items-center gap-8 w-1/2;
+	}
+
+	:local(.single-card-wrap) {
+		@apply w-full;
+		@apply flex justify-center;
 	}
 </style>

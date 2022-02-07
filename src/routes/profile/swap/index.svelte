@@ -4,8 +4,8 @@ The wallet swap route, this is where the layout is, the currently selected token
 @author marekvospel
 -->
 <script lang="ts">
-	import Navbar from '$components/Navbar/Navbar.svelte'
-	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte'
+	import Navbar from '$components/Navbar/Navbar.svelte';
+	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
 
 	import Swap from '$lib/Profile/Swap/index.svelte';
 
@@ -60,7 +60,7 @@ The wallet swap route, this is where the layout is, the currently selected token
 	<div class="global-grid-mid">
 		<Swap on:selectToken={selectToken} bind:tokens bind:selected />
 	</div>
-	<div class="global-grid-right swap-sidebar" >
+	<div class="global-grid-right swap-sidebar">
 		{#if selected === -1}
 			<!--<ConfirmSelectMobile />-->
 			<SelectCurrency />
@@ -71,7 +71,6 @@ The wallet swap route, this is where the layout is, the currently selected token
 </div>
 
 <style lang="postcss" global>
-
 	.swap-page-container {
 		@apply flex flex-row;
 	}

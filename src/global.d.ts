@@ -84,7 +84,7 @@ interface IToken {
 	contractString: string;
 	contractAddress: string;
 	tokenPriceUSD: number;
-	decimalsOfPrecision: int;
+	decimalsOfPrecision: number;
 }
 
 interface IHistory {
@@ -104,13 +104,13 @@ interface IStake {
 	parentWallet: string;
 	stakeAmount: number;
 	unstakeDatetime: Date & { toDate: () => Date };
-	//difference between stakeDate and reclamationDate, int?
-	unstakeCountdown: int;
+	//difference between stakeDate and reclamationDate
+	unstakeCountdown: number;
 	reclamationDate: Date & { toDate: () => Date };
 	initialStakeDate: Date & { toDate: () => Date };
 	rewardDate: Date & { toDate: () => Date };
-	// difference between rewardDate and initialStakeDate, int?
-	rewardCountdown: int;
+	// difference between rewardDate and initialStakeDate
+	rewardCountdown: number;
 	reward: number;
 	stakePercent: number;
 	parentWalletAddress: string;
