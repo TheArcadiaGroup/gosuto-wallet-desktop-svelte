@@ -1,8 +1,18 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 
+	import { importToken } from '$utils/token.util';
+
 	import Button from '$lib/Common/Button.svelte';
 	import TextInput from '$lib/Common/TextInput.svelte';
+
+	let contractAddress = '';
+	let tokenTicker = '';
+	let decimals = 0;
+
+	function submitImportToken() {
+		const result = importToken('1', contractAddress, tokenTicker, decimals);
+	}
 
 	const dispatch = createEventDispatcher();
 </script>
@@ -20,10 +30,19 @@
 			<span class="button-text" slot="text">Import Token</span>
 		</Button>
 	</div>
-	<form class="create-form" on:submit|preventDefault={() => {}}>
-		<TextInput class="create-token-dark-sidebar-input" label="Contract Address" />
-		<TextInput class="create-token-dark-sidebar-input" label="Token Ticker" />
+	<form class="create-form" on:submit|preventDefault={submitImportToken}>
 		<TextInput
+			bind:value={contractAddress}
+			class="create-token-dark-sidebar-input"
+			label="Contract Address"
+		/>
+		<TextInput
+			bind:value={tokenTicker}
+			class="create-token-dark-sidebar-input"
+			label="Token Ticker"
+		/>
+		<TextInput
+			bind:value={decimals}
 			class="create-token-dark-sidebar-input"
 			label="Decimals of Precision"
 			type="number"

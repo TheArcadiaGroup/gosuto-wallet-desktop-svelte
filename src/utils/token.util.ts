@@ -58,3 +58,41 @@ export function sendToken(
 export function getTokenValue(contractAddress: string): number {
 	return Math.floor(Math.random() * 123456) / 10000;
 }
+
+export function createToken(
+	wallet: string,
+	tokenName: string,
+	tokenTicker: string,
+	contractString: string,
+	USDPrice: number,
+	limitedSupply: boolean,
+	mintableSupply: boolean,
+): boolean {
+	const contractAddress = 'abc';
+
+	const token = {
+		tokenName,
+		tokenTicker,
+		tokenAmountHeld: 0,
+		tokenAmountHeldUSD: 0,
+		limitedSupply,
+		mintableSupply,
+		contractString,
+		tokenPrice: USDPrice,
+		decimalsOfPrecision: 16,
+		contractAddress: contractAddress,
+	} as IToken;
+
+	localStorage.setItem('tokens:' + wallet + ':' + contractAddress, JSON.stringify(token));
+
+	return true;
+}
+
+export function importToken(
+	wallet: string,
+	contractAddress: string,
+	tokenTicker: string,
+	decimals: number,
+): boolean {
+	return true;
+}

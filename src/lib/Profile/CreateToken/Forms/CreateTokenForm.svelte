@@ -1,9 +1,30 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 
+	import { createToken } from '$utils/token.util';
+
 	import Button from '$lib/Common/Button.svelte';
 	import TextInput from '$lib/Common/TextInput.svelte';
 	import ToggleSwitch from '$lib/Common/ToggleSwitch.svelte';
+
+	let tokenName = '';
+	let tokenTicker = '';
+	let contractString = '';
+	let tokenUSDPrice = 0;
+	let limitedSupply = true;
+	let mintableSupply = true;
+
+	function submitCreateToken() {
+		const result = createToken(
+			'1',
+			tokenName,
+			tokenTicker,
+			contractString,
+			tokenUSDPrice,
+			limitedSupply,
+			mintableSupply,
+		);
+	}
 
 	const dispatch = createEventDispatcher();
 </script>
@@ -21,21 +42,33 @@
 			<span class="button-text" slot="text">Import Token</span>
 		</Button>
 	</div>
-	<form class="create-form" on:submit|preventDefault={() => {}}>
-		<TextInput class="create-token-dark-sidebar-input" label="Token Name" />
-		<TextInput class="create-token-dark-sidebar-input" label="Token Ticker" />
-		<TextInput class="create-token-dark-sidebar-input" label="Contract String" />
-		<TextInput class="create-token-dark-sidebar-input" label="Price (USD)" />
+	<form class="create-form" on:submit|preventDefault={submitCreateToken}>
+		<TextInput bind:value={tokenName} class="create-token-dark-sidebar-input" label="Token Name" />
+		<TextInput
+			bind:value={tokenTicker}
+			class="create-token-dark-sidebar-input"
+			label="Token Ticker"
+		/>
+		<TextInput
+			bind:value={contractString}
+			class="create-token-dark-sidebar-input"
+			label="Contract String"
+		/>
+		<TextInput
+			bind:value={tokenUSDPrice}
+			class="create-token-dark-sidebar-input"
+			label="Price (USD)"
+		/>
 		<div class="switch-row">
 			<p class="switch-text">Limited supply</p>
 			<div class="switch">
-				<ToggleSwitch />
+				<ToggleSwitch bind:checked={limitedSupply} />
 			</div>
 		</div>
 		<div class="switch-row">
 			<p class="switch-text">Mintable Supply</p>
 			<div class="switch">
-				<ToggleSwitch />
+				<ToggleSwitch bind:checked={mintableSupply} />
 			</div>
 		</div>
 		<div class="confirm-buttons">

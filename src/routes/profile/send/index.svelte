@@ -25,7 +25,7 @@ The wallet send route, this is where the layout is, the currently selected token
 	 * @type {number}
 	 * @see Send
 	 */
-	let selected = -2;
+	let selected = -1;
 
 	/**
 	 * A function changing the selected index value of this component.
