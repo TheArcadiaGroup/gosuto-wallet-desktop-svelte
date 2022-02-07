@@ -2,10 +2,10 @@
 	import HistoryComponent from '$lib/components/HistoryComponent.svelte';
 	import GridLayout from '$lib/Common/GridLayout.svelte';
 	import RoundedSelect from '$lib/Common/RoundedSelect.svelte';
-	import { generateTransactions } from '$utils/historyDataSample';
 	import Sidebar from '$lib/components/HistoryComponent/sidebar.svelte';
 
-	export let historyArray: HistoryObject[] = generateTransactions();
+	export let historyArray: HistoryObject[];
+	export let hideNavbar: boolean = true;
 	let filteredArray: HistoryObject[];
 
 	let optionsArray: string[] = ['All', 'Received', 'Sent', 'Swap', 'Stake'];
@@ -39,7 +39,7 @@
 	}
 </script>
 
-<GridLayout>
+<GridLayout {hideNavbar}>
 	<div class="mid-holder" slot="mid">
 		<div class="main">
 			<div class="header">
@@ -78,7 +78,7 @@
 
 <style lang="postcss" global>
 	:local(.mid-holder) {
-		@apply flex items-center md:justify-end mr-[5vw] w-full md:w-auto px-4;
+		@apply flex items-center md:justify-end mr-[2vw] w-full md:w-auto px-4;
 	}
 
 	:local(.main) {
