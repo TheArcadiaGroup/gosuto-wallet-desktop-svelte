@@ -11,6 +11,7 @@ The logic whether this component is shown or not is handled by it's parents
 	import SelectInput from '$lib/Common/SelectInput.svelte';
 	import Button from '$lib/Common/Button.svelte';
 	import Popup from '$lib/Common/Popup.svelte';
+	import { getTokenValue } from '$utils/token.util';
 
 	/**
 	 * Code of the token user has selected, and is swapping from.
@@ -27,13 +28,26 @@ The logic whether this component is shown or not is handled by it's parents
 	let popup = '';
 	let confirmPopup = false;
 
+	let fromAmount = 0;
+	let toAmount = 0;
+	let toToken = 'usdc';
+
+	let fromUSDValue = 0;
+	let toUSDValue = 0;
+
+	$: fromUSDValue = getTokenValue(fromToken);
+	$: toUSDValue = getTokenValue(toToken);
+
 	/**
 	 * A function run when user clicks confirm inside the 'are you sure' popup.
 	 * It has 50% chance to show Swap successful and 50% chance to show Swap failed, because web3 is not implemented yet
 	 */
 	function confirmSwap(): void {
 		confirmPopup = false;
-		if (Math.random() >= 0.5) popup = 'Swap Failed!';
+
+		const result = false;
+
+		if (!result) popup = 'Swap Failed!';
 		else popup = 'Swap Successful!';
 	}
 
@@ -57,27 +71,37 @@ The logic whether this component is shown or not is handled by it's parents
 		<h2 class="swap-currency-form-title">Swap</h2>
 		<div class="swap-currency-form-row">
 			<div class="swap-currency-row-text-input">
-				<TextInput class="send-currency-dark-sidebar-input" label="From" />
+				<TextInput
+					bind:value={fromAmount}
+					class="send-currency-dark-sidebar-input"
+					label="From"
+					type="number"
+				/>
 			</div>
 			<p class="swap-currency-row-text">{fromToken}</p>
 		</div>
-		<p class="swap-currency-money-amount">$0.00 USD</p>
+		<p class="swap-currency-money-amount">${fromUSDValue * fromAmount} USD</p>
 		<div class="swap-currency-swap-icon">
 			<SwapTokensIcon />
 		</div>
 		<div class="swap-currency-form-row">
 			<div class="swap-currency-row-text-input">
-				<TextInput class="send-currency-dark-sidebar-input" label="To" />
+				<TextInput
+					bind:value={toAmount}
+					class="send-currency-dark-sidebar-input"
+					label="To"
+					type="number"
+				/>
 			</div>
 			<div class="swap-currency-row-token-select">
-				<SelectInput class="send-currency-dark-sidebar-input" label="">
-					<option value="">USDC</option>
-					<option value="">USDT</option>
-					<option value="">CSPR</option>
+				<SelectInput bind:value={toToken} class="send-currency-dark-sidebar-input" label="">
+					<option value="usdc">USDC</option>
+					<option value="usdt">USDT</option>
+					<option value="cspr">CSPR</option>
 				</SelectInput>
 			</div>
 		</div>
-		<p class="swap-currency-money-amount">$0.00 USD</p>
+		<p class="swap-currency-money-amount">${toUSDValue * toAmount} USD</p>
 		{#if createNewToken}
 			<p class="swap-currency-create-token-warning">
 				This wallet currently does not contain USDC. USDC token will be added to this wallet upon
@@ -187,5 +211,15 @@ The logic whether this component is shown or not is handled by it's parents
 
 	.send-currency-dark-sidebar-input {
 		@apply dark:bg-dark-grey !important;
+	}
+
+	.send-currency-dark-sidebar-input[type='number']::-webkit-outer-spin-button,
+	.send-currency-dark-sidebar-input[type='number']::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+
+	.send-currency-dark-sidebar-input[type='number'] {
+		-moz-appearance: textfield;
 	}
 </style>

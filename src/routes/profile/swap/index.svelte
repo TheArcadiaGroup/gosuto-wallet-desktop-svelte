@@ -13,7 +13,6 @@ The wallet swap route, this is where the layout is, the currently selected token
 
 	import TextSidebar from '$components/Profile/TextSidebar.svelte';
 	import SwapCurrency from '$lib/Profile/Swap/Forms/SwapCurrency.svelte';
-	import ConfirmSelectMobile from '$lib/Profile/Swap/Forms/ConfirmSelectMobile.svelte';
 	import CreateToken from '$lib/Profile/CreateToken/CreateToken.svelte';
 
 	/**
@@ -78,7 +77,6 @@ The wallet swap route, this is where the layout is, the currently selected token
 		{#if selected === -2}
 			<CreateToken on:selectToken={selectToken} />
 		{:else if selected === -1}
-			<!--<ConfirmSelectMobile />-->
 			<TextSidebar>Select currency you want to swap</TextSidebar>
 		{:else}
 			<SwapCurrency />
