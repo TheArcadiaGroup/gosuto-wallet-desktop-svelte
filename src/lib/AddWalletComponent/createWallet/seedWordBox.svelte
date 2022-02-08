@@ -4,32 +4,61 @@
 	A component for displaying individual seed phrase words
  -->
 <script lang="ts">
+	import CopyIcon from '$icons/CopyIcon.svelte';
 	import { onMount } from 'svelte';
 
 	export let seedWord: SeedWord;
+	export let secondPage: boolean;
+	export let handlePaste: (seedWord: SeedWord) => void;
 
 	let wordBox: HTMLInputElement;
 	let initialWidth: number;
+	let turned: boolean = false;
+	let savedWord: string = '';
+
+	let onPaste = () => {
+		setTimeout(() => {
+			handlePaste(seedWord);
+		}, 0);
+	};
 
 	/** onMount callback to set inital input width */
 	onMount(() => {
+		wordBox.onpaste = onPaste;
+		savedWord = seedWord.word.slice();
 		initialWidth = seedWord.word.length + 5;
 		wordBox.style.width = initialWidth.toString() + 'ch';
 	});
 
+	let copyToClipboard = () => {
+		navigator.clipboard.writeText(seedWord.word);
+	};
+
+	$: if (secondPage) turned = false;
+
 	/** reactive statement for dynamically changing input width */
 	$: {
-		seedWord.word;
+		seedWord;
 		if (wordBox != undefined) {
 			let currentWidth: number = seedWord.word.length + 5;
-			if (currentWidth > initialWidth) {
+			if (currentWidth >= initialWidth) {
 				wordBox.style.width = (seedWord.word.length + 5).toString() + 'ch';
 			}
+		}
+
+		if (savedWord === seedWord.word) {
+			seedWord.isEmpty = false;
 		}
 	}
 </script>
 
-<div class="wordbox-wrapper">
+<div
+	class="wordbox-wrapper"
+	on:click={() => {
+		if (turned) copyToClipboard();
+		else if (!turned && !secondPage) turned = true;
+	}}
+>
 	<input
 		bind:value={seedWord.word}
 		bind:this={wordBox}
@@ -38,7 +67,13 @@
 		class:empty={seedWord.isEmpty}
 	/>
 	<div class:empty={seedWord.isEmpty} class="wordbox-id-circle">
-		<span class="wordbox-circle-text">{seedWord.id}</span>
+		<span class="wordbox-circle-text">
+			{#if !turned}
+				{seedWord.id}
+			{:else if !secondPage}
+				<CopyIcon />
+			{/if}
+		</span>
 	</div>
 </div>
 
@@ -62,6 +97,7 @@
 
 	.wordbox-circle-text {
 		@apply text-sm 4xl:text-3xl font-bold font-display;
+		@apply transition-all;
 	}
 
 	.wordbox-input {
@@ -71,6 +107,7 @@
 		@apply text-dark-gray font-display 4xl:text-4xl dark:text-white;
 		@apply text-center;
 		@apply shadow outline-none;
+		@apply cursor-pointer;
 	}
 
 	.wordbox-input.empty {
