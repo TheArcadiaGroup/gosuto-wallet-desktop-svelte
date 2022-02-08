@@ -14,20 +14,20 @@
 	let walletNameValue: string;
 	let passwordValue: string;
 	let confirmPassword: string;
+	let checked: boolean = false;
+
+	let passwordInput: HTMLInputElement;
+	let confirmPasswordInput: HTMLInputElement;
 
 	/**
 	 * @function
 	 * A function to toggle whether password in the input field is visible or hidden
 	 */
-	const togglePasswordVisibility = () => {
-		let passwordInput = <HTMLInputElement>document.getElementById('password');
-		let confirmpasswordInput = <HTMLInputElement>document.getElementById('confirm-password');
-		if (passwordInput.type === 'text') {
-			passwordInput.type = 'password';
-			confirmpasswordInput.type = 'password';
+	const togglePasswordVisibility = (inputElement: HTMLInputElement) => {
+		if (inputElement.type === 'text') {
+			inputElement.type = 'password';
 		} else {
-			passwordInput.type = 'text';
-			confirmpasswordInput.type = 'text';
+			inputElement.type = 'text';
 		}
 	};
 
@@ -62,8 +62,13 @@
 				placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
 				class="createWallet-details-input"
 				bind:value={passwordValue}
+				bind:this={passwordInput}
 			/>
-			<button class="createWallet-eye-wrapper" type="button" on:click={togglePasswordVisibility}>
+			<button
+				class="createWallet-eye-wrapper"
+				type="button"
+				on:click={() => togglePasswordVisibility(passwordInput)}
+			>
 				<EyeIcon class="createWallet-eye-icon" />
 			</button>
 		</div>
@@ -77,19 +82,24 @@
 				placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
 				class="createWallet-details-input"
 				bind:value={confirmPassword}
+				bind:this={confirmPasswordInput}
 			/>
-			<button class="createWallet-eye-wrapper" on:click={togglePasswordVisibility}>
+			<button
+				class="createWallet-eye-wrapper"
+				on:click={() => togglePasswordVisibility(confirmPasswordInput)}
+			>
 				<EyeIcon class="createWallet-eye-icon" />
 			</button>
 		</div>
 		<div class="createWallet-use-terms">
-			<input class="createWallet-checkbox" type="checkbox" name="terms of use" />
+			<input class="createWallet-checkbox" type="checkbox" name="terms of use" bind:checked />
 			<label class="createWallet-checkbox-label" for="terms of use">
 				I have read and agree to the terms of service
 			</label>
 		</div>
 		<div class="createWallet-bt createWallet-next-bt">
 			<Button
+				disabled={!checked}
 				on:click={() => {
 					setValues();
 					goto('/add-wallet/create/wallet-seed');
