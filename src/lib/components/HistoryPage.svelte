@@ -1,9 +1,10 @@
-<!-- @component 
+<!-- 
+	@component 
 	Description:
 	> HistoryPage component consisting of the mid and last column for the history page.
 	
-	Props:
-	- `historyArray` = An Array of historyObjects. Array of the historyObjects to be displayed in the page.
+	@author MikeBrandon
+	@see history
 -->
 <script lang="ts">
 	import HistoryComponent from '$lib/components/HistoryComponent.svelte';

@@ -1,18 +1,12 @@
-<!-- @component 
-	Describtion:
+<!-- 
+	@component 
+	Description:
 	> Basic Popup Component with that makes the background slightly darker when it pops up. 
-	
-	Props:
-	- `title` = A string value. Title at the top of the popup.
-	- `hasCancel` = A boolean value. If true, popup will have two buttons i.e. an action one and a cancel button. If false, button will just have an action button.
-	- `goBack` = A boolean value. If true, popup will have a Go Back button instean of a cancel button. If false, button will just
 
 	Slots:
 	- Pass the content inside the popup here.
-
-	Events:
-	- `confirm` = is dispatched when the user clicks the button to the left.
-	- `cancel` = is dispatched when the user clicks the button to the right.
+	
+	@author MikeBrandon
 -->
 <script lang="ts">
 	import { scale, fade } from 'svelte/transition';

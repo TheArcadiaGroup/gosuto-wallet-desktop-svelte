@@ -1,9 +1,10 @@
-<!-- @component 
+<!-- 
+	@component 
 	Description:
 	> Right Sidebar for History page with History SideBar Cards.
 	
-	Props:
-	- `historyObject` = A History Object with history details e.g. status, dateAndTime, SwapData, amount, price, cryptoUnit currencyUnit.
+	@author MikeBrandon
+	@see historyComponent
 -->
 <script lang="ts">
 	import { slide } from 'svelte/transition';

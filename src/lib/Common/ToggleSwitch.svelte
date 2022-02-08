@@ -1,9 +1,10 @@
-<!-- @component 
+<!-- 
+	@component 
 	Description:
 	> Custom Switch component to allow user to toggle on and off/true and false.
 	
-	Props:
-	- `checked` = A boolean value. This is the value of whether the toggle is in its on or off state. It can also be bound to parent component to keep track of whether the user has set it to on/off.
+	@author MikeBrandon
+	@see sidebar
 -->
 <script lang="ts">
 	export let checked: boolean = false;

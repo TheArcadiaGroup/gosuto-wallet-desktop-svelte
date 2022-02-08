@@ -1,9 +1,9 @@
-<!-- @component 
+<!-- 
+	@component 
 	Description:
 	> General reusable Button for most instances in the website.. 
 
-	Events:
-	- `click` = Is dispatched when user clicks the button. Direction of the arrow is passed via the event details.
+	@author MikeBrandon
 -->
 <script lang="ts">
 	export let isTransparent: boolean = false;

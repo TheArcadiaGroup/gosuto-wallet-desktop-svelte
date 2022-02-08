@@ -1,21 +1,10 @@
-<!-- @component 
+<!-- 
+	@component 
 	Description:
 	> Card Componenent in the right sidebar of history page to show details of history transactions.
 	
-	Props:
-	- `wallet` = A String value. Name of selected wallet from which the history is shown.
-	- `status` = A String value. Can be 'Received', 'Sent', 'Stake', 'Swap', 'Initial Stake Unlocked', 'Unstake' or 'Claimed Reward'.
-	- `dateAndTime` = A String value. Date of transaction.
-	- `stakedOn` = A String value. Date staked.
-	- `swapData` = A SwapData object. Only if the transaction is a swap. This has details regarding the swap transaction like to and from currencies and cryptos.
-	- `amount` = A Number value. Amount transacted.
-	- `price` = A Number value. Price value transacted.
-	- `cryptoUnit` = A String value. Abbreviation of Crypto transacted.
-	- `currencyUnit` = A String value. Abbreviation of currency used.
-	- `toAccount` = A String value. Wallet address of account crypto/currency is sent to.
-	- `fromAccount` = A String value. Wallet address of account crypto/currency is sent from.
-	- `transactionHash` = A String value. Hash for the transaction completed.
-	- `blockExplorerURL` = A String value. URL for exploring the transaction.
+	@author MikeBrandon
+	@see historyComponent
 -->
 <script lang="ts">
 	import { shortenAddress } from '$utils/index';

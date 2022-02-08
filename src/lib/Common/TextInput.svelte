@@ -1,11 +1,9 @@
-<!-- @component 
+<!-- 
+	@component 
 	Description:
 	> Custom textInput component to allow user to input a string/text e.g. a password or number.
 	
-	Props:
-	- `label` = An string value. This is the text at the top of the input instructing the user on what he should input.
-	- `value` = An string value. This can be bound to parent element to keep track of the sting inputed by the user.
-	- `type` = An string value. This is the type of the input used. It can be password, email, number or text.
+	@author MikeBrandon
 -->
 <script lang="ts">
 	export let label: string = 'Input Your Text';

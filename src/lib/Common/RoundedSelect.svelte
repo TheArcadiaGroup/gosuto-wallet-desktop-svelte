@@ -1,17 +1,17 @@
-<!-- @component 
-	Describtion:
-	> Custom select component to allow user to pick from a list of options. 
+<!-- 
+	@component 
+	Description:
+	> Custom select component to allow user to pick from a list of options.
 	
-	Props:
-	- `optionsArray` = An array of strings value. Array of the choices the user can pick from.
-	- `value` = An number value. Index of the default option selected. Also this can be bound to a variable in the parent to keep track of what the user picks.
+	@author MikeBrandon
+	@see history
 -->
 <script lang="ts">
 	import RoundedSelectIcon from '$icons/RoundedSelectIcon.svelte';
 	import { slide } from 'svelte/transition';
 
 	export let optionsArray: string[] = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
-	export let value: any = 0;
+	export let value: number = 0;
 	let droppedDown: boolean = false;
 </script>
 

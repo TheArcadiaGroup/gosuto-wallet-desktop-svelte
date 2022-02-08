@@ -1,25 +1,10 @@
-<!-- @component 
+<!-- 
+	@component 
 	Description:
 	> Container for a single history Object data in the history pages.
 	
-	Props:
-	- `wallet` = A String value. Wallet name for which the history data is collected from.
-	- `status` = A String value. Can be 'Received', 'Sent', 'Stake', 'Swap', 'Initial Stake Unlocked', 'Unstake' or 'Claimed Reward'.
-	- `dateAndTime` = A String value. Date of transaction.
-	- `stakedOn` = A String value. Date staked.
-	- `swapData` = A SwapData object. Only if the transaction is a swap. This has details regarding the swap transaction like to and from currencies and cryptos.
-	- `amount` = A Number value. Amount transacted.
-	- `price` = A Number value. Price value transacted.
-	- `cryptoUnit` = A String value. Abbreviation of Crypto transacted.
-	- `currencyUnit` = A String value. Abbreviation of currency used.
-	- `toAccount` = A String value. Wallet address of account crypto/currency is sent to.
-	- `fromAccount` = A String value. Wallet address of account crypto/currency is sent from.
-	- `index` = A number value. Index of the history object from the array of history objects in the parent.
-	- `clicked` = A boolean value. Passed to select the first instance of the component by default.
-
-	Events:
-	- `select` = Is passed when a user clicks on the component.
-	- `deselect` = Is passed when a user clicks anywhere ooutside the component.
+	@author MikeBrandon
+	@see historyPage
 -->
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
