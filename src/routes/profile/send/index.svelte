@@ -7,7 +7,7 @@ The wallet send route, this is where the layout is, the currently selected token
 	import { onMount } from 'svelte';
 
 	import Navbar from '$components/Navbar/Navbar.svelte';
-	/*import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte'*/
+	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
 	import Send from '$lib/Profile/Send/index.svelte';
 
 	import TextSidebar from '$components/Profile/TextSidebar.svelte';
@@ -41,6 +41,25 @@ The wallet send route, this is where the layout is, the currently selected token
 		// @ts-ignore
 		tokens = await (await fetch('/api/tokens/1')).json();
 	});
+
+	const user = {
+		name: 'Jake Waterson',
+		ppurl: 'https://miro.medium.com/fit/c/262/262/2*-cdwKPXyVI0ejgxpWkKBeA.jpeg',
+		wallets: [
+			{
+				name: 'Wallet 1',
+				available: 5000,
+				staked: 2500,
+				unclaimed: 375,
+			},
+			{
+				name: 'Wallet 1',
+				available: 5000,
+				staked: 2500,
+				unclaimed: 375,
+			},
+		],
+	};
 </script>
 
 <div class="page-container">
@@ -48,7 +67,7 @@ The wallet send route, this is where the layout is, the currently selected token
 		<Navbar />
 	</div>
 	<div class="global-grid-left">
-		<!--<ProfileNavigation />-->
+		<ProfileNavigation {user} />
 	</div>
 	<div class="global-grid-mid">
 		<Send on:selectToken={selectToken} bind:tokens bind:selected />
