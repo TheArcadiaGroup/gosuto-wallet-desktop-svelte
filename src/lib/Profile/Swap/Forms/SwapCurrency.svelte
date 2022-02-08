@@ -6,12 +6,13 @@ The logic whether this component is shown or not is handled by it's parents
 @author marekvospel
 -->
 <script lang="ts">
+	import { getTokenValue, swapToken } from '$utils/token.util';
+
 	import TextInput from '$lib/Common/TextInput.svelte';
 	import SwapTokensIcon from '$icons/SwapTokensIcon.svelte';
 	import SelectInput from '$lib/Common/SelectInput.svelte';
 	import Button from '$lib/Common/Button.svelte';
 	import Popup from '$lib/Common/Popup.svelte';
-	import { getTokenValue } from '$utils/token.util';
 
 	/**
 	 * Code of the token user has selected, and is swapping from.
@@ -42,10 +43,22 @@ The logic whether this component is shown or not is handled by it's parents
 	 * A function run when user clicks confirm inside the 'are you sure' popup.
 	 * It has 50% chance to show Swap successful and 50% chance to show Swap failed, because web3 is not implemented yet
 	 */
-	function confirmSwap(): void {
+	async function confirmSwap(): Promise<void> {
 		confirmPopup = false;
 
-		const result = false;
+		/*
+		// @ts-ignore
+		const result = await fetch('/api/tokens/swap', {
+			body: JSON.stringify({
+				wallet: '1',
+				fromContractAddress: 'abc',
+				fromAmount,
+				toContractAddress: 'def',
+				toAmount,
+			}),
+		});
+*/
+		const result = swapToken('1', fromToken, fromAmount, toToken, toAmount);
 
 		if (!result) popup = 'Swap Failed!';
 		else popup = 'Swap Successful!';
