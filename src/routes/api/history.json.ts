@@ -1,10 +1,9 @@
 import { generateTransactions } from '$utils/historyDataSample';
 
-export const get = () => {
+export async function get(params: any): Promise<any> {
 	let data = generateTransactions();
 	return {
-		body: {
-			data,
-		},
+		status: 200,
+		body: JSON.stringify(data),
 	};
-};
+}

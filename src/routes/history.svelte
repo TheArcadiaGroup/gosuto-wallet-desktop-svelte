@@ -1,21 +1,24 @@
-<script context="module">
-	export const load = async () => {
-		//Connect to history API here
-		const res = await fetch('../api/history.json');
-		const data = await res.json();
+<script lang="ts">
+	import { onMount } from 'svelte';
 
-		return {
-			props: {
-				data,
-			},
-		};
+	import HistoryPage from '$lib/components/HistoryPage.svelte';
+
+	let data: HistoryObject[];
+
+	onMount(() => {
+		getData();
+	});
+
+	const getData = async () => {
+		fetch('../api/history.json')
+			.then((response) => response.json())
+			.then((response) => (data = response))
+			.catch((error) => {
+				console.error('error:', error);
+			});
 	};
 </script>
 
-<script lang="ts">
-	import HistoryPage from '$lib/components/HistoryPage.svelte';
-
-	export let data;
-</script>
-
-<HistoryPage historyArray={data.data} hideNavbar={false} />
+{#if data}
+	<HistoryPage historyArray={data} hideNavbar={false} />
+{/if}

@@ -1,27 +1,38 @@
 <script context="module">
-	export const load = async ({ fetch, page }) => {
+	export const load = async ({ _, page }) => {
 		const address = page.params.address;
-		const res = await fetch(`../../api/walletHistory.json/?address=${address}`);
-		const data = await res.json();
-
 		return {
 			props: {
 				address,
-				data,
 			},
 		};
 	};
 </script>
 
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	import GridLayout from '$lib/Common/GridLayout.svelte';
 	import HistoryPage from '$lib/components/HistoryPage.svelte';
 	import ProfileNavigation from '$lib/profile/ProfileNavigation.svelte';
 
 	import { shortenAddress } from '$utils';
 
-	export let data;
+	let data: HistoryObject[];
 	export let address: string;
+
+	onMount(() => {
+		getData(address);
+	});
+
+	const getData = async (address: string) => {
+		fetch(`../../api/profile/[address]/history.json/?address=${address}`)
+			.then((response) => response.json())
+			.then((response) => (data = response))
+			.catch((error) => {
+				console.error('error:', error);
+			});
+	};
 
 	// DEV
 	const user = {
@@ -44,18 +55,16 @@
 	};
 </script>
 
-<GridLayout>
-	<div slot="first" class="size-full">
-		<ProfileNavigation {user} />
-	</div>
-	<div slot="mid">
-		<HistoryPage
-			historyArray={data.data}
-			isInProfileRoute={true}
-			address={shortenAddress(address)}
-		/>
-	</div>
-</GridLayout>
+{#if data}
+	<GridLayout>
+		<div slot="first" class="size-full">
+			<ProfileNavigation {user} />
+		</div>
+		<div slot="mid">
+			<HistoryPage historyArray={data} isInProfileRoute={true} address={shortenAddress(address)} />
+		</div>
+	</GridLayout>
+{/if}
 
 <style lang="postcss" global>
 	:local(.size-full) {
