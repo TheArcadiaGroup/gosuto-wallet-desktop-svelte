@@ -1,16 +1,3 @@
-export interface IToken {
-	tokenName: string;
-	tokenTicker: string;
-	tokenAmountHeld: number;
-	tokenAmountHeldUSD: number;
-	limitedSupply: boolean;
-	mintableSupply: boolean;
-	contractString: string;
-	contractAddress: string;
-	tokenPrice: number;
-	decimalsOfPrecision: number;
-}
-
 export function addToken(wallet: string, token: IToken): boolean {
 	localStorage.setItem('tokens:' + wallet + ':' + token.contractAddress, JSON.stringify(token));
 
@@ -44,13 +31,44 @@ export function sendToken(
 
 	tokenObject.tokenAmountHeld -= tokenAmount;
 
-	// TODO: recalculate tokenAmountHeldUSD
 	const tokenUSDValue = getTokenValue(contractAddress);
 	tokenObject.tokenAmountHeld = tokenUSDValue * tokenObject.tokenAmountHeld;
 
-	localStorage.setItem('tokens:' + wallet + ':' + contractAddress, JSON.stringify(tokenAmount));
+	localStorage.setItem('tokens:' + wallet + ':' + contractAddress, JSON.stringify(tokenObject));
 
 	// send token to a wallet & add it to history
+
+	return true;
+}
+
+export function swapToken(
+	wallet: string,
+	fromContractAddress: string,
+	fromAmount: number,
+	toContractAddress: string,
+	toAmount: number,
+): boolean {
+	const token = localStorage.getItem('tokens:' + wallet + ':' + fromContractAddress);
+	const toToken = localStorage.getItem('tokens:' + wallet + ':' + toContractAddress);
+
+	if (!token || !toToken) return false;
+
+	const tokenObject = JSON.parse(token) as IToken;
+	const toTokenObject = JSON.parse(toToken) as IToken;
+
+	if (tokenObject.tokenAmountHeld < fromAmount) return false;
+
+	tokenObject.tokenAmountHeld -= fromAmount;
+	toTokenObject.tokenAmountHeld += toAmount;
+
+	const tokenUSDValue = getTokenValue(fromContractAddress);
+	tokenObject.tokenAmountHeld = tokenUSDValue * tokenObject.tokenAmountHeld;
+
+	const toTokenUSDValue = getTokenValue(toContractAddress);
+	toTokenObject.tokenAmountHeld = toTokenUSDValue * toTokenObject.tokenAmountHeld;
+
+	localStorage.setItem('tokens:' + wallet + ':' + fromContractAddress, JSON.stringify(tokenObject));
+	localStorage.setItem('tokens:' + wallet + ':' + toContractAddress, JSON.stringify(toTokenObject));
 
 	return true;
 }
@@ -78,7 +96,7 @@ export function createToken(
 		limitedSupply,
 		mintableSupply,
 		contractString,
-		tokenPrice: USDPrice,
+		tokenPriceUSD: USDPrice,
 		decimalsOfPrecision: 16,
 		contractAddress: contractAddress,
 	} as IToken;
