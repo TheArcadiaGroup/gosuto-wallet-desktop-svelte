@@ -1,33 +1,28 @@
 <!-- @component 
-	Describtion:
+	Description:
 	> General reusable Button for most instances in the website.. 
-	
-	Props:
-	- `class` = A String value. Any additional classes you may want to pass.
-	- `transparent` = A Boolean value. Determines if the buttons bacground is transparent.
-	- `selected` = A Boolean value. Determines if button is selected or not. (To be used for tab buttons).
-	- `ring` = A boolean value. Determines if button is to have a ring around it.
-	- `glow` = A boolean value. Determines if button has a glow effect around it.
-	- `disabled` = A boolean value. Determines if button is in disabled state.
-	- `string` = A boolean value. Determines type of button.
 
 	Events:
 	- `click` = Is dispatched when user clicks the button. Direction of the arrow is passed via the event details.
 -->
 <script lang="ts">
-	export let transparent = false;
+	export let isTransparent: boolean = false;
+	export let isSelected: boolean = false;
+	export let hasRing: boolean = false;
+	export let hasGlow: boolean = false;
+	export let isDisabled: boolean = false;
 </script>
 
 <button
 	class={($$slots.icon
 		? 'main has-icon'
-		: `main no-icon ${!transparent ? 'not-transparent' : 'transparent'}`) +
+		: `main no-icon ${!isTransparent ? 'not-transparent' : 'transparent'}`) +
 		' ' +
 		$$props.class}
-	class:selected={$$props.selected}
-	class:ring-btn={$$props.ring}
-	class:glow={$$props.glow}
-	disabled={$$props.disabled}
+	class:selected={isSelected}
+	class:ring-btn={hasRing}
+	class:glow={hasGlow}
+	disabled={isDisabled}
 	on:click
 	type={$$props.type}
 >

@@ -95,7 +95,7 @@
 			</div>
 			<div class="confirm-button settings-btn">
 				<Button
-					glow={true}
+					hasGlow={true}
 					on:click={() => {
 						showExportWalletFilePopup = true;
 					}}
@@ -130,7 +130,7 @@
 		<br />
 		<div class="button-holder">
 			<div class="settings-btn">
-				<Button glow={true}>
+				<Button hasGlow={true}>
 					<p slot="text" class="settings-btn-text">Change Password</p>
 				</Button>
 			</div>
@@ -142,7 +142,7 @@
 				</Button>
 			</div>
 			<div class="cancel-bt">
-				<Button ring={true}>
+				<Button hasRing={true}>
 					<p slot="text" class="btn-text">Cancel</p>
 				</Button>
 			</div>

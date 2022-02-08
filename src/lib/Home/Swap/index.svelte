@@ -80,7 +80,7 @@ This is where select & deselect logic is, and is passed to parent by dispatching
 		<div class="px-2 flex flex-row items-center">
 			<p class="tokens-in-wallet-title">Tokens in this wallet</p>
 			<div class="ml-auto">
-				<Button glow={true}>
+				<Button hasGlow={true}>
 					<div slot="text" class="inner-btn">
 						<PlusIcon />
 						<span>Add Token</span>
