@@ -67,7 +67,7 @@
 		@apply mb-3 4xl:mb-6 text-left;
 	}
 
-	.card.selected .choiceCard-header {
+	.choiceCard.selected .choiceCard-header {
 		@apply text-white;
 	}
 
@@ -75,7 +75,7 @@
 		@apply text-xs md:text-sm 3xl:text-lg 4xl:text-3xl font-display text-light-lighterGray dark:text-white dark:opacity-80;
 	}
 
-	.card.selected .choiceCard-description {
+	.choiceCard.selected .choiceCard-description {
 		@apply text-white;
 	}
 </style>
