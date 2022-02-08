@@ -4,12 +4,11 @@ export function post(request: any) {
 	const body = request.body;
 
 	const result = swapToken(
-		'1',
-		body.selectedTokenAddress,
-		body.tokenAmount,
-		body.recipientAddress,
-		body.network,
-		body.note,
+		body.wallet,
+		body.fromContractAddress,
+		body.fromAmount,
+		body.toContractAddress,
+		body.toAmount,
 	);
 
 	if (result) {
