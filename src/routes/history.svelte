@@ -10,7 +10,7 @@
 	});
 
 	const getData = async () => {
-		fetch('../api/history.json')
+		fetch('../api/history')
 			.then((response) => response.json())
 			.then((response) => (data = response))
 			.catch((error) => {
