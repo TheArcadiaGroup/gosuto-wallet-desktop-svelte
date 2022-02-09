@@ -8,7 +8,7 @@
 	export let historyArray: HistoryObject[];
 	export let hideNavbar: boolean = true;
 	export let isInProfileRoute: boolean = false;
-	export let wallet: string = 'Wallet 1';
+	export let walletNumber: string = '1';
 	export let address: string = '0x9f98e01d3...4ed7';
 	let filteredArray: HistoryObject[];
 
@@ -50,7 +50,7 @@
 				{#if !isInProfileRoute}
 					<h3>{historyFilter} History</h3>
 				{:else}
-					<ReturnHome hideSwapText={true} {wallet} {address} />
+					<ReturnHome {walletNumber} publicKey={address} profileLocation="History" />
 					<br />
 					<h3>History of this wallet</h3>
 				{/if}
