@@ -18,10 +18,10 @@ export async function post(params: any): Promise<any> {
 
 	return {
 		status: 200,
-		body: JSON.stringify(''),
 	};
 }
 
+/** returns profile data */
 export async function get(params: any): Promise<any> {
 	return {
 		status: 200,

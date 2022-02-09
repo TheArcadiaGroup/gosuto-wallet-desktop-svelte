@@ -1,22 +1,22 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
-	import SideBarCard from '$lib/components/HistoryComponent/sideBarCard.svelte';
+	import SideBarCard from '$lib/components/HistoryComponent/SideBarCard.svelte';
 
-	// export let historyObject: HistoryObject | null = null;
+	export let historyObject: HistoryObject | null = null;
 </script>
 
 <!-- Layout -->
 <div class={!$$props.historyObject ? 'main h-screen justify-center' : 'main'}>
-	{#if $$props.historyObject}
+	{#if historyObject}
 		<div class="sidebar-holder" transition:slide>
 			<SideBarCard
-				status={$$props.historyObject.status}
-				dateAndTime={$$props.historyObject.dateAndTime}
-				SwapData={$$props.historyObject.SwapData}
-				amount={$$props.historyObject.amount}
-				price={$$props.historyObject.price}
-				cryptoUnit={$$props.historyObject.cryptoUnit}
-				currencyUnit={$$props.historyObject.currencyUnit}
+				status={historyObject.status}
+				dateAndTime={historyObject.dateAndTime}
+				SwapData={historyObject.SwapData}
+				amount={historyObject.amount}
+				price={historyObject.price}
+				cryptoUnit={historyObject.cryptoUnit}
+				currencyUnit={historyObject.currencyUnit}
 			/>
 		</div>
 	{:else}

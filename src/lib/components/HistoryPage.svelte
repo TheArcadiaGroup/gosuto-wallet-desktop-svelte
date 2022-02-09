@@ -2,10 +2,14 @@
 	import HistoryComponent from '$lib/components/HistoryComponent.svelte';
 	import GridLayout from '$lib/Common/GridLayout.svelte';
 	import RoundedSelect from '$lib/Common/RoundedSelect.svelte';
-	import { generateTransactions } from '$utils/historyDataSample';
 	import Sidebar from '$lib/components/HistoryComponent/sidebar.svelte';
+	import ReturnHome from '$lib/components/Profile/ReturnHome.svelte';
 
-	export let historyArray: HistoryObject[] = generateTransactions();
+	export let historyArray: HistoryObject[];
+	export let hideNavbar: boolean = true;
+	export let isInProfileRoute: boolean = false;
+	export let walletNumber: string = '1';
+	export let address: string = '0x9f98e01d3...4ed7';
 	let filteredArray: HistoryObject[];
 
 	let optionsArray: string[] = ['All', 'Received', 'Sent', 'Swap', 'Stake'];
@@ -39,11 +43,17 @@
 	}
 </script>
 
-<GridLayout>
+<GridLayout {hideNavbar}>
 	<div class="mid-holder" slot="mid">
 		<div class="main">
 			<div class="header">
-				<h3>{historyFilter} History</h3>
+				{#if !isInProfileRoute}
+					<h3>{historyFilter} History</h3>
+				{:else}
+					<ReturnHome {walletNumber} publicKey={address} profileLocation="History" />
+					<br />
+					<h3>History of this wallet</h3>
+				{/if}
 				<RoundedSelect {optionsArray} bind:value={filterId} />
 			</div>
 			<div class="history-holder">
@@ -57,6 +67,7 @@
 						on:select={selectToken}
 						index={i}
 						clicked={selectedTokenIndex === i}
+						wallet={historyObject.wallet}
 						status={historyObject.status}
 						dateAndTime={historyObject.dateAndTime}
 						SwapData={historyObject.SwapData}
@@ -78,15 +89,15 @@
 
 <style lang="postcss" global>
 	:local(.mid-holder) {
-		@apply flex items-center md:justify-end mr-[5vw] w-full md:w-auto px-4;
+		@apply flex items-center md:justify-end mr-[2vw] w-full md:w-auto px-4;
 	}
 
 	:local(.main) {
-		@apply h-screen flex flex-col w-full md:max-w-[50vw];
+		@apply h-screen flex flex-col w-full md:max-w-[50vw] pt-8 2xl:pt-16;
 	}
 
 	:local(h3) {
-		@apply font-bold md:text-2xl ml-4 md:ml-0 my-8 2xl:mt-16 dark:text-white;
+		@apply font-bold md:text-2xl ml-4 md:ml-0 mb-8 dark:text-white;
 	}
 
 	:local(.history-holder) {
