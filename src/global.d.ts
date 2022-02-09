@@ -115,3 +115,17 @@ interface IStake {
 	stakePercent: number;
 	parentWalletAddress: string;
 }
+
+interface AppSettings {
+	name: string;
+	email: string;
+	pictureUrl: string;
+}
+
+interface ProfileSettings {
+	walletName: string;
+	walletAddress: string = '0x9f98e01d2gj92ngn2g7gn24ed7';
+	publicKey: string;
+	privateKey: string;
+	currentPassword: string;
+}

@@ -17,7 +17,7 @@
 <style type="postcss">
 	.bt-content-wrapper {
 		@apply flex;
-		@apply p-1 mb-7;
+		@apply p-1 my-7;
 	}
 
 	.bt-content-wrapper :global(.icon) {
