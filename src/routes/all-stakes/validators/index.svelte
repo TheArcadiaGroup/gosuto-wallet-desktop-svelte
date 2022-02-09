@@ -1,6 +1,7 @@
 <script>
 	import GridLayout from '$lib/Common/GridLayout.svelte';
 	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
+	import ValidatorPage from '$lib/ValidatorPage/index.svelte';
 
 	// DEV
 	const user = {
@@ -30,12 +31,18 @@
 	</div>
 	<div slot="mid" class="size-full">
 		<!-- TODO add validators -->
-		Validators
+		<div class="validator-holder">
+			<ValidatorPage />
+		</div>
 	</div>
 </GridLayout>
 
 <style lang="postcss" global>
 	:local(.size-full) {
 		@apply w-full h-full;
+	}
+
+	:local(.validator-holder) {
+		@apply flex flex-col items-center w-full;
 	}
 </style>
