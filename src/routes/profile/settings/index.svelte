@@ -1,5 +1,5 @@
 <script lang="ts">
-	import GridLayout from '$lib/Common/GridLayout.svelte';
+	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 
 	import ProfileNavigation from '$lib/profile/ProfileNavigation.svelte';
 	import Settings from '$lib/WalletSettings/index.svelte';
@@ -24,17 +24,26 @@
 	};
 </script>
 
-<GridLayout>
-	<div slot="first" class="size-full">
-		<ProfileNavigation {user} />
+<div class="flex">
+	<div class="global-grid-nav">
+		<Navbar />
 	</div>
-	<div slot="mid">
+	<div class="global-grid-left">
+		<div class="size-full">
+			<ProfileNavigation {user} />
+		</div>
+	</div>
+	<div class="global-grid-mid">
 		<Settings />
 	</div>
-</GridLayout>
+</div>
 
 <style lang="postcss" global>
 	:local(.size-full) {
 		@apply w-full h-full;
+	}
+
+	:local(.global-grid-mid) {
+		@apply dark:bg-dark-background;
 	}
 </style>
