@@ -1,27 +1,38 @@
 <script lang="ts">
-	export let label = '';
-	export let value: string;
+	export let label: string = 'Input Your Text';
+	export let value: string | number = '';
 </script>
 
 <div class="input-holder">
-	<p>{label}</p>
-	<select bind:value>
+	<p class={$$props.class}>{label}</p>
+	<select class={$$props.class} bind:value>
 		<slot />
 	</select>
 </div>
 
 <style lang="postcss" global>
 	:local(.input-holder) {
-		@apply relative mt-4 dark:text-white;
+		@apply relative;
+		@apply w-full;
+		@apply mt-4;
 	}
 
 	:local(select) {
-		@apply border border-light-gray h-[50px] px-2 w-full rounded-[12px] bg-white;
-		@apply dark:bg-dark-background dark:text-white;
+		@apply w-full;
+		@apply h-[50px];
+		@apply px-5;
+		@apply border border-light-gray bg-white rounded-2xl;
+		@apply 4xl:h-32 4xl:px-12 4xl:rounded-[2.5rem] 4xl:text-4xl;
+		@apply dark:text-dark-lighterGray dark:bg-dark-background;
 	}
 
 	:local(p) {
-		@apply absolute bg-white transform translate-y-[-7px] translate-x-4 leading-none text-[14px] px-1;
-		@apply dark:bg-dark-background;
+		@apply absolute;
+		@apply px-1;
+		@apply bg-white transform translate-x-4 translate-y-[-6px];
+		@apply leading-none text-xs font-display;
+		@apply md:text-base 4xl:text-4xl  4xl:px-3;
+		@apply md:-translate-y-3 4xl:-translate-y-5 4xl:translate-x-8;
+		@apply dark:bg-dark-background dark:text-white;
 	}
 </style>

@@ -57,7 +57,7 @@ The logic whether this component is shown or not is handled by it's parents
 		<h2 class="swap-currency-form-title">Swap</h2>
 		<div class="swap-currency-form-row">
 			<div class="swap-currency-row-text-input">
-				<TextInput label="From" />
+				<TextInput class="send-currency-dark-sidebar-input" label="From" />
 			</div>
 			<p class="swap-currency-row-text">{fromToken}</p>
 		</div>
@@ -67,10 +67,10 @@ The logic whether this component is shown or not is handled by it's parents
 		</div>
 		<div class="swap-currency-form-row">
 			<div class="swap-currency-row-text-input">
-				<TextInput label="To" />
+				<TextInput class="send-currency-dark-sidebar-input" label="To" />
 			</div>
 			<div class="swap-currency-row-token-select">
-				<SelectInput label="">
+				<SelectInput class="send-currency-dark-sidebar-input" label="">
 					<option value="">USDC</option>
 					<option value="">USDT</option>
 					<option value="">CSPR</option>
@@ -183,5 +183,9 @@ The logic whether this component is shown or not is handled by it's parents
 		@apply text-xs leading-7 font-bold text-dark-gray;
 		@apply lg:text-sm;
 		@apply dark:text-white;
+	}
+
+	.send-currency-dark-sidebar-input {
+		@apply dark:bg-dark-grey !important;
 	}
 </style>
