@@ -43,6 +43,25 @@ The wallet swap route, this is where the layout is, the currently selected token
 		// @ts-ignore
 		tokens = await (await fetch('/api/tokens/1')).json();
 	});
+
+	const user = {
+		name: 'Jake Waterson',
+		ppurl: 'https://miro.medium.com/fit/c/262/262/2*-cdwKPXyVI0ejgxpWkKBeA.jpeg',
+		wallets: [
+			{
+				name: 'Wallet 1',
+				available: 5000,
+				staked: 2500,
+				unclaimed: 375,
+			},
+			{
+				name: 'Wallet 1',
+				available: 5000,
+				staked: 2500,
+				unclaimed: 375,
+			},
+		],
+	};
 </script>
 
 <div class="swap-page-container">
@@ -50,9 +69,7 @@ The wallet swap route, this is where the layout is, the currently selected token
 		<Navbar />
 	</div>
 	<div class="global-grid-left">
-		<!--
-		<ProfileNavigation />
--->
+		<ProfileNavigation {user} />
 	</div>
 	<div class="global-grid-mid">
 		<Swap on:selectToken={selectToken} bind:tokens bind:selected />
