@@ -43,6 +43,7 @@ interface ChartPrice {
 }
 
 interface HistoryObject {
+	wallet: string;
 	status: string;
 	dateAndTime: string;
 	amount: number;
