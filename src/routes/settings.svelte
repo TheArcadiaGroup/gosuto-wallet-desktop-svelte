@@ -1,5 +1,4 @@
 <script lang="ts">
-	import GridLayout from '$lib/Common/GridLayout.svelte';
 	import ChooseFileButton from '$lib/Common/ChooseFileButton.svelte';
 
 	import AvatarCard from '$lib/Settings/AvatarCard.svelte';
@@ -8,14 +7,59 @@
 
 	import SelectItems from '$lib/components/Navbar/SelectItems.svelte';
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
+	import { onMount } from 'svelte';
 
-	/**
-	 * Array to be used for creating InfoInput components with an each loop
-	 */
+	let settingsData: AppSettings = {
+		name: 'Jake Waterson',
+		email: 'Jake.waterson@gmail.com',
+		pictureUrl: 'https://miro.medium.com/fit/c/262/262/2*-cdwKPXyVI0ejgxpWkKBeA.jpeg',
+	};
+
+	onMount(() => {
+		getData();
+	});
+
+	const getData = async () => {
+		fetch('/api/settings/appSettings')
+			.then((response) => response.json())
+			.then((response) => {
+				if (response.name) {
+					settingsData.name = response.name;
+					info[0].placeholder = response.name;
+				}
+				if (response.email) {
+					settingsData.email = response.email;
+					info[1].placeholder = response.email;
+				}
+				if (response.pictureUrl) settingsData.pictureUrl = response.pictureUrl;
+			});
+	};
+
+	const postData = async () => {
+		fetch('/api/settings/appSettings', {
+			method: 'POST',
+			body: JSON.stringify(settingsData),
+		}).catch((error) => {
+			console.error('error:', error);
+		});
+	};
+
+	let handleSave = (inputValue: string, infoType: infoCategory) => {
+		info[info.indexOf(infoType)].placeholder = inputValue;
+		info = info;
+	};
+
+	/** Array to be used for creating InfoInput components with an each loop */
 	let info: infoCategory[] = [
-		{ name: 'Name', placeholder: 'Jake Waterson' },
-		{ name: 'Email', placeholder: 'Jake.waterson@gmail.com' },
+		{ name: 'Name', placeholder: settingsData.name },
+		{ name: 'Email', placeholder: settingsData.email },
 	];
+
+	$: {
+		info;
+		settingsData.name = info[0].placeholder;
+		settingsData.email = info[1].placeholder;
+	}
 </script>
 
 <div class="flex">
@@ -27,12 +71,12 @@
 			<div class="settings-content">
 				<div class="settings-left-side">
 					<h1 class="settings-header">Account Settings</h1>
-					<AvatarCard />
+					<AvatarCard pictureUrl={settingsData.pictureUrl} />
 					<ChooseFileButton />
 				</div>
 				<div class="settings-right-side">
 					{#each info as infoType}
-						<InfoInput {...infoType} />
+						<InfoInput {infoType} {handleSave} />
 					{/each}
 					<div class="settings-theme-bar-wrapper">
 						<ChangeThemeBar />
@@ -46,7 +90,7 @@
 						</div>
 					</div>
 					<div class="settings-buttons">
-						<button class="settings-save-bt">Save</button>
+						<button class="settings-save-bt" on:click={postData}>Save</button>
 						<button class="settings-cancel-bt">Cancel</button>
 					</div>
 				</div>
@@ -64,7 +108,7 @@
 
 	.settings-content {
 		@apply flex flex-col md:flex-row place-items-center md:place-items-start gap-4 lg:gap-10;
-		@apply w-full;
+		@apply w-[65%];
 		@apply mt-24 md:mt-0;
 	}
 

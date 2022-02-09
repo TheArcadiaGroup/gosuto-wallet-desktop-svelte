@@ -115,3 +115,9 @@ interface IStake {
 	stakePercent: number;
 	parentWalletAddress: string;
 }
+
+interface AppSettings {
+	name: string;
+	email: string;
+	pictureUrl: string;
+}
