@@ -7,6 +7,7 @@
 	import InfoInput from '$lib/Settings/InfoInput.svelte';
 
 	import SelectItems from '$lib/components/Navbar/SelectItems.svelte';
+	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 
 	/**
 	 * Array to be used for creating InfoInput components with an each loop
@@ -17,37 +18,42 @@
 	];
 </script>
 
-<GridLayout>
-	<div slot="mid" class="settings-page-wrapper">
-		<div class="settings-content">
-			<div class="settings-left-side">
-				<h1 class="settings-header">Account Settings</h1>
-				<AvatarCard />
-				<ChooseFileButton />
-			</div>
-			<div class="settings-right-side">
-				{#each info as infoType}
-					<InfoInput {...infoType} />
-				{/each}
-				<div class="settings-theme-bar-wrapper">
-					<ChangeThemeBar />
+<div class="flex">
+	<div class="global-grid-nav">
+		<Navbar />
+	</div>
+	<div class="global-grid-mid">
+		<div class="settings-page-wrapper">
+			<div class="settings-content">
+				<div class="settings-left-side">
+					<h1 class="settings-header">Account Settings</h1>
+					<AvatarCard />
+					<ChooseFileButton />
 				</div>
-				<div class="settings-localization">
-					<div class="settings-language">
-						<SelectItems items={{ usd: 'USD', eur: 'EUR', jpy: 'JPY' }} />
+				<div class="settings-right-side">
+					{#each info as infoType}
+						<InfoInput {...infoType} />
+					{/each}
+					<div class="settings-theme-bar-wrapper">
+						<ChangeThemeBar />
 					</div>
-					<div class="settings-currency">
-						<SelectItems items={{ en: 'EN', de: 'DE' }} />
+					<div class="settings-localization">
+						<div class="settings-language">
+							<SelectItems items={{ usd: 'USD', eur: 'EUR', jpy: 'JPY' }} />
+						</div>
+						<div class="settings-currency">
+							<SelectItems items={{ en: 'EN', de: 'DE' }} />
+						</div>
 					</div>
-				</div>
-				<div class="settings-buttons">
-					<button class="settings-save-bt">Save</button>
-					<button class="settings-cancel-bt">Cancel</button>
+					<div class="settings-buttons">
+						<button class="settings-save-bt">Save</button>
+						<button class="settings-cancel-bt">Cancel</button>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</GridLayout>
+</div>
 
 <style type="postcss" global>
 	.settings-page-wrapper {
@@ -78,7 +84,7 @@
 		@apply flex flex-col place-items-center gap-8 md:gap-12 4xl:gap-32;
 		@apply translate-y-0 md:translate-y-20 4xl:translate-y-40;
 		@apply w-full md:w-1/2;
-		@apply md:mr-1;
+		@apply md:mr-20;
 	}
 
 	.settings-theme-bar-wrapper {
