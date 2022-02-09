@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 
-	import ProfileNavigation from '$lib/profile/ProfileNavigation.svelte';
+	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
 	import Settings from '$lib/WalletSettings/index.svelte';
 
 	const user = {
