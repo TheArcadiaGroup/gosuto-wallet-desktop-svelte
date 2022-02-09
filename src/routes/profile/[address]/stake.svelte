@@ -25,7 +25,7 @@
 	});
 
 	const getData = async (address: string) => {
-		fetch(`../../api/profile/[address]/stake.json/?address=${address}`)
+		fetch(`../../api/profile/[address]/stake/?address=${address}`)
 			.then((response) => response.json())
 			.then((response) => (data = response))
 			.catch((error) => {

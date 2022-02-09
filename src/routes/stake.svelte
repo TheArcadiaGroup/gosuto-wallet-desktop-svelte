@@ -9,7 +9,7 @@
 	});
 
 	const getData = async () => {
-		fetch('../api/stake.json')
+		fetch('../api/stake')
 			.then((response) => response.json())
 			.then((response) => (data = response))
 			.catch((error) => {
