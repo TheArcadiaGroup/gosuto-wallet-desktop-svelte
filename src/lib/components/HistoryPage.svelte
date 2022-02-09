@@ -3,7 +3,7 @@
 	import GridLayout from '$lib/Common/GridLayout.svelte';
 	import RoundedSelect from '$lib/Common/RoundedSelect.svelte';
 	import Sidebar from '$lib/components/HistoryComponent/sidebar.svelte';
-	import ReturnHome from './Home/ReturnHome.svelte';
+	import ReturnHome from '$lib/components/Profile/ReturnHome.svelte';
 
 	export let historyArray: HistoryObject[];
 	export let hideNavbar: boolean = true;
