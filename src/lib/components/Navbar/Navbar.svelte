@@ -53,7 +53,7 @@
 		>
 		<NavItem
 			navItem={navItemsValues[5]}
-			on:click={() => activateItem(navItemsValues[5], '/currency-performance')}
+			on:click={() => activateItem(navItemsValues[5], '/performance')}
 			><NavActivityIcon class="nav-icon" /></NavItem
 		>
 	</div>
