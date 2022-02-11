@@ -13,8 +13,13 @@
 	});
 
 	$: if (chart && chartPrices) {
-		// update chart
+		reRenderChart();
 	}
+
+	const reRenderChart = () => {
+		chart.destroy();
+		chartRender();
+	};
 
 	const chartRender = () => {
 		chart = new Chart(ctx, {
@@ -123,6 +128,8 @@
 		});
 	};
 </script>
+
+<svelte:window on:resize={reRenderChart} />
 
 <div class="chart-wrapper">
 	<canvas class="chart" bind:this={ctx} />
