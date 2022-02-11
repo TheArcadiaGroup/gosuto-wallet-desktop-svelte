@@ -1,6 +1,6 @@
 <script lang="ts">
 	import GridLayout from '$lib/Common/GridLayout.svelte';
-	import CurrencyPerfomance from '$lib/components/CurrencyPerformance/CurrencyPerfomance.svelte';
+	import CurrencyPerfomance from '$components/CurrencyPerformance/CurrencyPerfomance.svelte';
 
 	// To be populated dynamically from the DB when this route is served.
 	let currencyPerfomance = [

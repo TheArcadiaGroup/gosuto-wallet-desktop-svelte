@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import Chart from 'chart.js/auto';
+	import Chart from 'chart.js/auto/auto.esm';
 	import 'chartjs-adapter-date-fns';
 
 	let ctx: HTMLCanvasElement;
