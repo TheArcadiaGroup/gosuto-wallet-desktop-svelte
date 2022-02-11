@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	import GridLayout from '$lib/Common/GridLayout.svelte';
 	import CurrencyPerfomance from '$components/CurrencyPerformance/CurrencyPerfomance.svelte';
 
@@ -33,6 +35,16 @@
 			],
 		},
 	];
+
+	onMount(async () => {
+		// @ts-ignore
+		const currency = await (await fetch('/api/tokens/value/a')).json();
+		// @ts-ignore
+		const currencyHistory = await (await fetch('/api/tokens/value/history/a')).json();
+
+		currencyPerfomance[0].price = currency.value;
+		currencyPerfomance[0].chartPrices = currencyHistory;
+	});
 </script>
 
 <GridLayout>

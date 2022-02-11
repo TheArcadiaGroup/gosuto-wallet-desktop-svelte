@@ -5,12 +5,19 @@
 
 	let ctx: HTMLCanvasElement;
 	export let chartPrices: ChartPrice[];
+
+	let chart: Chart;
+
 	onMount(async () => {
 		chartRender();
 	});
 
+	$: if (chart && chartPrices) {
+		// update chart
+	}
+
 	const chartRender = () => {
-		const chart = new Chart(ctx, {
+		chart = new Chart(ctx, {
 			type: 'line',
 			data: {
 				datasets: [
