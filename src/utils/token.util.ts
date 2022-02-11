@@ -1,12 +1,19 @@
 export function addToken(wallet: string, token: IToken): boolean {
-	localStorage.setItem('tokens:' + wallet + ':' + token.contractAddress, JSON.stringify(token));
+	let tokens: any = localStorage.getItem('tokens');
+	if (!tokens) tokens = {};
+	if (!tokens[wallet]) tokens[wallet] = {};
+	tokens[wallet][token.contractAddress] = token;
+	localStorage.setItem('tokens', JSON.stringify(tokens));
 
 	return true;
 }
 
 export function deleteToken(wallet: string, contractAddress: string): boolean {
-	if (localStorage.getItem('tokens:' + wallet + ':' + contractAddress)) {
-		localStorage.removeItem('tokens:' + wallet + ':' + contractAddress);
+	// @ts-ignore
+	const tokens: any = JSON.parse(localStorage.getItem('tokens'));
+	if (tokens && tokens[wallet] && tokens[wallet][contractAddress]) {
+		delete tokens[wallet];
+		localStorage.setItem('tokens', JSON.stringify(tokens));
 		return true;
 	}
 
@@ -21,11 +28,13 @@ export function sendToken(
 	network: string,
 	note?: string,
 ): boolean {
-	const token = localStorage.getItem('tokens:' + wallet + ':' + contractAddress);
+	const tokens: any = localStorage.getItem('tokens');
+
+	const token = JSON.parse(tokens)?.[wallet]?.[contractAddress] ?? undefined;
 
 	if (!token) return false;
 
-	const tokenObject = JSON.parse(token) as IToken;
+	const tokenObject = token as IToken;
 
 	if (tokenObject.tokenAmountHeld < tokenAmount) return false;
 
@@ -34,7 +43,9 @@ export function sendToken(
 	const tokenUSDValue = getTokenValue(contractAddress);
 	tokenObject.tokenAmountHeld = tokenUSDValue * tokenObject.tokenAmountHeld;
 
-	localStorage.setItem('tokens:' + wallet + ':' + contractAddress, JSON.stringify(tokenObject));
+	tokens[wallet][contractAddress] = tokenObject;
+
+	localStorage.setItem('tokens', JSON.stringify(tokens));
 
 	// send token to a wallet & add it to history
 
@@ -48,8 +59,10 @@ export function swapToken(
 	toContractAddress: string,
 	toAmount: number,
 ): boolean {
-	const token = localStorage.getItem('tokens:' + wallet + ':' + fromContractAddress);
-	const toToken = localStorage.getItem('tokens:' + wallet + ':' + toContractAddress);
+	const tokens: any = localStorage.getItem('tokens');
+
+	const token = JSON.parse(tokens)?.[wallet]?.[fromContractAddress] ?? undefined;
+	const toToken = JSON.parse(tokens)?.[wallet]?.[toContractAddress] ?? undefined;
 
 	if (!token || !toToken) return false;
 
@@ -67,8 +80,13 @@ export function swapToken(
 	const toTokenUSDValue = getTokenValue(toContractAddress);
 	toTokenObject.tokenAmountHeld = toTokenUSDValue * toTokenObject.tokenAmountHeld;
 
-	localStorage.setItem('tokens:' + wallet + ':' + fromContractAddress, JSON.stringify(tokenObject));
-	localStorage.setItem('tokens:' + wallet + ':' + toContractAddress, JSON.stringify(toTokenObject));
+	tokens[wallet][fromContractAddress] = tokenObject;
+	tokens[wallet][toContractAddress] = toTokenObject;
+
+	localStorage.setItem('tokens', JSON.stringify(tokens));
+
+	//localStorage.setItem('tokens:' + wallet + ':' + fromContractAddress, JSON.stringify(tokenObject));
+	//localStorage.setItem('tokens:' + wallet + ':' + toContractAddress, JSON.stringify(toTokenObject));
 
 	return true;
 }
@@ -88,6 +106,9 @@ export function createToken(
 ): boolean {
 	const contractAddress = 'abc';
 
+	// @ts-ignore
+	const tokens = JSON.parse(localStorage.getItem('tokens'));
+
 	const token = {
 		tokenName,
 		tokenTicker,
@@ -101,7 +122,9 @@ export function createToken(
 		contractAddress: contractAddress,
 	} as IToken;
 
-	localStorage.setItem('tokens:' + wallet + ':' + contractAddress, JSON.stringify(token));
+	tokens[wallet][contractAddress] = token;
+
+	localStorage.setItem('tokens', JSON.stringify(tokens));
 
 	return true;
 }
