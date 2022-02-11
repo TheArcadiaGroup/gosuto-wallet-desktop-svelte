@@ -10,6 +10,7 @@
 	{#if $$props.historyObject}
 		<div class="sidebar-holder" transition:slide>
 			<SideBarCard
+				wallet={$$props.historyObject.wallet}
 				status={$$props.historyObject.status}
 				dateAndTime={$$props.historyObject.dateAndTime}
 				SwapData={$$props.historyObject.SwapData}

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Swap from '$icons/Swap.svelte';
 	import Amount from './Amount.svelte';
 
 	export let SwapData: SwapData = {
@@ -28,7 +29,7 @@
 		/>
 	</div>
 	<div class="my-auto">
-		<img src="images/svg/swap.svg" alt="swapIcon" />
+		<Swap />
 	</div>
 	<div class="text-right">
 		<Amount

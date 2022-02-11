@@ -2,35 +2,64 @@
 	import Navbar from '$components/Navbar/Navbar.svelte';
 	import LastColumnRectangle from '$icons/LastColumnRectangle.svelte';
 	import { slide } from 'svelte/transition';
+
+	export let hideNavbar: boolean = false;
 </script>
 
-<div
-	class={$$slots.last ? 'app-container withLastColumn' : 'app-container withoutLastColumn'}
-	class:withFirstColumn={$$slots.first}
-	class:withoutFirstColumn={!$$slots.first}
->
-	<div class="navbar-container overflow-hidden">
-		<Navbar />
-	</div>
-	{#if $$slots.first}
-		<div class="first-column">
-			<slot name="first" />
+{#if !hideNavbar}
+	<div
+		class={$$slots.last ? 'app-container withLastColumn' : 'app-container withoutLastColumn'}
+		class:withFirstColumn={$$slots.first}
+		class:withoutFirstColumn={!$$slots.first}
+	>
+		<div class="navbar-container overflow-hidden">
+			<Navbar />
 		</div>
-	{/if}
-	<div class="mid-column">
-		<!-- <div> -->
-		<slot name="mid" />
-		<!-- </div> -->
-	</div>
-	{#if $$slots.last}
-		<div class="last-column" transition:slide>
-			<div class="mobile">
-				<LastColumnRectangle />
+		{#if $$slots.first}
+			<div class="first-column">
+				<slot name="first" />
 			</div>
-			<slot name="last" />
+		{/if}
+		<div class="mid-column">
+			<!-- <div> -->
+			<slot name="mid" />
+			<!-- </div> -->
 		</div>
-	{/if}
-</div>
+		{#if $$slots.last}
+			<div class="last-column" transition:slide>
+				<div class="mobile">
+					<LastColumnRectangle />
+				</div>
+				<slot name="last" />
+			</div>
+		{/if}
+	</div>
+{:else}
+	<div
+		class={$$slots.last ? 'app-container h-withLastColumn' : 'app-container h-withoutLastColumn'}
+		class:h-withFirstColumn={$$slots.first}
+		class:h-withoutFirstColumn={!$$slots.first}
+	>
+		{#if $$slots.first}
+			<div class="first-column">
+				<slot name="first" />
+			</div>
+		{/if}
+		<div class="mid-column">
+			<!-- <div> -->
+			<slot name="mid" />
+			<!-- </div> -->
+		</div>
+		{#if $$slots.last}
+			<div class="last-column" transition:slide>
+				<div class="mobile">
+					<LastColumnRectangle />
+				</div>
+				<slot name="last" />
+			</div>
+		{/if}
+	</div>
+{/if}
 
 <style lang="postcss" global>
 	:local(*) {
@@ -119,6 +148,84 @@
 		}
 
 		:local(.withoutLastColumn.withoutFirstColumn) > .mid-column > div {
+			@apply w-full max-w-[50%];
+		}
+	}
+
+	@media only screen and (max-width: 768px) {
+		:local(.last-column) {
+			@apply rounded-t-3xl;
+		}
+
+		:local(.h-withLastColumn.h-withFirstColumn) {
+			grid-template-rows: auto auto auto;
+		}
+
+		:local(.h-withoutLastColumn.h-withFirstColumn) {
+			grid-template-rows: auto auto;
+		}
+
+		:local(.h-withLastColumn.h-withoutFirstColumn) {
+			grid-template-rows: auto auto;
+		}
+
+		:local(.h-withoutLastColumn.h-withoutFirstColumn) {
+			grid-template-rows: auto;
+		}
+
+		:local(.app-container) > div {
+			@apply overflow-x-hidden;
+		}
+	}
+
+	@media only screen and (min-width: 768px) {
+		:local(.h-withLastColumn.h-withFirstColumn) {
+			grid-template-columns: 20vw auto 25vw;
+		}
+
+		:local(.h-withoutLastColumn.h-withFirstColumn) {
+			grid-template-columns: 20vw auto;
+		}
+
+		:local(.h-withLastColumn.h-withoutFirstColumn) {
+			grid-template-columns: auto 25vw;
+		}
+
+		:local(.h-withoutLastColumn.h-withoutFirstColumn) {
+			grid-template-columns: auto;
+		}
+
+		:local(.h-withoutLastColumn.h-withoutFirstColumn) > .mid-column {
+			@apply flex flex-col items-center w-full;
+		}
+
+		:local(.h-withoutLastColumn.h-withoutFirstColumn) > .mid-column > div {
+			@apply w-full max-w-[50%] h-full;
+		}
+	}
+
+	@media only screen and (min-width: 1920px) {
+		:local(.h-withLastColumn.h-withFirstColumn) {
+			grid-template-columns: 20vw auto 20vw;
+		}
+
+		:local(.h-withoutLastColumn.h-withFirstColumn) {
+			grid-template-columns: 20vw auto;
+		}
+
+		:local(.h-withLastColumn.h-withoutFirstColumn) {
+			grid-template-columns: auto 20vw;
+		}
+
+		:local(.h-withoutLastColumn.h-withoutFirstColumn) {
+			grid-template-columns: auto;
+		}
+
+		:local(.h-withoutLastColumn.h-withoutFirstColumn) > .mid-column {
+			@apply flex flex-col items-center w-full;
+		}
+
+		:local(.h-withoutLastColumn.h-withoutFirstColumn) > .mid-column > div {
 			@apply w-full max-w-[50%];
 		}
 	}

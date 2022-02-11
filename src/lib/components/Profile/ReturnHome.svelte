@@ -11,17 +11,17 @@ It's goal is to give user option to go back home and/or to let user copy their p
 	 * A location shown in the title of this component (Wallet {profileLocation})
 	 * @type string
 	 */
-	export let profileLocation = 'History'
+	export let profileLocation = 'History';
 	/**
 	 * A number / name of this wallet
 	 * @type string
 	 */
-	export let walletNumber = '1'
+	export let walletNumber = '1';
 
 	/**
 	 * The public key shown & copiable in this component
 	 */
-	export let publicKey = '0x9f98e01d3THISPARTWILLNOTBEVISIBLE4ed7'
+	export let publicKey = '0x9f98e01d3THISPARTWILLNOTBEVISIBLE4ed7';
 </script>
 
 <div class="return-home">
@@ -31,11 +31,13 @@ It's goal is to give user option to go back home and/or to let user copy their p
 		</a>
 	</div>
 	<p class="return-wallet-title">
-		Wallet { walletNumber }
-		<span class="return-swap-text">{ profileLocation }</span>
+		Wallet {walletNumber}
+		<span class="return-swap-text">{profileLocation}</span>
 	</p>
 	<div class="return-wallet-pub-key">
-		<p class="return-pub-key-text">{publicKey.slice(0, 12)}...{publicKey.slice(publicKey.length - 4)}</p>
+		<p class="return-pub-key-text">
+			{publicKey.slice(0, 12)}...{publicKey.slice(publicKey.length - 4)}
+		</p>
 		<div class="return-cursor-pointer">
 			<CopyIcon />
 		</div>

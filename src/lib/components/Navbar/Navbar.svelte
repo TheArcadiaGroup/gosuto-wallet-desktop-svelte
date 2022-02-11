@@ -41,7 +41,9 @@
 			on:click={() => activateItem(navItemsValues[2], '/profile')}
 			><div class="navbar-avatar-img" /></NavItem
 		>
-		<NavItem navItem={navItemsValues[3]} on:click={() => activateItem(navItemsValues[3], '')}
+		<NavItem
+			navItem={navItemsValues[3]}
+			on:click={() => activateItem(navItemsValues[3], '/history')}
 			><NavBookmarkIcon class="nav-icon" /></NavItem
 		>
 		<NavItem
