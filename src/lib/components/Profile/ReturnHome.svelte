@@ -1,26 +1,12 @@
-<!--
-@component
-This is the ReturnHome component, which is used inside all /profile pages.
-It's goal is to give user option to go back home and/or to let user copy their public key.
--->
 <script lang="ts">
 	import BackIcon from '$icons/BackIcon.svelte';
 	import CopyIcon from '$icons/CopyIcon.svelte';
 
 	/**
 	 * A location shown in the title of this component (Wallet {profileLocation})
-	 * @type string
 	 */
 	export let profileLocation = 'History';
-	/**
-	 * A number / name of this wallet
-	 * @type string
-	 */
-	export let walletNumber = '1';
-
-	/**
-	 * The public key shown & copiable in this component
-	 */
+	export let walletName = '1';
 	export let publicKey = '0x9f98e01d3THISPARTWILLNOTBEVISIBLE4ed7';
 </script>
 
@@ -31,7 +17,7 @@ It's goal is to give user option to go back home and/or to let user copy their p
 		</a>
 	</div>
 	<p class="return-wallet-title">
-		Wallet {walletNumber}
+		Wallet {walletName}
 		<span class="return-swap-text">{profileLocation}</span>
 	</p>
 	<div class="return-wallet-pub-key">
