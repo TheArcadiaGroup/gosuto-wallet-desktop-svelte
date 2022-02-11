@@ -12,20 +12,18 @@
 	let walletName: string;
 	let password: string;
 	let confirmPassword: string;
+	let passwordInput: HTMLInputElement;
+	let confirmPasswordInput: HTMLInputElement;
 
 	/**
 	 * @function
 	 * A function to toggle whether is password in the input field is visible or hidden
 	 */
-	const togglePasswordVisibility = () => {
-		let passwordInput = <HTMLInputElement>document.getElementById('password');
-		let confirmpasswordInput = <HTMLInputElement>document.getElementById('confirm-password');
-		if (passwordInput.type === 'text') {
-			passwordInput.type = 'password';
-			confirmpasswordInput.type = 'password';
+	const togglePasswordVisibility = (inputElement: HTMLInputElement) => {
+		if (inputElement.type === 'text') {
+			inputElement.type = 'password';
 		} else {
-			passwordInput.type = 'text';
-			confirmpasswordInput.type = 'text';
+			inputElement.type = 'text';
 		}
 	};
 
@@ -114,8 +112,9 @@
 								placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;"
 								class="seedImport-details-input"
 								bind:value={password}
+								bind:this={passwordInput}
 							/>
-							<button type="button" on:click={togglePasswordVisibility}>
+							<button type="button" on:click={() => togglePasswordVisibility(passwordInput)}>
 								<span class="w-6 h-6">
 									<EyeIcon />
 								</span>
@@ -136,8 +135,9 @@
 								placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;"
 								class="seedImport-details-input"
 								bind:value={confirmPassword}
+								bind:this={confirmPasswordInput}
 							/>
-							<button type="button" on:click={togglePasswordVisibility}>
+							<button type="button" on:click={() => togglePasswordVisibility(confirmPasswordInput)}>
 								<span class="w-6 h-6">
 									<EyeIcon />
 								</span>
