@@ -7,6 +7,7 @@
 	export let chartPrices: ChartPrice[];
 
 	let chart: Chart;
+	let playAnimation = true;
 
 	onMount(async () => {
 		chartRender();
@@ -14,6 +15,7 @@
 
 	$: if (chart && chartPrices) {
 		reRenderChart();
+		if (playAnimation) playAnimation = false;
 	}
 
 	const reRenderChart = () => {
@@ -47,6 +49,9 @@
 					legend: {
 						display: false,
 					},
+				},
+				animation: {
+					duration: playAnimation ? 1000 : 0,
 				},
 				scales: {
 					y: {

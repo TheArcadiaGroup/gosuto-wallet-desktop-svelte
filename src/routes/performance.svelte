@@ -30,8 +30,6 @@
 			};
 		}
 	});
-
-	$: console.log(currencyPerfomance);
 </script>
 
 <div class="page-container">
