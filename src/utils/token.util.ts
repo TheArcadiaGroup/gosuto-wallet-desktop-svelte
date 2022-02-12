@@ -1,3 +1,18 @@
+export function getAllTokens(): IToken[] {
+	// @ts-ignore
+	const wallets: any = JSON.parse(localStorage.getItem('tokens')) ?? {};
+	const allTokens: IToken[] = [];
+
+	if (!wallets) return [];
+
+	for (const wallet of Object.values(wallets)) {
+		for (const token of Object.values(wallet))
+			if (!allTokens.includes(token)) allTokens.push(token);
+	}
+
+	return allTokens;
+}
+
 export function addToken(wallet: string, token: IToken): boolean {
 	let tokens: any = localStorage.getItem('tokens');
 	if (!tokens) tokens = {};
@@ -107,7 +122,7 @@ export function createToken(
 	const contractAddress = 'abc';
 
 	// @ts-ignore
-	const tokens = JSON.parse(localStorage.getItem('tokens'));
+	const tokens = JSON.parse(localStorage.getItem('tokens')) ?? {};
 
 	const token = {
 		tokenName,
@@ -122,6 +137,7 @@ export function createToken(
 		contractAddress: contractAddress,
 	} as IToken;
 
+	if (!tokens[wallet]) tokens[wallet] = {};
 	tokens[wallet][contractAddress] = token;
 
 	localStorage.setItem('tokens', JSON.stringify(tokens));

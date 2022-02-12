@@ -3,64 +3,58 @@
 
 	import GridLayout from '$lib/Common/GridLayout.svelte';
 	import CurrencyPerfomance from '$components/CurrencyPerformance/CurrencyPerfomance.svelte';
+	import { getAllTokens } from '$utils/token.util';
+	import Navbar from '$components/Navbar/Navbar.svelte';
 
 	// To be populated dynamically from the DB when this route is served.
-	let currencyPerfomance = [
-		{
-			tokenName: 'CSPR',
-			price: 52.248,
-			percentageChange: -2.12,
-			chartPrices: [
-				{ x: '2022-01-03T09:00:00', y: 7 },
-				{ x: '2022-01-03T10:10:00', y: 9 },
-				{ x: '2022-01-03T11:18:00', y: 14 },
-				{ x: '2022-01-03T12:21:00', y: 11 },
-				{ x: '2022-01-03T12:27:00', y: 18 },
-				{ x: '2022-01-03T12:35:00', y: 20 },
-				{ x: '2022-01-03T13:00:00', y: 23 },
-			],
-		},
-		{
-			tokenName: 'Tether (USDT)',
-			price: 24.214,
-			percentageChange: 2.54,
-			chartPrices: [
-				{ x: '2022-01-03T08:00:00', y: 7 },
-				{ x: '2022-01-03T08:10:00', y: 5 },
-				{ x: '2022-01-03T08:18:00', y: 9 },
-				{ x: '2022-01-03T08:21:00', y: 13 },
-				{ x: '2022-01-03T08:27:00', y: 15 },
-				{ x: '2022-01-03T08:35:00', y: 19 },
-				{ x: '2022-01-03T09:00:00', y: 22 },
-			],
-		},
-	];
+	let currencyPerfomance = [];
 
 	onMount(async () => {
-		// @ts-ignore
-		const currency = await (await fetch('/api/tokens/value/a')).json();
-		// @ts-ignore
-		const currencyHistory = await (await fetch('/api/tokens/value/history/a')).json();
+		const currencies = getAllTokens();
 
-		currencyPerfomance[0].price = currency.value;
-		currencyPerfomance[0].chartPrices = currencyHistory;
+		for (const currency of currencies) {
+			// @ts-ignore
+			const price = await (
+				await fetch('/api/tokens/value/' + encodeURIComponent(currency.contractAddress))
+			).json();
+			// @ts-ignore
+			const currencyHistory = await (
+				await fetch('/api/tokens/value/history/' + encodeURIComponent(currency.contractAddress))
+			).json();
+
+			currencyPerfomance[currencyPerfomance.length] = {
+				tokenName: currency.tokenName + ` (${currency.tokenTicker})`,
+				price: price.value,
+				percentageChange: 1, // TODO: percentage
+				chartPrices: currencyHistory,
+			};
+		}
 	});
+
+	$: console.log(currencyPerfomance);
 </script>
 
-<GridLayout>
-	<div slot="mid" class="column-container">
+<div class="page-container">
+	<div class="global-grid-nav">
+		<Navbar />
+	</div>
+	<div class="global-grid-mid column-container">
 		<div class="card-container">
 			{#each currencyPerfomance as performance}
 				<CurrencyPerfomance {...performance} />
 			{/each}
 		</div>
 	</div>
-</GridLayout>
+</div>
 
 <!-- Styles -->
 <style lang="postcss" global>
+	:local(.page-container) {
+		@apply flex flex-row;
+	}
+
 	:local(.column-container) {
-		@apply dark:bg-dark-gosutoDark border-none h-full;
+		@apply dark:bg-dark-gosutoDark border-none;
 	}
 	:local(.card-container) {
 		@apply flex flex-col items-center justify-center gap-10 py-20;
