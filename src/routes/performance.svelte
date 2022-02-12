@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	import GridLayout from '$lib/Common/GridLayout.svelte';
 	import CurrencyPerfomance from '$components/CurrencyPerformance/CurrencyPerfomance.svelte';
 	import { getAllTokens } from '$utils/token.util';
 	import Navbar from '$components/Navbar/Navbar.svelte';
@@ -22,10 +21,16 @@
 				await fetch('/api/tokens/value/history/' + encodeURIComponent(currency.contractAddress))
 			).json();
 
+			const lastY = currencyHistory[0].y;
+			const startY = currencyHistory[currencyHistory.length - 1].y;
+
+			const percentage =
+				startY < lastY ? Math.floor((lastY / startY) * 100) : -Math.floor((startY / lastY) * 100);
+
 			currencyPerfomance[currencyPerfomance.length] = {
 				tokenName: currency.tokenName + ` (${currency.tokenTicker})`,
 				price: price.value,
-				percentageChange: 1, // TODO: percentage
+				percentageChange: percentage,
 				chartPrices: currencyHistory,
 			};
 		}
