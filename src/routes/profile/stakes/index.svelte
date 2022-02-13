@@ -1,13 +1,13 @@
 <script lang="ts">
 	import GridLayout from '$lib/Common/GridLayout.svelte';
-	import ProfileNavigation from '$lib/profile/ProfileNavigation.svelte';
+	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
 	import ArrowInCircle from '$lib/Common/ArrowInCircle.svelte';
-	import StakesFromWallet from '$lib/profile/stake/StakesFromWallet.svelte';
+	import StakesFromWallet from '$lib/Profile/stake/StakesFromWallet.svelte';
 
-	import Confirm from '$lib/profile/stake/detail/Confirm.svelte';
-	import ClaimReward from '$lib/profile/stake/detail/ClaimReward.svelte';
-	import UnlockInitialStake from '$lib/profile/stake/detail/UnlockInitialStake.svelte';
-	import Unstake from '$lib/profile/stake/detail/Unstake.svelte';
+	import Confirm from '$lib/Profile/stake/detail/Confirm.svelte';
+	import ClaimReward from '$lib/Profile/stake/detail/ClaimReward.svelte';
+	import UnlockInitialStake from '$lib/Profile/stake/detail/UnlockInitialStake.svelte';
+	import Unstake from '$lib/Profile/stake/detail/Unstake.svelte';
 
 	import { page } from '$app/stores';
 
@@ -44,15 +44,48 @@
 		// DEV
 		selectedLastCollumnContent = 'confirm';
 	}
+
+	// DEV
+	const user = {
+		name: 'Jake Waterson',
+		ppurl: 'https://miro.medium.com/fit/c/262/262/2*-cdwKPXyVI0ejgxpWkKBeA.jpeg',
+		wallets: [
+			{
+				name: 'Wallet 1',
+				avalible: 5000,
+				staked: 2500,
+				unclaimed: 375,
+			},
+			{
+				name: 'Wallet 1',
+				avalible: 5000,
+				staked: 2500,
+				unclaimed: 375,
+			},
+		],
+	};
+
+	const wallet = {
+		name: 'Wallet 1',
+		publicKey: '0x9f98e01d2...4ed7',
+	};
+
+	const stakeArray = Array(10).fill({
+		name: wallet?.name,
+		elapsedSeconds: 20,
+		fullSeconds: 69,
+		staked: 420,
+		unlocked: 69,
+	});
 </script>
 
 <GridLayout>
 	<div slot="first" class="size-full">
 		<!-- feed the user profile data to ProfileNavigation component -->
-		<ProfileNavigation />
+		<ProfileNavigation {user} />
 	</div>
 	<div slot="mid" class="size-full">
-		<StakesFromWallet on:stakeSelect={stakeSelect} />
+		<StakesFromWallet on:stakeSelect={stakeSelect} {wallet} {stakeArray} />
 	</div>
 	<div slot="last" class="size-full last-column">
 		{#if selectedLastCollumnContent}

@@ -8,32 +8,34 @@
 <script lang="ts">
 	export let label: string = 'Input Your Text';
 	export let value: string | number = '';
+	export let type: 'text' | 'password' | 'number' | 'email' = 'text';
 </script>
 
-{#if $$props.type === 'password'}
+{#if type === 'password'}
 	<div class="input-holder">
-		<p>{label}</p>
-		<input bind:value type="password" />
+		<p class={$$props.class}>{label}</p>
+		<input class={$$props.class} bind:value type="password" />
 	</div>
-{:else if $$props.type === 'email'}
+{:else if type === 'email'}
 	<div class="input-holder">
-		<p>{label}</p>
-		<input bind:value type="email" />
+		<p class={$$props.class}>{label}</p>
+		<input class={$$props.class} bind:value type="email" />
 	</div>
-{:else if $$props.type === 'number'}
+{:else if type === 'number'}
 	<div class="input-holder">
-		<p>{label}</p>
-		<input bind:value type="number" />
+		<p class={$$props.class}>{label}</p>
+		<input class={$$props.class} bind:value type="number" />
 	</div>
 {:else}
 	<div class="input-holder">
-		<p>{label}</p>
-		<input bind:value type="text" />
+		<p class={$$props.class}>{label}</p>
+		<input class={$$props.class} bind:value type="text" />
 	</div>
 {/if}
 
 <style lang="postcss" global>
 	:local(.input-holder) {
+		@apply w-full;
 		@apply relative mt-4;
 	}
 

@@ -4,6 +4,8 @@ export const generateTransactions = () => {
 
 	for (let index = 0; index < 6; index++) {
 		data.push({
+			walletNumber: `${Math.floor(Math.random() * 2 + 1)}`,
+			publicKey: `0x9f98e01d2gj92ngn2g7gn24ed7`,
 			status: statuses[Math.floor(Math.random() * 3)],
 			dateAndTime: `Apr ${Math.floor(Math.random() * 30 + 1)}, 2021 ${Math.floor(
 				Math.random() * 12 + 1,
@@ -22,6 +24,8 @@ export const generateTransactions = () => {
 
 	for (let index = 0; index < 6; index++) {
 		data.push({
+			wallet: `wallet-${Math.floor(Math.random() * 2 + 1)}`,
+			publicKey: `0x9f98e01d2gj92ngn2g7gn24ed7`,
 			status: 'Swap',
 			dateAndTime: `Apr ${Math.floor(Math.random() * 30 + 1)}, 2021 ${Math.floor(
 				Math.random() * 12 + 1,

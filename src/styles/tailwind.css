@@ -18,3 +18,37 @@
 ::-webkit-scrollbar-thumb {
 	@apply bg-light-scrollBar rounded-[39px];
 }
+
+/* Hide scrollbar */
+.scrollbar-hide {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+	display: none;
+}
+
+/* Global app grid */
+
+.global-grid-nav {
+	@apply w-20 max-h-screen overflow-x-hidden;
+	@apply overflow-y-auto;
+}
+
+.global-grid-left {
+	@apply min-w-[16rem] max-w-[18.75rem] max-h-screen flex-1;
+	@apply overflow-y-auto;
+	@apply dark:border-l dark:border-r dark:border-dark-background;
+}
+
+.global-grid-mid {
+	@apply w-full max-h-screen flex-[3];
+	@apply overflow-y-auto;
+}
+
+.global-grid-right {
+	@apply min-w-[16rem] max-w-[21.875rem] max-h-screen flex-1;
+	@apply overflow-y-auto;
+	@apply dark:border-l dark:border-dark-background;
+}

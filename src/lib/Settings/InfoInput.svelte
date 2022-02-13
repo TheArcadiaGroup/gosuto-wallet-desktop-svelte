@@ -4,36 +4,45 @@
 	An input field generated with an each loop in parent component from where it gets placeholder and name values
  -->
 <script lang="ts">
-	/** A variable representing the name (type) of the input field
-	 * 	 | Example: An input field for emails would have the name set as Email
-	 */
-	export let name: string = '';
-
-	/** A variable representing the string value of the placeholder for the input field */
-	export let placeholder: string = '';
+	export let infoType: infoCategory;
+	export let handleSave: (inputValue: string, infoType: infoCategory) => void;
 
 	/** A variable representing this input field's text */
 	let textInput: string = '';
 
-	/** A variable representing the save/change button*/
-	let saveChange: HTMLElement;
+	let inputElement: HTMLInputElement;
 
-	/** A helper reactive if statement to alter saveChange button text based on input */
-	$: if (textInput != '') {
-		saveChange.textContent = 'Save Change';
-	} else if (saveChange != undefined) {
-		saveChange.textContent = 'Change ' + name;
-	}
+	let focusInput = () => {
+		inputElement.readOnly = false;
+		inputElement.focus();
+	};
+
+	let saveChange = () => {
+		inputElement.readOnly = true;
+		inputElement.blur();
+		handleSave(textInput, infoType);
+		textInput = '';
+	};
 </script>
 
 <div class="infoInput">
-	<label for={name}>
-		{name}
+	<label for={infoType.name}>
+		{infoType.name}
 	</label>
-	<input {name} {placeholder} bind:value={textInput} />
-	<button bind:this={saveChange}>
-		Change {name}
-	</button>
+	<input
+		name={infoType.name}
+		placeholder={infoType.placeholder}
+		bind:value={textInput}
+		bind:this={inputElement}
+		readonly
+	/>
+	{#if textInput}
+		<button on:click={saveChange}>Save change</button>
+	{:else}
+		<button on:click={focusInput}>
+			Change {infoType.name}
+		</button>
+	{/if}
 </div>
 
 <style type="postcss" global>
