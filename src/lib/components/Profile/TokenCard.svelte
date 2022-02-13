@@ -1,10 +1,3 @@
-<!--
-@component
-The Token card / button component used to select which token to select inside wallet swap and send pages.
-@author marekvospel
-@see Swap
-@see Select
--->
 <script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte';
 
@@ -15,54 +8,31 @@ The Token card / button component used to select which token to select inside wa
 
 	/**
 	 * The index of this card. Used when dispatching selectToken event to parent
-	 * @type {number}
-	 * @see Swap
 	 */
 	export let cardId: number;
 
-	/**
-	 * Whether the selected outline is shown on this component.
-	 * @type {boolean}
-	 */
 	export let selected = false;
 
 	/**
 	 * Whether the token is rising (true, green values will be shown), or declining (false, red values will be shown)
-	 * @type {boolean}
 	 */
 	export let positive = true;
 
-	/**
-	 * Name of the token shown inside this component
-	 * @type {string}
-	 */
 	export let tokenName = 'Tether';
-	/**
-	 * Code of the token shown inside this component
-	 * @type {string}
-	 */
 	export let tokenTicker = 'USDT';
-	/**
-	 * Amount of the token shown inside this component
-	 * @type {number}
-	 */
 	export let tokenAmountHeld = 2000;
-
 	export let contractAddress = 'abc';
 
 	/**
 	 * Code of the real currency shown inside this component
-	 * @type {string}
 	 */
 	export let currencyUnit = 'USD';
 	/**
 	 * Symbol of the real currency shown inside this component
-	 * @type {string}
 	 */
 	export let currencySymbol = '$';
 	/**
 	 * Amount of the real currency shown inside this component
-	 * @type {number}
 	 */
 	export let tokenAmountHeldUSD = 175;
 

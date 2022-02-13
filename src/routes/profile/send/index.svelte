@@ -1,8 +1,3 @@
-<!--
-@component
-The wallet send route, this is where the layout is, the currently selected token index and list of tokens is.
-@author marekvospel
--->
 <script lang="ts">
 	import { onMount } from 'svelte';
 
@@ -14,34 +9,26 @@ The wallet send route, this is where the layout is, the currently selected token
 	import SendCurrency from '$lib/Profile/Send/Forms/SendCurrency.svelte';
 	import CreateToken from '$lib/Profile/CreateToken/CreateToken.svelte';
 
-	/**
-	 * This is an array of tokens, which will be shown in the main column of the app's grid. Values inside this array will be passed on to TokenCard components inside Send component
-	 * @see Send
-	 */
-	let tokens = [];
+	let tokens: IToken[] = [];
 
 	/**
 	 * This is the currently selected index of TokenCards.
-	 * @type {number}
-	 * @see Send
+	 * -1 = none
+	 * -2 = create token
 	 */
 	let selected = -1;
 
-	/**
-	 * A function changing the selected index value of this component.
-	 * @param e selectToken event with the selected TokenCard index
-	 */
-	function selectToken(e: { detail: { id: number } }): void {
+	function selectToken(e: any): void {
 		selected = e.detail.id;
 	}
 
-	// Maybe could be server side rendered?
 	onMount(async () => {
 		// not an error, this makes my IDE shut up
 		// @ts-ignore
 		tokens = await (await fetch('/api/tokens/1')).json();
 	});
 
+	// dev
 	const user = {
 		name: 'Jake Waterson',
 		ppurl: 'https://miro.medium.com/fit/c/262/262/2*-cdwKPXyVI0ejgxpWkKBeA.jpeg',

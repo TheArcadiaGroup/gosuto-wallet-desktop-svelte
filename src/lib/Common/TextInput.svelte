@@ -1,19 +1,20 @@
 <script lang="ts">
 	export let label: string = 'Input Your Text';
 	export let value: string | number = '';
+	export let type: 'text' | 'password' | 'number' | 'email' = 'text';
 </script>
 
-{#if $$props.type === 'password'}
+{#if type === 'password'}
 	<div class="input-holder">
 		<p class={$$props.class}>{label}</p>
 		<input class={$$props.class} bind:value type="password" />
 	</div>
-{:else if $$props.type === 'email'}
+{:else if type === 'email'}
 	<div class="input-holder">
 		<p class={$$props.class}>{label}</p>
 		<input class={$$props.class} bind:value type="email" />
 	</div>
-{:else if $$props.type === 'number'}
+{:else if type === 'number'}
 	<div class="input-holder">
 		<p class={$$props.class}>{label}</p>
 		<input class={$$props.class} bind:value type="number" />

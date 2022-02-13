@@ -1,5 +1,5 @@
 <script lang="ts">
-	import CreditCard from '$lib/profile/CreditCard.svelte';
+	import CreditCard from '$lib/Profile/CreditCard.svelte';
 	import Navbar from '$components/Navbar/Navbar.svelte';
 	import Button from '$lib/Common/Button.svelte';
 

@@ -1,16 +1,30 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import Chart from 'chart.js/auto';
+	import Chart from 'chart.js/auto/auto.esm';
 	import 'chartjs-adapter-date-fns';
 
 	let ctx: HTMLCanvasElement;
 	export let chartPrices: ChartPrice[];
+
+	let chart: Chart;
+	let playAnimation = true;
+
 	onMount(async () => {
 		chartRender();
 	});
 
+	$: if (chart && chartPrices) {
+		reRenderChart();
+		if (playAnimation) playAnimation = false;
+	}
+
+	const reRenderChart = () => {
+		chart.destroy();
+		chartRender();
+	};
+
 	const chartRender = () => {
-		const chart = new Chart(ctx, {
+		chart = new Chart(ctx, {
 			type: 'line',
 			data: {
 				datasets: [
@@ -35,6 +49,9 @@
 					legend: {
 						display: false,
 					},
+				},
+				animation: {
+					duration: playAnimation ? 1000 : 0,
 				},
 				scales: {
 					y: {
@@ -116,6 +133,8 @@
 		});
 	};
 </script>
+
+<svelte:window on:resize={reRenderChart} />
 
 <div class="chart-wrapper">
 	<canvas class="chart" bind:this={ctx} />
