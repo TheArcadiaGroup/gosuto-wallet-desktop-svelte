@@ -26,7 +26,7 @@
 	});
 
 	const getData = async (address: string) => {
-		fetch(`../../api/profile/[address]/history/?address=${address}`)
+		fetch(`/api/profile/[address]/history/?address=${encodeURIComponent(address)}`)
 			.then((response) => response.json())
 			.then((response) => (data = response))
 			.catch((error) => {
