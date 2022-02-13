@@ -18,8 +18,8 @@ stakeArray.push({
 	unlocked: 96,
 });
 
-export async function get({ query }): Promise<any> {
-	let address = query.get('address');
+export async function post(query): Promise<any> {
+	let address = await query.body;
 	let transactions = stakeArray;
 	//dev
 	let data = transactions.filter((transaction) => transaction.name == address);
