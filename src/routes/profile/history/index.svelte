@@ -16,7 +16,7 @@
 	import GridLayout from '$lib/Common/GridLayout.svelte';
 
 	import HistoryPage from '$lib/components/HistoryPage.svelte';
-	import ProfileNavigation from '$lib/profile/ProfileNavigation.svelte';
+	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
 
 	export let data;
 

@@ -2,9 +2,12 @@
 	import BackIcon from '$icons/BackIcon.svelte';
 	import CopyIcon from '$icons/CopyIcon.svelte';
 
-	export let wallet: string = 'Wallet 1';
-	export let address: string = '0x9f98e01d3...4ed7';
-	export let hideSwapText: boolean = false;
+	/**
+	 * A location shown in the title of this component (Wallet {profileLocation})
+	 */
+	export let profileLocation = 'History';
+	export let walletName = '1';
+	export let publicKey = '0x9f98e01d3THISPARTWILLNOTBEVISIBLE4ed7';
 </script>
 
 <div class="return-home">
@@ -14,13 +17,13 @@
 		</a>
 	</div>
 	<p class="return-wallet-title">
-		{wallet}
-		{#if !hideSwapText}
-			<span class="return-swap-text">Swap</span>
-		{/if}
+		Wallet {walletName}
+		<span class="return-swap-text">{profileLocation}</span>
 	</p>
 	<div class="return-wallet-pub-key">
-		<p class="return-pub-key-text">{address}</p>
+		<p class="return-pub-key-text">
+			{publicKey.slice(0, 12)}...{publicKey.slice(publicKey.length - 4)}
+		</p>
 		<div class="return-cursor-pointer">
 			<CopyIcon />
 		</div>

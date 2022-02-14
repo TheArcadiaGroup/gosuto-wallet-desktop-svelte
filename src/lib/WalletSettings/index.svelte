@@ -1,28 +1,67 @@
 <script lang="ts">
 	import BackIcon from '$icons/BackIcon.svelte';
-
 	import CopyIcon from '$icons/CopyIcon.svelte';
 	import CopyOrange from '$icons/CopyOrange.svelte';
-	import TextInput from '$lib/Common/TextInput.svelte';
+
 	import PasswordToCopyPopup from '$lib/PopUps/WalletSettings/PasswordToCopyPopup.svelte';
 	import PasswordToExportPopup from '$lib/PopUps/WalletSettings/PasswordToExportPopup.svelte';
 	import WalletCopiedPopup from '$lib/PopUps/WalletSettings/WalletCopiedPopup.svelte';
+
+	import TextInput from '$lib/Common/TextInput.svelte';
 	import Button from '$lib/Common/Button.svelte';
 
-	let walletName: string;
-	let publicKey: string;
-	let privateKey: string;
-	let currentPassword: string;
+	import { onMount } from 'svelte';
+
+	let settingsData: ProfileSettings = {
+		walletName: 'default wallet name',
+		walletAddress: '0x9f98e01d2gj92ngn2g7gn24ed7',
+		publicKey: '0x9f98e01d2gj92ngn2g7gn24ed7',
+		privateKey: '0x9f98e01d2gj92ngn2g7gn24ed7',
+		currentPassword: 'password',
+	};
+
 	let newPassword: string;
 	let reEnterPassword: string;
 
 	let showCopyWalletPasswordPopup: boolean = false;
 	let showExportWalletFilePopup: boolean = false;
 	let showWalletCopiedPopup: boolean = false;
-
-	let walletAddress: string = '0x9f98e01d2gj92ngn2g7gn24ed7';
-
 	let passwordIsCorrect: boolean = true;
+
+	onMount(() => {
+		getData();
+	});
+
+	const getData = async () => {
+		fetch('/api/settings/profileSettings')
+			.then((response) => response.json())
+			.then((response) => {
+				if (response.walletName) settingsData.walletName = response.walletName;
+				if (response.walletAddress) settingsData.walletAddress = response.walletAddress;
+				if (response.publicKey) settingsData.publicKey = response.publicKey;
+				if (response.privateKey) settingsData.privateKey = response.privateKey;
+				if (response.currentPassword) settingsData.currentPassword = response.currentPassword;
+			});
+	};
+
+	const postData = async () => {
+		fetch('/api/settings/profileSettings', {
+			method: 'POST',
+			body: JSON.stringify(settingsData),
+		}).catch((error) => {
+			console.error('error:', error);
+		});
+	};
+
+	let copyToClipboard = (copyText: string) => {
+		navigator.clipboard.writeText(copyText);
+	};
+
+	let changePassword = () => {
+		if (newPassword && newPassword === reEnterPassword) {
+			settingsData.currentPassword = newPassword;
+		}
+	};
 </script>
 
 <div class="main">
@@ -32,7 +71,7 @@
 			on:confirm={() => {
 				showCopyWalletPasswordPopup = false;
 				if (passwordIsCorrect) {
-					// Add code to copy private key Here
+					copyToClipboard(settingsData.privateKey);
 					showWalletCopiedPopup = true;
 				}
 			}}
@@ -73,29 +112,29 @@
 				</div>
 				<div class="address">
 					<p>
-						{`${walletAddress.slice(0, 11)}...${walletAddress.slice(-4)}`}
+						{`${settingsData.walletAddress.slice(0, 11)}...${settingsData.walletAddress.slice(-4)}`}
 					</p>
-					<div
-						class="img"
-						on:click={() => {
-							// Add Code to copy Wallet address here
-						}}
-					>
+					<div class="img">
 						<CopyIcon />
 					</div>
 				</div>
 			</div>
 			<div class="address">
 				<p>
-					{`${walletAddress.slice(0, 11)}...${walletAddress.slice(-4)}`}
+					{`${settingsData.walletAddress.slice(0, 11)}...${settingsData.walletAddress.slice(-4)}`}
 				</p>
-				<div class="img">
+				<div
+					class="img"
+					on:click={() => {
+						copyToClipboard(settingsData.walletAddress);
+					}}
+				>
 					<CopyIcon />
 				</div>
 			</div>
 			<div class="confirm-button settings-btn">
 				<Button
-					glow={true}
+					hasGlow={true}
 					on:click={() => {
 						showExportWalletFilePopup = true;
 					}}
@@ -104,9 +143,9 @@
 				</Button>
 			</div>
 		</div>
-		<TextInput bind:value={walletName} label="Wallet Name" type="text" />
+		<TextInput bind:value={settingsData.walletName} label="Wallet Name" type="text" />
 		<br />
-		<TextInput bind:value={publicKey} label="Public Key" type="text" />
+		<TextInput bind:value={settingsData.publicKey} label="Public Key" type="text" />
 		<br />
 		<div class="private-container">
 			<div
@@ -117,12 +156,12 @@
 			>
 				<CopyOrange />
 			</div>
-			<TextInput bind:value={privateKey} label="Private Key" type="password" />
+			<TextInput bind:value={settingsData.privateKey} label="Private Key" type="password" />
 		</div>
 		<br />
 		<h2>Change Password</h2>
 		<br />
-		<TextInput bind:value={currentPassword} label="Current Password" type="password" />
+		<TextInput bind:value={settingsData.currentPassword} label="Current Password" type="password" />
 		<br />
 		<TextInput bind:value={newPassword} label="New Password" type="password" />
 		<br />
@@ -130,19 +169,19 @@
 		<br />
 		<div class="button-holder">
 			<div class="settings-btn">
-				<Button glow={true}>
+				<Button hasGlow={true} on:click={changePassword}>
 					<p slot="text" class="settings-btn-text">Change Password</p>
 				</Button>
 			</div>
 		</div>
 		<div class="ok-cancel">
-			<div class="save-bt">
+			<div class="save-bt" on:click={postData}>
 				<Button>
 					<p slot="text" class="btn-text">Save</p>
 				</Button>
 			</div>
 			<div class="cancel-bt">
-				<Button ring={true}>
+				<Button hasRing={true}>
 					<p slot="text" class="btn-text">Cancel</p>
 				</Button>
 			</div>

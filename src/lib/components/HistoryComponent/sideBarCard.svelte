@@ -1,5 +1,14 @@
+<!-- 
+	@component 
+	Description:
+	> Card Componenent in the right sidebar of history page to show details of history transactions.
+	
+	@author MikeBrandon
+	@see historyComponent
+-->
 <script lang="ts">
 	import { shortenAddress } from '$utils/index';
+
 	import Amount from '$lib/components/HistoryComponent/Amount.svelte';
 	import Swap from '$lib/components/HistoryComponent/Swap.svelte';
 

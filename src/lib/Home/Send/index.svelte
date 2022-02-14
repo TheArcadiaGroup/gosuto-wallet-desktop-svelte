@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ReturnHome from '$components/Home/ReturnHome.svelte';
 	import PlusIcon from '$icons/PlusIcon.svelte';
-	import TokenCard from '$lib/Profile/Swap/TokenCard.svelte';
+	import TokenCard from '$lib/Home/Swap/TokenCard.svelte';
 	import Button from '$lib/Common/Button.svelte';
 
 	export let tokens = [
@@ -52,7 +52,7 @@
 		<div class="px-2 flex flex-row items-center">
 			<p class="font-bold text-base md:text-xl dark:text-white">Tokens in this wallet</p>
 			<div class="ml-auto">
-				<Button glow={true} on:click>
+				<Button hasGlow={true} on:click>
 					<div slot="text" class="inner-btn">
 						<PlusIcon />
 						<span>Add Token</span>

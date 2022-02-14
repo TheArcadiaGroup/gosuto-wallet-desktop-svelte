@@ -36,7 +36,7 @@
 		profile: [
 			{ name: 'history', label: 'History', icon: Bookmark },
 			{ name: 'send', label: 'Send', icon: PaperAirplane },
-			{ name: 'stakes', label: 'Stakes', icon: Stake },
+			{ name: 'stake', label: 'Stakes', icon: Stake },
 			{ name: 'settings', label: 'Wallet Settings', icon: Wallet },
 			{ name: 'swap', label: 'Swap', icon: Swap },
 		],

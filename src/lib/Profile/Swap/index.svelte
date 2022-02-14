@@ -1,27 +1,17 @@
-<!--
-@component
-The wallet swap page mid column, this is where list of TokenCards is.
-This is where select & deselect logic is, and is passed to parent by dispatching selectToken event, so the parent can show different content in last grid column.
-@author marekvospel
-@see TokenCard
--->
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 
-	import ReturnHome from '$components/Home/ReturnHome.svelte';
+	import ReturnHome from '$components/Profile/ReturnHome.svelte';
 	import Button from '$lib/Common/Button.svelte';
 	import PlusIcon from '$icons/PlusIcon.svelte';
-	import TokenCard from '$lib/Profile/Swap/TokenCard.svelte';
+	import TokenCard from '$components/Profile/TokenCard.svelte';
+
+	export let tokens: IToken[] = [];
 
 	/**
-	 * An array of props passed to TokenCard components.
-	 * @see TokenCard
-	 */
-	export let tokens = [];
-
-	/**
-	 * Index of a TokenCard that is currently selected. Default is -1 = none selected
-	 * @type {number}
+	 * This is the currently selected index of TokenCards.
+	 * -1 = none
+	 * -2 = create token (handled by parent)
 	 */
 	export let selected = -1;
 
@@ -31,10 +21,6 @@ This is where select & deselect logic is, and is passed to parent by dispatching
 
 	const dispatch = createEventDispatcher();
 
-	/**
-	 * A function updating internal scroll, scrollWidth and currentPage values, which are used to render a custom scrollbar
-	 * @param event a DOM scroll event
-	 */
 	function onScroll(event) {
 		if (!event.target || !event.target.scrollLeft || !event.target.clientWidth) return;
 		scroll = event.target.scrollLeft;
@@ -45,41 +31,39 @@ This is where select & deselect logic is, and is passed to parent by dispatching
 		currentPage = Math.round(scroll / (scrollWidth / totalPages));
 	}
 
-	/**
-	 * A function that deselects token if user clicks inside wallet swap main column, but doesn't click on TokenCard
-	 * @param event a DOM MouseEvent
-	 */
 	function deselectListener(event: any): void {
 		if (!event.target) return;
 		const isInToken = Boolean(event.target.closest('.token-card'));
-		if (!isInToken)
+		const isInAdd = Boolean(event.target.closest('.add-token-button'));
+		if (!isInToken && !isInAdd)
 			dispatch('selectToken', {
 				id: -1,
 			});
 	}
 
-	/**
-	 * A function that deselects token if user clicks on deselect button inside SwapCurrency form component
-	 * @param event a DOM MouseEvent
-	 */
 	function cancelButtonListener(event: any): void {
 		if (!event.target) return;
 		const isInCancel = Boolean(event.target.closest('.swap-currency-cancel-swap-button'));
-		if (isInCancel) dispatch('selectToken', {
-			id: -1,
-		});
+		if (isInCancel)
+			dispatch('selectToken', {
+				id: -1,
+			});
 	}
 </script>
 
 <svelte:body on:click={cancelButtonListener} />
 
 <div class="swap-wallet-swap" on:click={deselectListener}>
-	<ReturnHome />
+	<ReturnHome profileLocation="Swap" />
 	<div class="swap-container">
 		<div class="swap-title-row">
 			<p class="swap-tokens-in-wallet-title">Tokens in this wallet</p>
 			<div class="ml-auto">
-				<Button glow={true}>
+				<Button
+					class="add-token-button"
+					on:click={() => dispatch('selectToken', { id: -2 })}
+					glow={true}
+				>
 					<div slot="text" class="swap-inner-btn">
 						<PlusIcon />
 						<span>Add Token</span>
@@ -106,7 +90,8 @@ This is where select & deselect logic is, and is passed to parent by dispatching
 				<div
 					class="swap-mobile-scrollbar-dot {currentPage === i
 						? 'w-3 bg-light-orange'
-						: 'w-1.5 bg-light-gray'}"></div>
+						: 'w-1.5 bg-light-gray'}"
+				/>
 			{/each}
 		</div>
 	</div>
@@ -116,7 +101,7 @@ This is where select & deselect logic is, and is passed to parent by dispatching
 	.swap-wallet-swap {
 		@apply h-max min-h-screen;
 		@apply px-4 pt-10;
-		@apply bg-dark-gosutoDark;
+		@apply dark:bg-dark-gosutoDark;
 		@apply lg:px-11 lg:pt-20;
 	}
 

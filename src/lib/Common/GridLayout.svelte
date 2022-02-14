@@ -1,8 +1,17 @@
+<!-- @component 
+	Describtion:
+	> Reusable layout for the app pages. 
+	
+	Slots:
+	- `first` = Left most column on PC and Top most column on mobile. 
+	- `mid` = The column in the middle that expands to fill the rest of the page when right or left isn't passed.
+	- `last` = Right most column on PC and Bottom most column on mobile.
+-->
 <script lang="ts">
-	import Navbar from '$components/Navbar/Navbar.svelte';
-	import LastColumnRectangle from '$icons/LastColumnRectangle.svelte';
 	import { slide } from 'svelte/transition';
 
+	import Navbar from '$components/Navbar/Navbar.svelte';
+	import LastColumnRectangle from '$icons/LastColumnRectangle.svelte';
 	export let hideNavbar: boolean = false;
 </script>
 

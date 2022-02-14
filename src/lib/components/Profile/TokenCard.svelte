@@ -1,65 +1,47 @@
-<!--
-@component
-The Token card / button component used to select which token to select inside wallet swap.
-@author marekvospel
-@see Swap
--->
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
+
+	import { getTokenValue } from '$utils/token.util.ts';
 
 	import ProfitUpIcon from '$icons/ProfitUpIcon.svelte';
 	import ProfitDownIcon from '$icons/ProfitDownIcon.svelte';
 
 	/**
 	 * The index of this card. Used when dispatching selectToken event to parent
-	 * @type {number}
-	 * @see Swap
 	 */
 	export let cardId: number;
 
-	/**
-	 * Whether the selected outline is shown on this component.
-	 * @type {boolean}
-	 */
 	export let selected = false;
 
 	/**
 	 * Whether the token is rising (true, green values will be shown), or declining (false, red values will be shown)
-	 * @type {boolean}
 	 */
 	export let positive = true;
 
-	/**
-	 * Name of the token shown inside this component
-	 * @type {string}
-	 */
-	export let cryptoName = 'Tether';
-	/**
-	 * Code of the token shown inside this component
-	 * @type {string}
-	 */
-	export let cryptoUnit = 'USDT';
-	/**
-	 * Amount of the token shown inside this component
-	 * @type {number}
-	 */
-	export let cryptoAmount = 2000;
+	export let tokenName = 'Tether';
+	export let tokenTicker = 'USDT';
+	export let tokenAmountHeld = 2000;
+	export let contractAddress = 'abc';
 
 	/**
 	 * Code of the real currency shown inside this component
-	 * @type {string}
 	 */
 	export let currencyUnit = 'USD';
 	/**
 	 * Symbol of the real currency shown inside this component
-	 * @type {string}
 	 */
 	export let currencySymbol = '$';
 	/**
 	 * Amount of the real currency shown inside this component
-	 * @type {number}
 	 */
-	export let currencyAmount = 175;
+	export let tokenAmountHeldUSD = 175;
+
+	let usdValue = 0;
+
+	onMount(() => {
+		// @ts-ignore
+		const result = fetch(`/api/tokens/value/${encodeURIComponent(contractAddress)}`);
+	});
 
 	const dispatch = createEventDispatcher();
 
@@ -72,18 +54,22 @@ The Token card / button component used to select which token to select inside wa
 
 <div on:click={select} class="token-card {selected ? 'selected' : ''}">
 	<div class="token-card-left-col">
-		<p class="token-card-title">{cryptoName} ({cryptoUnit})</p>
+		<p class="token-card-title">{tokenName} ({tokenTicker})</p>
 		<p class="token-card-text-sm {positive ? 'text-light-green' : 'text-light-red'}">
-			{cryptoAmount}
-			{cryptoUnit}
+			{tokenAmountHeld}
+			{tokenTicker}
 		</p>
 		<p class="token-card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">
-			{currencySymbol}{currencyAmount}
+			{currencySymbol}{tokenAmountHeldUSD}
 			{currencyUnit}
 		</p>
 	</div>
 	<div class="token-card-right-col">
-		<p class="token-card-text-sm token-card-text-flex {positive ? 'text-light-green' : 'text-light-red'}">
+		<p
+			class="token-card-text-sm token-card-text-flex {positive
+				? 'text-light-green'
+				: 'text-light-red'}"
+		>
 			{#if positive}
 				<ProfitUpIcon />
 			{:else}
@@ -91,7 +77,10 @@ The Token card / button component used to select which token to select inside wa
 			{/if}
 			+15%
 		</p>
-		<p class="token-card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">897,000 CSPR</p>
+		<p class="token-card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">
+			{currencySymbol}{getTokenValue(contractAddress)}
+			{currencyUnit}
+		</p>
 		<p class="token-card-text-xs text-light-gray">(24h)</p>
 	</div>
 </div>

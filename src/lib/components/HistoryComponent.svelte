@@ -1,10 +1,18 @@
+<!-- 
+	@component 
+	Description:
+	> Container for a single history Object data in the history pages.
+	
+	@author MikeBrandon
+	@see historyPage
+-->
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { slide } from 'svelte/transition';
+
 	import { clickOutside } from '$utils/clickOutside';
 
 	import Amount from './HistoryComponent/Amount.svelte';
-
 	import Swap from './HistoryComponent/Swap.svelte';
 
 	export let wallet = 'Wallet 1';

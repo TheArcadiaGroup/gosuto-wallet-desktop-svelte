@@ -65,7 +65,7 @@
 			{/each}
 		</div>
 		<div class="addWallet-bt next-bt">
-			<Button disabled={selected === undefined} on:click={() => goto(selected.route)}>
+			<Button isDisabled={selected === undefined} on:click={() => goto(selected.route)}>
 				<span slot="text" class="addWallet-bt-text">Next</span>
 			</Button>
 		</div>

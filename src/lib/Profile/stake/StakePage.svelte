@@ -65,12 +65,12 @@
 		],
 	};
 
-	const wallet = {
+	export let wallet = {
 		name: 'Wallet 1',
 		publicKey: '0x9f98e01d2...4ed7',
 	};
 
-	const stakeArray = Array(10).fill({
+	export let stakeArray = Array(10).fill({
 		name: wallet?.name,
 		elapsedSeconds: 20,
 		fullSeconds: 69,
