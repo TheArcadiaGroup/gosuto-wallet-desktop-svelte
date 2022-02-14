@@ -1,3 +1,13 @@
+<!-- 
+	@component 
+	Description:
+	> Basic Popup Component with that makes the background slightly darker when it pops up. 
+
+	Slots:
+	- Pass the content inside the popup here.
+	
+	@author MikeBrandon
+-->
 <script lang="ts">
 	import { scale, fade } from 'svelte/transition';
 	import { createEventDispatcher } from 'svelte';

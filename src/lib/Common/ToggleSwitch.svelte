@@ -1,3 +1,11 @@
+<!-- 
+	@component 
+	Description:
+	> Custom Switch component to allow user to toggle on and off/true and false.
+	
+	@author MikeBrandon
+	@see sidebar
+-->
 <script lang="ts">
 	export let checked: boolean = false;
 </script>

@@ -62,7 +62,7 @@
 				<Button
 					class="add-token-button"
 					on:click={() => dispatch('selectToken', { id: -2 })}
-					glow={true}
+					hasGlow={true}
 				>
 					<div slot="text" class="inner-btn">
 						<PlusIcon />

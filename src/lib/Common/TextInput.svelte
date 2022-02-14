@@ -1,3 +1,10 @@
+<!-- 
+	@component 
+	Description:
+	> Custom textInput component to allow user to input a string/text e.g. a password or number.
+	
+	@author MikeBrandon
+-->
 <script lang="ts">
 	export let label: string = 'Input Your Text';
 	export let value: string | number = '';

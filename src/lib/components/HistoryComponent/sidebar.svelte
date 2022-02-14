@@ -1,13 +1,22 @@
+<!-- 
+	@component 
+	Description:
+	> Right Sidebar for History page with History SideBar Cards.
+	
+	@author MikeBrandon
+	@see historyComponent
+-->
 <script lang="ts">
 	import { slide } from 'svelte/transition';
+
 	import SideBarCard from '$lib/components/HistoryComponent/sideBarCard.svelte';
 
-	// export let historyObject: HistoryObject | null = null;
+	export let historyObject: HistoryObject | null = null;
 </script>
 
 <!-- Layout -->
-<div class={!$$props.historyObject ? 'main h-screen justify-center' : 'main'}>
-	{#if $$props.historyObject}
+<div class={!historyObject ? 'main h-screen justify-center' : 'main'}>
+	{#if historyObject}
 		<div class="sidebar-holder" transition:slide>
 			<SideBarCard
 				wallet={$$props.historyObject.wallet}

@@ -1,3 +1,10 @@
+<!-- @component 
+	Description:
+	> Container for a single validator Object data in the validator page.
+	
+	@author MikeBrandon
+	@see validatorPage
+-->
 <script lang="ts">
 	import { decimalToPercentage } from '$utils';
 
