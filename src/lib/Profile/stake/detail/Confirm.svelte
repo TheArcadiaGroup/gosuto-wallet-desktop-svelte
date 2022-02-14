@@ -40,7 +40,7 @@
 		<Button on:click={confirmStake}>
 			<div slot="text" class="button-text">Stake</div>
 		</Button>
-		<Button transparent={true}>
+		<Button isTransparent={true}>
 			<div slot="text" class="button-text">Cancel</div>
 		</Button>
 	</div>

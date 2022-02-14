@@ -1,17 +1,28 @@
+<!-- 
+	@component 
+	Description:
+	> General reusable Button for most instances in the website.. 
+
+	@author MikeBrandon
+-->
 <script lang="ts">
-	export let transparent = false;
+	export let isTransparent: boolean = false;
+	export let isSelected: boolean = false;
+	export let hasRing: boolean = false;
+	export let hasGlow: boolean = false;
+	export let isDisabled: boolean = false;
 </script>
 
 <button
 	class={($$slots.icon
 		? 'main has-icon'
-		: `main no-icon ${!transparent ? 'not-transparent' : 'transparent'}`) +
+		: `main no-icon ${!isTransparent ? 'not-transparent' : 'transparent'}`) +
 		' ' +
 		$$props.class}
-	class:selected={$$props.selected}
-	class:ring-btn={$$props.ring}
-	class:glow={$$props.glow}
-	disabled={$$props.disabled}
+	class:selected={isSelected}
+	class:ring-btn={hasRing}
+	class:glow={hasGlow}
+	disabled={isDisabled}
 	on:click
 	type={$$props.type}
 >

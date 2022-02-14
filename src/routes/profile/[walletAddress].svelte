@@ -1,6 +1,6 @@
 <script lang="ts">
 	import GridLayout from '$lib/Common/GridLayout.svelte';
-	import ProfileNavigation from '$lib/profile/ProfileNavigation.svelte';
+	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
 	import { onMount } from 'svelte';
 
 	let profile: IWallet = {

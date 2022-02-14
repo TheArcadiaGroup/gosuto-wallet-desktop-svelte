@@ -1,3 +1,11 @@
+<!-- 
+	@component 
+	Description:
+	> HistoryPage component consisting of the mid and last column for the history page.
+	
+	@author MikeBrandon
+	@see history
+-->
 <script lang="ts">
 	import HistoryComponent from '$lib/components/HistoryComponent.svelte';
 	import GridLayout from '$lib/Common/GridLayout.svelte';

@@ -1,10 +1,3 @@
-<!--
-@component
-The wallet send last column, this component should be shown if user has selected a Token.
-This component allows user to select how much and what token they want to send, and who to send it to.
-The logic whether this component is shown or not is handled by it's parents
-@author marekvospel
--->
 <script lang="ts">
 	import { sendToken } from '$utils/token.util';
 
@@ -13,17 +6,8 @@ The logic whether this component is shown or not is handled by it's parents
 	import Button from '$lib/Common/Button.svelte';
 	import Popup from '$lib/Common/Popup.svelte';
 
-	/**
-	 * Name of the token user has selected, and is sending from.
-	 * @type {string}
-	 */
 	export let selectedTokenName = 'Tether';
-	/**
-	 * Code of the token user has selected, and is sending from.
-	 * @type {string}
-	 */
 	export let selectedToken = 'USDT';
-
 	export let selectedTokenAddress = '';
 
 	let popup = '';
@@ -41,10 +25,6 @@ The logic whether this component is shown or not is handled by it's parents
 		confirmPopup = true;
 	}
 
-	/**
-	 * A function run when user clicks confirm inside the 'are you sure' popup.
-	 * It has 50% chance to show Swap successful and 50% chance to show Swap failed, because web3 is not implemented yet
-	 */
 	async function confirmSend(): Promise<void> {
 		confirmPopup = false;
 		popupContent = '';
@@ -81,9 +61,6 @@ The logic whether this component is shown or not is handled by it's parents
 		}
 	}
 
-	/**
-	 * A function executed when close in any popup is clicked, used to clear internal popup and confirm popup, so the popup is hidden.
-	 */
 	function closePopup(): void {
 		confirmPopup = false;
 		popupContent = '';
