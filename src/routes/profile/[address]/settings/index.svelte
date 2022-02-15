@@ -36,6 +36,7 @@
 	<div class="global-grid-mid">
 		<Settings />
 	</div>
+	<div class="global-grid-right dark:bg-dark-background" />
 </div>
 
 <style lang="postcss" global>
@@ -45,5 +46,11 @@
 
 	:local(.global-grid-mid) {
 		@apply dark:bg-dark-background;
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+
+	.global-grid-mid::-webkit-scrollbar {
+		@apply w-0 h-0;
 	}
 </style>

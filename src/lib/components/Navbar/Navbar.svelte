@@ -26,7 +26,7 @@
 			return n;
 		});
 		navItem.active = true;
-		if (route != '') goto(route);
+		if (route) goto(route);
 	};
 </script>
 
@@ -48,7 +48,7 @@
 		>
 		<NavItem
 			navItem={navItemsValues[4]}
-			on:click={() => activateItem(navItemsValues[4], 'all-stakes')}
+			on:click={() => activateItem(navItemsValues[4], '/all-stakes')}
 			><NavStackIcon class="nav-icon" /></NavItem
 		>
 		<NavItem
