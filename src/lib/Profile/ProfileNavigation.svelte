@@ -28,6 +28,8 @@
 
 	export let forRoute: 'profile' | 'all-stakes' = 'profile';
 
+	export let walletAddress: string = 'asidbashub';
+
 	/**Options for the content of the menu. Either 'profile' or 'all-stakes'.*/
 	const menuItemsOptions: {
 		profile: typeof menuItems;
@@ -68,7 +70,7 @@
 	/**Handler for clicking on a menu item in the menu and redirectin to the corresponding subroute.*/
 	function menuSelect(e: CustomEvent) {
 		const selection = e.detail.menu_item;
-		goto(`/${forRoute}/${selection}`);
+		goto(`/${forRoute}/${walletAddress}/${selection}`);
 	}
 
 	/**Handler for clicking "Add wallet" button, that prompts user with add wallet UI flow.*/
