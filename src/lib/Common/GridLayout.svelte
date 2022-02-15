@@ -242,7 +242,6 @@
 	:local(.first-column),
 	:local(.last-column) {
 		@apply z-30 dark:md:bg-dark-blue w-full;
-		box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.2);
 	}
 
 	:local(.first-column) {
