@@ -14,9 +14,10 @@
 
 	import GridLayout from '$lib/Common/GridLayout.svelte';
 	import HistoryPage from '$lib/components/HistoryPage.svelte';
-	import ProfileNavigation from '$lib/profile/ProfileNavigation.svelte';
+	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
 
 	import { shortenAddress } from '$utils';
+	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 
 	let data: HistoryObject[];
 	export let address: string;
@@ -26,7 +27,7 @@
 	});
 
 	const getData = async (address: string) => {
-		fetch(`../../api/profile/[address]/history/?address=${address}`)
+		fetch(`/api/profile/[address]/history`, { method: 'POST', body: address })
 			.then((response) => response.json())
 			.then((response) => (data = response))
 			.catch((error) => {
@@ -56,14 +57,19 @@
 </script>
 
 {#if data}
-	<GridLayout>
-		<div slot="first" class="size-full">
-			<ProfileNavigation {user} />
+	<div class="flex">
+		<div class="global-grid-nav">
+			<Navbar />
 		</div>
-		<div slot="mid">
+		<div class="global-grid-left">
+			<div class="size-full">
+				<ProfileNavigation {user} />
+			</div>
+		</div>
+		<div class="global-grid-mid">
 			<HistoryPage historyArray={data} isInProfileRoute={true} address={shortenAddress(address)} />
 		</div>
-	</GridLayout>
+	</div>
 {/if}
 
 <style lang="postcss" global>

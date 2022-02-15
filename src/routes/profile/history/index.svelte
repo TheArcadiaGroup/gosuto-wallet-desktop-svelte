@@ -16,7 +16,8 @@
 	import GridLayout from '$lib/Common/GridLayout.svelte';
 
 	import HistoryPage from '$lib/components/HistoryPage.svelte';
-	import ProfileNavigation from '$lib/profile/ProfileNavigation.svelte';
+	import Navbar from '$lib/components/Navbar/Navbar.svelte';
+	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
 
 	export let data;
 
@@ -41,14 +42,19 @@
 	};
 </script>
 
-<GridLayout>
-	<div slot="first" class="size-full">
-		<ProfileNavigation {user} />
+<div class="flex">
+	<div class="global-grid-nav">
+		<Navbar />
 	</div>
-	<div slot="mid">
+	<div class="global-grid-left">
+		<div class="size-full">
+			<ProfileNavigation {user} />
+		</div>
+	</div>
+	<div class="global-grid-mid">
 		<HistoryPage historyArray={data.data} isInProfileRoute={false} />
 	</div>
-</GridLayout>
+</div>
 
 <style lang="postcss" global>
 	:local(.size-full) {

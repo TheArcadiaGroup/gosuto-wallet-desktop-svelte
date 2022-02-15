@@ -1,5 +1,13 @@
+<!-- 
+	@component 
+	Description:
+	> Container for a single validator Object data in the validator page.
+	
+	@author MikeBrandon
+-->
 <script>
 	import ValidatorItem from './ValidatorItem/index.svelte';
+
 	export let validatorArray = Array(10);
 </script>
 

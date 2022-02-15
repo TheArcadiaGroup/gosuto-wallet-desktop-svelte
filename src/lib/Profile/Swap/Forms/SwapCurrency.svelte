@@ -1,10 +1,3 @@
-<!--
-@component
-The wallet swap last column, this component should be shown if user has selected a Token.
-This component allows user to select how much and what token they want to swap with their currently selected token.
-The logic whether this component is shown or not is handled by it's parents
-@author marekvospel
--->
 <script lang="ts">
 	import { getTokenValue, swapToken } from '$utils/token.util';
 
@@ -14,15 +7,10 @@ The logic whether this component is shown or not is handled by it's parents
 	import Button from '$lib/Common/Button.svelte';
 	import Popup from '$lib/Common/Popup.svelte';
 
-	/**
-	 * Code of the token user has selected, and is swapping from.
-	 * @type {string}
-	 */
 	export let fromToken = 'USDT';
 	/**
 	 * Whether a warning about crating a new token should be shown.
 	 * The warning: 'This wallet currently does not contain USDC. USDC token will be added to this wallet upon swap'
-	 * @type {boolean}
 	 */
 	export let createNewToken = true;
 
@@ -39,10 +27,6 @@ The logic whether this component is shown or not is handled by it's parents
 	$: fromUSDValue = getTokenValue(fromToken);
 	$: toUSDValue = getTokenValue(toToken);
 
-	/**
-	 * A function run when user clicks confirm inside the 'are you sure' popup.
-	 * It has 50% chance to show Swap successful and 50% chance to show Swap failed, because web3 is not implemented yet
-	 */
 	async function confirmSwap(): Promise<void> {
 		confirmPopup = false;
 
@@ -64,9 +48,6 @@ The logic whether this component is shown or not is handled by it's parents
 		else popup = 'Swap Successful!';
 	}
 
-	/**
-	 * A function executed when close in any popup is clicked, used to clear internal popup and confirm popup, so the popup is hidden.
-	 */
 	function closePopup(): void {
 		confirmPopup = false;
 		popup = '';

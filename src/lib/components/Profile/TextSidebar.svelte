@@ -1,9 +1,3 @@
-<!--
-@component
-The wallet send/swap last column. This component informs user that no Token is selected and if they want to send/swap Tokens, they have to select one.
-All logic of this component (whether it is shown or not) is handled by it's parents
-@author marekvospel
--->
 <div class="text-sidebar">
 	<p class="sidebar-text"><slot /></p>
 </div>

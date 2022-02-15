@@ -1,3 +1,11 @@
+<!-- 
+	@component 
+	Description:
+	> HistoryPage component consisting of the mid and last column for the history page.
+	
+	@author MikeBrandon
+	@see history
+-->
 <script lang="ts">
 	import HistoryComponent from '$lib/components/HistoryComponent.svelte';
 	import GridLayout from '$lib/Common/GridLayout.svelte';
@@ -44,7 +52,7 @@
 </script>
 
 <GridLayout {hideNavbar}>
-	<div class="mid-holder" slot="mid">
+	<div class="mid-holder" class:center-mid={!hideNavbar} slot="mid">
 		<div class="main">
 			<div class="header">
 				{#if !isInProfileRoute}
@@ -90,6 +98,10 @@
 <style lang="postcss" global>
 	:local(.mid-holder) {
 		@apply flex items-center md:justify-end mr-[2vw] w-full md:w-auto px-4;
+	}
+
+	:local(.center-mid) {
+		@apply md:justify-center;
 	}
 
 	:local(.main) {

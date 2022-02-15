@@ -66,14 +66,10 @@
 		if (!secondPage) {
 			if (copied === true) {
 				secondPage = true;
-				let numbers: Number[] = Array.from({ length: 10 }, (_, i) => i + 1);
-				let generatedMissing: Number[] = numbers.sort((a, b) => 0.5 - Math.random()).slice(0, 3);
-				words
-					.filter((w) => generatedMissing.includes(w.id))
-					.forEach((e) => {
-						e.isEmpty = true;
-						e.word = '';
-					});
+				words.forEach((e) => {
+					e.isEmpty = true;
+					e.word = '';
+				});
 				words = words;
 			} else {
 				showPopup = true;
@@ -83,6 +79,18 @@
 				postData();
 			}
 		}
+	};
+
+	let handlePaste = (seedWord: SeedWord) => {
+		let seedWords: string[] = seedWord.word.split(' ');
+		seedWords.forEach((s, i) => {
+			if (i < words.length) {
+				words[i].word = s;
+				words[0].word = seedWords[0];
+			}
+		});
+		words[0].word = seedWords[0];
+		words = words;
 	};
 
 	/** Sends wallet creation data to api route to create a wallet*/
@@ -140,7 +148,7 @@
 		</div>
 		<div class="createSeed-seed-phrase">
 			{#each words as seedWord}
-				<SeedWordBox {seedWord} />
+				<SeedWordBox {seedWord} {secondPage} {handlePaste} />
 			{/each}
 		</div>
 

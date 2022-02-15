@@ -13,6 +13,6 @@ export const get = async (request: any) => {
 
 	return {
 		status: 200,
-		body: value,
+		body: { value },
 	};
 };

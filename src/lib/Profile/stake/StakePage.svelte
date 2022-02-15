@@ -65,12 +65,12 @@
 		],
 	};
 
-	const wallet = {
+	export let wallet = {
 		name: 'Wallet 1',
 		publicKey: '0x9f98e01d2...4ed7',
 	};
 
-	const stakeArray = Array(10).fill({
+	export let stakeArray = Array(10).fill({
 		name: wallet?.name,
 		elapsedSeconds: 20,
 		fullSeconds: 69,
@@ -79,30 +79,36 @@
 	});
 </script>
 
-<GridLayout>
-	<div slot="first" class="size-full">
-		<!-- feed the user profile data to ProfileNavigation component -->
-		<ProfileNavigation {user} />
+<div class="flex">
+	<div class="global-grid-left">
+		<div class="size-full">
+			<!-- feed the user profile data to ProfileNavigation component -->
+			<ProfileNavigation {user} />
+		</div>
 	</div>
-	<div slot="mid" class="size-full">
-		<StakesFromWallet on:stakeSelect={stakeSelect} {wallet} {stakeArray} />
+	<div class="global-grid-mid">
+		<div class="size-full">
+			<StakesFromWallet on:stakeSelect={stakeSelect} {wallet} {stakeArray} />
+		</div>
 	</div>
-	<div slot="last" class="size-full last-column">
-		{#if selectedLastCollumnContent}
-			<div class="last-column-header">
-				<div class="w-6 h-6">
-					<ArrowInCircle disabled={false} on:click={closeStake} />
+	<div class="global-grid-right">
+		<div class="size-full last-column">
+			{#if selectedLastCollumnContent}
+				<div class="last-column-header">
+					<div class="w-6 h-6">
+						<ArrowInCircle disabled={false} on:click={closeStake} />
+					</div>
+					<div class="pb-1">Stake</div>
 				</div>
-				<div class="pb-1">Stake</div>
-			</div>
-			<div class="flex-grow">
-				<svelte:component this={lastCollumnContent[selectedLastCollumnContent]} />
-			</div>
-		{:else}
-			<div class="placeholder-text">Select a stake for more information</div>
-		{/if}
+				<div class="flex-grow">
+					<svelte:component this={lastCollumnContent[selectedLastCollumnContent]} />
+				</div>
+			{:else}
+				<div class="placeholder-text">Select a stake for more information</div>
+			{/if}
+		</div>
 	</div>
-</GridLayout>
+</div>
 
 <style lang="postcss" global>
 	:local(.placeholder-text) {

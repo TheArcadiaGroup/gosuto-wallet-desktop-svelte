@@ -26,7 +26,7 @@
 			return n;
 		});
 		navItem.active = true;
-		if (route != '') goto(route);
+		if (route) goto(route);
 	};
 </script>
 
@@ -48,12 +48,12 @@
 		>
 		<NavItem
 			navItem={navItemsValues[4]}
-			on:click={() => activateItem(navItemsValues[4], 'all-stakes')}
+			on:click={() => activateItem(navItemsValues[4], '/all-stakes')}
 			><NavStackIcon class="nav-icon" /></NavItem
 		>
 		<NavItem
 			navItem={navItemsValues[5]}
-			on:click={() => activateItem(navItemsValues[5], '/currency-performance')}
+			on:click={() => activateItem(navItemsValues[5], '/performance')}
 			><NavActivityIcon class="nav-icon" /></NavItem
 		>
 	</div>
