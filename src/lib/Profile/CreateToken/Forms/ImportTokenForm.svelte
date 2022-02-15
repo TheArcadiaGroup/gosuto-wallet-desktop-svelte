@@ -62,7 +62,7 @@
 	</form>
 </div>
 
-<style global>
+<style lang="postcss" global>
 	:local(.create-token) {
 		@apply w-full;
 		@apply flex flex-col;
