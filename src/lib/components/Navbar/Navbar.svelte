@@ -15,6 +15,10 @@
 	/** An array representing the values of navItems */
 	let navItemsValues: NavIcon[];
 
+	let selectedProfile = localStorage.getItem('selectedProfile')
+		? localStorage.getItem('selectedProfile')
+		: 'wallet-1';
+
 	navItems.subscribe((value) => {
 		navItemsValues = value;
 	});
@@ -38,7 +42,7 @@
 		>
 		<NavItem
 			navItem={navItemsValues[2]}
-			on:click={() => activateItem(navItemsValues[2], '/profile')}
+			on:click={() => activateItem(navItemsValues[2], `/profile/${selectedProfile}/history`)}
 			><div class="navbar-avatar-img" /></NavItem
 		>
 		<NavItem
