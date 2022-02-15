@@ -44,8 +44,8 @@
 
 		// TODO: add tests for the different sidebars
 		let unstakeSidebar: boolean = false;
-		let claimRewardSidebar: boolean = false;
 		let unstakeProgressSidebar: boolean = false;
+		let claimRewardSidebar: boolean = false;
 		let unlockInitialStakeSidebar: boolean = false;
 
 		if (unstakeSidebar) {
@@ -59,9 +59,6 @@
 		} else if (unlockInitialStakeSidebar) {
 			selectedLastCollumnContent = 'unlockInitialStake';
 		}
-
-		// TODO: change selectedLastCollumnContent based on the state of the stake
-		// DEV
 	}
 
 	function addStake(e: CustomEvent) {
