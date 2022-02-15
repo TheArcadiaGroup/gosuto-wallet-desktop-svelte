@@ -45,6 +45,10 @@
 	function stakeSelect(e: CustomEvent) {
 		dispatch('stakeSelect', e.detail);
 	}
+
+	function addStake() {
+		dispatch('addStake');
+	}
 </script>
 
 <div class="main">
@@ -63,7 +67,7 @@
 		<div class="title-label">Stakes from this wallet</div>
 		<div>
 			<Button>
-				<div slot="text" class="button-label">+ Stake</div>
+				<div slot="text" class="button-label" on:click={addStake}>+ Stake</div>
 			</Button>
 		</div>
 	</div>

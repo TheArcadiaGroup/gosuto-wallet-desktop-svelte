@@ -42,7 +42,13 @@
 
 		// TODO: change selectedLastCollumnContent based on the state of the stake
 		// DEV
+
+		selectedLastCollumnContent = 'unstake';
+	}
+
+	function addStake(e: CustomEvent) {
 		selectedLastCollumnContent = 'confirm';
+		console.log('selectedLastCollumnContent:', selectedLastCollumnContent);
 	}
 
 	// DEV
@@ -85,7 +91,7 @@
 		<ProfileNavigation {user} />
 	</div>
 	<div slot="mid" class="size-full">
-		<StakesFromWallet on:stakeSelect={stakeSelect} {wallet} {stakeArray} />
+		<StakesFromWallet on:stakeSelect={stakeSelect} on:addStake={addStake} {wallet} {stakeArray} />
 	</div>
 	<div slot="last" class="size-full last-column">
 		{#if selectedLastCollumnContent}
