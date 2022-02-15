@@ -15,9 +15,7 @@
 	/** An array representing the values of navItems */
 	let navItemsValues: NavIcon[];
 
-	let selectedProfile = localStorage.getItem('selectedProfile')
-		? localStorage.getItem('selectedProfile')
-		: 'wallet-1';
+	let selectedProfile = localStorage.getItem('selectedProfile');
 
 	navItems.subscribe((value) => {
 		navItemsValues = value;

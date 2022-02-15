@@ -64,6 +64,7 @@
 			available: number;
 			staked: number;
 			unclaimed: number;
+			address: string;
 		}[];
 	};
 
