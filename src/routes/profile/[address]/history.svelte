@@ -17,6 +17,7 @@
 	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
 
 	import { shortenAddress } from '$utils';
+	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 
 	let data: HistoryObject[];
 	export let address: string;
@@ -56,14 +57,19 @@
 </script>
 
 {#if data}
-	<GridLayout>
-		<div slot="first" class="size-full">
-			<ProfileNavigation {user} />
+	<div class="flex">
+		<div class="global-grid-nav">
+			<Navbar />
 		</div>
-		<div slot="mid">
+		<div class="global-grid-left">
+			<div class="size-full">
+				<ProfileNavigation {user} />
+			</div>
+		</div>
+		<div class="global-grid-mid">
 			<HistoryPage historyArray={data} isInProfileRoute={true} address={shortenAddress(address)} />
 		</div>
-	</GridLayout>
+	</div>
 {/if}
 
 <style lang="postcss" global>

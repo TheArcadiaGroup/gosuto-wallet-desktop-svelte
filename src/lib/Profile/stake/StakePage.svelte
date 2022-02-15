@@ -102,19 +102,24 @@
 	});
 </script>
 
-<GridLayout>
-	<div slot="first" class="size-full">
-		<!-- feed the user profile data to ProfileNavigation component -->
-		<ProfileNavigation {user} />
+<div class="flex">
+	<div class="global-grid-left">
+		<div class="size-full">
+			<!-- feed the user profile data to ProfileNavigation component -->
+			<ProfileNavigation {user} />
+		</div>
 	</div>
 	<div slot="mid" class="size-full">
 		<StakesFromWallet on:stakeSelect={stakeSelect} on:addStake={addStake} {wallet} {stakeArray} />
 	</div>
-	<div slot="last" class="size-full last-column">
-		{#if selectedLastCollumnContent}
-			<div class="last-column-header">
-				<div class="w-6 h-6">
-					<ArrowInCircle disabled={false} on:click={closeStake} />
+	<div class="global-grid-right">
+		<div class="size-full last-column">
+			{#if selectedLastCollumnContent}
+				<div class="last-column-header">
+					<div class="w-6 h-6">
+						<ArrowInCircle disabled={false} on:click={closeStake} />
+					</div>
+					<div class="pb-1">Stake</div>
 				</div>
 				<div class="pb-1">Stake</div>
 			</div>
@@ -128,7 +133,7 @@
 			<div class="placeholder-text">Select a stake for more information</div>
 		{/if}
 	</div>
-</GridLayout>
+</div>
 
 <style lang="postcss" global>
 	:local(.placeholder-text) {
