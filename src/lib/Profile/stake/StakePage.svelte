@@ -28,6 +28,8 @@
 	let selectedLastCollumnContent: any = null;
 	let selectedStake: any = null;
 
+	let allowUnstake = false;
+
 	/**Handler for clicking back arrown in the last collumn and closing the stake detail*/
 	function closeStake() {
 		selectedLastCollumnContent = null;
@@ -40,10 +42,26 @@
 		selectedStake && closeStake();
 		selectedStake = e.detail;
 
+		// TODO: add tests for the different sidebars
+		let unstakeSidebar: boolean = false;
+		let claimRewardSidebar: boolean = false;
+		let unstakeProgressSidebar: boolean = false;
+		let unlockInitialStakeSidebar: boolean = false;
+
+		if (unstakeSidebar) {
+			selectedLastCollumnContent = 'unstake';
+			allowUnstake = true;
+		} else if (unstakeProgressSidebar) {
+			selectedLastCollumnContent = 'unstake';
+			allowUnstake = false;
+		} else if (claimRewardSidebar) {
+			selectedLastCollumnContent = 'claimReward';
+		} else if (unlockInitialStakeSidebar) {
+			selectedLastCollumnContent = 'unlockInitialStake';
+		}
+
 		// TODO: change selectedLastCollumnContent based on the state of the stake
 		// DEV
-
-		selectedLastCollumnContent = 'unstake';
 	}
 
 	function addStake(e: CustomEvent) {
@@ -80,8 +98,10 @@
 		name: wallet?.name,
 		elapsedSeconds: 20,
 		fullSeconds: 69,
+		unstaked: false,
 		staked: 420,
-		unlocked: 69,
+		unlocked: 0,
+		rewards: 0,
 	});
 </script>
 
@@ -102,7 +122,10 @@
 				<div class="pb-1">Stake</div>
 			</div>
 			<div class="flex-grow">
-				<svelte:component this={lastCollumnContent[selectedLastCollumnContent]} />
+				<svelte:component
+					this={lastCollumnContent[selectedLastCollumnContent]}
+					disabled={allowUnstake}
+				/>
 			</div>
 		{:else}
 			<div class="placeholder-text">Select a stake for more information</div>

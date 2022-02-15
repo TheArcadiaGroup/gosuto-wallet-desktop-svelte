@@ -23,8 +23,10 @@
 		name: string;
 		elapsedSeconds: number;
 		fullSeconds: number;
+		unstaked: boolean;
 		staked: number;
 		unlocked: number;
+		rewards: number;
 	}
 
 	export let stakeArray: Stake[];
