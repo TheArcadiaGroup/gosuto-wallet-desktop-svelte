@@ -52,7 +52,7 @@
 </script>
 
 <GridLayout {hideNavbar}>
-	<div class="mid-holder" slot="mid">
+	<div class="mid-holder" class:center-mid={!hideNavbar} slot="mid">
 		<div class="main">
 			<div class="header">
 				{#if !isInProfileRoute}
@@ -98,6 +98,10 @@
 <style lang="postcss" global>
 	:local(.mid-holder) {
 		@apply flex items-center md:justify-end mr-[2vw] w-full md:w-auto px-4;
+	}
+
+	:local(.center-mid) {
+		@apply md:justify-center;
 	}
 
 	:local(.main) {
