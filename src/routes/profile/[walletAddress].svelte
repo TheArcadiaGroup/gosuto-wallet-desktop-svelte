@@ -24,7 +24,7 @@
 
 	/** post selected profile data to that profile's api route */
 	const getData = async () => {
-		fetch('/api/profile/[walletAddress')
+		fetch('/api/profile/[walletAddress]')
 			.then((response) => response.json())
 			.then((response) => (profile = response))
 			.catch((error) => {
@@ -50,7 +50,7 @@
 <GridLayout>
 	<div slot="first" class="size-full">
 		<!-- feed the user profile data to ProfileNavigation component -->
-		<ProfileNavigation {user} />
+		<ProfileNavigation {user} walletAddress={profile.walletAddress} />
 	</div>
 </GridLayout>
 
