@@ -9,6 +9,8 @@
 	import UnlockInitialStake from '$lib/Profile/stake/detail/UnlockInitialStake.svelte';
 	import Unstake from '$lib/Profile/stake/detail/Unstake.svelte';
 
+	import Navbar from '$components/Navbar/Navbar.svelte';
+
 	import { page } from '$app/stores';
 
 	$: slug = $page.params.slug;
@@ -103,13 +105,16 @@
 </script>
 
 <div class="flex">
+	<div class="global-grid-nav">
+		<Navbar />
+	</div>
 	<div class="global-grid-left">
 		<div class="size-full">
 			<!-- feed the user profile data to ProfileNavigation component -->
 			<ProfileNavigation {user} />
 		</div>
 	</div>
-	<div slot="mid" class="size-full">
+	<div class="global-grid-mid size-full">
 		<StakesFromWallet on:stakeSelect={stakeSelect} on:addStake={addStake} {wallet} {stakeArray} />
 	</div>
 	<div class="global-grid-right">
@@ -122,16 +127,16 @@
 					<div class="pb-1">Stake</div>
 				</div>
 				<div class="pb-1">Stake</div>
-			</div>
-			<div class="flex-grow">
-				<svelte:component
-					this={lastCollumnContent[selectedLastCollumnContent]}
-					disabled={allowUnstake}
-				/>
-			</div>
-		{:else}
-			<div class="placeholder-text">Select a stake for more information</div>
-		{/if}
+				<div class="flex-grow">
+					<svelte:component
+						this={lastCollumnContent[selectedLastCollumnContent]}
+						disabled={allowUnstake}
+					/>
+				</div>
+			{:else}
+				<div class="placeholder-text">Select a stake for more information</div>
+			{/if}
+		</div>
 	</div>
 </div>
 
