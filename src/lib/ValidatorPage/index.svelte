@@ -23,7 +23,7 @@
 
 <style lang="postcss" global>
 	:local(.main) {
-		@apply h-screen flex flex-col p-4 md:p-0;
+		@apply h-screen flex flex-col p-4 md:p-0 w-screen md:w-[65%];
 	}
 
 	:local(h3) {
