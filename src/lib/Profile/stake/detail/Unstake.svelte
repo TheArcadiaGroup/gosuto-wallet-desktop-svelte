@@ -10,6 +10,16 @@
 
 	export let disabled = false;
 
+	export let stake = {
+		name: wallet?.name,
+		elapsedSeconds: 20,
+		fullSeconds: 69,
+		unstaked: false,
+		staked: 420,
+		unlocked: 0,
+		rewards: 0,
+	};
+
 	/**Handler for clicking the "Unstake" button. Unstakes the stake.*/
 	function unstake() {
 		if (disabled) return;
@@ -25,7 +35,7 @@
 
 <div class="unstake">
 	<div class="title">Unstake CSPR</div>
-	<div class="text">Unstake: 15 CSPR</div>
+	<div class="text">Unstake: {stake.staked} CSPR</div>
 	<div class="text staking-length">
 		Unstaking will take until:
 		<div class="until-date">1 Dec 2021</div>
