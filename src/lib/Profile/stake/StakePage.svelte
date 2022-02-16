@@ -9,6 +9,8 @@
 	import UnlockInitialStake from '$lib/Profile/stake/detail/UnlockInitialStake.svelte';
 	import Unstake from '$lib/Profile/stake/detail/Unstake.svelte';
 
+	import Navbar from '$components/Navbar/Navbar.svelte';
+
 	import { page } from '$app/stores';
 
 	$: slug = $page.params.slug;
@@ -28,6 +30,8 @@
 	let selectedLastCollumnContent: any = null;
 	let selectedStake: any = null;
 
+	let allowUnstake = false;
+
 	/**Handler for clicking back arrown in the last collumn and closing the stake detail*/
 	function closeStake() {
 		selectedLastCollumnContent = null;
@@ -40,9 +44,28 @@
 		selectedStake && closeStake();
 		selectedStake = e.detail;
 
-		// TODO: change selectedLastCollumnContent based on the state of the stake
-		// DEV
+		// TODO: add tests for the different sidebars
+		let unstakeSidebar: boolean = false;
+		let unstakeProgressSidebar: boolean = false;
+		let claimRewardSidebar: boolean = false;
+		let unlockInitialStakeSidebar: boolean = false;
+
+		if (unstakeSidebar) {
+			selectedLastCollumnContent = 'unstake';
+			allowUnstake = true;
+		} else if (unstakeProgressSidebar) {
+			selectedLastCollumnContent = 'unstake';
+			allowUnstake = false;
+		} else if (claimRewardSidebar) {
+			selectedLastCollumnContent = 'claimReward';
+		} else if (unlockInitialStakeSidebar) {
+			selectedLastCollumnContent = 'unlockInitialStake';
+		}
+	}
+
+	function addStake(e: CustomEvent) {
 		selectedLastCollumnContent = 'confirm';
+		console.log('selectedLastCollumnContent:', selectedLastCollumnContent);
 	}
 
 	// DEV
@@ -74,22 +97,25 @@
 		name: wallet?.name,
 		elapsedSeconds: 20,
 		fullSeconds: 69,
+		unstaked: false,
 		staked: 420,
-		unlocked: 69,
+		unlocked: 0,
+		rewards: 0,
 	});
 </script>
 
 <div class="flex">
+	<div class="global-grid-nav">
+		<Navbar />
+	</div>
 	<div class="global-grid-left">
 		<div class="size-full">
 			<!-- feed the user profile data to ProfileNavigation component -->
 			<ProfileNavigation {user} />
 		</div>
 	</div>
-	<div class="global-grid-mid">
-		<div class="size-full">
-			<StakesFromWallet on:stakeSelect={stakeSelect} {wallet} {stakeArray} />
-		</div>
+	<div class="global-grid-mid size-full">
+		<StakesFromWallet on:stakeSelect={stakeSelect} on:addStake={addStake} {wallet} {stakeArray} />
 	</div>
 	<div class="global-grid-right">
 		<div class="size-full last-column">
@@ -100,8 +126,12 @@
 					</div>
 					<div class="pb-1">Stake</div>
 				</div>
+				<div class="pb-1">Stake</div>
 				<div class="flex-grow">
-					<svelte:component this={lastCollumnContent[selectedLastCollumnContent]} />
+					<svelte:component
+						this={lastCollumnContent[selectedLastCollumnContent]}
+						disabled={allowUnstake}
+					/>
 				</div>
 			{:else}
 				<div class="placeholder-text">Select a stake for more information</div>

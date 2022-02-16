@@ -52,7 +52,7 @@
 	}
 
 	:local(.currently-open) {
-		@apply bg-light-purple;
+		@apply bg-light-purple text-white;
 	}
 
 	:local(.menu-item):focus {
