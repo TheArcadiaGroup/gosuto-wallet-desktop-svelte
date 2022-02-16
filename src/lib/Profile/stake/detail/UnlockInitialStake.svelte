@@ -5,6 +5,16 @@
 <script lang="ts">
 	import Button from '$lib/Common/Button.svelte';
 
+	export let stake = {
+		name: wallet?.name,
+		elapsedSeconds: 20,
+		fullSeconds: 69,
+		unstaked: false,
+		staked: 420,
+		unlocked: 0,
+		rewards: 0,
+	};
+
 	/**Handler for clicking the "Claim" button. Claims the initial stake*/
 	function claim() {
 		// confirm claim
@@ -18,7 +28,7 @@
 
 <div class="unlock-initial-stake">
 	<div class="title">Unlock initial Stake</div>
-	<div class="text">Initital stake: 20 CSPR</div>
+	<div class="text">Initital stake: {stake.staked} CSPR</div>
 	<div class="buttons">
 		<Button on:click={claim}>
 			<div slot="text" class="button-text">Claim</div>
