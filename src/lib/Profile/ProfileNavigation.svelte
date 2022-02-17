@@ -76,8 +76,11 @@
 		} else {
 			if (walletAddress) {
 				goto(`/${forRoute}/${walletAddress}/${selection}`);
-			} else {
+			} else if (user.wallets.length > 0) {
+				localStorage.setItem('selectedProfile', user.wallets[0].address);
 				goto(`/${forRoute}/${user.wallets[0].address}/${selection}`);
+			} else {
+				goto('/add-wallet');
 			}
 		}
 	}
