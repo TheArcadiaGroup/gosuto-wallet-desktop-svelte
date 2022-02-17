@@ -79,8 +79,9 @@
 		{/each}
 	</div>
 	<div class="show-more-container">
-		<!-- TODO show this only, when there are too many cards -->
-		<div class="show-more">Show more</div>
+		{#if stakeArray.length > 3}
+			<div class="show-more">Show more</div>
+		{/if}
 	</div>
 </div>
 
@@ -118,7 +119,7 @@
 	}
 
 	:local(.stake-cards-container) {
-		@apply flex-grow h-0 px-8 overflow-y-scroll flex flex-col items-center gap-8 py-4;
+		@apply flex-grow h-0 px-8 overflow-y-scroll flex flex-col items-center gap-8 py-4 xl:h-[72vh] 2xl:h-[80vh];
 	}
 
 	:local(.show-more-container) {
