@@ -86,7 +86,9 @@
 					/>
 				{/each}
 			</div>
-			<button>Show more</button>
+			{#if filteredArray.length > 7}
+				<button>Show more</button>
+			{/if}
 		</div>
 	</div>
 	<Sidebar

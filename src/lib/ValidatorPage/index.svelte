@@ -8,7 +8,7 @@
 <script>
 	import ValidatorItem from './ValidatorItem/index.svelte';
 
-	export let validatorArray = Array(10);
+	export let validatorArray = Array(4);
 </script>
 
 <div class="main">
@@ -18,7 +18,9 @@
 			<ValidatorItem class={i > 0 ? 'top-border' : ''} />
 		{/each}
 	</div>
-	<button>Show more</button>
+	{#if validatorArray.length > 6}
+		<button>Show more</button>
+	{/if}
 </div>
 
 <style lang="postcss" global>
