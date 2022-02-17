@@ -82,6 +82,7 @@ interface IToken {
 	tokenAmountHeldUSD: number;
 	limitedSupply: boolean;
 	mintableSupply: boolean;
+	shareToken: boolean;
 	contractString: string;
 	contractAddress: string;
 	tokenPriceUSD: number;

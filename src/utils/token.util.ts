@@ -118,6 +118,7 @@ export function createToken(
 	USDPrice: number,
 	limitedSupply: boolean,
 	mintableSupply: boolean,
+	shareToken: boolean,
 ): boolean {
 	const contractAddress = 'abc';
 
@@ -131,6 +132,7 @@ export function createToken(
 		tokenAmountHeldUSD: 0,
 		limitedSupply,
 		mintableSupply,
+		shareToken,
 		contractString,
 		tokenPriceUSD: USDPrice,
 		decimalsOfPrecision: 16,
