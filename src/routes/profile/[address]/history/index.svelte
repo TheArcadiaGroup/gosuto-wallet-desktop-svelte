@@ -45,12 +45,14 @@
 				avalible: 5000,
 				staked: 2500,
 				unclaimed: 375,
+				address: '0xhoiqhgovbnovlwggwrg',
 			},
 			{
 				name: 'Wallet 2',
 				avalible: 5000,
 				staked: 2500,
 				unclaimed: 375,
+				address: '0x567hfgdhjestth53y35y',
 			},
 		],
 	};
