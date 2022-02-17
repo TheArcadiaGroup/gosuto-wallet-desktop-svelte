@@ -74,7 +74,11 @@
 		if (menuItems == menuItemsOptions['all-stakes']) {
 			goto(`/${forRoute}/${selection}`);
 		} else {
-			goto(`/${forRoute}/${walletAddress}/${selection}`);
+			if (walletAddress) {
+				goto(`/${forRoute}/${walletAddress}/${selection}`);
+			} else {
+				goto(`/${forRoute}/${user.wallets[0].address}/${selection}`);
+			}
 		}
 	}
 
