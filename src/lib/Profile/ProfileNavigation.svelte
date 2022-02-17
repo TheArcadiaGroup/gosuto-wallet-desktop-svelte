@@ -28,7 +28,7 @@
 
 	export let forRoute: 'profile' | 'all-stakes' = 'profile';
 
-	export let walletAddress: string = 'asidbashub';
+	export let walletAddress: string = localStorage.getItem('selectedProfile');
 
 	/**Options for the content of the menu. Either 'profile' or 'all-stakes'.*/
 	const menuItemsOptions: {
@@ -64,13 +64,18 @@
 			available: number;
 			staked: number;
 			unclaimed: number;
+			address: string;
 		}[];
 	};
 
 	/**Handler for clicking on a menu item in the menu and redirectin to the corresponding subroute.*/
 	function menuSelect(e: CustomEvent) {
 		const selection = e.detail.menu_item;
-		goto(`/${forRoute}/${walletAddress}/${selection}`);
+		if (menuItems == menuItemsOptions['all-stakes']) {
+			goto(`/${forRoute}/${selection}`);
+		} else {
+			goto(`/${forRoute}/${walletAddress}/${selection}`);
+		}
 	}
 
 	/**Handler for clicking "Add wallet" button, that prompts user with add wallet UI flow.*/
