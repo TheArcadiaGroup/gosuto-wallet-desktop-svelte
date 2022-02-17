@@ -99,11 +99,11 @@
 
 <style lang="postcss" global>
 	:local(.mid-holder) {
-		@apply flex items-center md:justify-end mr-[2vw] w-full md:w-auto px-4;
+		@apply flex items-center md:justify-end mr-[5vw] w-full md:w-auto px-4;
 	}
 
 	:local(.center-mid) {
-		@apply md:justify-center;
+		@apply md:justify-end;
 	}
 
 	:local(.main) {
