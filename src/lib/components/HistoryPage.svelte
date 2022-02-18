@@ -19,26 +19,32 @@
 	export let walletNumber: string = '1';
 	export let address: string = '0x9f98e01d3...4ed7';
 	let filteredArray: HistoryObject[];
+	let showingArray: HistoryObject[];
+
+	let numberOfItemsShown = 7;
+	let pageNumber = 1;
 
 	let optionsArray: string[] = ['All', 'Received', 'Sent', 'Swap', 'Stake'];
 	let filterId: number = 0;
 	$: historyFilter = optionsArray[filterId];
 
+	$: showingArray = historyArray.slice(0, numberOfItemsShown * pageNumber);
+
 	$: switch (filterId) {
 		case 0:
-			filteredArray = historyArray;
+			filteredArray = showingArray;
 			break;
 		case 1:
-			filteredArray = historyArray.filter((obj) => obj.status === 'Received');
+			filteredArray = showingArray.filter((obj) => obj.status === 'Received');
 			break;
 		case 2:
-			filteredArray = historyArray.filter((obj) => obj.status === 'Sent');
+			filteredArray = showingArray.filter((obj) => obj.status === 'Sent');
 			break;
 		case 3:
-			filteredArray = historyArray.filter((obj) => obj.status === 'Swap');
+			filteredArray = showingArray.filter((obj) => obj.status === 'Swap');
 			break;
 		case 4:
-			filteredArray = historyArray.filter((obj) => obj.status === 'Stake');
+			filteredArray = showingArray.filter((obj) => obj.status === 'Stake');
 			break;
 		default:
 			break;
@@ -48,6 +54,10 @@
 
 	function selectToken(e: { detail: { id: number } }): void {
 		selectedTokenIndex = e.detail.id;
+	}
+
+	function showMoreItems() {
+		pageNumber++;
 	}
 </script>
 
@@ -66,7 +76,7 @@
 			</div>
 			<div class="history-holder">
 				<!-- Received -->
-				{#each filteredArray as historyObject, i}
+				{#each showingArray as historyObject, i}
 					<HistoryComponent
 						on:deselect={() => {
 							selectedTokenIndex = -1;
@@ -86,8 +96,8 @@
 					/>
 				{/each}
 			</div>
-			{#if filteredArray.length > 7}
-				<button>Show more</button>
+			{#if filteredArray.length >= numberOfItemsShown}
+				<button on:click={showMoreItems}>Show more</button>
 			{/if}
 		</div>
 	</div>
