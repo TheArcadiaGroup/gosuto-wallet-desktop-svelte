@@ -8,18 +8,27 @@
 <script>
 	import ValidatorItem from './ValidatorItem/index.svelte';
 
-	export let validatorArray = Array(4);
+	export let validatorArray = Array(10);
+
+	let numberOfItemsShown = 6;
+	let pageNumber = 1;
+
+	$: showingArray = validatorArray.slice(0, numberOfItemsShown * pageNumber);
+
+	function showMoreItems() {
+		pageNumber++;
+	}
 </script>
 
 <div class="main">
 	<h3>Validators</h3>
 	<div class="validator-holder">
-		{#each validatorArray as validatorObject, i}
+		{#each showingArray as validatorObject, i}
 			<ValidatorItem class={i > 0 ? 'top-border' : ''} />
 		{/each}
 	</div>
-	{#if validatorArray.length > 6}
-		<button>Show more</button>
+	{#if validatorArray.length >= numberOfItemsShown}
+		<button on:click={showMoreItems}>Show more</button>
 	{/if}
 </div>
 

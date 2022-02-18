@@ -33,6 +33,11 @@
 	export let wallet: any;
 	export let forRoute: 'profile' | 'all-stakes' = 'profile';
 
+	$: showingArray = stakeArray.slice(0, numberOfItemsShown * pageNumber);
+
+	let numberOfItemsShown = 6;
+	let pageNumber = 1;
+
 	/**Handler for clicking the back button in the middle column. Redirects back from `/profile/stakes` to `/profile`*/
 	function backHandler() {
 		goto(`/${forRoute}`);
@@ -50,6 +55,10 @@
 
 	function addStake() {
 		dispatch('addStake');
+	}
+
+	function showMoreItems() {
+		pageNumber++;
 	}
 </script>
 
@@ -74,13 +83,13 @@
 		</div>
 	</div>
 	<div class="stake-cards-container item">
-		{#each stakeArray as stake}
+		{#each showingArray as stake}
 			<StakeCard {stake} on:click={stakeSelect} />
 		{/each}
 	</div>
 	<div class="show-more-container">
-		{#if stakeArray.length > 3}
-			<div class="show-more">Show more</div>
+		{#if stakeArray.length >= numberOfItemsShown}
+			<div class="show-more" on:click={showMoreItems}>Show more</div>
 		{/if}
 	</div>
 </div>
