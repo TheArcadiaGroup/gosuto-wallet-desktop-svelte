@@ -136,7 +136,10 @@
 	}
 
 	:local(.show-more) {
-		@apply rounded-full py-1 px-3 font-semibold cursor-pointer text-xs border-2 border-l-light-scrollBar hover:bg-light-scrollBar transition-all;
+		@apply border-2 border-light-lineColor rounded-[90px];
+		@apply text-sm font-bold cursor-pointer dark:text-white;
+		@apply py-2 px-4 self-center;
+		@apply hover:bg-light-purple hover:text-white hover:border-light-purple transition duration-500;
 	}
 
 	:local(.item) {
