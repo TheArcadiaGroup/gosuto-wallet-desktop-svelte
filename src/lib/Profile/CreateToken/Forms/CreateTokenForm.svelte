@@ -13,6 +13,7 @@
 	let tokenUSDPrice = 0;
 	let limitedSupply = true;
 	let mintableSupply = true;
+	let shareToken = true;
 
 	function submitCreateToken() {
 		const result = createToken(
@@ -23,6 +24,7 @@
 			tokenUSDPrice,
 			limitedSupply,
 			mintableSupply,
+			shareToken,
 		);
 	}
 
@@ -69,6 +71,12 @@
 			<p class="switch-text">Mintable Supply</p>
 			<div class="switch">
 				<ToggleSwitch bind:checked={mintableSupply} />
+			</div>
+		</div>
+		<div class="switch-row">
+			<p class="switch-text">Share token between wallets</p>
+			<div class="switch">
+				<ToggleSwitch bind:checked={shareToken} />
 			</div>
 		</div>
 		<div class="confirm-buttons">
