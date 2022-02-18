@@ -104,7 +104,7 @@
 	});
 </script>
 
-<div class="flex">
+<div class="main flex">
 	<div class="global-grid-nav">
 		<Navbar />
 	</div>
@@ -147,8 +147,12 @@
 		@apply text-light-grey text-xs;
 	}
 
+	:local(.main) {
+		@apply dark:bg-dark-grey;
+	}
+
 	:local(.size-full) {
-		@apply w-full h-full;
+		@apply w-full h-full md:overflow-y-hidden;
 	}
 
 	:local(.last-column) {
