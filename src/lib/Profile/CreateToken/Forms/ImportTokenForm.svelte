@@ -5,13 +5,15 @@
 
 	import Button from '$lib/Common/Button.svelte';
 	import TextInput from '$lib/Common/TextInput.svelte';
+	import ToggleSwitch from '$lib/Common/ToggleSwitch.svelte';
 
 	let contractAddress = '';
 	let tokenTicker = '';
 	let decimals = 0;
+	let shareToken = true;
 
 	function submitImportToken() {
-		const result = importToken('1', contractAddress, tokenTicker, decimals);
+		const result = importToken('1', contractAddress, tokenTicker, decimals, shareToken);
 	}
 
 	const dispatch = createEventDispatcher();
@@ -47,6 +49,12 @@
 			label="Decimals of Precision"
 			type="number"
 		/>
+		<div class="switch-row">
+			<p class="switch-text">Share token between wallets</p>
+			<div class="switch">
+				<ToggleSwitch bind:checked={shareToken} />
+			</div>
+		</div>
 		<div class="confirm-buttons">
 			<Button>
 				<div slot="text" class="leading-7 my-2">Import</div>
@@ -111,5 +119,17 @@
 		@apply flex flex-col;
 		@apply mx-auto gap-4 mt-28 mb-16;
 		@apply lg:mt-10 lg:w-full lg:gap-1;
+	}
+
+	:local(.switch-row) {
+		@apply flex flex-row;
+	}
+
+	:local(.switch-text) {
+		@apply font-normal text-base;
+	}
+
+	:local(.switch) {
+		@apply ml-auto;
 	}
 </style>

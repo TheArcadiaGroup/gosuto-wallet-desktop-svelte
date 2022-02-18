@@ -152,6 +152,7 @@ export function importToken(
 	contractAddress: string,
 	tokenTicker: string,
 	decimals: number,
+	shareToken: boolean,
 ): boolean {
 	return true;
 }
