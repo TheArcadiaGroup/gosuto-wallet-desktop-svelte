@@ -8,6 +8,8 @@
 	- `wallet` = Object with data (like balance, staked, etc.) of the wallet.
 -->
 <script lang="ts">
+	import { goto } from '$app/navigation';
+
 	import CardGraphics from '$icons/CardGraphics.svelte';
 	import PurpleTriangle from '$icons/PurpleTriangle.svelte';
 	import ProfilePicture from '$lib/Common/ProfilePicture.svelte';
@@ -23,6 +25,7 @@
 
 	function saveAddress() {
 		localStorage.setItem('selectedProfile', wallet.address);
+		goto(`/profile/${wallet.address}/history`);
 	}
 </script>
 
