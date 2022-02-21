@@ -2,6 +2,15 @@
 /// <reference types="svelte" />
 /// <reference types="vite/client" />
 
+type dataFunc = (data: string) => void;
+
+declare interface Window {
+	api: {
+		receive: (channel: string, dataFunc) => void;
+		send: (channel: string, data: string) => void;
+	};
+}
+
 interface infoCategory {
 	name: string;
 	placeholder: string;
