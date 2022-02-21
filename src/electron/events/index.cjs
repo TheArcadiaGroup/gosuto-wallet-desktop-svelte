@@ -11,10 +11,18 @@ module.exports = () => {
 		console.log(data);
 	});
 
-	ipcMain.on('createWallet', async (event, data) => {
-		console.log('Please create wallet', data);
+	ipcMain.on('generateMnemonics', async (event, data) => {
+		console.log('Generate Mnemonics', data);
 
 		// return this as an event to the renderer process
-		sendMessage('createWalletResponse', createWallet());
+		sendMessage('generateMnemonicsResponse', createWallet.getMnemonics());
+	});
+	ipcMain.on('createWallet', async (event, data) => {
+		const res = await createWallet.generateFromMnemonics(data);
+		sendMessage('createWalletResponse', res);
+	});
+	ipcMain.on('createWalletFromFile', async (event, data) => {
+		const res = await createWallet.generateFromFile(data);
+		sendMessage('createWalletFromFileResponse', res);
 	});
 };

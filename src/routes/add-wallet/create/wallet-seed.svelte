@@ -9,6 +9,7 @@
 
 	import { walletName } from '$stores/WalletCreation';
 	import { password } from '$stores/WalletCreation';
+	import { onMount } from 'svelte';
 
 	import { goto } from '$app/navigation';
 	import type { JSONString } from '@sveltejs/kit/types/helper';
@@ -119,6 +120,23 @@
 				console.error('error:', error);
 			});
 	};
+
+	onMount(() => {
+		// Receive mnemonics creation response
+		window.api.receive('generateMnemonicsResponse', (data: string) => {
+			// Put the mnemonics words
+			words = data.split(' ').map(
+				(word, i) =>
+					({
+						id: i + 1,
+						word,
+						isEmpty: false,
+					} as SeedWord),
+			);
+		});
+
+		window.api.send('generateMnemonics', '');
+	});
 </script>
 
 <div class="createSeed-wrapper">
