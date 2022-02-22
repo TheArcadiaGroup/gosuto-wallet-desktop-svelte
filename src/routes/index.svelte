@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SplashScreen from '$lib/SplashScreen/index.svelte';
+	import SplashScreen from '$lib/Components/SplashScreen.svelte';
 </script>
 
 <SplashScreen />

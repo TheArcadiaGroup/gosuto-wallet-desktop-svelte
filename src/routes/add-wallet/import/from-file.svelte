@@ -1,10 +1,10 @@
 <script lang="ts">
-	import Button from '$lib/Common/Button.svelte';
-	import TextInput from '$lib/Common/TextInput.svelte';
+	import Button from '$lib/Components/Button.svelte';
+	import TextInput from '$lib/Components/TextInput.svelte';
 
 	import GosutoLogoAndText from '$icons/GosutoLogoAndText.svelte';
 
-	import ImportPrivateKey from '$lib/AddWalletComponent/ImportFromFile/ImportPrivateKey.svelte';
+	import ImportPrivateKey from '$lib/Pages/AddWallet/ImportFromFile/ImportPrivateKey.svelte';
 
 	import { goto } from '$app/navigation';
 	import type { JSONString } from '@sveltejs/kit/types/helper';

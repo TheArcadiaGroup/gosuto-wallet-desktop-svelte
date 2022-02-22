@@ -1,5 +1,5 @@
 <script>
-	import StakePage from '$lib/Profile/stake/StakePage.svelte';
+	import StakePage from '$lib/Pages/Profile/Stake/StakePage.svelte';
 	import { onMount } from 'svelte';
 
 	let data;

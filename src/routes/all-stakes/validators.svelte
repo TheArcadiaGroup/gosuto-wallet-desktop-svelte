@@ -1,7 +1,7 @@
 <script>
-	import GridLayout from '$lib/Common/GridLayout.svelte';
-	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
-	import ValidatorPage from '$lib/ValidatorPage/index.svelte';
+	import GridLayout from '$lib/Components/GridLayout.svelte';
+	import ProfileNavigation from '$lib/Pages/Profile/ProfileNavigation.svelte';
+	import ValidatorPage from '$lib/Pages/AllStakes/ValidatorPage/index.svelte';
 
 	// DEV
 	const user = {

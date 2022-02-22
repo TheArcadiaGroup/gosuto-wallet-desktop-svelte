@@ -1,7 +1,7 @@
 <script lang="ts">
-	import CreditCard from '$lib/Profile/CreditCard.svelte';
-	import Navbar from '$components/Navbar/Navbar.svelte';
-	import Button from '$lib/Common/Button.svelte';
+	import CreditCard from '$lib/Pages/Profile/CreditCard.svelte';
+	import Navbar from '$lib/Components/Navbar/Navbar.svelte';
+	import Button from '$lib/Components/Button.svelte';
 
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';

@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Navbar from '$lib/components/Navbar/Navbar.svelte';
+	import Navbar from '$lib/Components/Navbar/Navbar.svelte';
 
-	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
-	import Settings from '$lib/WalletSettings/index.svelte';
+	import ProfileNavigation from '$lib/Pages/Profile/ProfileNavigation.svelte';
+	import Settings from '$lib/Pages/Profile/WalletSettings/index.svelte';
 
 	const user = {
 		name: 'Jake Waterson',

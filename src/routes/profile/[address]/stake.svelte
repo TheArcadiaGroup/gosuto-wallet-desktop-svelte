@@ -12,7 +12,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	import StakePage from '$lib/Profile/stake/StakePage.svelte';
+	import StakePage from '$lib/Pages/Profile/Stake/StakePage.svelte';
 
 	import { shortenAddress } from '$utils';
 
