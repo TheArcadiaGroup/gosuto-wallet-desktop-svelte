@@ -55,8 +55,29 @@
 <div
 	class="wordbox-wrapper"
 	on:click={() => {
-		if (turned) copyToClipboard();
-		else if (!turned && !secondPage) turned = true;
+		if (turned) {
+			copyToClipboard();
+		}
+	}}
+	on:mouseover={() => {
+		if (!secondPage) {
+			turned = true;
+		}
+	}}
+	on:focus={() => {
+		if (!secondPage) {
+			turned = true;
+		}
+	}}
+	on:mouseout={() => {
+		if (!secondPage) {
+			turned = false;
+		}
+	}}
+	on:blur={() => {
+		if (!secondPage) {
+			turned = false;
+		}
 	}}
 >
 	<input
@@ -82,7 +103,7 @@
 		@apply bg-light-grey241 dark:bg-white dark:bg-opacity-30;
 		@apply rounded-full;
 		@apply w-7 h-7 4xl:w-11 4xl:h-11;
-		@apply grid place-items-center;
+		@apply grid place-items-center cursor-pointer;
 		@apply absolute translate-x-1 4xl:translate-x-2 -translate-y-[2.15rem]  4xl:-translate-y-[3.4rem] ml-1;
 		@apply text-dark-gray dark:text-white;
 	}

@@ -99,7 +99,7 @@
 		</div>
 		<div class="createWallet-bt createWallet-next-bt">
 			<Button
-				disabled={!checked}
+				isDisabled={!checked || !walletNameValue || !password || !confirmPassword}
 				on:click={() => {
 					setValues();
 					goto('/add-wallet/create/wallet-seed');

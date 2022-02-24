@@ -7,6 +7,7 @@ module.exports = {
 	getMnemonics: () => {
 		return bip39.generateMnemonic();
 	},
+
 	// Generate wallet based on mnemonics
 	generateFromMnemonics: async (mnemonic) => {
 		let accountHex = '';
@@ -33,6 +34,7 @@ module.exports = {
 			privateKey,
 		};
 	},
+
 	// Genereate it based on file
 	generateFromFile: async (fileContents) => {
 		const { algorithm, secretKeyBase64 } = parseAlgorithm(fileContents);
