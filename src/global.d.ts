@@ -66,6 +66,9 @@ interface HistoryObject {
 
 interface WalletCreationData {
 	walletName: string;
+	walletAddress: string;
+	accountHash: string;
+	privateKey: string;
 	seedPhrase: string;
 	password: string;
 }
@@ -82,6 +85,8 @@ interface IWallet {
 	walletStakes: IStake[];
 	walletHistory: IHistory[];
 	walletAddress: string;
+	accountHash: string;
+	privateKey: string;
 }
 
 interface IToken {
@@ -141,8 +146,8 @@ interface ProfileSettings {
 	currentPassword: string;
 }
 
-type MainSendChannels = 'createWallet' | 'createWalletFromFile' | 'generateMnemonics';
+type MainSendChannels = 'createWalletFromMnemonics' | 'createWalletFromFile' | 'generateMnemonics';
 type MainReceiveChannels =
 	| 'createWalletFromFileResponse'
-	| 'createWalletResponse'
+	| 'createWalletFromMnemonicsResponse'
 	| 'generateMnemonicsResponse';

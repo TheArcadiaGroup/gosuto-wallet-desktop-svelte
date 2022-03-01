@@ -18,9 +18,9 @@ module.exports = () => {
 	});
 
 	// Create wallet from mnemonics
-	ipcMain.on('createWallet', async (event, data) => {
+	ipcMain.on('createWalletFromMnemonics', async (event, data) => {
 		const res = await createWallet.generateFromMnemonics(data);
-		sendMessage('createWalletResponse', res);
+		sendMessage('createWalletFromMnemonicsResponse', res);
 	});
 
 	// Create wallet from file

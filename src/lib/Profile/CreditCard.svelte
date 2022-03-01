@@ -21,7 +21,7 @@
 		available: 0,
 		staked: 0,
 		unclaimed: 0,
-		address: '0xh924yfh0h01hf1g4y25h2',
+		address: '',
 	};
 
 	function saveAddress() {
@@ -58,7 +58,7 @@
 		<div class="purple-triangle">
 			<PurpleTriangle />
 		</div>
-		<div class="w-3/4 z-10">
+		<div class="z-10 w-3/4">
 			<CardGraphics />
 		</div>
 	</div>

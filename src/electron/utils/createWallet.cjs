@@ -5,7 +5,8 @@ const { parseAlgorithm } = require('./casper.cjs');
 
 module.exports = {
 	getMnemonics: () => {
-		return bip39.generateMnemonic();
+		const mnemonics = bip39.generateMnemonic();
+		return mnemonics;
 	},
 
 	// Generate wallet based on mnemonics

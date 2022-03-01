@@ -14,6 +14,7 @@
 	import { goto } from '$app/navigation';
 	import type { JSONString } from '@sveltejs/kit/types/helper';
 	import { retrieveData, saveData } from '$utils/dataStorage';
+	import { page } from '$app/stores';
 
 	/** True if user copied seed phrase*/
 	let copied: boolean = false;
@@ -28,19 +29,13 @@
 	let secondPage: boolean = false;
 
 	/** An array representing a seed phrase */
-	let words: SeedWord[] = Array(12)
-		.fill(0)
-		.map(
-			(_, i) =>
-				({
-					id: i + 1,
-					word: 'Text'.repeat(Math.round(Math.random() * 2) + 1),
-					isEmpty: false,
-				} as SeedWord),
-		);
+	let words: SeedWord[];
 
 	let walletNameValue: string;
 	let passwordValue: string;
+	let accountHash: string;
+	let accountHex: string;
+	let privateKey: string;
 
 	walletName.subscribe((value) => {
 		walletNameValue = value;
@@ -78,7 +73,7 @@
 			}
 		} else {
 			if (words.filter((w) => w.word === seedPhrase[w.id - 1]).length === 12) {
-				postData();
+				confirmAndSendMnemonics();
 			}
 		}
 	};
@@ -101,25 +96,36 @@
 			walletName: walletNameValue,
 			seedPhrase: seedPhrase.join(' '),
 			password: passwordValue,
+			accountHash,
+			privateKey,
+			walletAddress: accountHex,
 		} as WalletCreationData,
 	) => {
 		let profiles: JSONString[] | null[] = [];
 
-		fetch('/api/create-wallet', {
-			method: 'POST',
-			body: JSON.stringify(object),
-		})
-			.then((response) => response.json())
-			.then((newProfile) => {
-				profiles.push(newProfile);
-				profiles = profiles.concat(JSON.parse(retrieveData('profiles') || '[]'));
-				console.log(profiles);
-				saveData('profiles', JSON.stringify(profiles));
+		if (walletNameValue && accountHash && accountHex && passwordValue && privateKey) {
+			fetch('/api/create-wallet', {
+				method: 'POST',
+				body: JSON.stringify(object),
 			})
-			.then(() => goto('/profile'))
-			.catch((error) => {
-				console.error('error:', error);
-			});
+				.then((response) => response.json())
+				.then((newProfile) => {
+					profiles.push(newProfile);
+					profiles = profiles.concat(retrieveData('profiles') || []);
+					console.log(profiles);
+					saveData('profiles', JSON.stringify(profiles));
+				})
+				.then(() => goto('/profile'))
+				.catch((error) => {
+					console.error('error:', error);
+				});
+		} else {
+			goto('/add-wallet/create');
+		}
+	};
+
+	const confirmAndSendMnemonics = () => {
+		window.api.send('createWalletFromMnemonics', words.join(' '));
 	};
 
 	onMount(() => {
@@ -136,7 +142,26 @@
 			);
 		});
 
-		// Inform main to generate mnemonics for the new wallet
+		window.api.receive(
+			'createWalletFromMnemonicsResponse',
+			(data: { accountHex: string; accountHash: string; privateKey: string }) => {
+				try {
+					if (data?.accountHex && data?.accountHash && data?.privateKey) {
+						const walletCreationResult = data;
+						accountHex = walletCreationResult['accountHex'];
+						accountHash = walletCreationResult['accountHash'];
+						privateKey = walletCreationResult['privateKey'];
+
+						console.log(walletCreationResult);
+
+						postData();
+					}
+				} catch (error) {
+					console.log(error);
+				}
+			},
+		);
+
 		window.api.send('generateMnemonics', '');
 	});
 </script>
@@ -145,45 +170,47 @@
 	{#if showPopup}
 		<FailedPopup on:confirm={() => (showPopup = false)} />
 	{/if}
-	<div class="createSeed-content">
-		<GosutoLogoAndText class="createSeed-gosuto-logo" />
-		<h1 class="createSeed-header">Create new wallet</h1>
-		<div class="createSeed-explanation-text">
-			{#if secondPage}
-				<h2 class="createSeed-explanation-header">Complete your seed phrase to continue</h2>
-				<ul>
-					<li class="createSeed-listItem">Type in the missing words</li>
-				</ul>
-			{:else}
-				<h2 class="createSeed-explanation-header">Your secret seed phrase</h2>
-				<ul>
-					<li class="createSeed-listItem">
-						This list of words will allow you to access your wallet.
-					</li>
-					<li class="createSeed-listItem">Write it down and keep it somewhere safe.</li>
-					<li class="createSeed-listItem">Anyone with the phrase can acces this wallet.</li>
-					<li class="createSeed-listItem">You will need this list to recover your wallet.</li>
-				</ul>
-			{/if}
-		</div>
-		<div class="createSeed-seed-phrase">
-			{#each words as seedWord}
-				<SeedWordBox {seedWord} {secondPage} {handlePaste} />
-			{/each}
-		</div>
+	{#if words}
+		<div class="createSeed-content">
+			<GosutoLogoAndText class="createSeed-gosuto-logo" />
+			<h1 class="createSeed-header">Create new wallet</h1>
+			<div class="createSeed-explanation-text">
+				{#if secondPage}
+					<h2 class="createSeed-explanation-header">Complete your seed phrase to continue</h2>
+					<ul>
+						<li class="createSeed-listItem">Type in the missing words</li>
+					</ul>
+				{:else}
+					<h2 class="createSeed-explanation-header">Your secret seed phrase</h2>
+					<ul>
+						<li class="createSeed-listItem">
+							This list of words will allow you to access your wallet.
+						</li>
+						<li class="createSeed-listItem">Write it down and keep it somewhere safe.</li>
+						<li class="createSeed-listItem">Anyone with the phrase can acces this wallet.</li>
+						<li class="createSeed-listItem">You will need this list to recover your wallet.</li>
+					</ul>
+				{/if}
+			</div>
+			<div class="createSeed-seed-phrase">
+				{#each words as seedWord}
+					<SeedWordBox {seedWord} {secondPage} {handlePaste} />
+				{/each}
+			</div>
 
-		{#if !secondPage}
-			<button class="createSeed-clipboard-copy" on:click={copyToClipboard}>
-				<span>Copy to clipboard</span>
-				<CopyOrange class="createSeed-clipboard-copy-icon" />
-			</button>
-		{/if}
-		<div class="createSeed-bt createSeed-next-bt">
-			<Button on:click={swapToSecond}>
-				<span slot="text" class="createSeed-bt-text">Continue</span>
-			</Button>
+			{#if !secondPage}
+				<button class="createSeed-clipboard-copy" on:click={copyToClipboard}>
+					<span>Copy to clipboard</span>
+					<CopyOrange class="createSeed-clipboard-copy-icon" />
+				</button>
+			{/if}
+			<div class="createSeed-bt createSeed-next-bt">
+				<Button on:click={swapToSecond}>
+					<span slot="text" class="createSeed-bt-text">Continue</span>
+				</Button>
+			</div>
 		</div>
-	</div>
+	{/if}
 </div>
 
 <style type="postcss" global>

@@ -5,7 +5,12 @@ const { contextBridge, ipcRenderer } = require('electron');
 contextBridge.exposeInMainWorld('api', {
 	send: (channel, data) => {
 		// whitelist channels, add your channels here
-		let validChannels = ['toMain', 'createWallet', 'createWalletFromFile', 'generateMnemonics'];
+		let validChannels = [
+			'toMain',
+			'createWalletFromMnemonics',
+			'createWalletFromFile',
+			'generateMnemonics',
+		];
 		if (validChannels.includes(channel)) {
 			ipcRenderer.send(channel, data);
 		}
@@ -13,7 +18,7 @@ contextBridge.exposeInMainWorld('api', {
 	receive: (channel, func) => {
 		let validChannels = [
 			'fromMain',
-			'createWalletResponse',
+			'createWalletFromMnemonicsResponse',
 			'createWalletFromFileResponse',
 			'generateMnemonicsResponse',
 		];

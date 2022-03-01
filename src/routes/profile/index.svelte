@@ -7,14 +7,19 @@
 	import { onMount } from 'svelte';
 	import { retrieveData, saveData } from '$utils/dataStorage';
 
-	let existingProfiles: IWallet[] = JSON.parse(retrieveData('profiles') || '[]');
-	let defaultWalletIndex: number = Number(retrieveData('defaultWalletIndex'));
+	let existingProfiles: IWallet[] = retrieveData('profiles') || [];
+	let defaultWalletIndex: number = Number(retrieveData('defaultWalletIndex')) || 0;
 
 	onMount(() => {
-		if (existingProfiles.length == 1) {
-			postData(existingProfiles[0]);
-		} else if (existingProfiles.length > 1 && defaultWalletIndex) {
-			postData(existingProfiles[defaultWalletIndex - 1]);
+		if (existingProfiles.length <= 0) {
+			saveData('defaultWalletIndex', '0');
+			goto('/add-wallet');
+		} else {
+			if (defaultWalletIndex > existingProfiles.length - 1) {
+				postData(existingProfiles[defaultWalletIndex]);
+			} else {
+				postData(existingProfiles[0]);
+			}
 		}
 	});
 
@@ -24,7 +29,7 @@
 			method: 'POST',
 			body: JSON.stringify(object),
 		})
-			.then(() => goto('/profile/' + object.walletAddress))
+			.then(() => goto(`/profile/${object.walletAddress}/history`))
 			.catch((error) => {
 				console.error('error:', error);
 			});
@@ -60,6 +65,7 @@
 								available: p.availableBalanceUSD,
 								staked: p.stakedBalance,
 								unclaimed: p.unclaimedRewards,
+								address: p.walletAddress,
 							}}
 						/>
 					</div>

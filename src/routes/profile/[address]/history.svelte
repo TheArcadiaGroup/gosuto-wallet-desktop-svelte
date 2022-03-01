@@ -12,22 +12,23 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	import GridLayout from '$lib/Common/GridLayout.svelte';
 	import HistoryPage from '$lib/components/HistoryPage.svelte';
 	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
 
 	import { shortenAddress } from '$utils';
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
+	import { page } from '$app/stores';
 
 	let data: HistoryObject[];
 	export let address: string;
 
 	onMount(() => {
+		console.log($page);
 		getData(address);
 	});
 
 	const getData = async (address: string) => {
-		fetch(`/api/profile/[address]/history`, { method: 'POST', body: address })
+		fetch(`/api/profile/${address}/history`, { method: 'POST', body: address })
 			.then((response) => response.json())
 			.then((response) => (data = response))
 			.catch((error) => {

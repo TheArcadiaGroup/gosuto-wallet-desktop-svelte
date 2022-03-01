@@ -4,10 +4,10 @@ export const saveData = (key: string, data: string) => {
 };
 
 export const retrieveData = (key: string) => {
-	if (localStorage.getItem(key)) {
+	try {
 		const data = JSON.parse(localStorage.getItem(key)!);
 		return data;
-	} else {
+	} catch (_err) {
 		return null;
 	}
 };
