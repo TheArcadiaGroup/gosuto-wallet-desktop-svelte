@@ -109,8 +109,8 @@
 			body: JSON.stringify(object),
 		})
 			.then((response) => response.json())
-			.then((response) => {
-				profiles.push(response);
+			.then((newProfile) => {
+				profiles.push(newProfile);
 				profiles = profiles.concat(JSON.parse(localStorage.getItem('profiles') || '[]'));
 				console.log(profiles);
 				localStorage.setItem('profiles', JSON.stringify(profiles));
@@ -135,6 +135,7 @@
 			);
 		});
 
+		// Inform main to generate mnemonics for the new wallet
 		window.api.send('generateMnemonics', '');
 	});
 </script>

@@ -52,6 +52,11 @@
 		<div class="createWallet-input-wrapper">
 			<TextInput label={'Wallet Name'} bind:value={walletNameValue} />
 		</div>
+		<div class="error-div wallet-name-error-div">
+			{#if walletNameValue}
+				Wallet Name Already Exists
+			{/if}
+		</div>
 		<div class="createWallet-password-input-wrapper createWallet-password-new">
 			<p class="createWallet-password-label">New Password</p>
 			<LockIcon class="createWallet-lock-icon" />
@@ -91,6 +96,11 @@
 				<EyeIcon class="createWallet-eye-icon" />
 			</button>
 		</div>
+		<div class="error-div">
+			{#if confirmPassword !== passwordValue && passwordValue && confirmPassword}
+				Passwords do not match.
+			{/if}
+		</div>
 		<div class="createWallet-use-terms">
 			<input class="createWallet-checkbox" type="checkbox" name="terms of use" bind:checked />
 			<label class="createWallet-checkbox-label" for="terms of use">
@@ -99,7 +109,11 @@
 		</div>
 		<div class="createWallet-bt createWallet-next-bt">
 			<Button
-				isDisabled={!checked || !walletNameValue || !password || !confirmPassword}
+				isDisabled={!checked ||
+					!walletNameValue ||
+					!passwordValue ||
+					!confirmPassword ||
+					passwordValue !== confirmPassword}
 				on:click={() => {
 					setValues();
 					goto('/add-wallet/create/wallet-seed');
@@ -246,5 +260,13 @@
 
 	.createWallet-cancel-bt-text {
 		@apply text-dark-gray dark:text-white;
+	}
+
+	.error-div {
+		@apply text-left text-xs text-red-300 -mt-2 mb-3 flex w-full px-10;
+	}
+
+	.wallet-name-error-div {
+		@apply -mt-8 mb-6;
 	}
 </style>

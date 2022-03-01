@@ -6,8 +6,8 @@ type dataFunc = (data: string) => void;
 
 declare interface Window {
 	api: {
-		receive: (channel: string, dataFunc) => void;
-		send: (channel: string, data: string) => void;
+		receive: (channel: MainReceiveChannels, dataFunc) => void;
+		send: (channel: MainSendChannels, data: string) => void;
 	};
 }
 
@@ -140,3 +140,9 @@ interface ProfileSettings {
 	privateKey: string;
 	currentPassword: string;
 }
+
+type MainSendChannels = 'createWallet' | 'createWalletFromFile' | 'generateMnemonics';
+type MainReceiveChannels =
+	| 'createWalletFromFileResponse'
+	| 'createWalletResponse'
+	| 'generateMnemonicsResponse';
