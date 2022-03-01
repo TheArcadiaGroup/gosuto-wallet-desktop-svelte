@@ -7,6 +7,7 @@
 
 	import { goto } from '$app/navigation';
 	import type { JSONString } from '@sveltejs/kit/types/helper';
+	import { retrieveData, saveData } from '$utils/dataStorage';
 
 	let seedPhrase: string;
 	let walletName: string;
@@ -48,8 +49,8 @@
 			.then((response) => response.json())
 			.then((response) => {
 				profiles.push(response);
-				profiles = profiles.concat(JSON.parse(localStorage.getItem('profiles') || '[]'));
-				localStorage.setItem('profiles', JSON.stringify(profiles));
+				profiles = profiles.concat(JSON.parse(retrieveData('profiles') || '[]'));
+				saveData('profiles', JSON.stringify(profiles));
 			})
 			.then(() => goto('/profile'))
 			.catch((error) => {

@@ -25,10 +25,11 @@
 	import Checklist from '$icons/Checklist.svelte';
 
 	import { goto } from '$app/navigation';
+	import { retrieveData, saveData } from '$utils/dataStorage';
 
 	export let forRoute: 'profile' | 'all-stakes' = 'profile';
 
-	export let walletAddress: string = localStorage.getItem('selectedProfile');
+	export let walletAddress: string = retrieveData('selectedProfile');
 
 	/**Options for the content of the menu. Either 'profile' or 'all-stakes'.*/
 	const menuItemsOptions: {
@@ -77,7 +78,7 @@
 			if (walletAddress) {
 				goto(`/${forRoute}/${walletAddress}/${selection}`);
 			} else if (user.wallets.length > 0) {
-				localStorage.setItem('selectedProfile', user.wallets[0].address);
+				saveData('selectedProfile', user.wallets[0].address);
 				goto(`/${forRoute}/${user.wallets[0].address}/${selection}`);
 			} else {
 				goto('/add-wallet');

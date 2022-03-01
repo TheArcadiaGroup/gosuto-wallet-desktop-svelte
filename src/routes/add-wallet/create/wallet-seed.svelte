@@ -13,6 +13,7 @@
 
 	import { goto } from '$app/navigation';
 	import type { JSONString } from '@sveltejs/kit/types/helper';
+	import { retrieveData, saveData } from '$utils/dataStorage';
 
 	/** True if user copied seed phrase*/
 	let copied: boolean = false;
@@ -111,9 +112,9 @@
 			.then((response) => response.json())
 			.then((newProfile) => {
 				profiles.push(newProfile);
-				profiles = profiles.concat(JSON.parse(localStorage.getItem('profiles') || '[]'));
+				profiles = profiles.concat(JSON.parse(retrieveData('profiles') || '[]'));
 				console.log(profiles);
-				localStorage.setItem('profiles', JSON.stringify(profiles));
+				saveData('profiles', JSON.stringify(profiles));
 			})
 			.then(() => goto('/profile'))
 			.catch((error) => {

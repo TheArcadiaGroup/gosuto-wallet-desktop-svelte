@@ -13,6 +13,7 @@
 	import CardGraphics from '$icons/CardGraphics.svelte';
 	import PurpleTriangle from '$icons/PurpleTriangle.svelte';
 	import ProfilePicture from '$lib/Common/ProfilePicture.svelte';
+	import { saveData } from '$utils/dataStorage';
 
 	export let ppurl = '';
 	export let name = 'unknown name';
@@ -24,7 +25,7 @@
 	};
 
 	function saveAddress() {
-		localStorage.setItem('selectedProfile', wallet.address);
+		saveData('selectedProfile', wallet.address);
 		goto(`/profile/${wallet.address}/history`);
 	}
 </script>

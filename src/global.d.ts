@@ -78,9 +78,9 @@ interface IWallet {
 	availableBalanceUSD: number;
 	stakedBalance: number;
 	unclaimedRewards: number;
-	walletTokens: [IToken[]];
-	walletStakes: [IStake[]];
-	walletHistory: [IHistory[]];
+	walletTokens: IToken[];
+	walletStakes: IStake[];
+	walletHistory: IHistory[];
 	walletAddress: string;
 }
 

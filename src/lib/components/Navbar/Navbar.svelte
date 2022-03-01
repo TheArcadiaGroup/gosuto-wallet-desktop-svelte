@@ -11,11 +11,12 @@
 
 	import { goto } from '$app/navigation';
 	import { navItems } from '$stores/NavbarActive';
+	import { retrieveData } from '$utils/dataStorage';
 
 	/** An array representing the values of navItems */
 	let navItemsValues: NavIcon[];
 
-	let selectedProfile = localStorage.getItem('selectedProfile');
+	let selectedProfile = retrieveData('selectedProfile');
 
 	navItems.subscribe((value) => {
 		navItemsValues = value;

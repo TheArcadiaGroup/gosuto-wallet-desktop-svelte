@@ -8,6 +8,7 @@
 
 	import { goto } from '$app/navigation';
 	import type { JSONString } from '@sveltejs/kit/types/helper';
+	import { retrieveData, saveData } from '$utils/dataStorage';
 
 	let walletName: string;
 	let password: string;
@@ -55,11 +56,15 @@
 		let address = jsonWallet.address;
 		let privateKey = 'e308a23beba3be185e707effd05dde3445a3f9ad30a350b703631bb9a79eaf2b';
 
-		postData({ walletName, walletAdress: address });
+		postData({ walletName, walletAdress: address, walletPassword: password });
 	};
 
 	/** Sends wallet creation data to api route to create a wallet */
-	const postData = async (object: { walletName: string; walletAdress: string }) => {
+	const postData = async (object: {
+		walletName: string;
+		walletAdress: string;
+		walletPassword: string;
+	}) => {
 		let profiles: JSONString[] | null[] = [];
 
 		fetch('/api/create-wallet/file', {
@@ -69,8 +74,8 @@
 			.then((response) => response.json())
 			.then((response) => {
 				profiles.push(response);
-				profiles = profiles.concat(JSON.parse(localStorage.getItem('profiles') || '[]'));
-				localStorage.setItem('profiles', JSON.stringify(profiles));
+				profiles = profiles.concat(JSON.parse(retrieveData('profiles') || '[]'));
+				saveData('profiles', JSON.stringify(profiles));
 			})
 			.then(() => goto('/profile'))
 			.catch((error) => {

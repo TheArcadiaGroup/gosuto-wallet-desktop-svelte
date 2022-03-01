@@ -5,9 +5,10 @@
 
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import { retrieveData, saveData } from '$utils/dataStorage';
 
-	let existingProfiles: IWallet[] = JSON.parse(localStorage.getItem('profiles') || '[]');
-	let defaultWalletIndex: number = Number(localStorage.getItem('defaultWalletIndex'));
+	let existingProfiles: IWallet[] = JSON.parse(retrieveData('profiles') || '[]');
+	let defaultWalletIndex: number = Number(retrieveData('defaultWalletIndex'));
 
 	onMount(() => {
 		if (existingProfiles.length == 1) {
@@ -49,7 +50,7 @@
 					<div
 						class="single-card-wrap"
 						on:click={() => {
-							localStorage.setItem('defaultWalletIndex', (i + 1).toString());
+							saveData('defaultWalletIndex', (i + 1).toString());
 							postData(p);
 						}}
 					>
