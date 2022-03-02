@@ -8,6 +8,8 @@
 	import ClaimReward from '$lib/Profile/stake/detail/ClaimReward.svelte';
 	import UnlockInitialStake from '$lib/Profile/stake/detail/UnlockInitialStake.svelte';
 	import Unstake from '$lib/Profile/stake/detail/Unstake.svelte';
+	import TextSidebar from '$components/Profile/TextSidebar.svelte';
+	import Navbar from '$components/Navbar/Navbar.svelte';
 
 	/**Object of all possible components for the stake detail column (the last column)*/
 	const lastCollumnContent = {
@@ -72,15 +74,20 @@
 	});
 </script>
 
-<GridLayout>
-	<div slot="first" class="size-full">
-		<!-- feed the user profile data to ProfileNavigation component -->
-		<ProfileNavigation forRoute={'all-stakes'} {user} />
+<div class="main flex">
+	<div class="global-grid-nav">
+		<Navbar />
 	</div>
-	<div slot="mid" class="size-full">
+	<div class="global-grid-left">
+		<div class="size-full">
+			<!-- feed the user profile data to ProfileNavigation component -->
+			<ProfileNavigation forRoute={'all-stakes'} {user} />
+		</div>
+	</div>
+	<div class="global-grid-mid size-full">
 		<StakesFromWallet forRoute={'all-stakes'} on:stakeSelect={stakeSelect} {wallet} {stakeArray} />
 	</div>
-	<div slot="last" class="size-full last-column">
+	<div class="global-grid-right">
 		{#if selectedLastCollumnContent}
 			<div class="last-column-header">
 				<div class="w-6 h-6">
@@ -92,10 +99,10 @@
 				<svelte:component this={lastCollumnContent[selectedLastCollumnContent]} />
 			</div>
 		{:else}
-			<div class="placeholder-text">Select a stake for more information</div>
+			<TextSidebar>Select currency you want to swap</TextSidebar>
 		{/if}
 	</div>
-</GridLayout>
+</div>
 
 <style lang="postcss" global>
 	:local(.placeholder-text) {
