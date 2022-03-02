@@ -62,7 +62,12 @@
 </script>
 
 <GridLayout {hideNavbar}>
-	<div class="mid-holder" class:center-mid={!hideNavbar} slot="mid">
+	<div
+		class="mid-holder"
+		class:spacing={!isInProfileRoute}
+		class:center-mid={!hideNavbar}
+		slot="mid"
+	>
 		<div class="main">
 			<div class="header">
 				{#if !isInProfileRoute}
@@ -113,9 +118,13 @@
 	}
 
 	:local(.main) {
-		@apply h-screen flex flex-col w-full md:max-w-[50vw];
+		@apply h-screen flex flex-col w-full;
 		@apply px-4 pt-10;
 		@apply lg:px-11 lg:pt-20;
+	}
+
+	:local(.spacing) {
+		@apply px-[5vw];
 	}
 
 	:local(h3) {
