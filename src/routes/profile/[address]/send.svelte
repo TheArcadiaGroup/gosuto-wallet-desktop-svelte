@@ -9,6 +9,7 @@
 	import SendCurrency from '$lib/Profile/Send/Forms/SendCurrency.svelte';
 	import CreateToken from '$lib/Profile/CreateToken/CreateToken.svelte';
 	import { retrieveData } from '$utils/dataStorage';
+	import { goto } from '$app/navigation';
 
 	let tokens: IToken[] = [];
 	let user: IUser;
@@ -25,6 +26,7 @@
 	}
 
 	onMount(async () => {
+		console.log('Selected Send');
 		// not an error, this makes my IDE shut up
 		// @ts-ignore
 		tokens = await (await fetch('/api/tokens/1')).json();
@@ -34,8 +36,14 @@
 			name: 'Unknown User',
 			avatar: '',
 			email: '',
-			wallets: [],
+			wallets: (retrieveData('wallets') as IWallet[]) || [],
 		};
+
+		console.log(user);
+
+		if (user.wallets.length <= 0) {
+			goto('/add-wallet/create');
+		}
 	});
 </script>
 

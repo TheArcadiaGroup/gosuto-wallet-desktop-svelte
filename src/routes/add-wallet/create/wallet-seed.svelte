@@ -101,7 +101,7 @@
 			walletAddress: accountHex,
 		} as WalletCreationData,
 	) => {
-		let profiles: JSONString[] | null[] = [];
+		let wallets: JSONString[] | null[] = [];
 
 		if (walletNameValue && accountHash && accountHex && passwordValue && privateKey) {
 			fetch('/api/create-wallet', {
@@ -110,10 +110,10 @@
 			})
 				.then((response) => response.json())
 				.then((newProfile) => {
-					profiles.push(newProfile);
-					profiles = profiles.concat(retrieveData('profiles') || []);
-					console.log(profiles);
-					saveData('profiles', JSON.stringify(profiles));
+					wallets.push(newProfile);
+					wallets = wallets.concat(retrieveData('wallets') || []);
+					console.log(wallets);
+					saveData('wallets', JSON.stringify(wallets));
 				})
 				.then(() => goto('/profile'))
 				.catch((error) => {

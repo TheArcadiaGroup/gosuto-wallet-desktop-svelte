@@ -81,13 +81,8 @@
 			name: 'Unknown User',
 			avatar: '',
 			email: '',
-			wallets: [],
+			wallets: (retrieveData('wallets') as IWallet[]) || [],
 		};
-		if ($selectedWallet) {
-			user.wallets = [$selectedWallet];
-		} else {
-			user.wallets = [user.wallets[0]];
-		}
 	});
 </script>
 

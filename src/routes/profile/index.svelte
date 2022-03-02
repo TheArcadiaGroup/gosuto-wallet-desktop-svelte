@@ -9,7 +9,7 @@
 	import { selectedWallet } from '$stores/user/wallets';
 	import { loadSelectedProfile } from '$utils/profiles';
 
-	let existingProfiles: IWallet[] = retrieveData('profiles') || [];
+	let existingWallets: IWallet[] = retrieveData('wallets') || [];
 	let defaultWalletIndex: number = Number(retrieveData('defaultWalletIndex')) || 0;
 
 	onMount(() => {
@@ -51,7 +51,7 @@
 				</div>
 			</div>
 			<div class="credit-card-wrapper">
-				{#each existingProfiles as p, i}
+				{#each existingWallets as p, i}
 					<div
 						class="single-card-wrap"
 						on:click={() => {

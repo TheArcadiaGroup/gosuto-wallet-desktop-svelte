@@ -15,7 +15,7 @@
 			name: 'Unknown User',
 			avatar: '',
 			email: '',
-			wallets: [],
+			wallets: (retrieveData('wallets') as IWallet[]) || [],
 		};
 		if ($selectedWallet) {
 			user.wallets = [$selectedWallet];

@@ -11,8 +11,8 @@
 		if (selectedProfile) {
 			setTimeout(() => goto(`/profile/${selectedProfile.walletAddress}`), 1000);
 		} else {
-			const profiles: IWallet[] = retrieveData('profiles');
-			if (profiles?.length > 0) {
+			const wallets: IWallet[] = retrieveData('wallets');
+			if (wallets?.length > 0) {
 				setTimeout(() => goto(`/profile`), 1000);
 			} else {
 				setTimeout(() => goto('/onboarding'), 1000);

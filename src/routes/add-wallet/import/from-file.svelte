@@ -65,7 +65,7 @@
 		walletAdress: string;
 		walletPassword: string;
 	}) => {
-		let profiles: JSONString[] | null[] = [];
+		let wallets: JSONString[] | null[] = [];
 
 		fetch('/api/create-wallet/file', {
 			method: 'POST',
@@ -73,9 +73,9 @@
 		})
 			.then((response) => response.json())
 			.then((response) => {
-				profiles.push(response);
-				profiles = profiles.concat(JSON.parse(retrieveData('profiles') || '[]'));
-				saveData('profiles', JSON.stringify(profiles));
+				wallets.push(response);
+				wallets = wallets.concat(JSON.parse(retrieveData('wallets') || '[]'));
+				saveData('wallets', JSON.stringify(wallets));
 			})
 			.then(() => goto('/profile'))
 			.catch((error) => {

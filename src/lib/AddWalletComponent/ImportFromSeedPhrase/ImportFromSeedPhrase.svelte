@@ -40,7 +40,7 @@
 
 	/** Sends wallet creation data to api route to create a wallet*/
 	const postData = async (object = { walletName, seedPhrase, password } as WalletCreationData) => {
-		let profiles: JSONString[] | null[] = [];
+		let wallets: JSONString[] | null[] = [];
 
 		fetch('/api/create-wallet/seed-phrase', {
 			method: 'POST',
@@ -48,9 +48,9 @@
 		})
 			.then((response) => response.json())
 			.then((response) => {
-				profiles.push(response);
-				profiles = profiles.concat(JSON.parse(retrieveData('profiles') || '[]'));
-				saveData('profiles', JSON.stringify(profiles));
+				wallets.push(response);
+				wallets = wallets.concat(JSON.parse(retrieveData('wallets') || '[]'));
+				saveData('wallets', JSON.stringify(wallets));
 			})
 			.then(() => goto('/profile'))
 			.catch((error) => {
@@ -76,7 +76,7 @@
 	<div class="seedImport-form-wrapper">
 		<div class="form">
 			<div class="seedImport-form-inputs">
-				<div class="seedImport-input-wrapper h-56 px-3 py-2">
+				<div class="h-56 px-3 py-2 seedImport-input-wrapper">
 					<label class="seedImport-label" for="name">Seed Phrase</label>
 					<textarea
 						rows="3"
@@ -93,7 +93,7 @@
 					</div>
 				</div>
 				<div class="seedImport-details-wrapper">
-					<div class="seedImport-input-wrapper h-16 hidden sm:flex">
+					<div class="hidden h-16 seedImport-input-wrapper sm:flex">
 						<label class="seedImport-label" for="name">Wallet Name</label>
 
 						<input
@@ -110,7 +110,7 @@
 						{/if}
 					</div>
 
-					<div class="seedImport-input-wrapper h-16 flex">
+					<div class="flex h-16 seedImport-input-wrapper">
 						<label class="seedImport-label" for="name">New Password</label>
 						<div class="seedImport-password-input-wrapper">
 							<span class="w-6 h-6">
@@ -133,7 +133,7 @@
 						</div>
 					</div>
 
-					<div class="seedImport-input-wrapper h-16 flex">
+					<div class="flex h-16 seedImport-input-wrapper">
 						<label class="seedImport-label" for="name">Confirm Password</label>
 						<div class="seedImport-password-input-wrapper">
 							<span class="w-6 h-6">

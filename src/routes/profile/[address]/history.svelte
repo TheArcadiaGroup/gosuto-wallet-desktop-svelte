@@ -18,7 +18,7 @@
 			name: 'Unknown User',
 			avatar: '',
 			email: '',
-			wallets: [],
+			wallets: (retrieveData('wallets') as IWallet[]) || [],
 		};
 	});
 

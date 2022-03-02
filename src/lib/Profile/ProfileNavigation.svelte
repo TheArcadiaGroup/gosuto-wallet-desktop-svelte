@@ -67,7 +67,7 @@
 				name: 'Unknown User',
 				avatar: '',
 				email: '',
-				wallets: [],
+				wallets: (retrieveData('wallets') as IWallet[]) || [],
 			};
 		}
 	});
@@ -84,7 +84,7 @@
 				saveData('selectedProfile', walletAddress);
 				goto(`/${forRoute}/${walletAddress}/${selection}`);
 			} else {
-				goto('/add-wallet');
+				goto('/add-wallet/create');
 			}
 		}
 	}
@@ -116,17 +116,19 @@
 			</div>
 			<div class="carousel-container">
 				<div class="carousel">
-					<CardCarousel numberOfCards={user?.wallets.length || 0}>
-						{#each user?.wallets as wallet}
-							<CarouselItem>
-								<CreditCard
-									name={user?.name || 'unknown name'}
-									avatar={user?.avatar || ''}
-									{wallet}
-								/>
-							</CarouselItem>
-						{/each}
-					</CardCarousel>
+					{#if user}
+						<CardCarousel numberOfCards={user?.wallets.length || 0}>
+							{#each user?.wallets as wallet}
+								<CarouselItem>
+									<CreditCard
+										name={user?.name || 'Unknown Name'}
+										avatar={user?.avatar || ''}
+										{wallet}
+									/>
+								</CarouselItem>
+							{/each}
+						</CardCarousel>
+					{/if}
 				</div>
 				<div class="plus-container">
 					<div class="plus" on:click={addWallet}>
