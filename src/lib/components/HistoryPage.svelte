@@ -109,15 +109,13 @@
 
 <style lang="postcss" global>
 	:local(.mid-holder) {
-		@apply flex items-center md:justify-end mr-[5vw] w-full md:w-auto px-4;
-	}
-
-	:local(.center-mid) {
-		@apply md:justify-end;
+		@apply flex w-full mr-[5vw] w-full md:w-auto;
 	}
 
 	:local(.main) {
-		@apply h-screen flex flex-col w-full md:max-w-[50vw] pt-8 2xl:pt-16;
+		@apply h-screen flex flex-col w-full md:max-w-[50vw];
+		@apply px-4 pt-10;
+		@apply lg:px-11 lg:pt-20;
 	}
 
 	:local(h3) {

@@ -101,8 +101,9 @@
 	:local(.wallet-swap) {
 		@apply h-max min-h-screen;
 		@apply px-4 pt-10;
-		@apply dark:bg-dark-gosutoDark;
 		@apply lg:px-11 lg:pt-20;
+		@apply dark:bg-dark-gosutoDark;
+		@apply dark:border-0;
 	}
 
 	:local(.container) {
