@@ -6,7 +6,7 @@
 	 * A location shown in the title of this component (Wallet {profileLocation})
 	 */
 	export let profileLocation = 'History';
-	export let walletName = '1';
+	export let walletName = 'Wallet 1';
 	export let publicKey = '0x9f98e01d3THISPARTWILLNOTBEVISIBLE4ed7';
 </script>
 
@@ -17,7 +17,7 @@
 		</a>
 	</div>
 	<p class="return-wallet-title">
-		Wallet {walletName}
+		{walletName}
 		<span class="return-swap-text">{profileLocation}</span>
 	</p>
 	<div class="return-wallet-pub-key">
