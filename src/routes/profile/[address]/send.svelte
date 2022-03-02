@@ -9,7 +9,6 @@
 	import SendCurrency from '$lib/Profile/Send/Forms/SendCurrency.svelte';
 	import CreateToken from '$lib/Profile/CreateToken/CreateToken.svelte';
 	import { retrieveData } from '$utils/dataStorage';
-	import { selectedWallet } from '$stores/user/wallets';
 
 	let tokens: IToken[] = [];
 	let user: IUser;
@@ -37,11 +36,6 @@
 			email: '',
 			wallets: [],
 		};
-		if ($selectedWallet) {
-			user.wallets = [$selectedWallet];
-		} else {
-			user.wallets = [user.wallets[0]];
-		}
 	});
 </script>
 

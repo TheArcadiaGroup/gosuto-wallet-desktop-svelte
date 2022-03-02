@@ -25,12 +25,12 @@
 	import Checklist from '$icons/Checklist.svelte';
 
 	import { goto } from '$app/navigation';
-	import { saveData } from '$utils/dataStorage';
-	import { selectedWallet } from '$stores/user/wallets';
+	import { retrieveData, saveData } from '$utils/dataStorage';
+	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 
 	export let forRoute: 'profile' | 'all-stakes' = 'profile';
-
-	export let walletAddress: string = $selectedWallet?.walletAddress!;
+	let walletAddress = $page.params.address;
 
 	/**Options for the content of the menu. Either 'profile' or 'all-stakes'.*/
 	const menuItemsOptions: {
@@ -60,6 +60,18 @@
 
 	export let user: IUser;
 
+	onMount(() => {
+		if (!user) {
+			// Retrieve the selected profile off the user
+			user = (retrieveData('user') as IUser) || {
+				name: 'Unknown User',
+				avatar: '',
+				email: '',
+				wallets: [],
+			};
+		}
+	});
+
 	/**Handler for clicking on a menu item in the menu and redirectin to the corresponding subroute.*/
 	function menuSelect(e: CustomEvent) {
 		const selection = e.detail.menu_item;
@@ -69,8 +81,8 @@
 			if (walletAddress) {
 				goto(`/${forRoute}/${walletAddress}/${selection}`);
 			} else if (user.wallets.length > 0) {
-				saveData('selectedProfile', user.wallets[0].walletAddress);
-				goto(`/${forRoute}/${user.wallets[0].walletAddress}/${selection}`);
+				saveData('selectedProfile', walletAddress);
+				goto(`/${forRoute}/${walletAddress}/${selection}`);
 			} else {
 				goto('/add-wallet');
 			}
@@ -80,6 +92,7 @@
 	/**Handler for clicking "Add wallet" button, that prompts user with add wallet UI flow.*/
 	function addWallet() {
 		// add wallet
+		goto('/add-wallet/create');
 	}
 </script>
 

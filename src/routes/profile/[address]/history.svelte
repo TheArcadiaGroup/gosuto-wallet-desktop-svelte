@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { selectedWallet } from '$stores/user/wallets';
 	import HistoryPage from '$lib/components/HistoryPage.svelte';
 	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
 
@@ -21,15 +20,10 @@
 			email: '',
 			wallets: [],
 		};
-		if ($selectedWallet) {
-			user.wallets = [$selectedWallet];
-		} else {
-			user.wallets = [user.wallets[0]];
-		}
 	});
 
 	const getData = async (address: string) => {
-		fetch(`/api/profile/${address}/history`, { method: 'POST', body: address })
+		fetch(`/api/profile/${address}/history`)
 			.then((response) => response.json())
 			.then((response) => (data = response))
 			.catch((error) => {
