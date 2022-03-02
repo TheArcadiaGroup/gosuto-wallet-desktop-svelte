@@ -25,19 +25,19 @@ Sveltekit + Electron + Tailwindcss
 
 There are several directories one needs to keep in mind when working with the app during development. Al the directories listed below are in the `src` directory and have aliases linked to them allowing for imports done in this manner; `$stores/{FileName}`. Specifically;
 
--   `lib`
-    When working in the lib directory, it is important to ensure that only `.svelte` files are in this directory. In particular, these need to be structured using the parent page as the name of the directory. For instance, `.svelte` components associated with the home page, need to be in the `Home` directory. For shared components such as buttons and others, a `Components` directory exists in the `lib` directory. Using this approach, components that are aggregations of smaller components can be placed within child directories in the primary `Components` directory. For instance, the `Navigation` component has reusable buttons but is in the `Nav` directory within the `Components` parent directory.
-    Please note that since all of the directories indicated have aliases, they files in these directories can be imported as `$lib/{PageName}/{fileName}.svelte`, or in the case of components `$components/{ComponentName|Directory}/{fileName}.svelte`, etc.
--   `routes`
-    This directory contains the route files associated with the app.
--   `stores`
-    This directory includes the stores used across the app. These should be named based on the page or function of the store. i.e. `auth.store.ts` or `history.store.ts`. The `store` suffix is not mandatory but recommended.
--   `style`
-    All css files used across the application must be in this directory. Since tailwindcss is being used, additional files are not required. However, if need for an additional file arises, it should be placed in this directory.
--   `utils`
-    This directory contains all the utility functions used across the application. The recommended naming convention is similar to the stores, but with a `util.ts` suffix. While not mandatory, it is highly recommended. Additionally, it is recommended that these be classified based on function. An example of this is all `auth` related utility functions be in a child `auth` directory within the `utils` folder.
--   `icons`
-    This directory contains all svg icons used across the app, but initialized within `.svelte` components. All these are reusable across the application. The `.svelte` should contain the actual svg content and might expose props to modify the underlying svg such as its fill color, among other attributes of the icon.
+- `lib`
+  When working in the lib directory, it is important to ensure that only `.svelte` files are in this directory. In particular, these need to be structured using the parent page as the name of the directory. For instance, `.svelte` components associated with the home page, need to be in the `Home` directory. For shared components such as buttons and others, a `Components` directory exists in the `lib` directory. Using this approach, components that are aggregations of smaller components can be placed within child directories in the primary `Components` directory. For instance, the `Navigation` component has reusable buttons but is in the `Nav` directory within the `Components` parent directory.
+  Please note that since all of the directories indicated have aliases, they files in these directories can be imported as `$lib/{PageName}/{fileName}.svelte`, or in the case of components `$components/{ComponentName|Directory}/{fileName}.svelte`, etc.
+- `routes`
+  This directory contains the route files associated with the app.
+- `stores`
+  This directory includes the stores used across the app. These should be named based on the page or function of the store. i.e. `auth.store.ts` or `history.store.ts`. The `store` suffix is not mandatory but recommended.
+- `style`
+  All css files used across the application must be in this directory. Since tailwindcss is being used, additional files are not required. However, if need for an additional file arises, it should be placed in this directory.
+- `utils`
+  This directory contains all the utility functions used across the application. The recommended naming convention is similar to the stores, but with a `util.ts` suffix. While not mandatory, it is highly recommended. Additionally, it is recommended that these be classified based on function. An example of this is all `auth` related utility functions be in a child `auth` directory within the `utils` folder.
+- `icons`
+  This directory contains all svg icons used across the app, but initialized within `.svelte` components. All these are reusable across the application. The `.svelte` should contain the actual svg content and might expose props to modify the underlying svg such as its fill color, among other attributes of the icon.
 
 ## Automatic Formating on Github
 
@@ -64,3 +64,9 @@ Owing to the fact that there is no theme initialized in the tailwind files, thes
 		},
 	},
 ```
+
+### Steps to Creating a New IPC Endpoint on Electron
+
+- First create the message handler in the `preload.cjs` file. See the example of the `createWallet` Message.
+- Once the message has been registered, we create the function handling it in the `events` directory and create the actual function that requires node integration in the electron directory's `utils` folder.
+- Make sure the function is exported using `module.exports` and that all the files created are cjs files.

@@ -41,5 +41,12 @@
 			"$components/*": ["./src/lib/components/*"]
 		}
 	},
-	"include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.ts", "src/**/*.svelte", "src/electron.js"]
+	"include": [
+		"src/**/*.d.ts",
+		"src/**/*.js",
+		"src/**/*.ts",
+		"src/**/*.svelte",
+		"src/electron/index.cjs",
+		"src/electron/preload/index.cjs"
+	]
 }

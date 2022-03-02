@@ -3,13 +3,13 @@
 	"version": "0.0.1",
 	"private": true,
 	"description": "Minimal Sveltekit + Electron starter template.",
-	"main": "src/electron.cjs",
+	"main": "src/electron/index.cjs",
 	"type": "module",
 	"scripts": {
 		"dev": "cross-env NODE_ENV=development npm run dev:all",
 		"dev:all": "concurrently -n=svelte,electron -c='#ff3e00',blue \"npm run dev:svelte\" \"npm run dev:electron\"",
 		"dev:svelte": "svelte-kit dev",
-		"dev:electron": "electron src/electron.cjs",
+		"dev:electron": "electron src/electron/index.cjs",
 		"build:svelte": "svelte-kit build",
 		"build:all": "rm -rf dist && rm -rf release && cross-env NODE_ENV=production && npm run build:svelte && electron-builder -mwl --config build.config.json",
 		"build:linux": "rm -rf dist && rm -rf release && cross-env NODE_ENV=production && npm run build:svelte && electron-builder -l --config build.config.json",
@@ -23,6 +23,7 @@
 	],
 	"dependencies": {
 		"@tailwindcss/forms": "^0.4.0",
+		"bip39": "^3.0.4",
 		"chart.js": "^3.7.0",
 		"chartjs": "^0.3.24",
 		"chartjs-adapter-date-fns": "^2.0.0",

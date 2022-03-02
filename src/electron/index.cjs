@@ -3,11 +3,12 @@ const path = require('path');
 const serve = require('electron-serve');
 const windowStateManager = require('electron-win-state').default;
 const contextMenu = require('electron-context-menu');
+const loadEvents = require('./events/index.cjs');
 
 try {
 	require('electron-reloader')(module);
-} catch (e) {
-	console.error(e);
+} catch (error) {
+	console.error(error);
 }
 
 const dev = process.env.NODE_ENV === 'development' || !app.isPackaged;
@@ -41,6 +42,7 @@ const createWindow = () => {
 			nodeIntegration: true,
 			spellcheck: false,
 			devTools: dev,
+			preload: path.join(__dirname, 'preload/index.cjs'),
 		},
 		icon: path.join('../static/favicon.png'),
 	});
@@ -51,6 +53,8 @@ const createWindow = () => {
 	});
 
 	mainWindow.on('close', () => {});
+
+	loadEvents();
 
 	return mainWindow;
 };
@@ -85,7 +89,7 @@ const createMainWindow = () => {
 	if (dev) loadVite(port);
 	else serveURL(mainWindow);
 
-	// if (dev) mainWindow.openDevTools();
+	if (dev) mainWindow.openDevTools();
 };
 
 // This method will be called when Electron has finished

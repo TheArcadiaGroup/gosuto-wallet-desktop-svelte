@@ -5,7 +5,7 @@
 		"output": "dist"
 	},
 	"files": [
-		"src/electron.cjs",
+		"src/electron/index.cjs",
 		{
 			"from": "build",
 			"to": ""
