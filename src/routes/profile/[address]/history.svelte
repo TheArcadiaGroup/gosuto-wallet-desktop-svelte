@@ -14,18 +14,6 @@
 
 	onMount(() => {
 		getData($page.params.address);
-	});
-
-	const getData = async (address: string) => {
-		fetch(`/api/profile/${address}/history`, { method: 'POST', body: address })
-			.then((response) => response.json())
-			.then((response) => (data = response))
-			.catch((error) => {
-				console.error('error:', error);
-			});
-	};
-
-	onMount(() => {
 		// Retrieve the selected profile off the user
 		user = (retrieveData('user') as IUser) || {
 			name: 'Unknown User',
@@ -39,6 +27,15 @@
 			user.wallets = [user.wallets[0]];
 		}
 	});
+
+	const getData = async (address: string) => {
+		fetch(`/api/profile/${address}/history`, { method: 'POST', body: address })
+			.then((response) => response.json())
+			.then((response) => (data = response))
+			.catch((error) => {
+				console.error('error:', error);
+			});
+	};
 </script>
 
 {#if data}

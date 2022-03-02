@@ -11,16 +11,14 @@
 
 <script lang="ts">
 	import { onMount } from 'svelte';
-
 	import StakePage from '$lib/Profile/stake/StakePage.svelte';
-
-	import { shortenAddress } from '$utils';
+	import { page } from '$app/stores';
 
 	let data;
-
-	export let address: string;
+	let address: string;
 
 	onMount(() => {
+		address = $page.params.address;
 		getData(address);
 	});
 
@@ -34,10 +32,4 @@
 	};
 </script>
 
-<StakePage
-	stakeArray={data}
-	wallet={{
-		name: 'Wallet 2',
-		publicKey: address,
-	}}
-/>
+<StakePage stakeArray={data} />

@@ -25,11 +25,12 @@
 	import Checklist from '$icons/Checklist.svelte';
 
 	import { goto } from '$app/navigation';
-	import { retrieveData, saveData } from '$utils/dataStorage';
+	import { saveData } from '$utils/dataStorage';
+	import { selectedWallet } from '$stores/user/wallets';
 
 	export let forRoute: 'profile' | 'all-stakes' = 'profile';
 
-	export let walletAddress: string = retrieveData('selectedProfile');
+	export let walletAddress: string = $selectedWallet?.walletAddress!;
 
 	/**Options for the content of the menu. Either 'profile' or 'all-stakes'.*/
 	const menuItemsOptions: {

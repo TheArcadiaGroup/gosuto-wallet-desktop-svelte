@@ -1,5 +1,4 @@
 <script lang="ts">
-	import GridLayout from '$lib/Common/GridLayout.svelte';
 	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
 	import ArrowInCircle from '$lib/Common/ArrowInCircle.svelte';
 	import StakesFromWallet from '$lib/Profile/stake/StakesFromWallet.svelte';
@@ -8,15 +7,13 @@
 	import ClaimReward from '$lib/Profile/stake/detail/ClaimReward.svelte';
 	import UnlockInitialStake from '$lib/Profile/stake/detail/UnlockInitialStake.svelte';
 	import Unstake from '$lib/Profile/stake/detail/Unstake.svelte';
-
 	import Navbar from '$components/Navbar/Navbar.svelte';
 
-	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
+	import { retrieveData } from '$utils/dataStorage';
+	import { selectedWallet } from '$stores/user/wallets';
 
-	$: slug = $page.params.slug;
-	// Show a specific profile page based on slug
-
-	// wallet bind on profile navigation component
+	let user: IUser;
 
 	/**Object of all possible components for the stake detail column (the last column)*/
 	const lastCollumnContent = {
@@ -68,33 +65,8 @@
 		console.log('selectedLastCollumnContent:', selectedLastCollumnContent);
 	}
 
-	// DEV
-	const user = {
-		name: 'Jake Waterson',
-		ppurl: 'https://miro.medium.com/fit/c/262/262/2*-cdwKPXyVI0ejgxpWkKBeA.jpeg',
-		wallets: [
-			{
-				name: 'Wallet 1',
-				avalible: 5000,
-				staked: 2500,
-				unclaimed: 375,
-			},
-			{
-				name: 'Wallet 1',
-				avalible: 5000,
-				staked: 2500,
-				unclaimed: 375,
-			},
-		],
-	};
-
-	export let wallet = {
-		name: 'Wallet 1',
-		publicKey: '0x9f98e01d2...4ed7',
-	};
-
 	export let stakeArray = Array(10).fill({
-		name: wallet?.name,
+		name: $selectedWallet?.walletName,
 		elapsedSeconds: 20,
 		fullSeconds: 69,
 		unstaked: false,
@@ -102,9 +74,24 @@
 		unlocked: 0,
 		rewards: 0,
 	});
+
+	onMount(() => {
+		// Retrieve the selected profile off the user
+		user = (retrieveData('user') as IUser) || {
+			name: 'Unknown User',
+			avatar: '',
+			email: '',
+			wallets: [],
+		};
+		if ($selectedWallet) {
+			user.wallets = [$selectedWallet];
+		} else {
+			user.wallets = [user.wallets[0]];
+		}
+	});
 </script>
 
-<div class="main flex">
+<div class="flex main">
 	<div class="global-grid-nav">
 		<Navbar />
 	</div>
@@ -115,7 +102,12 @@
 		</div>
 	</div>
 	<div class="global-grid-mid size-full">
-		<StakesFromWallet on:stakeSelect={stakeSelect} on:addStake={addStake} {wallet} {stakeArray} />
+		<StakesFromWallet
+			on:stakeSelect={stakeSelect}
+			on:addStake={addStake}
+			wallet={$selectedWallet}
+			{stakeArray}
+		/>
 	</div>
 	<div class="global-grid-right">
 		<div class="size-full last-column">
