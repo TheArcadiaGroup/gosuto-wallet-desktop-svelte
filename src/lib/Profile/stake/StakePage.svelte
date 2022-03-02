@@ -7,6 +7,7 @@
 	import Confirm from '$lib/Profile/stake/detail/Confirm.svelte';
 	import ClaimReward from '$lib/Profile/stake/detail/ClaimReward.svelte';
 	import UnlockInitialStake from '$lib/Profile/stake/detail/UnlockInitialStake.svelte';
+	import TextSidebar from '$components/Profile/TextSidebar.svelte';
 	import Unstake from '$lib/Profile/stake/detail/Unstake.svelte';
 
 	import Navbar from '$components/Navbar/Navbar.svelte';
@@ -134,7 +135,7 @@
 					/>
 				</div>
 			{:else}
-				<div class="placeholder-text">Select a stake for more information</div>
+				<TextSidebar>Select a stake for more information</TextSidebar>
 			{/if}
 		</div>
 	</div>
