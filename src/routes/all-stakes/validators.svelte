@@ -2,6 +2,7 @@
 	import GridLayout from '$lib/Common/GridLayout.svelte';
 	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
 	import ValidatorPage from '$lib/ValidatorPage/index.svelte';
+	import Navbar from '$components/Navbar/Navbar.svelte';
 
 	// DEV
 	const user = {
@@ -24,18 +25,23 @@
 	};
 </script>
 
-<GridLayout>
-	<div slot="first" class="size-full">
-		<!-- feed the user profile data to ProfileNavigation component -->
-		<ProfileNavigation forRoute={'all-stakes'} {user} />
+<div class="main flex">
+	<div class="global-grid-nav">
+		<Navbar />
 	</div>
-	<div slot="mid" class="size-full">
+	<div class="global-grid-left">
+		<div class="size-full">
+			<!-- feed the user profile data to ProfileNavigation component -->
+			<ProfileNavigation forRoute={'all-stakes'} {user} />
+		</div>
+	</div>
+	<div class="global-grid-mid size-full">
 		<!-- TODO add validators -->
 		<div class="validator-holder">
 			<ValidatorPage />
 		</div>
 	</div>
-</GridLayout>
+</div>
 
 <style lang="postcss" global>
 	:local(.size-full) {
@@ -43,6 +49,7 @@
 	}
 
 	:local(.validator-holder) {
-		@apply flex flex-col items-center w-full;
+		@apply flex flex-col items-center w-full h-full;
+		@apply bg-dark-gosutoDark;
 	}
 </style>
