@@ -132,15 +132,22 @@ interface IStake {
 	parentWalletAddress: string;
 }
 
+interface IUser {
+	name: string;
+	email: string;
+	avatar: string;
+	wallets: IWallet[];
+}
+
 interface AppSettings {
 	name: string;
 	email: string;
-	pictureUrl: string;
+	avatar: string;
 }
 
 interface ProfileSettings {
 	walletName: string;
-	walletAddress: string = '0x9f98e01d2gj92ngn2g7gn24ed7';
+	walletAddress: string;
 	publicKey: string;
 	privateKey: string;
 	currentPassword: string;

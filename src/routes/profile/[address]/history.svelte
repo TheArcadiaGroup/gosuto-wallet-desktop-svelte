@@ -1,30 +1,19 @@
-<script context="module">
-	export const load = async ({ _, page }) => {
-		const address = page.params.address;
-		return {
-			props: {
-				address,
-			},
-		};
-	};
-</script>
-
 <script lang="ts">
 	import { onMount } from 'svelte';
-
+	import { selectedWallet } from '$stores/user/wallets';
 	import HistoryPage from '$lib/components/HistoryPage.svelte';
 	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
 
 	import { shortenAddress } from '$utils';
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 	import { page } from '$app/stores';
+	import { retrieveData } from '$utils/dataStorage';
 
 	let data: HistoryObject[];
-	export let address: string;
+	let user: IUser;
 
 	onMount(() => {
-		console.log($page);
-		getData(address);
+		getData($page.params.address);
 	});
 
 	const getData = async (address: string) => {
@@ -36,27 +25,21 @@
 			});
 	};
 
-	// DEV
-	const user = {
-		name: 'Jake Waterson',
-		ppurl: 'https://miro.medium.com/fit/c/262/262/2*-cdwKPXyVI0ejgxpWkKBeA.jpeg',
-		wallets: [
-			{
-				name: 'Wallet 1',
-				avalible: 5000,
-				staked: 2500,
-				unclaimed: 375,
-				address: '0xhoiqhgovbnovlwggwrg',
-			},
-			{
-				name: 'Wallet 2',
-				avalible: 5000,
-				staked: 2500,
-				unclaimed: 375,
-				address: '0x567hfgdhjestth53y35y',
-			},
-		],
-	};
+	onMount(() => {
+		// Retrieve the selected profile off the user
+		user = (retrieveData('user') as IUser) || {
+			name: 'Unknown User',
+			avatar: '',
+			email: '',
+			wallets: [],
+		};
+		console.log($selectedWallet);
+		if ($selectedWallet) {
+			user.wallets = [$selectedWallet];
+		} else {
+			user.wallets = [user.wallets[0]];
+		}
+	});
 </script>
 
 {#if data}
@@ -70,7 +53,11 @@
 			</div>
 		</div>
 		<div class="global-grid-mid">
-			<HistoryPage historyArray={data} isInProfileRoute={true} address={shortenAddress(address)} />
+			<HistoryPage
+				historyArray={data}
+				isInProfileRoute={true}
+				address={shortenAddress($page.params.address)}
+			/>
 		</div>
 	</div>
 {/if}

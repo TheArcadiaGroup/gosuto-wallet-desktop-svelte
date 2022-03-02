@@ -6,6 +6,7 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { retrieveData, saveData } from '$utils/dataStorage';
+	import { selectedWallet } from '$stores/user/wallets';
 
 	let existingProfiles: IWallet[] = retrieveData('profiles') || [];
 	let defaultWalletIndex: number = Number(retrieveData('defaultWalletIndex')) || 0;
@@ -13,12 +14,15 @@
 	onMount(() => {
 		if (existingProfiles.length <= 0) {
 			saveData('defaultWalletIndex', '0');
+			selectedWallet.set(existingProfiles[0] || null);
 			goto('/add-wallet');
 		} else {
 			if (defaultWalletIndex > existingProfiles.length - 1) {
 				postData(existingProfiles[defaultWalletIndex]);
+				selectedWallet.set(existingProfiles[defaultWalletIndex] || null);
 			} else {
 				postData(existingProfiles[0]);
+				selectedWallet.set(existingProfiles[0] || null);
 			}
 		}
 	});
@@ -59,15 +63,7 @@
 							postData(p);
 						}}
 					>
-						<CreditCard
-							name={p.walletName}
-							wallet={{
-								available: p.availableBalanceUSD,
-								staked: p.stakedBalance,
-								unclaimed: p.unclaimedRewards,
-								address: p.walletAddress,
-							}}
-						/>
+						<CreditCard name={p.walletName} wallet={p} />
 					</div>
 				{/each}
 			</div>

@@ -57,17 +57,7 @@
 	}[];
 	$: menuItems = menuItemsOptions[forRoute];
 
-	export let user: {
-		name: string;
-		ppurl: string;
-		wallets: {
-			name: string;
-			available: number;
-			staked: number;
-			unclaimed: number;
-			address: string;
-		}[];
-	};
+	export let user: IUser;
 
 	/**Handler for clicking on a menu item in the menu and redirectin to the corresponding subroute.*/
 	function menuSelect(e: CustomEvent) {
@@ -78,8 +68,8 @@
 			if (walletAddress) {
 				goto(`/${forRoute}/${walletAddress}/${selection}`);
 			} else if (user.wallets.length > 0) {
-				saveData('selectedProfile', user.wallets[0].address);
-				goto(`/${forRoute}/${user.wallets[0].address}/${selection}`);
+				saveData('selectedProfile', user.wallets[0].walletAddress);
+				goto(`/${forRoute}/${user.wallets[0].walletAddress}/${selection}`);
 			} else {
 				goto('/add-wallet');
 			}
@@ -96,10 +86,10 @@
 	<div class="container">
 		<div class="pp-and-name">
 			<div class="pp">
-				<ProfilePicture url={user?.ppurl || ''} />
+				<ProfilePicture url={user?.avatar || ''} />
 			</div>
 			<div class="username">
-				{user?.name || 'unknown name'}
+				{user?.name || 'Unknown Name'}
 			</div>
 		</div>
 		{#if forRoute === 'profile'}
@@ -117,7 +107,7 @@
 							<CarouselItem>
 								<CreditCard
 									name={user?.name || 'unknown name'}
-									ppurl={user?.ppurl || ''}
+									avatar={user?.avatar || ''}
 									{wallet}
 								/>
 							</CarouselItem>
