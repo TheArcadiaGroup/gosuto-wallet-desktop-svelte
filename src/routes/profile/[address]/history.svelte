@@ -33,7 +33,6 @@
 			email: '',
 			wallets: [],
 		};
-		console.log($selectedWallet);
 		if ($selectedWallet) {
 			user.wallets = [$selectedWallet];
 		} else {

@@ -7,23 +7,19 @@
 	import { onMount } from 'svelte';
 	import { retrieveData, saveData } from '$utils/dataStorage';
 	import { selectedWallet } from '$stores/user/wallets';
+	import { loadSelectedProfile } from '$utils/profiles';
 
 	let existingProfiles: IWallet[] = retrieveData('profiles') || [];
 	let defaultWalletIndex: number = Number(retrieveData('defaultWalletIndex')) || 0;
 
 	onMount(() => {
-		if (existingProfiles.length <= 0) {
+		let selectedProfile = loadSelectedProfile();
+		if (!selectedProfile) {
 			saveData('defaultWalletIndex', '0');
-			selectedWallet.set(existingProfiles[0] || null);
+			selectedWallet.set(null);
 			goto('/add-wallet');
 		} else {
-			if (defaultWalletIndex > existingProfiles.length - 1) {
-				postData(existingProfiles[defaultWalletIndex]);
-				selectedWallet.set(existingProfiles[defaultWalletIndex] || null);
-			} else {
-				postData(existingProfiles[0]);
-				selectedWallet.set(existingProfiles[0] || null);
-			}
+			postData(selectedProfile);
 		}
 	});
 
