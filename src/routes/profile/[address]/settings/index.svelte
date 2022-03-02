@@ -36,7 +36,6 @@
 	<div class="global-grid-mid">
 		<Settings />
 	</div>
-	<div class="global-grid-right dark:bg-dark-background" />
 </div>
 
 <style lang="postcss" global>
