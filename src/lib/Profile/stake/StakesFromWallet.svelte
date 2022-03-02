@@ -94,7 +94,7 @@
 
 <style lang="postcss" global>
 	:local(.main) {
-		@apply h-full w-full flex flex-col gap-4 items-center dark:text-white dark:bg-dark-gosutoDark;
+		@apply h-screen w-full flex flex-col gap-4 items-center dark:text-white dark:bg-dark-gosutoDark;
 		@apply px-4 pt-10;
 		@apply lg:px-11 lg:pt-20;
 	}
@@ -116,7 +116,7 @@
 	}
 
 	:local(.title) {
-		@apply flex flex-row justify-between px-8;
+		@apply flex flex-row justify-between w-full;
 	}
 
 	:local(.title-label) {
