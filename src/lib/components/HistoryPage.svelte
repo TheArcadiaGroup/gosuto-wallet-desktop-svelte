@@ -16,15 +16,16 @@
 	export let historyArray: HistoryObject[];
 	export let hideNavbar: boolean = true;
 	export let isInProfileRoute: boolean = false;
-	export let walletNumber: string = '1';
-	export let address: string = '0x9f98e01d3...4ed7';
+	export let walletNumber: string;
+	export let address: string;
 	let filteredArray: HistoryObject[];
 	let showingArray: HistoryObject[];
 
 	let numberOfItemsShown = 7;
 	let pageNumber = 1;
 
-	let optionsArray: string[] = ['All', 'Received', 'Sent', 'Swap', 'Stake'];
+	type TransactionStatus = 'Received' | 'Sent' | 'Stake' | 'Swap' | 'All' | undefined;
+	let optionsArray: TransactionStatus[] = ['All', 'Received', 'Sent', 'Swap', 'Stake'];
 	let filterId: number = 0;
 	$: historyFilter = optionsArray[filterId];
 
@@ -114,7 +115,7 @@
 
 <style lang="postcss" global>
 	:local(.mid-holder) {
-		@apply flex w-full mr-[5vw] w-full md:w-auto;
+		@apply flex w-full mr-[5vw] md:w-auto;
 	}
 
 	:local(.main) {

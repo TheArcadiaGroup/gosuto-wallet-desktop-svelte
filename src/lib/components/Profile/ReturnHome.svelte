@@ -5,9 +5,9 @@
 	/**
 	 * A location shown in the title of this component (Wallet {profileLocation})
 	 */
-	export let profileLocation = 'History';
-	export let walletName = 'Wallet 1';
-	export let publicKey = '0x9f98e01d3THISPARTWILLNOTBEVISIBLE4ed7';
+	export let profileLocation: string;
+	export let walletName: string;
+	export let publicKey: string;
 </script>
 
 <div class="return-home">
@@ -22,7 +22,7 @@
 	</p>
 	<div class="return-wallet-pub-key">
 		<p class="return-pub-key-text">
-			{publicKey.slice(0, 12)}...{publicKey.slice(publicKey.length - 4)}
+			{publicKey?.slice(0, 12)}...{publicKey?.slice(publicKey.length - 4)}
 		</p>
 		<div class="return-cursor-pointer">
 			<CopyIcon />

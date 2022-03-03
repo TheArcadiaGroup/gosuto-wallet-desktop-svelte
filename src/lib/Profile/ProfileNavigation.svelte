@@ -84,7 +84,7 @@
 				saveData('selectedProfile', walletAddress);
 				goto(`/${forRoute}/${walletAddress}/${selection}`);
 			} else {
-				goto('/add-wallet/create');
+				goto('/add-wallet');
 			}
 		}
 	}
@@ -92,7 +92,7 @@
 	/**Handler for clicking "Add wallet" button, that prompts user with add wallet UI flow.*/
 	function addWallet() {
 		// add wallet
-		goto('/add-wallet/create');
+		goto('/add-wallet');
 	}
 </script>
 

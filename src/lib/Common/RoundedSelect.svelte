@@ -10,7 +10,7 @@
 	import RoundedSelectIcon from '$icons/RoundedSelectIcon.svelte';
 	import { slide } from 'svelte/transition';
 
-	export let optionsArray: string[] = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
+	export let optionsArray: string[];
 	export let value: number = 0;
 	let droppedDown: boolean = false;
 </script>

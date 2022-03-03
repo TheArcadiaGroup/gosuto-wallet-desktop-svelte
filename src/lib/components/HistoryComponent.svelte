@@ -17,7 +17,7 @@
 
 	export let wallet = 'Wallet 1';
 
-	export let status: 'Received' | 'Sent' | 'Stake' | 'Swap' = 'Sent';
+	export let status: 'Received' | 'Sent' | 'Stake' | 'Swap' | 'All' = 'Sent';
 
 	export let dateAndTime = 'Apr 01, 2021 07:15:20 am (CST)';
 

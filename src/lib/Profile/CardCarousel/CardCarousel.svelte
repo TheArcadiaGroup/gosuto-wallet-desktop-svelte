@@ -40,9 +40,11 @@
 	<slot />
 </div>
 
-<div class="arrows not-on-mobile">
-	<NavigationArrows on:move={moveCardCarousel} carouselPosition={position} {numberOfCards} />
-</div>
+{#if numberOfCards > 1}
+	<div class="arrows not-on-mobile">
+		<NavigationArrows on:move={moveCardCarousel} carouselPosition={position} {numberOfCards} />
+	</div>
+{/if}
 
 <style lang="postcss" global>
 	/* Removing scrollbar */
