@@ -6,7 +6,7 @@
 
 	import Swap from '$lib/Pages/Profile/Swap/index.svelte';
 
-	import TextSidebar from '$lib/Pages/Profile/TextSidebar.svelte';
+	import TextSidebar from '$lib/Components/TextSidebar.svelte';
 	import SwapCurrency from '$lib/Pages/Profile/Swap/Forms/SwapCurrency.svelte';
 	import CreateToken from '$lib/Pages/Profile/CreateToken/CreateToken.svelte';
 	import { retrieveData } from '$utils/dataStorage';

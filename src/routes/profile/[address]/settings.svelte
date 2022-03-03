@@ -7,6 +7,8 @@
 	import { retrieveData } from '$utils/dataStorage';
 	import { onMount } from 'svelte';
 
+	let user: IUser;
+
 	onMount(() => {
 		// Retrieve the selected profile off the user
 		user = (retrieveData('user') as IUser) || {

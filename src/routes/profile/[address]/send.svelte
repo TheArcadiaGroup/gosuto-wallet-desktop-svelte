@@ -5,7 +5,7 @@
 	import ProfileNavigation from '$lib/Pages/Profile/ProfileNavigation.svelte';
 	import Send from '$lib/Pages/Profile/Send/index.svelte';
 
-	import TextSidebar from '$lib/Pages/Profile/TextSidebar.svelte';
+	import TextSidebar from '$lib/Components/TextSidebar.svelte';
 	import SendCurrency from '$lib/Pages/Profile/Send/Forms/SendCurrency.svelte';
 	import CreateToken from '$lib/Pages/Profile/CreateToken/CreateToken.svelte';
 	import { retrieveData } from '$utils/dataStorage';

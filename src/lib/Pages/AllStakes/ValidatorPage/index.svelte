@@ -6,7 +6,7 @@
 	@author MikeBrandon
 -->
 <script>
-	import ValidatorItem from './ValidatorItem/index.svelte';
+	import ValidatorItem from './ValidatorItem.svelte';
 
 	export let validatorArray = Array(10);
 

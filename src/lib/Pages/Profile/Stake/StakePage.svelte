@@ -8,7 +8,7 @@
 	import ClaimReward from '$lib/Pages/Profile/Stake/detail/ClaimReward.svelte';
 	import UnlockInitialStake from '$lib/Pages/Profile/Stake/detail/UnlockInitialStake.svelte';
 	import Unstake from '$lib/Pages/Profile/Stake/detail/Unstake.svelte';
-	import TextSidebar from '../TextSidebar.svelte';
+	import TextSidebar from '../../../Components/TextSidebar.svelte';
 
 	import Navbar from '$lib/Components/Navbar/Navbar.svelte';
 
