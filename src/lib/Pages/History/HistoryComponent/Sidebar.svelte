@@ -10,6 +10,7 @@
 	import { slide } from 'svelte/transition';
 
 	import SideBarCard from './SideBarCard.svelte';
+	import TextSidebar from '$lib/Pages/Profile/TextSidebar.svelte';
 
 	export let historyObject: HistoryObject | null = null;
 </script>
@@ -30,7 +31,7 @@
 			/>
 		</div>
 	{:else}
-		<p class="inactive-text">Select an entry to view more info about it</p>
+		<TextSidebar>Select an entry to view more info about it</TextSidebar>
 	{/if}
 </div>
 

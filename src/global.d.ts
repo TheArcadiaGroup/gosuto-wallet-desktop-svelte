@@ -6,8 +6,8 @@ type dataFunc = (data: string) => void;
 
 declare interface Window {
 	api: {
-		receive: (channel: string, dataFunc) => void;
-		send: (channel: string, data: string) => void;
+		receive: (channel: MainReceiveChannels, dataFunc) => void;
+		send: (channel: MainSendChannels, data: string) => void;
 	};
 }
 
@@ -66,6 +66,9 @@ interface HistoryObject {
 
 interface WalletCreationData {
 	walletName: string;
+	walletAddress: string;
+	accountHash: string;
+	privateKey: string;
 	seedPhrase: string;
 	password: string;
 }
@@ -78,10 +81,12 @@ interface IWallet {
 	availableBalanceUSD: number;
 	stakedBalance: number;
 	unclaimedRewards: number;
-	walletTokens: [IToken[]];
-	walletStakes: [IStake[]];
-	walletHistory: [IHistory[]];
+	walletTokens: IToken[];
+	walletStakes: IStake[];
+	walletHistory: IHistory[];
 	walletAddress: string;
+	accountHash: string;
+	privateKey: string;
 }
 
 interface IToken {
@@ -123,20 +128,34 @@ interface IStake {
 	// difference between rewardDate and initialStakeDate
 	rewardCountdown: number;
 	reward: number;
+	unlocked: number;
 	stakePercent: number;
 	parentWalletAddress: string;
+}
+
+interface IUser {
+	name: string;
+	email: string;
+	avatar: string;
+	wallets: IWallet[];
 }
 
 interface AppSettings {
 	name: string;
 	email: string;
-	pictureUrl: string;
+	avatar: string;
 }
 
 interface ProfileSettings {
 	walletName: string;
-	walletAddress: string = '0x9f98e01d2gj92ngn2g7gn24ed7';
+	walletAddress: string;
 	publicKey: string;
 	privateKey: string;
 	currentPassword: string;
 }
+
+type MainSendChannels = 'createWalletFromMnemonics' | 'createWalletFromFile' | 'generateMnemonics';
+type MainReceiveChannels =
+	| 'createWalletFromFileResponse'
+	| 'createWalletFromMnemonicsResponse'
+	| 'generateMnemonicsResponse';

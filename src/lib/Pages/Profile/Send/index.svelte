@@ -21,7 +21,7 @@
 
 	const dispatch = createEventDispatcher();
 
-	function onScroll(event) {
+	function onScroll(event: any) {
 		if (!event.target || !event.target.scrollLeft || !event.target.clientWidth) return;
 		scroll = event.target.scrollLeft;
 		scrollWidth = event.target.scrollWidth;
@@ -100,9 +100,10 @@
 <style lang="postcss" global>
 	:local(.wallet-swap) {
 		@apply h-max min-h-screen;
-		@apply px-4 pt-10;
-		@apply dark:bg-dark-gosutoDark;
+		@apply px-4 pt-10 m-0;
 		@apply lg:px-11 lg:pt-20;
+		@apply dark:bg-dark-gosutoDark;
+		@apply dark:border-0;
 	}
 
 	:local(.container) {

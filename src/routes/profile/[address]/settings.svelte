@@ -3,25 +3,24 @@
 
 	import ProfileNavigation from '$lib/Pages/Profile/ProfileNavigation.svelte';
 	import Settings from '$lib/Pages/Profile/WalletSettings/index.svelte';
+	import { selectedWallet } from '$stores/user/wallets';
+	import { retrieveData } from '$utils/dataStorage';
+	import { onMount } from 'svelte';
 
-	const user = {
-		name: 'Jake Waterson',
-		ppurl: 'https://miro.medium.com/fit/c/262/262/2*-cdwKPXyVI0ejgxpWkKBeA.jpeg',
-		wallets: [
-			{
-				name: 'Wallet 1',
-				available: 5000,
-				staked: 2500,
-				unclaimed: 375,
-			},
-			{
-				name: 'Wallet 1',
-				available: 5000,
-				staked: 2500,
-				unclaimed: 375,
-			},
-		],
-	};
+	onMount(() => {
+		// Retrieve the selected profile off the user
+		user = (retrieveData('user') as IUser) || {
+			name: 'Unknown User',
+			avatar: '',
+			email: '',
+			wallets: (retrieveData('wallets') as IWallet[]) || [],
+		};
+		if ($selectedWallet) {
+			user.wallets = [$selectedWallet];
+		} else {
+			user.wallets = [user.wallets[0]];
+		}
+	});
 </script>
 
 <div class="flex">
@@ -36,7 +35,6 @@
 	<div class="global-grid-mid">
 		<Settings />
 	</div>
-	<div class="global-grid-right dark:bg-dark-background" />
 </div>
 
 <style lang="postcss" global>

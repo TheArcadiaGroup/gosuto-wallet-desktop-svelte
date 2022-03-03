@@ -7,7 +7,8 @@
 		@apply relative;
 		@apply h-full w-full;
 		@apply flex items-center justify-center;
-		@apply dark:bg-dark-grey;
+		@apply dark:bg-dark-blue;
+		@apply dark:border-0;
 	}
 
 	:local(.sidebar-text) {

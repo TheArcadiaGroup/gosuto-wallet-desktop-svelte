@@ -132,7 +132,7 @@
 	:local(.currency) {
 		@apply relative;
 		@apply min-h-[20rem] h-full w-full;
-		@apply dark:bg-dark-grey;
+		@apply dark:bg-dark-blue;
 	}
 
 	:local(.currency-form) {

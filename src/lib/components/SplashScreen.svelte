@@ -1,13 +1,6 @@
 <script lang="ts">
 	import GosutoLogoVertical from '$icons/GosutoLogoVertical.svelte';
-
-	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
-	import { goto } from '$app/navigation';
-
-	onMount(async () => {
-		setTimeout(() => goto('/onboarding'), 1000);
-	});
 </script>
 
 <div class="page" out:fade>

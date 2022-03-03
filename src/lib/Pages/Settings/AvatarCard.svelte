@@ -6,14 +6,14 @@
 <script lang="ts">
 	import PhotoIcon from '$icons/PhotoIcon.svelte';
 
-	export let pictureUrl: string;
+	export let avatar: string;
 </script>
 
 <div class="avatarCard-wrapper">
 	<div class="photoIcon-wrapper">
 		<PhotoIcon class="icon" />
 	</div>
-	<div class="avatarCard-bg" style="--url: url({pictureUrl})" />
+	<div class="avatarCard-bg" style="--url: url({avatar})" />
 </div>
 
 <style type="postcss">

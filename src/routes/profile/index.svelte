@@ -5,15 +5,21 @@
 
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import { retrieveData, saveData } from '$utils/dataStorage';
+	import { selectedWallet } from '$stores/user/wallets';
+	import { loadSelectedProfile } from '$utils/profiles';
 
-	let existingProfiles: IWallet[] = JSON.parse(localStorage.getItem('profiles') || '[]');
-	let defaultWalletIndex: number = Number(localStorage.getItem('defaultWalletIndex'));
+	let existingWallets: IWallet[] = retrieveData('wallets') || [];
+	let defaultWalletIndex: number = Number(retrieveData('defaultWalletIndex')) || 0;
 
 	onMount(() => {
-		if (existingProfiles.length == 1) {
-			postData(existingProfiles[0]);
-		} else if (existingProfiles.length > 1 && defaultWalletIndex) {
-			postData(existingProfiles[defaultWalletIndex - 1]);
+		let selectedProfile = loadSelectedProfile();
+		if (!selectedProfile) {
+			saveData('defaultWalletIndex', '0');
+			selectedWallet.set(null);
+			goto('/add-wallet');
+		} else {
+			postData(selectedProfile);
 		}
 	});
 
@@ -23,7 +29,7 @@
 			method: 'POST',
 			body: JSON.stringify(object),
 		})
-			.then(() => goto('/profile/' + object.walletAddress))
+			.then(() => goto(`/profile/${object.walletAddress}/history`))
 			.catch((error) => {
 				console.error('error:', error);
 			});
@@ -45,22 +51,15 @@
 				</div>
 			</div>
 			<div class="credit-card-wrapper">
-				{#each existingProfiles as p, i}
+				{#each existingWallets as p, i}
 					<div
 						class="single-card-wrap"
 						on:click={() => {
-							localStorage.setItem('defaultWalletIndex', (i + 1).toString());
+							saveData('defaultWalletIndex', (i + 1).toString());
 							postData(p);
 						}}
 					>
-						<CreditCard
-							name={p.walletName}
-							wallet={{
-								available: p.availableBalanceUSD,
-								staked: p.stakedBalance,
-								unclaimed: p.unclaimedRewards,
-							}}
-						/>
+						<CreditCard name={p.walletName} wallet={p} />
 					</div>
 				{/each}
 			</div>

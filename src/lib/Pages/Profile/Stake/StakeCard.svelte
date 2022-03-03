@@ -10,19 +10,17 @@
 -->
 <script lang="ts">
 	import ProgressBar from '$lib/Components/ProgressBar.svelte';
+	import { convertDate } from '$utils';
 
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 
-	export let stake: {
-		name: string;
-		elapsedSeconds: number;
-		fullSeconds: number;
-		staked: number;
-		unlocked: number;
-	};
+	export let stake: IStake;
 
-	$: progress = stake?.elapsedSeconds / stake?.fullSeconds; // progress in % of the stake
+	let elapsedSeconds = Math.abs(new Date() - stake?.initialStakeDate) / 1000;
+	let fullSeconds = Math.abs(stake?.rewardDate - stake?.initialStakeDate) / 1000;
+
+	$: progress = elapsedSeconds / fullSeconds; // progress in % of the stake
 
 	/**Function that formats time from seconds to specified displaying format*/
 	function formatTime(sec: number) {
@@ -45,11 +43,11 @@
 
 <div class="main {open && 'open'}" on:click={openStake}>
 	<div class="name">
-		{stake?.name || 'unknown wallet name'}
+		{stake?.parentWallet || 'unknown wallet name'}
 	</div>
 	<div class="first-line">
 		<div class={progress * 100 > 0 ? 'text-highlight' : 'text-normal'}>
-			{stake?.staked || 0} CSPR Staked
+			{stake?.stakeAmount || 0} CSPR Staked
 		</div>
 		<div class="text-center {progress * 100 >= 50 ? 'text-highlight' : 'text-normal'}">
 			{stake?.unlocked || 0} CSPR Unlocked
@@ -59,27 +57,29 @@
 		<ProgressBar value={progress * 100 || 0} />
 	</div>
 	<div class="third-line">
-		<div class={progress * 100 > 0 ? 'text-highlight' : 'text-normal'}>Staked on 1 Dec 2021</div>
+		<div class={progress * 100 > 0 ? 'text-highlight' : 'text-normal'}>
+			Staked on {convertDate(stake?.initialStakeDate) || 0}
+		</div>
 		<div class="text-center {progress * 100 >= 50 ? 'text-highlight' : 'text-normal'}">
-			Unlocked on 1 Dec 2021
+			Unlocked on {convertDate(stake?.reclamationDate) || 0}
 			<!-- TODO figure out the dates here -->
 		</div>
 		<div class="text-right {progress * 100 >= 100 ? 'text-highlight' : 'text-normal'}">
-			Reward on 1 Dec 2021
+			Reward on {convertDate(stake?.rewardDate) || 0}
 		</div>
 	</div>
 	<div class="time-container">
-		<div class="elapsed {stake?.elapsedSeconds === 0 && 'text-highlight'}">
-			{formatTime(stake?.elapsedSeconds || 0)}
+		<div class="elapsed {elapsedSeconds === 0 && 'text-highlight'}">
+			{formatTime(elapsedSeconds || 0)}
 		</div>
-		<div class="full {stake?.fullSeconds === 0 && 'text-highlight'}">
-			{formatTime(stake?.fullSeconds || 0)}
+		<div class="full {fullSeconds === 0 && 'text-highlight'}">
+			{formatTime(fullSeconds || 0)}
 		</div>
 	</div>
 	<div class="footer">
 		<div class="footer-label">Total time until reward</div>
-		<div class="footer-time {stake?.fullSeconds - stake?.elapsedSeconds === 0 && 'text-highlight'}">
-			{formatTime(stake?.fullSeconds - stake?.elapsedSeconds || 0)}
+		<div class="footer-time {fullSeconds - elapsedSeconds === 0 && 'text-highlight'}">
+			{formatTime(fullSeconds - elapsedSeconds || 0)}
 		</div>
 	</div>
 </div>

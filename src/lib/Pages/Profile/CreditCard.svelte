@@ -13,19 +13,15 @@
 	import CardGraphics from '$icons/CardGraphics.svelte';
 	import PurpleTriangle from '$icons/PurpleTriangle.svelte';
 	import ProfilePicture from '$lib/Components/ProfilePicture.svelte';
+	import { saveData } from '$utils/dataStorage';
 
-	export let ppurl = '';
+	export let avatar = '';
 	export let name = 'unknown name';
-	export let wallet = {
-		available: 0,
-		staked: 0,
-		unclaimed: 0,
-		address: '0xh924yfh0h01hf1g4y25h2',
-	};
+	export let wallet: IWallet;
 
 	function saveAddress() {
-		localStorage.setItem('selectedProfile', wallet.address);
-		goto(`/profile/${wallet.address}/history`);
+		saveData('selectedProfile', wallet.walletAddress);
+		goto(`/profile/${wallet.walletAddress}/history`);
 	}
 </script>
 
@@ -33,7 +29,7 @@
 	<div class="data-column">
 		<div class="pp-and-name">
 			<div class="pp">
-				<ProfilePicture url={ppurl || ''} />
+				<ProfilePicture url={avatar || ''} />
 			</div>
 			<div class="username">
 				{name.split(' ')[0] || 'unknown name'}'s wallet
@@ -41,23 +37,23 @@
 		</div>
 		<div class="grow-0">
 			<div class="field-title">avalible</div>
-			<div class="amount">${wallet?.available || 0} USD</div>
+			<div class="amount">${wallet?.availableBalanceUSD || 0} USD</div>
 		</div>
 		<hr class="w-1/2" />
 		<div class="grow-0">
 			<div class="field-title">staked</div>
-			<div class="amount">${wallet?.staked || 0} USD</div>
+			<div class="amount">${wallet?.stakedBalance || 0} USD</div>
 		</div>
 		<div class="unclaimed grow-0">
 			<div class="field-title">unclaimed rewards</div>
-			<div class="amount">${wallet?.unclaimed || 0} USD</div>
+			<div class="amount">${wallet?.unclaimedRewards || 0} USD</div>
 		</div>
 	</div>
 	<div class="grapics-column">
 		<div class="purple-triangle">
 			<PurpleTriangle />
 		</div>
-		<div class="w-3/4 z-10">
+		<div class="z-10 w-3/4">
 			<CardGraphics />
 		</div>
 	</div>

@@ -11,9 +11,9 @@ export async function post(params: any): Promise<any> {
 		availableBalanceUSD: 0.0,
 		stakedBalance: 0.0,
 		unclaimedRewards: 0.0,
-		walletTokens: [[]],
-		walletStakes: [[]],
-		walletHistory: [[]],
+		walletTokens: [],
+		walletStakes: [],
+		walletHistory: [],
 		//random test address
 		walletAddress: (Math.random() + 1).toString(36).substring(7),
 	};

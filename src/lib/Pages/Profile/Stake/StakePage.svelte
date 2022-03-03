@@ -8,15 +8,15 @@
 	import ClaimReward from '$lib/Pages/Profile/Stake/detail/ClaimReward.svelte';
 	import UnlockInitialStake from '$lib/Pages/Profile/Stake/detail/UnlockInitialStake.svelte';
 	import Unstake from '$lib/Pages/Profile/Stake/detail/Unstake.svelte';
+	import TextSidebar from '../TextSidebar.svelte';
 
 	import Navbar from '$lib/Components/Navbar/Navbar.svelte';
 
-	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
+	import { retrieveData } from '$utils/dataStorage';
+	import { selectedWallet } from '$stores/user/wallets';
 
-	$: slug = $page.params.slug;
-	// Show a specific profile page based on slug
-
-	// wallet bind on profile navigation component
+	let user: IUser;
 
 	/**Object of all possible components for the stake detail column (the last column)*/
 	const lastCollumnContent = {
@@ -68,43 +68,35 @@
 		console.log('selectedLastCollumnContent:', selectedLastCollumnContent);
 	}
 
-	// DEV
-	const user = {
-		name: 'Jake Waterson',
-		ppurl: 'https://miro.medium.com/fit/c/262/262/2*-cdwKPXyVI0ejgxpWkKBeA.jpeg',
-		wallets: [
-			{
-				name: 'Wallet 1',
-				avalible: 5000,
-				staked: 2500,
-				unclaimed: 375,
-			},
-			{
-				name: 'Wallet 1',
-				avalible: 5000,
-				staked: 2500,
-				unclaimed: 375,
-			},
-		],
-	};
+	export let stakeArray: IStake[] = Array(10).fill({
+		parentWallet: $selectedWallet?.walletName,
+		stakeAmount: 420,
+		unstakeDatetime: new Date(2021, 11, 17),
+		unstakeCountdown: Math.abs(new Date(2020, 12, 17) - new Date(2019, 11, 17)),
+		reclamationDate: new Date(2020, 12, 17),
+		initialStakeDate: new Date(2019, 11, 17),
+		rewardDate: new Date(2022, 11, 17),
+		rewardCountdown: Math.abs(new Date(2022, 11, 17) - new Date(2019, 11, 17)),
+		reward: 420,
+		unlocked: 84,
+		stakePercent: 0.8,
+		parentWalletAddress: $selectedWallet?.walletAddress,
+	});
 
-	export let wallet = {
-		name: 'Wallet 1',
-		publicKey: '0x9f98e01d2...4ed7',
-	};
+	console.log(stakeArray);
 
-	export let stakeArray = Array(10).fill({
-		name: wallet?.name,
-		elapsedSeconds: 20,
-		fullSeconds: 69,
-		unstaked: false,
-		staked: 420,
-		unlocked: 0,
-		rewards: 0,
+	onMount(() => {
+		// Retrieve the selected profile off the user
+		user = (retrieveData('user') as IUser) || {
+			name: 'Unknown User',
+			avatar: '',
+			email: '',
+			wallets: (retrieveData('wallets') as IWallet[]) || [],
+		};
 	});
 </script>
 
-<div class="main flex">
+<div class="flex main">
 	<div class="global-grid-nav">
 		<Navbar />
 	</div>
@@ -115,7 +107,12 @@
 		</div>
 	</div>
 	<div class="global-grid-mid size-full">
-		<StakesFromWallet on:stakeSelect={stakeSelect} on:addStake={addStake} {wallet} {stakeArray} />
+		<StakesFromWallet
+			on:stakeSelect={stakeSelect}
+			on:addStake={addStake}
+			wallet={$selectedWallet}
+			{stakeArray}
+		/>
 	</div>
 	<div class="global-grid-right">
 		<div class="size-full last-column">
@@ -134,7 +131,7 @@
 					/>
 				</div>
 			{:else}
-				<div class="placeholder-text">Select a stake for more information</div>
+				<TextSidebar>Select a stake for more information</TextSidebar>
 			{/if}
 		</div>
 	</div>

@@ -6,15 +6,26 @@ const sendMessage = require('./sendMessage.cjs');
  * Receiving messages from Renderer
  */
 module.exports = () => {
-	ipcMain.on('toMain', async (event, data) => {
+	ipcMain.on('toMain', async (_event, data) => {
 		sendMessage('toMain', 'Nope, not that');
 		console.log(data);
 	});
 
-	ipcMain.on('createWallet', async (event, data) => {
-		console.log('Please create wallet', data);
-
+	// Generate Wallet Mnemonics
+	ipcMain.on('generateMnemonics', async (_event, _data) => {
 		// return this as an event to the renderer process
-		sendMessage('createWalletResponse', createWallet());
+		sendMessage('generateMnemonicsResponse', createWallet.getMnemonics());
+	});
+
+	// Create wallet from mnemonics
+	ipcMain.on('createWalletFromMnemonics', async (event, data) => {
+		const res = await createWallet.generateFromMnemonics(data);
+		sendMessage('createWalletFromMnemonicsResponse', res);
+	});
+
+	// Create wallet from file
+	ipcMain.on('createWalletFromFile', async (event, data) => {
+		const res = await createWallet.generateFromFile(data);
+		sendMessage('createWalletFromFileResponse', res);
 	});
 };
