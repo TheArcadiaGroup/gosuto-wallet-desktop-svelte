@@ -93,12 +93,12 @@
 	/** Sends wallet creation data to api route to create a wallet*/
 	const postData = async (
 		object = {
-			walletName: walletNameValue,
-			seedPhrase: seedPhrase.join(' '),
-			password: passwordValue,
-			accountHash,
-			privateKey,
-			walletAddress: accountHex,
+			walletName: walletNameValue.trim(),
+			seedPhrase: seedPhrase.join(' ').trim(),
+			password: passwordValue.trim(),
+			accountHash: accountHash.trim(),
+			privateKey: privateKey.trim(),
+			walletAddress: accountHex.trim(),
 		} as WalletCreationData,
 	) => {
 		let wallets: JSONString[] | null[] = [];

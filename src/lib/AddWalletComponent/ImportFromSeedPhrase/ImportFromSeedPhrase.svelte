@@ -9,6 +9,7 @@
 	import type { JSONString } from '@sveltejs/kit/types/helper';
 	import { retrieveData, saveData } from '$utils/dataStorage';
 	import { onMount } from 'svelte';
+	import { walletNameIsValid } from '$utils/profiles';
 
 	let seedPhrase: string;
 	let walletName: string;
@@ -19,6 +20,7 @@
 	let accountHash: string;
 	let accountHex: string;
 	let privateKey: string;
+	let walletValid = true;
 
 	/**
 	 * @function
@@ -45,12 +47,12 @@
 	/** Sends wallet creation data to api route to create a wallet*/
 	const postData = async (
 		object = {
-			walletName: walletName,
-			seedPhrase: seedPhrase,
-			password: password,
-			accountHash,
-			privateKey,
-			walletAddress: accountHex,
+			walletName: walletName.trim(),
+			seedPhrase: seedPhrase.trim(),
+			password: password.trim(),
+			accountHash: accountHash.trim(),
+			privateKey: privateKey.trim(),
+			walletAddress: accountHex.trim(),
 		} as WalletCreationData,
 	) => {
 		let wallets: JSONString[] | null[] = [];
@@ -145,10 +147,13 @@
 							type="text"
 							class="seedImport-details-input"
 							bind:value={walletName}
+							on:input={() => {
+								walletValid = walletNameIsValid(walletName);
+							}}
 						/>
 					</div>
 					<div class="error-div">
-						{#if walletName}
+						{#if !walletValid}
 							Wallet Name Already Exists
 						{/if}
 					</div>
@@ -207,7 +212,8 @@
 			</div>
 			<div class="seedImport-btn-continue">
 				<Button
-					isDisabled={!confirmPassword ||
+					isDisabled={!walletValid ||
+						!confirmPassword ||
 						!password ||
 						confirmPassword !== password ||
 						!seedPhrase ||

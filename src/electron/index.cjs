@@ -89,7 +89,7 @@ const createMainWindow = () => {
 	if (dev) loadVite(port);
 	else serveURL(mainWindow);
 
-	if (dev) mainWindow.openDevTools();
+	// if (dev) mainWindow.openDevTools();
 };
 
 // This method will be called when Electron has finished
