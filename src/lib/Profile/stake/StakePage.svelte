@@ -66,18 +66,25 @@
 		console.log('selectedLastCollumnContent:', selectedLastCollumnContent);
 	}
 
-	export let stakeArray = Array(10).fill({
-		name: $selectedWallet?.walletName,
-		elapsedSeconds: 20,
-		fullSeconds: 69,
-		unstaked: false,
-		staked: 420,
-		unlocked: 0,
-		rewards: 0,
+	export let stakeArray: IStake[] = Array(10).fill({
+		parentWallet: $selectedWallet?.walletName,
+		stakeAmount: 420,
+		unstakeDatetime: new Date(2021, 11, 17),
+		unstakeCountdown: Math.abs(new Date(2020, 12, 17) - new Date(2019, 11, 17)),
+		reclamationDate: new Date(2020, 12, 17),
+		initialStakeDate: new Date(2019, 11, 17),
+		rewardDate: new Date(2022, 11, 17),
+		rewardCountdown: Math.abs(new Date(2022, 11, 17) - new Date(2019, 11, 17)),
+		reward: 420,
+		unlocked: 84,
+		stakePercent: 0.8,
+		parentWalletAddress: $selectedWallet?.walletAddress,
 	});
 
+	console.log(stakeArray);
+
 	onMount(() => {
-		// Retrieve the selected profile off the user
+		Retrieve the selected profile off the user
 		user = (retrieveData('user') as IUser) || {
 			name: 'Unknown User',
 			avatar: '',
