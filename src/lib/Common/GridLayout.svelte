@@ -245,16 +245,16 @@
 	}
 
 	:local(.first-column) {
-		@apply dark:bg-dark-grey dark:border dark:border-dark-background;
+		@apply dark:bg-dark-grey;
 	}
 
 	:local(.last-column) {
-		@apply dark:bg-dark-grey dark:md:bg-dark-background dark:border dark:border-dark-background;
+		@apply dark:bg-dark-grey dark:md:bg-dark-blue;
 		@apply flex flex-col items-center pt-4 md:pt-0;
 	}
 
 	:local(.mid-column) {
-		@apply dark:bg-dark-background dark:border dark:border-dark-background;
+		@apply dark:bg-dark-background;
 	}
 
 	:local(.mobile) {

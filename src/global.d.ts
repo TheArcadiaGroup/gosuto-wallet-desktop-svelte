@@ -128,6 +128,7 @@ interface IStake {
 	// difference between rewardDate and initialStakeDate
 	rewardCountdown: number;
 	reward: number;
+	unlocked: number;
 	stakePercent: number;
 	parentWalletAddress: string;
 }

@@ -69,6 +69,6 @@
 
 	.swap-sidebar {
 		@apply h-full w-full;
-		@apply lg:h-screen;
+		@apply md:h-screen;
 	}
 </style>

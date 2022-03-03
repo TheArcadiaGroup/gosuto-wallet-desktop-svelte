@@ -149,7 +149,7 @@
 <style lang="postcss" global>
 	:local(.main) {
 		@apply h-full w-full md:overflow-y-scroll overflow-x-hidden flex flex-col;
-		@apply dark:bg-dark-grey;
+		@apply dark:bg-dark-blue;
 	}
 
 	:local(.container) {

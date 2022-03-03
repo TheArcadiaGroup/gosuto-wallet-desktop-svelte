@@ -15,6 +15,7 @@
 	import Duplicate from '$icons/Duplicate.svelte';
 	import StakeCard from './StakeCard.svelte';
 	import { goto } from '$app/navigation';
+	import ReturnHome from '$lib/components/Profile/ReturnHome.svelte';
 
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
@@ -63,15 +64,12 @@
 </script>
 
 <div class="main">
-	<div class="header item">
-		<div class="h-6">
-			<ArrowInCircle disabled={false} alwaysShowBorder={true} on:click={backHandler} />
-		</div>
-		<div class="header-name">{wallet?.name || 'unknown wallet name'}</div>
-		<div class="header-pk">{wallet?.publicKey || '...'}</div>
-		<div class="header-duplicate" on:click={copyPK}>
-			<Duplicate />
-		</div>
+	<div class="header">
+		<ReturnHome
+			walletName={wallet?.name || 'unknown wallet name'}
+			publicKey={wallet?.publicKey || '...'}
+			profileLocation="Stakes"
+		/>
 	</div>
 
 	<div class="title item">
@@ -96,11 +94,13 @@
 
 <style lang="postcss" global>
 	:local(.main) {
-		@apply h-full w-full flex flex-col items-center py-4 md:py-10 gap-4 dark:text-white;
+		@apply h-screen w-full flex flex-col gap-4 items-center dark:text-white dark:bg-dark-gosutoDark;
+		@apply px-4 pt-10;
+		@apply lg:px-11 lg:pt-20;
 	}
 
 	:local(.header) {
-		@apply flex flex-row gap-3 items-center px-4;
+		@apply self-start;
 	}
 
 	:local(.header-name) {
@@ -116,7 +116,7 @@
 	}
 
 	:local(.title) {
-		@apply flex flex-row justify-between px-8;
+		@apply flex flex-row justify-between w-full;
 	}
 
 	:local(.title-label) {
