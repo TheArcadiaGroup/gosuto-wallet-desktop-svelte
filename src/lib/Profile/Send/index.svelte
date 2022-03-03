@@ -21,7 +21,7 @@
 
 	const dispatch = createEventDispatcher();
 
-	function onScroll(event) {
+	function onScroll(event: any) {
 		if (!event.target || !event.target.scrollLeft || !event.target.clientWidth) return;
 		scroll = event.target.scrollLeft;
 		scrollWidth = event.target.scrollWidth;

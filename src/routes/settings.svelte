@@ -12,7 +12,7 @@
 	let settingsData: AppSettings = {
 		name: 'Jake Waterson',
 		email: 'Jake.waterson@gmail.com',
-		pictureUrl: 'https://miro.medium.com/fit/c/262/262/2*-cdwKPXyVI0ejgxpWkKBeA.jpeg',
+		avatar: 'https://miro.medium.com/fit/c/262/262/2*-cdwKPXyVI0ejgxpWkKBeA.jpeg',
 	};
 
 	onMount(() => {
@@ -31,7 +31,7 @@
 					settingsData.email = response.email;
 					info[1].placeholder = response.email;
 				}
-				if (response.pictureUrl) settingsData.pictureUrl = response.pictureUrl;
+				if (response.avatar) settingsData.avatar = response.avatar;
 			});
 	};
 
@@ -71,7 +71,7 @@
 			<div class="settings-content">
 				<div class="settings-left-side">
 					<h1 class="settings-header">Account Settings</h1>
-					<AvatarCard pictureUrl={settingsData.pictureUrl} />
+					<AvatarCard avatar={settingsData.avatar} />
 					<ChooseFileButton />
 				</div>
 				<div class="settings-right-side">

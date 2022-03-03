@@ -19,8 +19,8 @@ let mainWindow;
 
 const createWindow = () => {
 	let windowState = new windowStateManager({
-		defaultWidth: 1024,
-		defaultHeight: 800,
+		defaultWidth: 1300,
+		defaultHeight: 850,
 	});
 
 	mainWindow = new BrowserWindow({
@@ -29,8 +29,8 @@ const createWindow = () => {
 			y: 32,
 		},
 		backgroundColor: 'whitesmoke',
-		minWidth: 1024,
-		minHeight: 800,
+		minWidth: 1300,
+		minHeight: 850,
 		width: windowState.width,
 		height: windowState.height,
 		x: windowState.x,

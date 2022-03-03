@@ -8,8 +8,11 @@
 	import TextSidebar from '$components/Profile/TextSidebar.svelte';
 	import SendCurrency from '$lib/Profile/Send/Forms/SendCurrency.svelte';
 	import CreateToken from '$lib/Profile/CreateToken/CreateToken.svelte';
+	import { retrieveData } from '$utils/dataStorage';
+	import { goto } from '$app/navigation';
 
 	let tokens: IToken[] = [];
+	let user: IUser;
 
 	/**
 	 * This is the currently selected index of TokenCards.
@@ -23,30 +26,25 @@
 	}
 
 	onMount(async () => {
+		console.log('Selected Send');
 		// not an error, this makes my IDE shut up
 		// @ts-ignore
 		tokens = await (await fetch('/api/tokens/1')).json();
-	});
 
-	// dev
-	const user = {
-		name: 'Jake Waterson',
-		ppurl: 'https://miro.medium.com/fit/c/262/262/2*-cdwKPXyVI0ejgxpWkKBeA.jpeg',
-		wallets: [
-			{
-				name: 'Wallet 1',
-				available: 5000,
-				staked: 2500,
-				unclaimed: 375,
-			},
-			{
-				name: 'Wallet 1',
-				available: 5000,
-				staked: 2500,
-				unclaimed: 375,
-			},
-		],
-	};
+		// Retrieve the selected profile off the user
+		user = (retrieveData('user') as IUser) || {
+			name: 'Unknown User',
+			avatar: '',
+			email: '',
+			wallets: (retrieveData('wallets') as IWallet[]) || [],
+		};
+
+		console.log(user);
+
+		if (user.wallets.length <= 0) {
+			goto('/add-wallet/create');
+		}
+	});
 </script>
 
 <div class="page-container">

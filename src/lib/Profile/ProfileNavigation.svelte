@@ -25,10 +25,12 @@
 	import Checklist from '$icons/Checklist.svelte';
 
 	import { goto } from '$app/navigation';
+	import { retrieveData, saveData } from '$utils/dataStorage';
+	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 
 	export let forRoute: 'profile' | 'all-stakes' = 'profile';
-
-	export let walletAddress: string = localStorage.getItem('selectedProfile');
+	let walletAddress = $page.params.address;
 
 	/**Options for the content of the menu. Either 'profile' or 'all-stakes'.*/
 	const menuItemsOptions: {
@@ -56,17 +58,19 @@
 	}[];
 	$: menuItems = menuItemsOptions[forRoute];
 
-	export let user: {
-		name: string;
-		ppurl: string;
-		wallets: {
-			name: string;
-			available: number;
-			staked: number;
-			unclaimed: number;
-			address: string;
-		}[];
-	};
+	export let user: IUser;
+
+	onMount(() => {
+		if (!user) {
+			// Retrieve the selected profile off the user
+			user = (retrieveData('user') as IUser) || {
+				name: 'Unknown User',
+				avatar: '',
+				email: '',
+				wallets: (retrieveData('wallets') as IWallet[]) || [],
+			};
+		}
+	});
 
 	/**Handler for clicking on a menu item in the menu and redirectin to the corresponding subroute.*/
 	function menuSelect(e: CustomEvent) {
@@ -77,10 +81,10 @@
 			if (walletAddress) {
 				goto(`/${forRoute}/${walletAddress}/${selection}`);
 			} else if (user.wallets.length > 0) {
-				localStorage.setItem('selectedProfile', user.wallets[0].address);
-				goto(`/${forRoute}/${user.wallets[0].address}/${selection}`);
+				saveData('selectedProfile', walletAddress);
+				goto(`/${forRoute}/${walletAddress}/${selection}`);
 			} else {
-				goto('/add-wallet');
+				goto('/add-wallet/create');
 			}
 		}
 	}
@@ -88,6 +92,7 @@
 	/**Handler for clicking "Add wallet" button, that prompts user with add wallet UI flow.*/
 	function addWallet() {
 		// add wallet
+		goto('/add-wallet/create');
 	}
 </script>
 
@@ -95,10 +100,10 @@
 	<div class="container">
 		<div class="pp-and-name">
 			<div class="pp">
-				<ProfilePicture url={user?.ppurl || ''} />
+				<ProfilePicture url={user?.avatar || ''} />
 			</div>
 			<div class="username">
-				{user?.name || 'unknown name'}
+				{user?.name || 'Unknown Name'}
 			</div>
 		</div>
 		{#if forRoute === 'profile'}
@@ -111,17 +116,19 @@
 			</div>
 			<div class="carousel-container">
 				<div class="carousel">
-					<CardCarousel numberOfCards={user?.wallets.length || 0}>
-						{#each user?.wallets as wallet}
-							<CarouselItem>
-								<CreditCard
-									name={user?.name || 'unknown name'}
-									ppurl={user?.ppurl || ''}
-									{wallet}
-								/>
-							</CarouselItem>
-						{/each}
-					</CardCarousel>
+					{#if user}
+						<CardCarousel numberOfCards={user?.wallets.length || 0}>
+							{#each user?.wallets as wallet}
+								<CarouselItem>
+									<CreditCard
+										name={user?.name || 'Unknown Name'}
+										avatar={user?.avatar || ''}
+										{wallet}
+									/>
+								</CarouselItem>
+							{/each}
+						</CardCarousel>
+					{/if}
 				</div>
 				<div class="plus-container">
 					<div class="plus" on:click={addWallet}>

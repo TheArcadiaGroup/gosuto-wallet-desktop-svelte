@@ -38,7 +38,9 @@
 			"$icons": ["./src/icons"],
 			"$icons/*": ["./src/icons/*"],
 			"$components": ["./src/lib/components"],
-			"$components/*": ["./src/lib/components/*"]
+			"$components/*": ["./src/lib/components/*"],
+			"$constants": ["./src/constants"],
+			"$constants/*": ["./src/constants/*"]
 		}
 	},
 	"include": [

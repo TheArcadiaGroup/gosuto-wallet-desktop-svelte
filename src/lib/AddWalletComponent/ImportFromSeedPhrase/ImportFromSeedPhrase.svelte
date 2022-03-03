@@ -7,6 +7,7 @@
 
 	import { goto } from '$app/navigation';
 	import type { JSONString } from '@sveltejs/kit/types/helper';
+	import { retrieveData, saveData } from '$utils/dataStorage';
 
 	let seedPhrase: string;
 	let walletName: string;
@@ -39,7 +40,7 @@
 
 	/** Sends wallet creation data to api route to create a wallet*/
 	const postData = async (object = { walletName, seedPhrase, password } as WalletCreationData) => {
-		let profiles: JSONString[] | null[] = [];
+		let wallets: JSONString[] | null[] = [];
 
 		fetch('/api/create-wallet/seed-phrase', {
 			method: 'POST',
@@ -47,9 +48,9 @@
 		})
 			.then((response) => response.json())
 			.then((response) => {
-				profiles.push(response);
-				profiles = profiles.concat(JSON.parse(localStorage.getItem('profiles') || '[]'));
-				localStorage.setItem('profiles', JSON.stringify(profiles));
+				wallets.push(response);
+				wallets = wallets.concat(JSON.parse(retrieveData('wallets') || '[]'));
+				saveData('wallets', JSON.stringify(wallets));
 			})
 			.then(() => goto('/profile'))
 			.catch((error) => {
@@ -75,7 +76,7 @@
 	<div class="seedImport-form-wrapper">
 		<div class="form">
 			<div class="seedImport-form-inputs">
-				<div class="seedImport-input-wrapper h-56 px-3 py-2">
+				<div class="h-56 px-3 py-2 seedImport-input-wrapper">
 					<label class="seedImport-label" for="name">Seed Phrase</label>
 					<textarea
 						rows="3"
@@ -85,9 +86,14 @@
 						bind:value={seedPhrase}
 					/>
 					<button type="button" on:click={paste} class="seedImport-btn-paste">Paste</button>
+					<div class="error-div">
+						{#if seedPhrase && seedPhrase.split(' ').length < 12}
+							You seed phrase must have at least 12 words
+						{/if}
+					</div>
 				</div>
 				<div class="seedImport-details-wrapper">
-					<div class="seedImport-input-wrapper h-16 hidden sm:flex">
+					<div class="hidden h-16 seedImport-input-wrapper sm:flex">
 						<label class="seedImport-label" for="name">Wallet Name</label>
 
 						<input
@@ -98,8 +104,13 @@
 							bind:value={walletName}
 						/>
 					</div>
+					<div class="error-div">
+						{#if walletName}
+							Wallet Name Already Exists
+						{/if}
+					</div>
 
-					<div class="seedImport-input-wrapper h-16 flex">
+					<div class="flex h-16 seedImport-input-wrapper">
 						<label class="seedImport-label" for="name">New Password</label>
 						<div class="seedImport-password-input-wrapper">
 							<span class="w-6 h-6">
@@ -122,7 +133,7 @@
 						</div>
 					</div>
 
-					<div class="seedImport-input-wrapper h-16 flex">
+					<div class="flex h-16 seedImport-input-wrapper">
 						<label class="seedImport-label" for="name">Confirm Password</label>
 						<div class="seedImport-password-input-wrapper">
 							<span class="w-6 h-6">
@@ -144,10 +155,23 @@
 							</button>
 						</div>
 					</div>
+					<div class="error-div">
+						{#if confirmPassword !== password && password && confirmPassword}
+							Passwords do not match.
+						{/if}
+					</div>
 				</div>
 			</div>
 			<div class="seedImport-btn-continue">
-				<Button on:click={() => postData()}>
+				<Button
+					isDisabled={!confirmPassword ||
+						!password ||
+						confirmPassword !== password ||
+						!seedPhrase ||
+						!walletName ||
+						seedPhrase.split(' ').length < 12}
+					on:click={() => postData()}
+				>
 					<div slot="text">
 						<span class="hidden sm:block">Import</span>
 						<span class="block sm:hidden">Import</span>
@@ -169,52 +193,72 @@
 	.seedImport-wrapper {
 		@apply font-display dark:bg-dark-background flex flex-col items-center;
 	}
+
 	.seedImport-logo-gosuto {
 		@apply mt-20 sm:mt-32;
 	}
+
 	.seedImport-page-heading {
 		@apply mt-6 sm:mt-9 text-light-grey dark:text-white text-center font-bold text-2xl sm:text-3xl;
 	}
+
 	.seedImport-instructions {
 		@apply mt-7 sm:mt-11 mx-auto text-xs sm:text-sm leading-6 sm:leading-8 text-light-lighterGray dark:text-white dark:text-opacity-80 text-left font-normal;
 	}
+
 	.seedImport-instruction-list {
 		@apply list-disc ml-4 sm:list-none sm:ml-0;
 	}
+
 	.seedImport-form-wrapper {
 		@apply mt-8 sm:mt-14 mx-auto;
 	}
+
 	:local(.form) {
 		@apply flex flex-col items-center;
 	}
+
 	.seedImport-form-inputs {
 		@apply flex flex-col md:flex-row gap-y-8 gap-x-16;
 	}
+
 	.seedImport-input-wrapper {
-		@apply relative items-center w-96  border border-black border-opacity-10 dark:border-white dark:border-opacity-40 rounded-3xl;
+		@apply relative items-center w-96  border border-black border-opacity-10 dark:border-white dark:border-opacity-40 rounded-2xl;
 	}
+
 	.seedImport-label {
 		@apply absolute -top-2 left-5 -mt-px inline-block px-1 text-xs font-medium text-light-grey bg-white dark:text-white dark:bg-dark-background;
 	}
+
 	.seedImport-seedphrase {
 		@apply block w-full h-full bg-transparent py-3 border-0 resize-none focus:ring-0 sm:text-sm text-opacity-40 text-black dark:text-white dark:text-opacity-40;
 	}
+
 	.seedImport-btn-paste {
 		@apply absolute right-5 bottom-3.5 font-bold leading-6 text-sm text-light-orange dark:text-dark-lighterGray;
 	}
+
 	.seedImport-details-wrapper {
 		@apply flex flex-col gap-y-8;
 	}
+
 	.seedImport-details-input {
 		@apply w-full h-full bg-transparent px-7 py-3 border-0 resize-none focus:ring-0 sm:text-sm text-opacity-40 text-black dark:text-white;
 	}
+
 	.seedImport-password-input-wrapper {
 		@apply w-full flex items-center px-5 text-opacity-40 text-black dark:text-white dark:text-opacity-40;
 	}
+
 	.seedImport-btn-continue {
 		@apply sm:mt-12 w-96 h-14 mt-8;
 	}
+
 	.seedImport-btn-back {
 		@apply my-9 sm:my-48 sm:mt-11 text-light-grey dark:text-white;
+	}
+
+	.error-div {
+		@apply text-left text-xs text-red-300 -mt-6 mb-1 flex w-full px-2;
 	}
 </style>
