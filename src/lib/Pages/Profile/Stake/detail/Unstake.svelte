@@ -6,12 +6,8 @@
 	- `disabled` = A boolean variable. When true, the buttons aren't showed and unstaking is diabled.
 -->
 <script lang="ts">
-<<<<<<< HEAD:src/lib/Pages/Profile/Stake/detail/Unstake.svelte
 	import Button from '$lib/Components/Button.svelte';
-=======
-	import Button from '$lib/Common/Button.svelte';
 	import { convertDate } from '$utils';
->>>>>>> main:src/lib/Profile/stake/detail/Unstake.svelte
 
 	export let disabled = false;
 

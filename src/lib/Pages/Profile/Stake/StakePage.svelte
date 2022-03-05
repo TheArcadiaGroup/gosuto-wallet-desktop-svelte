@@ -84,11 +84,7 @@
 	});
 
 	onMount(() => {
-<<<<<<< HEAD:src/lib/Pages/Profile/Stake/StakePage.svelte
-		// Retrieve the selected profile off the user
-=======
 		//Retrieve the selected profile off the user
->>>>>>> main:src/lib/Profile/stake/StakePage.svelte
 		user = (retrieveData('user') as IUser) || {
 			name: 'Unknown User',
 			avatar: '',
