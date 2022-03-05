@@ -5,14 +5,19 @@
 <script lang="ts">
 	import Button from '$lib/Components/Button.svelte';
 
-	export let stake = {
-		name: wallet?.name,
-		elapsedSeconds: 20,
-		fullSeconds: 69,
-		unstaked: false,
-		staked: 420,
-		unlocked: 0,
-		rewards: 0,
+	export let stake: IStake = {
+		parentWallet: 'wallet-1',
+		stakeAmount: 420,
+		unstakeDatetime: new Date(2021, 11, 17),
+		unstakeCountdown: Math.abs(new Date(2020, 12, 17) - new Date(2019, 11, 17)),
+		reclamationDate: new Date(2020, 12, 17),
+		initialStakeDate: new Date(2019, 11, 17),
+		rewardDate: new Date(2022, 11, 17),
+		rewardCountdown: Math.abs(new Date(2022, 11, 17) - new Date(2019, 11, 17)),
+		reward: 420,
+		unlocked: 84,
+		stakePercent: 0.8,
+		parentWalletAddress: '0x8dgvc09vcg290gvg4v2f2vrvb23',
 	};
 
 	/**Handler for clicking the "Claim" button. Claims the initial stake*/
@@ -28,7 +33,7 @@
 
 <div class="unlock-initial-stake">
 	<div class="title">Unlock initial Stake</div>
-	<div class="text">Initital stake: {stake.staked} CSPR</div>
+	<div class="text">Initital stake: {stake.stakeAmount} CSPR</div>
 	<div class="buttons">
 		<Button on:click={claim}>
 			<div slot="text" class="button-text">Claim</div>
