@@ -66,20 +66,7 @@
 		console.log('selectedLastCollumnContent:', selectedLastCollumnContent);
 	}
 
-	export let stakeArray: IStake[] = Array(10).fill({
-		parentWallet: $selectedWallet?.walletName,
-		stakeAmount: 420,
-		unstakeDatetime: new Date(2021, 11, 17),
-		unstakeCountdown: Math.abs(new Date(2020, 12, 17) - new Date(2019, 11, 17)),
-		reclamationDate: new Date(2020, 12, 17),
-		initialStakeDate: new Date(2019, 11, 17),
-		rewardDate: new Date(2022, 11, 17),
-		rewardCountdown: Math.abs(new Date(2022, 11, 17) - new Date(2019, 11, 17)),
-		reward: 420,
-		unlocked: 84,
-		stakePercent: 0.8,
-		parentWalletAddress: $selectedWallet?.walletAddress,
-	});
+	export let stakeArray: IStake[];
 
 	onMount(() => {
 		//Retrieve the selected profile off the user
@@ -103,12 +90,14 @@
 		</div>
 	</div>
 	<div class="global-grid-mid size-full">
-		<StakesFromWallet
-			on:stakeSelect={stakeSelect}
-			on:addStake={addStake}
-			wallet={$selectedWallet}
-			{stakeArray}
-		/>
+		{#if stakeArray}
+			<StakesFromWallet
+				on:stakeSelect={stakeSelect}
+				on:addStake={addStake}
+				wallet={$selectedWallet}
+				{stakeArray}
+			/>
+		{/if}
 	</div>
 	<div class="global-grid-right">
 		<div class="size-full last-column">
