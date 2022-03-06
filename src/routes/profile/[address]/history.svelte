@@ -40,7 +40,12 @@
 		</div>
 		<div class="global-grid-left">
 			<div class="size-full">
-				<ProfileNavigation {user} />
+				<ProfileNavigation
+					{user}
+					on:cardClicked={() => {
+						getData(retrieveData('selectedProfile'));
+					}}
+				/>
 			</div>
 		</div>
 		<div class="global-grid-mid">
