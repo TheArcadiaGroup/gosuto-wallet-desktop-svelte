@@ -1,7 +1,7 @@
 let appSettings: AppSettings = {
 	name: '',
 	email: '',
-	pictureUrl: '',
+	avatar: '',
 };
 
 /** Accepts settings data and saves them */

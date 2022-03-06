@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Button from '$lib/Common/Button.svelte';
-	import TextInput from '$lib/Common/TextInput.svelte';
+	import Button from '$lib/components/Button.svelte';
+	import TextInput from '$lib/components/TextInput.svelte';
 
 	import GosutoLogoAndText from '$icons/GosutoLogoAndText.svelte';
 	import EyeIcon from '$icons/EyeIcon.svelte';
@@ -10,11 +10,13 @@
 	import { password } from '$stores/WalletCreation';
 
 	import { goto } from '$app/navigation';
+	import { walletNameIsValid } from '$utils/profiles';
 
 	let walletNameValue: string;
 	let passwordValue: string;
 	let confirmPassword: string;
 	let checked: boolean = false;
+	let walletValid = true;
 
 	let passwordInput: HTMLInputElement;
 	let confirmPasswordInput: HTMLInputElement;
@@ -50,8 +52,21 @@
 			</ul>
 		</div>
 		<div class="createWallet-input-wrapper">
-			<TextInput label={'Wallet Name'} bind:value={walletNameValue} />
+			<TextInput
+				label={'Wallet Name'}
+				bind:value={walletNameValue}
+				on:input={() => {
+					walletValid = walletNameIsValid(walletNameValue);
+				}}
+			/>
 		</div>
+
+		<div class="error-div wallet-name-error-div">
+			{#if !walletValid}
+				Wallet Name Already Exists
+			{/if}
+		</div>
+
 		<div class="createWallet-password-input-wrapper createWallet-password-new">
 			<p class="createWallet-password-label">New Password</p>
 			<LockIcon class="createWallet-lock-icon" />
@@ -91,6 +106,11 @@
 				<EyeIcon class="createWallet-eye-icon" />
 			</button>
 		</div>
+		<div class="error-div">
+			{#if confirmPassword !== passwordValue && passwordValue && confirmPassword}
+				Passwords do not match.
+			{/if}
+		</div>
 		<div class="createWallet-use-terms">
 			<input class="createWallet-checkbox" type="checkbox" name="terms of use" bind:checked />
 			<label class="createWallet-checkbox-label" for="terms of use">
@@ -99,7 +119,12 @@
 		</div>
 		<div class="createWallet-bt createWallet-next-bt">
 			<Button
-				disabled={!checked}
+				isDisabled={!walletValid ||
+					!checked ||
+					!walletNameValue ||
+					!passwordValue ||
+					!confirmPassword ||
+					passwordValue !== confirmPassword}
 				on:click={() => {
 					setValues();
 					goto('/add-wallet/create/wallet-seed');
@@ -246,5 +271,13 @@
 
 	.createWallet-cancel-bt-text {
 		@apply text-dark-gray dark:text-white;
+	}
+
+	.error-div {
+		@apply text-left text-xs text-red-300 -mt-2 mb-3 flex w-full px-10;
+	}
+
+	.wallet-name-error-div {
+		@apply -mt-8 mb-6;
 	}
 </style>

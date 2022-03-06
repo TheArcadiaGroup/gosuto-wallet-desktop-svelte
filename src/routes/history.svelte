@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	import HistoryPage from '$lib/components/HistoryPage.svelte';
+	import HistoryPage from '$lib/pages/History/HistoryPage.svelte';
 
 	let data: HistoryObject[];
 
@@ -10,7 +10,7 @@
 	});
 
 	const getData = async () => {
-		fetch('../api/history')
+		fetch('/api/history')
 			.then((response) => response.json())
 			.then((response) => (data = response))
 			.catch((error) => {

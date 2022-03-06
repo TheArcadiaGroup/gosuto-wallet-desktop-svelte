@@ -1,6 +1,8 @@
+import { retrieveData, saveData } from './dataStorage';
+
 export function getAllTokens(): IToken[] {
 	// @ts-ignore
-	const wallets: any = JSON.parse(localStorage.getItem('tokens')) ?? {};
+	const wallets: any = JSON.parse(retrieveData('tokens')) ?? {};
 	const allTokens: IToken[] = [];
 
 	if (!wallets) return [];
@@ -14,21 +16,21 @@ export function getAllTokens(): IToken[] {
 }
 
 export function addToken(wallet: string, token: IToken): boolean {
-	let tokens: any = localStorage.getItem('tokens');
+	let tokens: any = retrieveData('tokens');
 	if (!tokens) tokens = {};
 	if (!tokens[wallet]) tokens[wallet] = {};
 	tokens[wallet][token.contractAddress] = token;
-	localStorage.setItem('tokens', JSON.stringify(tokens));
+	saveData('tokens', JSON.stringify(tokens));
 
 	return true;
 }
 
 export function deleteToken(wallet: string, contractAddress: string): boolean {
 	// @ts-ignore
-	const tokens: any = JSON.parse(localStorage.getItem('tokens'));
+	const tokens: any = JSON.parse(retrieveData('tokens'));
 	if (tokens && tokens[wallet] && tokens[wallet][contractAddress]) {
 		delete tokens[wallet];
-		localStorage.setItem('tokens', JSON.stringify(tokens));
+		saveData('tokens', JSON.stringify(tokens));
 		return true;
 	}
 
@@ -43,7 +45,7 @@ export function sendToken(
 	network: string,
 	note?: string,
 ): boolean {
-	const tokens: any = localStorage.getItem('tokens');
+	const tokens: any = retrieveData('tokens');
 
 	const token = JSON.parse(tokens)?.[wallet]?.[contractAddress] ?? undefined;
 
@@ -60,7 +62,7 @@ export function sendToken(
 
 	tokens[wallet][contractAddress] = tokenObject;
 
-	localStorage.setItem('tokens', JSON.stringify(tokens));
+	saveData('tokens', JSON.stringify(tokens));
 
 	// send token to a wallet & add it to history
 
@@ -74,7 +76,7 @@ export function swapToken(
 	toContractAddress: string,
 	toAmount: number,
 ): boolean {
-	const tokens: any = localStorage.getItem('tokens');
+	const tokens: any = retrieveData('tokens');
 
 	const token = JSON.parse(tokens)?.[wallet]?.[fromContractAddress] ?? undefined;
 	const toToken = JSON.parse(tokens)?.[wallet]?.[toContractAddress] ?? undefined;
@@ -98,10 +100,10 @@ export function swapToken(
 	tokens[wallet][fromContractAddress] = tokenObject;
 	tokens[wallet][toContractAddress] = toTokenObject;
 
-	localStorage.setItem('tokens', JSON.stringify(tokens));
+	saveData('tokens', JSON.stringify(tokens));
 
-	//localStorage.setItem('tokens:' + wallet + ':' + fromContractAddress, JSON.stringify(tokenObject));
-	//localStorage.setItem('tokens:' + wallet + ':' + toContractAddress, JSON.stringify(toTokenObject));
+	//saveData('tokens:' + wallet + ':' + fromContractAddress, JSON.stringify(tokenObject));
+	//saveData('tokens:' + wallet + ':' + toContractAddress, JSON.stringify(toTokenObject));
 
 	return true;
 }
@@ -123,7 +125,7 @@ export function createToken(
 	const contractAddress = 'abc';
 
 	// @ts-ignore
-	const tokens = JSON.parse(localStorage.getItem('tokens')) ?? {};
+	const tokens = JSON.parse(retrieveData('tokens')) ?? {};
 
 	const token = {
 		tokenName,
@@ -142,7 +144,7 @@ export function createToken(
 	if (!tokens[wallet]) tokens[wallet] = {};
 	tokens[wallet][contractAddress] = token;
 
-	localStorage.setItem('tokens', JSON.stringify(tokens));
+	saveData('tokens', JSON.stringify(tokens));
 
 	return true;
 }

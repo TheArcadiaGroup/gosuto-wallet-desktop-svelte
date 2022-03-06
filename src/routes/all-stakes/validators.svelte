@@ -1,8 +1,9 @@
-<script>
-	import GridLayout from '$lib/Common/GridLayout.svelte';
-	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
-	import ValidatorPage from '$lib/ValidatorPage/index.svelte';
+<script lang="ts">
+	import { onMount } from 'svelte';
 
+	import ProfileNavigation from '$lib/pages/Profile/ProfileNavigation.svelte';
+	import ValidatorPage from '$lib/pages/AllStakes/ValidatorPage/index.svelte';
+	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 	// DEV
 	const user = {
 		name: 'Jake Waterson',
@@ -22,20 +23,40 @@
 			},
 		],
 	};
+
+	let validatorData: IValidator[];
+
+	onMount(() => {
+		getData();
+	});
+
+	const getData = async () => {
+		fetch('/api/all-stakes/validators')
+			.then((response) => response.json())
+			.then((response) => (validatorData = response))
+			.catch((error) => {
+				console.error('error:', error);
+			});
+	};
 </script>
 
-<GridLayout>
-	<div slot="first" class="size-full">
-		<!-- feed the user profile data to ProfileNavigation component -->
-		<ProfileNavigation forRoute={'all-stakes'} {user} />
+<div class="main flex">
+	<div class="global-grid-nav">
+		<Navbar />
 	</div>
-	<div slot="mid" class="size-full">
-		<!-- TODO add validators -->
-		<div class="validator-holder">
-			<ValidatorPage />
+	<div class="global-grid-left">
+		<div class="size-full">
+			<!-- feed the user profile data to ProfileNavigation component -->
+			<ProfileNavigation forRoute={'all-stakes'} {user} />
 		</div>
 	</div>
-</GridLayout>
+	<div class="global-grid-mid size-full">
+		<!-- TODO add validators -->
+		<div class="validator-holder">
+			<ValidatorPage {validatorData} />
+		</div>
+	</div>
+</div>
 
 <style lang="postcss" global>
 	:local(.size-full) {
@@ -43,6 +64,7 @@
 	}
 
 	:local(.validator-holder) {
-		@apply flex flex-col items-center w-full;
+		@apply flex flex-col items-center w-full h-full;
+		@apply bg-dark-gosutoDark;
 	}
 </style>

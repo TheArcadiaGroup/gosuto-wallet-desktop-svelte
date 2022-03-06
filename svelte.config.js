@@ -12,10 +12,12 @@ const config = {
 			resolve: {
 				alias: {
 					$stores: path.resolve('./src/stores'),
+					$constants: path.resolve('./src/constants'),
 					$styles: path.resolve('./src/styles'),
 					$utils: path.resolve('./src/utils'),
 					$icons: path.resolve('./src/icons'),
 					$components: path.resolve('./src/lib/components'),
+					$pages: path.resolve('./src/lib/pages'),
 				},
 			},
 		},

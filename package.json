@@ -15,6 +15,9 @@
 		"build:linux": "rm -rf dist && rm -rf release && cross-env NODE_ENV=production && npm run build:svelte && electron-builder -l --config build.config.json",
 		"build:mac": "rm -rf dist && rm -rf release && cross-env NODE_ENV=production && npm run build:svelte && electron-builder -m --config build.config.json",
 		"build:win": "rm -rf dist && rm -rf release && cross-env NODE_ENV=production && npm run build:svelte && electron-builder -w --config build.config.json",
+		"package": "rm -rf dist && rm -rf release && cross-env NODE_ENV=production && npm run build:svelte && electron-builder -mwl --config build.config.json --publish onTagOrDraft",
+		"package:always": "rm -rf dist && rm -rf release && cross-env NODE_ENV=production && npm run build:svelte && electron-builder -mwl --config build.config.json --publish always",
+		"package:never": "rm -rf dist && rm -rf release && cross-env NODE_ENV=production && npm run build:svelte && electron-builder -mwl --config build.config.json --publish never",
 		"start": "svelte-kit start",
 		"prepare": "husky install"
 	},
@@ -22,9 +25,11 @@
 		"Chrome 89"
 	],
 	"dependencies": {
+		"@lapo/asn1js": "^1.2.3",
 		"@tailwindcss/forms": "^0.4.0",
 		"axios": "^0.26.0",
 		"bip39": "^3.0.4",
+		"casper-js-sdk": "^2.8.0",
 		"chart.js": "^3.7.0",
 		"chartjs": "^0.3.24",
 		"chartjs-adapter-date-fns": "^2.0.0",
@@ -33,7 +38,10 @@
 		"electron-reloader": "^1.2.2",
 		"electron-serve": "^1.1.0",
 		"electron-win-state": "^1.1.22",
-		"svelte-gestures": "^1.4.1"
+		"node-jose": "^2.1.0",
+		"secp256k1": "^4.0.3",
+		"svelte-gestures": "^1.4.1",
+		"tweetnacl": "^1.0.3"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-static": "1.0.0-next.22",

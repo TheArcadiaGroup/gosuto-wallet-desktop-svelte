@@ -1,14 +1,15 @@
 <script lang="ts">
-	import GridLayout from '$lib/Common/GridLayout.svelte';
-	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
-	import ArrowInCircle from '$lib/Common/ArrowInCircle.svelte';
-	import StakesFromWallet from '$lib/Profile/stake/StakesFromWallet.svelte';
+	import { onMount } from 'svelte';
+	import ProfileNavigation from '$pages/Profile/ProfileNavigation.svelte';
+	import ArrowInCircle from '$lib/components/ArrowInCircle.svelte';
+	import StakesFromWallet from '$lib/pages/Profile/Stake/StakesFromWallet.svelte';
 
-	import Confirm from '$lib/Profile/stake/detail/Confirm.svelte';
-	import ClaimReward from '$lib/Profile/stake/detail/ClaimReward.svelte';
-	import UnlockInitialStake from '$lib/Profile/stake/detail/UnlockInitialStake.svelte';
-	import Unstake from '$lib/Profile/stake/detail/Unstake.svelte';
-
+	import Confirm from '$lib/pages/Profile/Stake/detail/Confirm.svelte';
+	import ClaimReward from '$lib/pages/Profile/Stake/detail/ClaimReward.svelte';
+	import UnlockInitialStake from '$lib/pages/Profile/Stake/detail/UnlockInitialStake.svelte';
+	import Unstake from '$lib/pages/Profile/Stake/detail/Unstake.svelte';
+	import TextSidebar from '$lib/components/TextSidebar.svelte';
+	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 	/**Object of all possible components for the stake detail column (the last column)*/
 	const lastCollumnContent = {
 		confirm: Confirm,
@@ -63,24 +64,43 @@
 		publicKey: '0x9f98e01d2...4ed7',
 	};
 
-	const stakeArray = Array(10).fill({
-		name: wallet?.name,
-		elapsedSeconds: 20,
-		fullSeconds: 69,
-		staked: 420,
-		unlocked: 69,
+	let stakeArray: IStake[] = [];
+
+	onMount(() => {
+		getData();
 	});
+
+	const getData = async () => {
+		fetch('/api/all-stakes/all-positions')
+			.then((response) => response.json())
+			.then((response) => (stakeArray = response))
+			.catch((error) => {
+				console.error('error:', error);
+			});
+	};
 </script>
 
-<GridLayout>
-	<div slot="first" class="size-full">
-		<!-- feed the user profile data to ProfileNavigation component -->
-		<ProfileNavigation forRoute={'all-stakes'} {user} />
+<div class="main flex">
+	<div class="global-grid-nav">
+		<Navbar />
 	</div>
-	<div slot="mid" class="size-full">
-		<StakesFromWallet forRoute={'all-stakes'} on:stakeSelect={stakeSelect} {wallet} {stakeArray} />
+	<div class="global-grid-left">
+		<div class="size-full">
+			<!-- feed the user profile data to ProfileNavigation component -->
+			<ProfileNavigation forRoute={'all-stakes'} {user} />
+		</div>
 	</div>
-	<div slot="last" class="size-full last-column">
+	<div class="global-grid-mid size-full">
+		{#if stakeArray.length > 0}
+			<StakesFromWallet
+				forRoute={'all-stakes'}
+				on:stakeSelect={stakeSelect}
+				{wallet}
+				{stakeArray}
+			/>
+		{/if}
+	</div>
+	<div class="global-grid-right">
 		{#if selectedLastCollumnContent}
 			<div class="last-column-header">
 				<div class="w-6 h-6">
@@ -92,10 +112,10 @@
 				<svelte:component this={lastCollumnContent[selectedLastCollumnContent]} />
 			</div>
 		{:else}
-			<div class="placeholder-text">Select a stake for more information</div>
+			<TextSidebar>Select currency you want to swap</TextSidebar>
 		{/if}
 	</div>
-</GridLayout>
+</div>
 
 <style lang="postcss" global>
 	:local(.placeholder-text) {
