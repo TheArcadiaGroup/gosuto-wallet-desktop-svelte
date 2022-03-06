@@ -20,17 +20,7 @@
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 
-	interface Stake {
-		name: string;
-		elapsedSeconds: number;
-		fullSeconds: number;
-		unstaked: boolean;
-		staked: number;
-		unlocked: number;
-		rewards: number;
-	}
-
-	export let stakeArray: Stake[];
+	export let stakeArray: IStake[];
 	export let wallet: any;
 	export let forRoute: 'profile' | 'all-stakes' = 'profile';
 

@@ -116,6 +116,15 @@ interface IHistory {
 	stakedDate: Date & { toDate: () => Date };
 }
 
+interface IValidator {
+	validatorName: string;
+	uptime: number;
+	validatorCommission: number;
+	votingPower: number;
+	selfDelegation: number;
+	delegationReturn: number;
+}
+
 interface IStake {
 	parentWallet: string;
 	stakeAmount: number;

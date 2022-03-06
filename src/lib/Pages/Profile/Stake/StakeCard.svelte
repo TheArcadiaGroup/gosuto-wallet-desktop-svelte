@@ -17,8 +17,9 @@
 
 	export let stake: IStake;
 
-	let elapsedSeconds = Math.abs(new Date() - stake?.initialStakeDate) / 1000;
-	let fullSeconds = Math.abs(stake?.rewardDate - stake?.initialStakeDate) / 1000;
+	let elapsedSeconds = Math.abs(new Date() - new Date(stake?.initialStakeDate)) / 1000;
+	let fullSeconds =
+		Math.abs(new Date(stake?.rewardDate) - new Date(stake?.initialStakeDate)) / 1000;
 
 	$: progress = elapsedSeconds / fullSeconds; // progress in % of the stake
 

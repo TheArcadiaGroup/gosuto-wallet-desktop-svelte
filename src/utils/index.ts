@@ -13,8 +13,16 @@ const monthNames = [
 	'Dec',
 ];
 
-export const convertDate = (date: Date): string => {
-	return `${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+export const convertDate = (date: Date | string): string => {
+	let dateToConvert: Date;
+	if (typeof date == 'string') {
+		dateToConvert = new Date(date);
+	} else {
+		dateToConvert = date;
+	}
+	return `${dateToConvert.getDate()} ${
+		monthNames[dateToConvert.getMonth()]
+	} ${dateToConvert.getFullYear()}`;
 };
 
 export const dateDifference = (larger: Date, smaller: Date): string => {
