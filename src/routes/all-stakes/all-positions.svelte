@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	import GridLayout from '$lib/Common/GridLayout.svelte';
 	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
 	import ArrowInCircle from '$lib/Common/ArrowInCircle.svelte';
 	import StakesFromWallet from '$lib/Profile/stake/StakesFromWallet.svelte';
