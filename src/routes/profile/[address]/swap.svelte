@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	import Navbar from '$components/Navbar/Navbar.svelte';
-	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
+	import Navbar from '$lib/components/Navbar/Navbar.svelte';
+	import ProfileNavigation from '$lib/pages/Profile/ProfileNavigation.svelte';
 
-	import Swap from '$lib/Profile/Swap/index.svelte';
+	import Swap from '$lib/pages/Profile/Swap/index.svelte';
 
-	import TextSidebar from '$components/Profile/TextSidebar.svelte';
-	import SwapCurrency from '$lib/Profile/Swap/Forms/SwapCurrency.svelte';
-	import CreateToken from '$lib/Profile/CreateToken/CreateToken.svelte';
+	import TextSidebar from '$lib/components/TextSidebar.svelte';
+	import SwapCurrency from '$lib/pages/Profile/Swap/Forms/SwapCurrency.svelte';
+	import CreateToken from '$lib/pages/Profile/CreateToken/CreateToken.svelte';
 	import { retrieveData } from '$utils/dataStorage';
 	import { selectedWallet } from '$stores/user/wallets';
 

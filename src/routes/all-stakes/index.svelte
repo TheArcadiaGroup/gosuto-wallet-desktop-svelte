@@ -1,6 +1,6 @@
 <script>
-	import GridLayout from '$lib/Common/GridLayout.svelte';
-	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
+	import GridLayout from '$lib/components/GridLayout.svelte';
+	import ProfileNavigation from '$lib/pages/Profile/ProfileNavigation.svelte';
 
 	// DEV
 	const user = {

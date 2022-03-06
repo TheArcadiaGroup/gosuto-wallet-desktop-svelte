@@ -1,16 +1,15 @@
 <script lang="ts">
-	import GridLayout from '$lib/Common/GridLayout.svelte';
-	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
-	import ArrowInCircle from '$lib/Common/ArrowInCircle.svelte';
-	import StakesFromWallet from '$lib/Profile/stake/StakesFromWallet.svelte';
+	import GridLayout from '$lib/components/GridLayout.svelte';
+	import ProfileNavigation from '$pages/Profile/ProfileNavigation.svelte';
+	import ArrowInCircle from '$lib/components/ArrowInCircle.svelte';
+	import StakesFromWallet from '$lib/pages/Profile/Stake/StakesFromWallet.svelte';
 
-	import Confirm from '$lib/Profile/stake/detail/Confirm.svelte';
-	import ClaimReward from '$lib/Profile/stake/detail/ClaimReward.svelte';
-	import UnlockInitialStake from '$lib/Profile/stake/detail/UnlockInitialStake.svelte';
-	import Unstake from '$lib/Profile/stake/detail/Unstake.svelte';
-	import TextSidebar from '$components/Profile/TextSidebar.svelte';
-	import Navbar from '$components/Navbar/Navbar.svelte';
-
+	import Confirm from '$lib/pages/Profile/Stake/detail/Confirm.svelte';
+	import ClaimReward from '$lib/pages/Profile/Stake/detail/ClaimReward.svelte';
+	import UnlockInitialStake from '$lib/pages/Profile/Stake/detail/UnlockInitialStake.svelte';
+	import Unstake from '$lib/pages/Profile/Stake/detail/Unstake.svelte';
+	import TextSidebar from '$lib/components/TextSidebar.svelte';
+	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 	/**Object of all possible components for the stake detail column (the last column)*/
 	const lastCollumnContent = {
 		confirm: Confirm,

@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	import CurrencyPerfomance from '$components/CurrencyPerformance/CurrencyPerfomance.svelte';
+	import CurrencyPerfomance from '$lib/pages/Performance/CurrencyPerformance/CurrencyPerfomance.svelte';
 	import { getAllTokens } from '$utils/token.util';
-	import Navbar from '$components/Navbar/Navbar.svelte';
+	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 
 	/**
 	 * This is the array of tokens, that will be shown in this route. It is being populated by the onMount hook.

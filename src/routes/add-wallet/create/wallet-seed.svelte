@@ -1,11 +1,11 @@
 <script lang="ts">
-	import Button from '$lib/Common/Button.svelte';
+	import Button from '$lib/components/Button.svelte';
 
 	import CopyOrange from '$icons/CopyOrange.svelte';
 	import GosutoLogoAndText from '$icons/GosutoLogoAndText.svelte';
 
-	import SeedWordBox from '$lib/AddWalletComponent/CreateWallet/seedWordBox.svelte';
-	import FailedPopup from '$lib/PopUps/NewToGosuto/FailedPopup.svelte';
+	import SeedWordBox from '$lib/pages/AddWallet/CreateWallet/SeedWordBox.svelte';
+	import FailedPopup from '$lib/components/PopUps/NewToGosuto/FailedPopup.svelte';
 
 	import { walletName } from '$stores/WalletCreation';
 	import { password } from '$stores/WalletCreation';

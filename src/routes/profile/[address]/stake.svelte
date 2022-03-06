@@ -11,7 +11,8 @@
 
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import StakePage from '$lib/Profile/stake/StakePage.svelte';
+
+	import StakePage from '$lib/pages/Profile/Stake/StakePage.svelte';
 	import { page } from '$app/stores';
 
 	let data: IStake[];
