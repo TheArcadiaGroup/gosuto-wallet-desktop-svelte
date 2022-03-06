@@ -5,15 +5,15 @@
 	
 	@author MikeBrandon
 -->
-<script>
+<script lang="ts">
 	import ValidatorItem from './ValidatorItem/index.svelte';
 
-	export let validatorArray = Array(10);
+	export let validatorData: IValidator[] = [];
 
 	let numberOfItemsShown = 6;
 	let pageNumber = 1;
 
-	$: showingArray = validatorArray.slice(0, numberOfItemsShown * pageNumber);
+	$: showingArray = validatorData.slice(0, numberOfItemsShown * pageNumber);
 
 	function showMoreItems() {
 		pageNumber++;
@@ -23,11 +23,13 @@
 <div class="main">
 	<h3>Validators</h3>
 	<div class="validator-holder">
-		{#each showingArray as validatorObject, i}
-			<ValidatorItem class={i > 0 ? 'top-border' : ''} />
-		{/each}
+		{#if validatorData.length > 0}
+			{#each showingArray as validatorData, i}
+				<ValidatorItem {validatorData} class={i > 0 ? 'top-border' : ''} />
+			{/each}
+		{/if}
 	</div>
-	{#if validatorArray.length >= numberOfItemsShown}
+	{#if validatorData.length >= numberOfItemsShown}
 		<button on:click={showMoreItems}>Show more</button>
 	{/if}
 </div>

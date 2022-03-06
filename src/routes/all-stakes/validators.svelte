@@ -1,4 +1,6 @@
-<script>
+<script lang="ts">
+	import { onMount } from 'svelte';
+
 	import GridLayout from '$lib/Common/GridLayout.svelte';
 	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
 	import ValidatorPage from '$lib/ValidatorPage/index.svelte';
@@ -23,6 +25,21 @@
 			},
 		],
 	};
+
+	let validatorData: IValidator[];
+
+	onMount(() => {
+		getData();
+	});
+
+	const getData = async () => {
+		fetch('/api/all-stakes/validators')
+			.then((response) => response.json())
+			.then((response) => (validatorData = response))
+			.catch((error) => {
+				console.error('error:', error);
+			});
+	};
 </script>
 
 <div class="main flex">
@@ -38,7 +55,7 @@
 	<div class="global-grid-mid size-full">
 		<!-- TODO add validators -->
 		<div class="validator-holder">
-			<ValidatorPage />
+			<ValidatorPage {validatorData} />
 		</div>
 	</div>
 </div>
