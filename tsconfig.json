@@ -39,6 +39,8 @@
 			"$icons/*": ["./src/icons/*"],
 			"$components": ["./src/lib/components"],
 			"$components/*": ["./src/lib/components/*"],
+			"$pages": ["./src/lib/pages"],
+			"$pages/*": ["./src/lib/pages/*"],
 			"$constants": ["./src/constants"],
 			"$constants/*": ["./src/constants/*"]
 		}
@@ -49,6 +51,7 @@
 		"src/**/*.ts",
 		"src/**/*.svelte",
 		"src/electron/index.cjs",
-		"src/electron/preload/index.cjs"
+		"src/electron/preload/index.cjs",
+		"src/electron/utils/walletImportExports.cjs"
 	]
 }

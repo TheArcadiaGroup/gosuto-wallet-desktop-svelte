@@ -69,7 +69,7 @@ interface WalletCreationData {
 	walletAddress: string;
 	accountHash: string;
 	privateKey: string;
-	seedPhrase: string;
+	seedPhrase: string | null;
 	password: string;
 }
 
@@ -163,8 +163,13 @@ interface ProfileSettings {
 	currentPassword: string;
 }
 
-type MainSendChannels = 'createWalletFromMnemonics' | 'createWalletFromFile' | 'generateMnemonics';
+type MainSendChannels =
+	| 'createWalletFromMnemonics'
+	| 'createWalletFromFile'
+	| 'generateMnemonics'
+	| 'importWalletFromFile';
 type MainReceiveChannels =
 	| 'createWalletFromFileResponse'
 	| 'createWalletFromMnemonicsResponse'
-	| 'generateMnemonicsResponse';
+	| 'generateMnemonicsResponse'
+	| 'importWalletFromFileResponse';

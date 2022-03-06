@@ -82,5 +82,9 @@ export const decimalToPercentage = (decimal: number): number => {
 };
 
 export const shortenAddress = (address: string): string => {
-	return `${address.slice(0, 11)}...${address.slice(-4)}`;
+	if (address) {
+		return `${address.slice(0, 11)}...${address.slice(-4)}`;
+	} else {
+		return address;
+	}
 };

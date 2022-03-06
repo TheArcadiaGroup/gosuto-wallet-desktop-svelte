@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
-	import ValidatorPage from '$lib/ValidatorPage/index.svelte';
-	import Navbar from '$components/Navbar/Navbar.svelte';
-
+	import ProfileNavigation from '$lib/pages/Profile/ProfileNavigation.svelte';
+	import ValidatorPage from '$lib/pages/AllStakes/ValidatorPage/index.svelte';
+	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 	// DEV
 	const user = {
 		name: 'Jake Waterson',

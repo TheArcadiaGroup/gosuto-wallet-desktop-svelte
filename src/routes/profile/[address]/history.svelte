@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import HistoryPage from '$lib/components/HistoryPage.svelte';
-	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
+
+	import HistoryPage from '$lib/pages/History/HistoryPage.svelte';
+	import ProfileNavigation from '$lib/pages/Profile/ProfileNavigation.svelte';
 
 	import { shortenAddress } from '$utils';
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';

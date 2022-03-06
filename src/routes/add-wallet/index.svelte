@@ -1,9 +1,9 @@
 <script lang="ts">
-	import Button from '$lib/Common/Button.svelte';
+	import Button from '$lib/components/Button.svelte';
 
 	import GosutoLogoAndText from '$icons/GosutoLogoAndText.svelte';
 
-	import ChoiceCard from '$lib/AddWalletComponent/Landing/ChoiceCard.svelte';
+	import ChoiceCard from '$lib/pages/AddWallet/Landing/ChoiceCard.svelte';
 
 	import { goto } from '$app/navigation';
 

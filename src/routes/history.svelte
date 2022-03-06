@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	import HistoryPage from '$lib/components/HistoryPage.svelte';
+	import HistoryPage from '$lib/pages/History/HistoryPage.svelte';
 
 	let data: HistoryObject[];
 

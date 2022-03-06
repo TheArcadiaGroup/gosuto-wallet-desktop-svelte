@@ -1,7 +1,7 @@
 <script lang="ts">
-	import CreditCard from '$lib/Profile/CreditCard.svelte';
-	import Navbar from '$components/Navbar/Navbar.svelte';
-	import Button from '$lib/Common/Button.svelte';
+	import CreditCard from '$lib/pages/Profile/CreditCard.svelte';
+	import Navbar from '$lib/components/Navbar/Navbar.svelte';
+	import Button from '$lib/components/Button.svelte';
 
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
@@ -14,13 +14,13 @@
 
 	onMount(() => {
 		let selectedProfile = loadSelectedProfile();
-		if (!selectedProfile) {
-			saveData('defaultWalletIndex', '0');
-			selectedWallet.set(null);
-			goto('/add-wallet');
-		} else {
-			postData(selectedProfile);
-		}
+		// if (!selectedProfile) {
+		// 	saveData('defaultWalletIndex', '0');
+		// 	selectedWallet.set(null);
+		// 	goto('/add-wallet');
+		// } else {
+		// 	postData(selectedProfile);
+		// }
 	});
 
 	/** post selected profile data to that profile's api route */
