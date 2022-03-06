@@ -12,7 +12,7 @@
 
 	import { onMount } from 'svelte';
 
-	let settingsData: ProfileSettings = {
+	export let settingsData: ProfileSettings = {
 		walletName: 'default wallet name',
 		walletAddress: '0x9f98e01d2gj92ngn2g7gn24ed7',
 		publicKey: '0x9f98e01d2gj92ngn2g7gn24ed7',
@@ -28,21 +28,21 @@
 	let showWalletCopiedPopup: boolean = false;
 	let passwordIsCorrect: boolean = true;
 
-	onMount(() => {
-		getData();
-	});
+	// onMount(() => {
+	// 	getData();
+	// });
 
-	const getData = async () => {
-		fetch('/api/settings/profileSettings')
-			.then((response) => response.json())
-			.then((response) => {
-				if (response.walletName) settingsData.walletName = response.walletName;
-				if (response.walletAddress) settingsData.walletAddress = response.walletAddress;
-				if (response.publicKey) settingsData.publicKey = response.publicKey;
-				if (response.privateKey) settingsData.privateKey = response.privateKey;
-				if (response.currentPassword) settingsData.currentPassword = response.currentPassword;
-			});
-	};
+	// const getData = async () => {
+	// 	fetch('/api/settings/profileSettings')
+	// 		.then((response) => response.json())
+	// 		.then((response) => {
+	// 			if (response.walletName) settingsData.walletName = response.walletName;
+	// 			if (response.walletAddress) settingsData.walletAddress = response.walletAddress;
+	// 			if (response.publicKey) settingsData.publicKey = response.publicKey;
+	// 			if (response.privateKey) settingsData.privateKey = response.privateKey;
+	// 			if (response.currentPassword) settingsData.currentPassword = response.currentPassword;
+	// 		});
+	// };
 
 	const postData = async () => {
 		fetch('/api/settings/profileSettings', {
