@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	import GridLayout from '$lib/Common/GridLayout.svelte';
 	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
 	import ArrowInCircle from '$lib/Common/ArrowInCircle.svelte';
@@ -65,13 +67,20 @@
 		publicKey: '0x9f98e01d2...4ed7',
 	};
 
-	const stakeArray = Array(10).fill({
-		name: wallet?.name,
-		elapsedSeconds: 20,
-		fullSeconds: 69,
-		staked: 420,
-		unlocked: 69,
+	let stakeArray: IStake[] = [];
+
+	onMount(() => {
+		getData();
 	});
+
+	const getData = async () => {
+		fetch('/api/all-stakes/all-positions')
+			.then((response) => response.json())
+			.then((response) => (stakeArray = response))
+			.catch((error) => {
+				console.error('error:', error);
+			});
+	};
 </script>
 
 <div class="main flex">
@@ -85,7 +94,14 @@
 		</div>
 	</div>
 	<div class="global-grid-mid size-full">
-		<StakesFromWallet forRoute={'all-stakes'} on:stakeSelect={stakeSelect} {wallet} {stakeArray} />
+		{#if stakeArray.length > 0}
+			<StakesFromWallet
+				forRoute={'all-stakes'}
+				on:stakeSelect={stakeSelect}
+				{wallet}
+				{stakeArray}
+			/>
+		{/if}
 	</div>
 	<div class="global-grid-right">
 		{#if selectedLastCollumnContent}
