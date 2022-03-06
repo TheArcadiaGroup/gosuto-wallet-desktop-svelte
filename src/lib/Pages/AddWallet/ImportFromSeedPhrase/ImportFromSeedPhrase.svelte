@@ -8,6 +8,8 @@
 	import { goto } from '$app/navigation';
 	import type { JSONString } from '@sveltejs/kit/types/helper';
 	import { retrieveData, saveData } from '$utils/dataStorage';
+	import { onMount } from 'svelte';
+	import { walletNameIsValid } from '$utils/profiles';
 
 	let seedPhrase: string;
 	let walletName: string;
@@ -15,6 +17,10 @@
 	let confirmPassword: string;
 	let passwordInput: HTMLInputElement;
 	let confirmPasswordInput: HTMLInputElement;
+	let accountHash: string;
+	let accountHex: string;
+	let privateKey: string;
+	let walletValid = true;
 
 	/**
 	 * @function
@@ -39,24 +45,63 @@
 	};
 
 	/** Sends wallet creation data to api route to create a wallet*/
-	const postData = async (object = { walletName, seedPhrase, password } as WalletCreationData) => {
+	const postData = async (
+		object = {
+			walletName: walletName.trim(),
+			seedPhrase: seedPhrase.trim(),
+			password: password.trim(),
+			accountHash: accountHash.trim(),
+			privateKey: privateKey.trim(),
+			walletAddress: accountHex.trim(),
+		} as WalletCreationData,
+	) => {
 		let wallets: JSONString[] | null[] = [];
 
-		fetch('/api/create-wallet/seed-phrase', {
-			method: 'POST',
-			body: JSON.stringify(object),
-		})
-			.then((response) => response.json())
-			.then((response) => {
-				wallets.push(response);
-				wallets = wallets.concat(JSON.parse(retrieveData('wallets') || '[]'));
-				saveData('wallets', JSON.stringify(wallets));
+		if (walletName && accountHash && accountHex && password && privateKey) {
+			fetch('/api/create-wallet/seed-phrase', {
+				method: 'POST',
+				body: JSON.stringify(object),
 			})
-			.then(() => goto('/profile'))
-			.catch((error) => {
-				console.error('error:', error);
-			});
+				.then((response) => response.json())
+				.then((response) => {
+					wallets.push(response);
+					wallets = wallets.concat(retrieveData('wallets') || '[]');
+					saveData('wallets', JSON.stringify(wallets));
+				})
+				.then(() => goto('/profile'))
+				.catch((error) => {
+					console.error('error:', error);
+				});
+		} else {
+			goto('/add-wallet/import/from-seed-phrase');
+		}
 	};
+
+	const confirmAndSendMnemonics = () => {
+		window.api.send('createWalletFromMnemonics', seedPhrase);
+	};
+
+	onMount(() => {
+		window.api.receive(
+			'createWalletFromMnemonicsResponse',
+			(data: { accountHex: string; accountHash: string; privateKey: string }) => {
+				try {
+					if (data?.accountHex && data?.accountHash && data?.privateKey) {
+						const walletCreationResult = data;
+						accountHex = walletCreationResult['accountHex'];
+						accountHash = walletCreationResult['accountHash'];
+						privateKey = walletCreationResult['privateKey'];
+
+						console.log(walletCreationResult);
+
+						postData();
+					}
+				} catch (error) {
+					console.log(error);
+				}
+			},
+		);
+	});
 
 	//TODO: input restrictions
 </script>
@@ -102,10 +147,13 @@
 							type="text"
 							class="seedImport-details-input"
 							bind:value={walletName}
+							on:input={() => {
+								walletValid = walletNameIsValid(walletName);
+							}}
 						/>
 					</div>
 					<div class="error-div">
-						{#if walletName}
+						{#if !walletValid}
 							Wallet Name Already Exists
 						{/if}
 					</div>
@@ -164,13 +212,14 @@
 			</div>
 			<div class="seedImport-btn-continue">
 				<Button
-					isDisabled={!confirmPassword ||
+					isDisabled={!walletValid ||
+						!confirmPassword ||
 						!password ||
 						confirmPassword !== password ||
 						!seedPhrase ||
 						!walletName ||
 						seedPhrase.split(' ').length < 12}
-					on:click={() => postData()}
+					on:click={() => confirmAndSendMnemonics()}
 				>
 					<div slot="text">
 						<span class="hidden sm:block">Import</span>

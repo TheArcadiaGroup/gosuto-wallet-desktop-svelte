@@ -49,6 +49,7 @@
 		"src/**/*.ts",
 		"src/**/*.svelte",
 		"src/electron/index.cjs",
-		"src/electron/preload/index.cjs"
+		"src/electron/preload/index.cjs",
+		"src/electron/utils/walletImportExports.cjs"
 	]
 }

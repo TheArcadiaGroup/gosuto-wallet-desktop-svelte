@@ -10,11 +10,13 @@
 	import { password } from '$stores/WalletCreation';
 
 	import { goto } from '$app/navigation';
+	import { walletNameIsValid } from '$utils/profiles';
 
 	let walletNameValue: string;
 	let passwordValue: string;
 	let confirmPassword: string;
 	let checked: boolean = false;
+	let walletValid = true;
 
 	let passwordInput: HTMLInputElement;
 	let confirmPasswordInput: HTMLInputElement;
@@ -50,13 +52,21 @@
 			</ul>
 		</div>
 		<div class="createWallet-input-wrapper">
-			<TextInput label={'Wallet Name'} bind:value={walletNameValue} />
+			<TextInput
+				label={'Wallet Name'}
+				bind:value={walletNameValue}
+				on:input={() => {
+					walletValid = walletNameIsValid(walletNameValue);
+				}}
+			/>
 		</div>
+
 		<div class="error-div wallet-name-error-div">
-			{#if walletNameValue}
+			{#if !walletValid}
 				Wallet Name Already Exists
 			{/if}
 		</div>
+
 		<div class="createWallet-password-input-wrapper createWallet-password-new">
 			<p class="createWallet-password-label">New Password</p>
 			<LockIcon class="createWallet-lock-icon" />
@@ -109,7 +119,8 @@
 		</div>
 		<div class="createWallet-bt createWallet-next-bt">
 			<Button
-				isDisabled={!checked ||
+				isDisabled={!walletValid ||
+					!checked ||
 					!walletNameValue ||
 					!passwordValue ||
 					!confirmPassword ||
