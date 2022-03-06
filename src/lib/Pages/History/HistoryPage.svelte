@@ -82,7 +82,7 @@
 			</div>
 			<div class="history-holder">
 				<!-- Received -->
-				{#each showingArray as historyObject, i}
+				{#each filteredArray as historyObject, i}
 					<HistoryComponent
 						on:deselect={() => {
 							selectedTokenIndex = -1;
