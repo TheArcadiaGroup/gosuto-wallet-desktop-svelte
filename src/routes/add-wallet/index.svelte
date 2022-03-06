@@ -3,7 +3,7 @@
 
 	import GosutoLogoAndText from '$icons/GosutoLogoAndText.svelte';
 
-	import ChoiceCard from '$lib/Pages/AddWallet/Landing/ChoiceCard.svelte';
+	import ChoiceCard from '$lib/pages/AddWallet/Landing/ChoiceCard.svelte';
 
 	import { goto } from '$app/navigation';
 

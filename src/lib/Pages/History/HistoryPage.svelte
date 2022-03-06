@@ -10,7 +10,7 @@
 	import HistoryComponent from './HistoryComponent/HistoryComponent.svelte';
 	import GridLayout from '$lib/components/GridLayout.svelte';
 	import RoundedSelect from '$lib/components/RoundedSelect.svelte';
-	import Sidebar from '$lib/Pages/History/HistoryComponent/Sidebar.svelte';
+	import Sidebar from '$lib/pages/History/HistoryComponent/Sidebar.svelte';
 	import ReturnHome from '$lib/components/ReturnHome.svelte';
 
 	export let historyArray: HistoryObject[];

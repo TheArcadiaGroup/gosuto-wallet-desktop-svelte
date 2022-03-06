@@ -4,7 +4,7 @@
 	import CopyOrange from '$icons/CopyOrange.svelte';
 	import GosutoLogoAndText from '$icons/GosutoLogoAndText.svelte';
 
-	import SeedWordBox from '$lib/Pages/AddWallet/CreateWallet/SeedWordBox.svelte';
+	import SeedWordBox from '$lib/pages/AddWallet/CreateWallet/SeedWordBox.svelte';
 	import FailedPopup from '$lib/components/PopUps/NewToGosuto/FailedPopup.svelte';
 
 	import { walletName } from '$stores/WalletCreation';

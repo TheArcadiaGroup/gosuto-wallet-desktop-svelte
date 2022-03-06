@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	import CurrencyPerfomance from '$lib/Pages/Performance/CurrencyPerformance/CurrencyPerfomance.svelte';
+	import CurrencyPerfomance from '$lib/pages/Performance/CurrencyPerformance/CurrencyPerfomance.svelte';
 	import { getAllTokens } from '$utils/token.util';
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 

@@ -5,8 +5,8 @@ All logic of this component (whether it is shown or not) is handled by it's pare
 @author marekvospel
 -->
 <script lang="ts">
-	import CreateTokenForm from '$lib/Pages/Profile/CreateToken/Forms/CreateTokenForm.svelte';
-	import ImportTokenForm from '$lib/Pages/Profile/CreateToken/Forms/ImportTokenForm.svelte';
+	import CreateTokenForm from '$lib/pages/Profile/CreateToken/Forms/CreateTokenForm.svelte';
+	import ImportTokenForm from '$lib/pages/Profile/CreateToken/Forms/ImportTokenForm.svelte';
 
 	let variant: 'create' | 'import' = 'create';
 </script>

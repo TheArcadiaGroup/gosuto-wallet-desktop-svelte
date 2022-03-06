@@ -4,7 +4,7 @@
 	A bar for encasing the ThemeSwitch component in the UI
  -->
 <script lang="ts">
-	import ThemeSwitch from '$lib/Pages/Settings/ThemeSwitch.svelte';
+	import ThemeSwitch from '$lib/pages/Settings/ThemeSwitch.svelte';
 </script>
 
 <div class="theme-bar">

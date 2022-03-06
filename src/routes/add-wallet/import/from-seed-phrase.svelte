@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ImportFromSeedPhrase from '$lib/Pages/AddWallet/ImportFromSeedPhrase/ImportFromSeedPhrase.svelte';
+	import ImportFromSeedPhrase from '$lib/pages/AddWallet/ImportFromSeedPhrase/ImportFromSeedPhrase.svelte';
 </script>
 
 <ImportFromSeedPhrase />

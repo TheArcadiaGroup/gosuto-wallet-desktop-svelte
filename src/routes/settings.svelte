@@ -1,9 +1,9 @@
 <script lang="ts">
 	import ChooseFileButton from '$lib/components/ChooseFileButton.svelte';
 
-	import AvatarCard from '$lib/Pages/Settings/AvatarCard.svelte';
-	import ChangeThemeBar from '$lib/Pages/Settings/ChangeThemeBar.svelte';
-	import InfoInput from '$lib/Pages/Settings/InfoInput.svelte';
+	import AvatarCard from '$lib/pages/Settings/AvatarCard.svelte';
+	import ChangeThemeBar from '$lib/pages/Settings/ChangeThemeBar.svelte';
+	import InfoInput from '$lib/pages/Settings/InfoInput.svelte';
 
 	import SelectItems from '$lib/components/Navbar/SelectItems.svelte';
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';

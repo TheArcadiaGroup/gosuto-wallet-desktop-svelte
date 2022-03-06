@@ -1,13 +1,13 @@
 <script lang="ts">
 	import GridLayout from '$lib/components/GridLayout.svelte';
-	import ProfileNavigation from '$lib/Pages/Profile/ProfileNavigation.svelte';
+	import ProfileNavigation from '$lib/pages/Profile/ProfileNavigation.svelte';
 	import ArrowInCircle from '$lib/components/ArrowInCircle.svelte';
-	import StakesFromWallet from '$lib/Pages/Profile/Stake/StakesFromWallet.svelte';
+	import StakesFromWallet from '$lib/pages/Profile/Stake/StakesFromWallet.svelte';
 
-	import Confirm from '$lib/Pages/Profile/Stake/detail/Confirm.svelte';
-	import ClaimReward from '$lib/Pages/Profile/Stake/detail/ClaimReward.svelte';
-	import UnlockInitialStake from '$lib/Pages/Profile/Stake/detail/UnlockInitialStake.svelte';
-	import Unstake from '$lib/Pages/Profile/Stake/detail/Unstake.svelte';
+	import Confirm from '$lib/pages/Profile/Stake/detail/Confirm.svelte';
+	import ClaimReward from '$lib/pages/Profile/Stake/detail/ClaimReward.svelte';
+	import UnlockInitialStake from '$lib/pages/Profile/Stake/detail/UnlockInitialStake.svelte';
+	import Unstake from '$lib/pages/Profile/Stake/detail/Unstake.svelte';
 	import TextSidebar from '../../../components/TextSidebar.svelte';
 
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
