@@ -46,7 +46,12 @@
 		<Navbar />
 	</div>
 	<div class="global-grid-left">
-		<ProfileNavigation {user} />
+		<ProfileNavigation
+			{user}
+			on:cardClicked={async () => {
+				tokens = await (await fetch('/api/tokens/1')).json();
+			}}
+		/>
 	</div>
 	<div class="global-grid-mid">
 		<Swap on:selectToken={selectToken} bind:tokens bind:selected />
