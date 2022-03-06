@@ -9,7 +9,7 @@
 	- `click` = Dispatched when the card is clicked. Passes the stake data and the `closeStake()` function via the event details.
 -->
 <script lang="ts">
-	import ProgressBar from '$lib/Components/ProgressBar.svelte';
+	import ProgressBar from '$lib/components/ProgressBar.svelte';
 	import { convertDate } from '$utils';
 
 	import { createEventDispatcher } from 'svelte';

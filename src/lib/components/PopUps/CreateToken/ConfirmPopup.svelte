@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Popup from '$lib/Components/Popup.svelte';
+	import Popup from '$lib/components/Popup.svelte';
 
 	export let tokenName: string = 'TestToken';
 	export let price: number = 30;

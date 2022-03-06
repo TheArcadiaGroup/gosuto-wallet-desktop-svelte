@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Popup from '$lib/Components/Popup.svelte';
+	import Popup from '$lib/components/Popup.svelte';
 
 	export let amount: number = 50;
 	export let address: string = '4e32r8932hdi32hurh8hri3hior2io3r32rj3iofj';

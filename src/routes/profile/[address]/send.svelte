@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	import Navbar from '$lib/Components/Navbar/Navbar.svelte';
+	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 	import ProfileNavigation from '$lib/Pages/Profile/ProfileNavigation.svelte';
 	import Send from '$lib/Pages/Profile/Send/index.svelte';
 
-	import TextSidebar from '$lib/Components/TextSidebar.svelte';
+	import TextSidebar from '$lib/components/TextSidebar.svelte';
 	import SendCurrency from '$lib/Pages/Profile/Send/Forms/SendCurrency.svelte';
 	import CreateToken from '$lib/Pages/Profile/CreateToken/CreateToken.svelte';
 	import { retrieveData } from '$utils/dataStorage';

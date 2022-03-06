@@ -10,7 +10,7 @@
 	import { slide } from 'svelte/transition';
 
 	import SideBarCard from './SideBarCard.svelte';
-	import TextSidebar from '$lib/Components/TextSidebar.svelte';
+	import TextSidebar from '$lib/components/TextSidebar.svelte';
 
 	export let historyObject: HistoryObject | null = null;
 </script>

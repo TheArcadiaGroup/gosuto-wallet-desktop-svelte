@@ -3,9 +3,9 @@
 
 	import { importToken } from '$utils/token.util';
 
-	import Button from '$lib/Components/Button.svelte';
-	import TextInput from '$lib/Components/TextInput.svelte';
-	import ToggleSwitch from '$lib/Components/ToggleSwitch.svelte';
+	import Button from '$lib/components/Button.svelte';
+	import TextInput from '$lib/components/TextInput.svelte';
+	import ToggleSwitch from '$lib/components/ToggleSwitch.svelte';
 
 	let contractAddress = '';
 	let tokenTicker = '';

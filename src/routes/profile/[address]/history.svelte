@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	import GridLayout from '$lib/Components/GridLayout.svelte';
+	import GridLayout from '$lib/components/GridLayout.svelte';
 	import HistoryPage from '$lib/Pages/History/HistoryPage.svelte';
 	import ProfileNavigation from '$lib/Pages/Profile/ProfileNavigation.svelte';
 
 	import { shortenAddress } from '$utils';
-	import Navbar from '$lib/Components/Navbar/Navbar.svelte';
+	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 	import { page } from '$app/stores';
 	import { retrieveData } from '$utils/dataStorage';
 

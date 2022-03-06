@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Popup from '$lib/Components/Popup.svelte';
-	import TextInput from '$lib/Components/TextInput.svelte';
+	import Popup from '$lib/components/Popup.svelte';
+	import TextInput from '$lib/components/TextInput.svelte';
 
 	let password: string;
 </script>

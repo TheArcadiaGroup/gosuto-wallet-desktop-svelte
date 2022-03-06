@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte';
 
-	import { getTokenValue } from '$utils/token.util.ts';
+	import { getTokenValue } from '$utils/token.util';
 
 	import ProfitUpIcon from '$icons/ProfitUpIcon.svelte';
 	import ProfitDownIcon from '$icons/ProfitDownIcon.svelte';

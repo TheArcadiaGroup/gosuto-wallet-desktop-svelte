@@ -3,7 +3,7 @@
 	> A stake detail component (fills the third column on /profile/stakes routes) that claims the reward from a specified stake.
 -->
 <script lang="ts">
-	import Button from '$lib/Components/Button.svelte';
+	import Button from '$lib/components/Button.svelte';
 
 	export let stake: IStake = {
 		parentWallet: 'wallet-1',

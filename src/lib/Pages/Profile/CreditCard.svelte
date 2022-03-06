@@ -12,7 +12,7 @@
 
 	import CardGraphics from '$icons/CardGraphics.svelte';
 	import PurpleTriangle from '$icons/PurpleTriangle.svelte';
-	import ProfilePicture from '$lib/Components/ProfilePicture.svelte';
+	import ProfilePicture from '$lib/components/ProfilePicture.svelte';
 	import { saveData } from '$utils/dataStorage';
 
 	export let avatar = '';

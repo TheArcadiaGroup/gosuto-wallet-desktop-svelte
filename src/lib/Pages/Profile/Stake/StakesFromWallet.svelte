@@ -10,12 +10,12 @@
 	- `stakeSelect` = Dispatched when a stake card is clicked. Passes the stake data via event details.
 -->
 <script lang="ts">
-	import ArrowInCircle from '$lib/Components/ArrowInCircle.svelte';
-	import Button from '$lib/Components/Button.svelte';
+	import ArrowInCircle from '$lib/components/ArrowInCircle.svelte';
+	import Button from '$lib/components/Button.svelte';
 	import Duplicate from '$icons/Duplicate.svelte';
 	import StakeCard from './StakeCard.svelte';
 	import { goto } from '$app/navigation';
-	import ReturnHome from '$lib/Components/ReturnHome.svelte';
+	import ReturnHome from '$lib/components/ReturnHome.svelte';
 
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();

@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { getTokenValue, swapToken } from '$utils/token.util';
 
-	import TextInput from '$lib/Components/TextInput.svelte';
+	import TextInput from '$lib/components/TextInput.svelte';
 	import SwapTokensIcon from '$icons/SwapTokensIcon.svelte';
-	import SelectInput from '$lib/Components/SelectInput.svelte';
-	import Button from '$lib/Components/Button.svelte';
-	import Popup from '$lib/Components/Popup.svelte';
+	import SelectInput from '$lib/components/SelectInput.svelte';
+	import Button from '$lib/components/Button.svelte';
+	import Popup from '$lib/components/Popup.svelte';
 
 	export let fromToken = 'USDT';
 	/**

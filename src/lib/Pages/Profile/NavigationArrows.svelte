@@ -10,7 +10,7 @@
 	- `move` = Event is dispatched when one of the arrows is clicked. The direction ('left' or 'right') is passed in the detail of the event.
 -->
 <script lang="ts">
-	import ArrowInCircle from '$lib/Components/ArrowInCircle.svelte';
+	import ArrowInCircle from '$lib/components/ArrowInCircle.svelte';
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 

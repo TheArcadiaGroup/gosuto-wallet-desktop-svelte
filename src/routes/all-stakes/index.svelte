@@ -1,5 +1,5 @@
 <script>
-	import GridLayout from '$lib/Components/GridLayout.svelte';
+	import GridLayout from '$lib/components/GridLayout.svelte';
 	import ProfileNavigation from '$lib/Pages/Profile/ProfileNavigation.svelte';
 
 	// DEV

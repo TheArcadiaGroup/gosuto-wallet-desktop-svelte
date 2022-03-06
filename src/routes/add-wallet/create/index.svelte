@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Button from '$lib/Components/Button.svelte';
-	import TextInput from '$lib/Components/TextInput.svelte';
+	import Button from '$lib/components/Button.svelte';
+	import TextInput from '$lib/components/TextInput.svelte';
 
 	import GosutoLogoAndText from '$icons/GosutoLogoAndText.svelte';
 	import EyeIcon from '$icons/EyeIcon.svelte';

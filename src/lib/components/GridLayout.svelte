@@ -10,7 +10,7 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
 
-	import Navbar from '$lib/Components/Navbar/Navbar.svelte';
+	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 	import LastColumnRectangle from '$icons/LastColumnRectangle.svelte';
 	export let hideNavbar: boolean = false;
 </script>

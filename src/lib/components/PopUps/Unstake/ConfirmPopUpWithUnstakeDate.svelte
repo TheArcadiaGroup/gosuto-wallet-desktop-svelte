@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Popup from '$lib/Components/Popup.svelte';
+	import Popup from '$lib/components/Popup.svelte';
 	import { convertDate } from '$utils';
 
 	export let amount: number = 15;

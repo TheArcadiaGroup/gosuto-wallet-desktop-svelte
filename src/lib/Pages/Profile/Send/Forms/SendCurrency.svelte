@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { sendToken } from '$utils/token.util';
 
-	import TextInput from '$lib/Components/TextInput.svelte';
-	import SelectInput from '$lib/Components/SelectInput.svelte';
-	import Button from '$lib/Components/Button.svelte';
-	import Popup from '$lib/Components/Popup.svelte';
+	import TextInput from '$lib/components/TextInput.svelte';
+	import SelectInput from '$lib/components/SelectInput.svelte';
+	import Button from '$lib/components/Button.svelte';
+	import Popup from '$lib/components/Popup.svelte';
 
 	export let selectedTokenName = 'Tether';
 	export let selectedToken = 'USDT';

@@ -3,7 +3,7 @@
 
 	import CurrencyPerfomance from '$lib/Pages/Performance/CurrencyPerformance/CurrencyPerfomance.svelte';
 	import { getAllTokens } from '$utils/token.util';
-	import Navbar from '$lib/Components/Navbar/Navbar.svelte';
+	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 
 	/**
 	 * This is the array of tokens, that will be shown in this route. It is being populated by the onMount hook.

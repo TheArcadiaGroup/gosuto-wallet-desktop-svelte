@@ -7,9 +7,9 @@
 	- `recipient` = Value form the recipient selection.
 -->
 <script lang="ts">
-	import Button from '$lib/Components/Button.svelte';
-	import SelectInput from '$lib/Components/SelectInput.svelte';
-	import TextInput from '$lib/Components/TextInput.svelte';
+	import Button from '$lib/components/Button.svelte';
+	import SelectInput from '$lib/components/SelectInput.svelte';
+	import TextInput from '$lib/components/TextInput.svelte';
 
 	export let amount: number;
 	export let recipient: string;

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SplashScreen from '$lib/Components/SplashScreen.svelte';
+	import SplashScreen from '$lib/components/SplashScreen.svelte';
 
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';

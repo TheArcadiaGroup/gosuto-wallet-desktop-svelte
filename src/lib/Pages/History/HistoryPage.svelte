@@ -8,10 +8,10 @@
 -->
 <script lang="ts">
 	import HistoryComponent from './HistoryComponent/HistoryComponent.svelte';
-	import GridLayout from '$lib/Components/GridLayout.svelte';
-	import RoundedSelect from '$lib/Components/RoundedSelect.svelte';
+	import GridLayout from '$lib/components/GridLayout.svelte';
+	import RoundedSelect from '$lib/components/RoundedSelect.svelte';
 	import Sidebar from '$lib/Pages/History/HistoryComponent/Sidebar.svelte';
-	import ReturnHome from '$lib/Components/ReturnHome.svelte';
+	import ReturnHome from '$lib/components/ReturnHome.svelte';
 
 	export let historyArray: HistoryObject[];
 	export let hideNavbar: boolean = true;

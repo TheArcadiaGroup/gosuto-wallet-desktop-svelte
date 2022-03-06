@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 
-	import ReturnHome from '$lib/Components/ReturnHome.svelte';
-	import Button from '$lib/Components/Button.svelte';
+	import ReturnHome from '$lib/components/ReturnHome.svelte';
+	import Button from '$lib/components/Button.svelte';
 	import PlusIcon from '$icons/PlusIcon.svelte';
-	import TokenCard from '$lib/Components/TokenCard.svelte';
+	import TokenCard from '$lib/components/TokenCard.svelte';
 
 	export let tokens: IToken[] = [];
 

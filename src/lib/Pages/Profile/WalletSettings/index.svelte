@@ -3,12 +3,12 @@
 	import CopyIcon from '$icons/CopyIcon.svelte';
 	import CopyOrange from '$icons/CopyOrange.svelte';
 
-	import PasswordToCopyPopup from '$lib/Components/PopUps/WalletSettings/PasswordToCopyPopup.svelte';
-	import PasswordToExportPopup from '$lib/Components/PopUps/WalletSettings/PasswordToExportPopup.svelte';
-	import WalletCopiedPopup from '$lib/Components/PopUps/WalletSettings/WalletCopiedPopup.svelte';
+	import PasswordToCopyPopup from '$lib/components/PopUps/WalletSettings/PasswordToCopyPopup.svelte';
+	import PasswordToExportPopup from '$lib/components/PopUps/WalletSettings/PasswordToExportPopup.svelte';
+	import WalletCopiedPopup from '$lib/components/PopUps/WalletSettings/WalletCopiedPopup.svelte';
 
-	import TextInput from '$lib/Components/TextInput.svelte';
-	import Button from '$lib/Components/Button.svelte';
+	import TextInput from '$lib/components/TextInput.svelte';
+	import Button from '$lib/components/Button.svelte';
 
 	import { onMount } from 'svelte';
 

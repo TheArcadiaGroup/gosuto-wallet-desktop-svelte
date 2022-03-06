@@ -8,8 +8,8 @@
 -->
 <script lang="ts">
 	import PlusIcon from '$icons/PlusIcon.svelte';
-	import Button from '$lib/Components/Button.svelte';
-	import ProfilePicture from '$lib/Components/ProfilePicture.svelte';
+	import Button from '$lib/components/Button.svelte';
+	import ProfilePicture from '$lib/components/ProfilePicture.svelte';
 	import CardCarousel from './CardCarousel/CardCarousel.svelte';
 	import CarouselItem from './CardCarousel/CarouselItem.svelte';
 	import CreditCard from './CreditCard.svelte';
