@@ -6,7 +6,7 @@ export async function post(params: any): Promise<any> {
 		walletData.walletName &&
 		walletData.password &&
 		walletData.walletAddress &&
-		walletData.seedPhrase.length > 0 &&
+		walletData.seedPhrase?.length! > 0 &&
 		walletData.accountHash &&
 		walletData.privateKey
 	) {
@@ -14,7 +14,7 @@ export async function post(params: any): Promise<any> {
 			walletName: walletData.walletName,
 			walletPassword: walletData.password,
 			walletImage: '',
-			seedPhrase: walletData.seedPhrase.split(' '),
+			seedPhrase: walletData.seedPhrase?.split(' ') || [],
 			availableBalanceUSD: 0.0,
 			stakedBalance: 0.0,
 			unclaimedRewards: 0.0,

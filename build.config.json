@@ -5,10 +5,20 @@
 		"output": "dist"
 	},
 	"files": [
-		"src/electron/index.cjs",
+		"src/electron/**/*",
 		{
 			"from": "build",
 			"to": ""
 		}
-	]
+	],
+	"publish": {
+		"provider": "github",
+		"private": true,
+		"owner": "TheArcadiaGroup",
+		"repo": "gosuto-wallet-desktop-svelte",
+		"token": "GITHUB_TOKEN_HERE",
+		"vPrefixedTagName": true,
+		"publishAutoUpdate": true,
+		"releaseType": "release"
+	}
 }

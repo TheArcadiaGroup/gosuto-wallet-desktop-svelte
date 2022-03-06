@@ -7,7 +7,7 @@
 	import ImportIcon from '$icons/ImportIcon.svelte';
 </script>
 
-<button>
+<button on:click>
 	<div class="wrapper">
 		<div class="icon-wrapper">
 			<ImportIcon class="import-icon" />

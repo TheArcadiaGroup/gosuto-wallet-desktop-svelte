@@ -82,7 +82,7 @@
 	});
 
 	onMount(() => {
-		//Retrieve the selected profile off the user
+		// Retrieve the selected profile off the user
 		user = (retrieveData('user') as IUser) || {
 			name: 'Unknown User',
 			avatar: '',
