@@ -11,6 +11,8 @@
 	import { goto } from '$app/navigation';
 	import { createEventDispatcher } from 'svelte';
 
+	import { page } from '$app/stores';
+
 	import CardGraphics from '$icons/CardGraphics.svelte';
 	import PurpleTriangle from '$icons/PurpleTriangle.svelte';
 	import ProfilePicture from '$lib/components/ProfilePicture.svelte';
@@ -26,7 +28,9 @@
 	function saveAddress() {
 		saveData('selectedProfile', JSON.stringify(wallet.walletAddress));
 		dispatch('cardClicked');
-		goto(`/profile/${wallet.walletAddress}/history`);
+		if ($page.path == '/profile') {
+			goto(`/profile/${wallet.walletAddress}/history`);
+		}
 	}
 </script>
 
