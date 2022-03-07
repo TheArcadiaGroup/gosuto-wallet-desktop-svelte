@@ -7,8 +7,8 @@
 	import { shortenAddress } from '$utils';
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 	import { page } from '$app/stores';
-	import { retrieveData } from '$utils/dataStorage';
 	import { selectedWallet } from '$stores/user/wallets';
+	import { retrieveData } from '$utils/dataStorage';
 
 	let data: HistoryObject[];
 	let user: IUser;
@@ -54,7 +54,6 @@
 				historyArray={data}
 				isInProfileRoute={true}
 				address={shortenAddress($page.params.address)}
-				walletName={$selectedWallet?.walletName}
 			/>
 		</div>
 	</div>

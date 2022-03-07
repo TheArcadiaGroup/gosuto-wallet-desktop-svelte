@@ -3,7 +3,7 @@
 
 	import ProfileNavigation from '$lib/pages/Profile/ProfileNavigation.svelte';
 	import Settings from '$lib/pages/Profile/WalletSettings/index.svelte';
-	import { selectedWallet, selectedWallet } from '$stores/user/wallets';
+	import { selectedWallet } from '$stores/user/wallets';
 	import { retrieveData } from '$utils/dataStorage';
 	import { onMount } from 'svelte';
 
