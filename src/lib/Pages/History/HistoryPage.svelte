@@ -16,7 +16,7 @@
 	export let historyArray: HistoryObject[];
 	export let hideNavbar: boolean = true;
 	export let isInProfileRoute: boolean = false;
-	export let walletNumber: string;
+	export let walletName: string;
 	export let address: string;
 	let filteredArray: HistoryObject[];
 	let showingArray: HistoryObject[];
@@ -74,7 +74,7 @@
 				{#if !isInProfileRoute}
 					<h3>{historyFilter} History</h3>
 				{:else}
-					<ReturnHome {walletNumber} publicKey={address} profileLocation="History" />
+					<ReturnHome {walletName} publicKey={address} profileLocation="History" />
 					<br />
 					<h3>History of this wallet</h3>
 				{/if}
@@ -133,7 +133,7 @@
 	}
 
 	:local(.history-holder) {
-		@apply w-full md:min-w-max md:overflow-y-auto md:h-[80%] md:pr-6 md:mt-16;
+		@apply w-full md:overflow-y-auto md:h-[80%] md:pr-6 md:mt-16;
 	}
 
 	:local(button) {
