@@ -13,6 +13,9 @@
 	let user: IUser;
 	$: walletAddress = $page.params.address;
 
+	let currentPage = 1;
+	let itemsPerPage = 10;
+
 	const fetchHistory = (page = 1, limit = 10) => {
 		const wallet = user.wallets.filter((wallet) => wallet.walletAddress === walletAddress)[0];
 
@@ -53,7 +56,7 @@
 	});
 
 	const getData = async (address: string) => {
-		fetch(`/api/profile/${address}/history`)
+		fetch(`/api/profile/${address}/history?page=${currentPage}&limit=${itemsPerPage}`)
 			.then((response) => response.json())
 			.then((response) => (data = response))
 			.catch((error) => {
