@@ -7,45 +7,46 @@
 	@see history
 -->
 <script lang="ts">
+	import { CreateEventDispatcher } from 'svelte';
+
 	import HistoryComponent from './HistoryComponent/HistoryComponent.svelte';
 	import GridLayout from '$lib/components/GridLayout.svelte';
 	import RoundedSelect from '$lib/components/RoundedSelect.svelte';
 	import Sidebar from '$lib/pages/History/HistoryComponent/Sidebar.svelte';
 	import ReturnHome from '$lib/components/ReturnHome.svelte';
 
-	export let historyArray: HistoryObject[];
+	export let data: GetHistoryResponse[];
 	export let hideNavbar: boolean = true;
 	export let isInProfileRoute: boolean = false;
 	export let walletNumber: string;
 	export let address: string;
-	let filteredArray: HistoryObject[];
-	let showingArray: HistoryObject[];
 
-	let numberOfItemsShown = 7;
-	let pageNumber = 1;
+	const dispatch = createEventDispatcher();
+
+	// Get history data from data
+	let historyArray: HistoryObject[] = [];
+	let filteredArray: HistoryObject[];
 
 	type TransactionStatus = 'Received' | 'Sent' | 'Stake' | 'Swap' | 'All' | undefined;
 	let optionsArray: TransactionStatus[] = ['All', 'Received', 'Sent', 'Swap', 'Stake'];
 	let filterId: number = 0;
+
 	$: historyFilter = optionsArray[filterId];
-
-	$: showingArray = historyArray.slice(0, numberOfItemsShown * pageNumber);
-
 	$: switch (filterId) {
 		case 0:
-			filteredArray = showingArray;
+			filteredArray = historyArray;
 			break;
 		case 1:
-			filteredArray = showingArray.filter((obj) => obj.status === 'Received');
+			filteredArray = historyArray.filter((obj) => obj.status === 'Received');
 			break;
 		case 2:
-			filteredArray = showingArray.filter((obj) => obj.status === 'Sent');
+			filteredArray = historyArray.filter((obj) => obj.status === 'Sent');
 			break;
 		case 3:
-			filteredArray = showingArray.filter((obj) => obj.status === 'Swap');
+			filteredArray = historyArray.filter((obj) => obj.status === 'Swap');
 			break;
 		case 4:
-			filteredArray = showingArray.filter((obj) => obj.status === 'Stake');
+			filteredArray = historyArray.filter((obj) => obj.status === 'Stake');
 			break;
 		default:
 			break;
@@ -58,7 +59,7 @@
 	}
 
 	function showMoreItems() {
-		pageNumber++;
+		dispatch('showMoreClicked');
 	}
 </script>
 
@@ -82,7 +83,7 @@
 			</div>
 			<div class="history-holder">
 				<!-- Received -->
-				{#each showingArray as historyObject, i}
+				{#each filteredArray as historyObject, i}
 					<HistoryComponent
 						on:deselect={() => {
 							selectedTokenIndex = -1;
@@ -102,9 +103,9 @@
 					/>
 				{/each}
 			</div>
-			{#if filteredArray.length >= numberOfItemsShown}
-				<button on:click={showMoreItems}>Show more</button>
-			{/if}
+			<!-- {#if filteredArray.length >= numberOfItemsShown} -->
+			<button on:click={showMoreItems}>Show more</button>
+			<!-- {/if} -->
 		</div>
 	</div>
 	<Sidebar
