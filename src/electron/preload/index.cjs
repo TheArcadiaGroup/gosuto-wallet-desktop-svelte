@@ -11,6 +11,7 @@ contextBridge.exposeInMainWorld('api', {
 			'createWalletFromFile',
 			'generateMnemonics',
 			'importWalletFromFile',
+			'getHistory',
 		];
 		if (validChannels.includes(channel)) {
 			ipcRenderer.send(channel, data);
@@ -23,6 +24,7 @@ contextBridge.exposeInMainWorld('api', {
 			'createWalletFromFileResponse',
 			'generateMnemonicsResponse',
 			'importWalletFromFileResponse',
+			'getHistoryResponse',
 		];
 		if (validChannels.includes(channel)) {
 			// Deliberately strip event as it includes `sender`
