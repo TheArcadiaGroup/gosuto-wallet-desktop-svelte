@@ -13,14 +13,22 @@ module.exports = () => {
 		console.log(data);
 	});
 
+	ipcMain.on('getHistory', async (event, data) => {
+		try {
+			// 34b0394b11dc3ecb1bf6f26c9754aa2e9f38d7bec33003374b4b3fac8566c258 => accountHash
+			const parsedData = JSON.parse(data);
+			const res = await profileHistory.getTransferHistory({
+				accountHash: parsedData?.accountHash,
+				page: parsedData?.page,
+				limit: parsedData?.limit,
+			});
 
-	ipcMain.on('createWallet', async (event, data) => {
-		const res = await profileHistory.getTransferHistory({
-			accountHash: '34b0394b11dc3ecb1bf6f26c9754aa2e9f38d7bec33003374b4b3fac8566c258',
-		});
-		console.log('Please create wallet', res);
-    
-  });
+			sendMessage('getHistoryResponse', res);
+		} catch (err) {
+			console.log(err);
+			sendMessage('getHistoryResponse', { data: [], pageCount: 0, itemCount: 0, pages: [] });
+		}
+	});
 
 	// Generate Wallet Mnemonics
 	ipcMain.on('generateMnemonics', async (_event, _data) => {
