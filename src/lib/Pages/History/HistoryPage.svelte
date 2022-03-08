@@ -7,7 +7,7 @@
 	@see history
 -->
 <script lang="ts">
-	import { CreateEventDispatcher } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	import HistoryComponent from './HistoryComponent/HistoryComponent.svelte';
 	import GridLayout from '$lib/components/GridLayout.svelte';
