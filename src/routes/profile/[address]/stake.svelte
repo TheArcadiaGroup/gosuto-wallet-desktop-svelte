@@ -12,6 +12,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
+	import { retrieveData } from '$utils/dataStorage';
 	import StakePage from '$lib/pages/Profile/Stake/StakePage.svelte';
 	import { page } from '$app/stores';
 
@@ -33,4 +34,9 @@
 	};
 </script>
 
-<StakePage stakeArray={data} />
+<StakePage
+	stakeArray={data}
+	on:cardClicked={() => {
+		getData(retrieveData('selectedProfile'));
+	}}
+/>

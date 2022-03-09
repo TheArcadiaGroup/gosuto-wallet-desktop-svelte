@@ -9,19 +9,28 @@
 -->
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { createEventDispatcher } from 'svelte';
+
+	import { page } from '$app/stores';
 
 	import CardGraphics from '$icons/CardGraphics.svelte';
 	import PurpleTriangle from '$icons/PurpleTriangle.svelte';
 	import ProfilePicture from '$lib/components/ProfilePicture.svelte';
+
 	import { saveData } from '$utils/dataStorage';
+
+	const dispatch = createEventDispatcher();
 
 	export let avatar = '';
 	export let name = 'unknown name';
 	export let wallet: IWallet;
 
 	function saveAddress() {
-		saveData('selectedProfile', wallet.walletAddress);
-		goto(`/profile/${wallet.walletAddress}/history`);
+		saveData('selectedProfile', JSON.stringify(wallet.walletAddress));
+		dispatch('cardClicked');
+		if ($page.path == '/profile') {
+			goto(`/profile/${wallet.walletAddress}/history`);
+		}
 	}
 </script>
 
