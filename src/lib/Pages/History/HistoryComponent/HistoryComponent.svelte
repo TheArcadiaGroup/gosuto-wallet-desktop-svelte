@@ -96,7 +96,7 @@
 		@apply pl-2 py-2 md:p-3 mx-2 md:mx-3 my-1;
 	}
 	:local(.right) {
-		@apply pr-2 py-2 md:p-3 mx-2 md:mx-2 my-1;
+		@apply pr-2 py-2 md:p-3 mx-2 md:mx-3 my-1;
 	}
 	:local(.leftcontent) {
 		@apply text-left;

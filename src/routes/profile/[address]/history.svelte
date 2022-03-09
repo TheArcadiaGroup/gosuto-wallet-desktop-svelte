@@ -7,36 +7,18 @@
 	import { shortenAddress } from '$utils';
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 	import { page } from '$app/stores';
-	import { selectedWallet } from '$stores/user/wallets';
 	import { retrieveData } from '$utils/dataStorage';
+	import { getSingleAccountHistory } from '$utils/getHistory';
 
-	let data: HistoryObject[];
+	let data: HistoryObject[] = [];
 	let user: IUser;
 	$: walletAddress = $page.params.address;
 
 	let currentPage = 1;
 	let itemsPerPage = 10;
 
-	const fetchHistory = (page = 1, limit = 10) => {
-		const wallet = user.wallets.filter((wallet) => wallet.walletAddress === walletAddress)[0];
-
-		if (wallet) {
-			const fetchObj = {
-				accountHash: wallet.accountHash,
-				page,
-				limit,
-			};
-
-			// Send request to electron
-			window.api.send('getHistory', JSON.stringify(fetchObj));
-		} else {
-			// Better UI Based Error Needed
-			throw Error('Wallet Not Loaded');
-		}
-	};
-
 	onMount(() => {
-		getData($page.params.address);
+		getData();
 
 		// Retrieve the selected profile off the user
 		user = (retrieveData('user') as IUser) || {
@@ -45,25 +27,27 @@
 			email: '',
 			wallets: (retrieveData('wallets') as IWallet[]) || [],
 		};
-
-		// Fetch History
-		fetchHistory();
-
-		// Receives data from electron once parsed.
-		window.api.receive('getHistoryResponse', (data: GetHistoryResponse) => {
-			// loading function can wait for this data to be fetched
-			console.log(data);
-		});
 	});
 
-	const getData = async (address: string) => {
-		fetch(`/api/profile/${address}/history?page=${currentPage}&limit=${itemsPerPage}`)
-			.then((response) => response.json())
-			.then((response) => (data = response))
-			.catch((error) => {
-				console.error('error:', error);
-			});
+	const getData = async () => {
+		const wallet = user.wallets.filter((wallet) => wallet.walletAddress === walletAddress)[0];
+		if (wallet) {
+			const historyObj = await getSingleAccountHistory(
+				wallet.accountHash,
+				currentPage,
+				itemsPerPage,
+			);
+			data = [...data, historyObj.data];
+		} else {
+			// Better UI Based Error Needed
+			throw Error('Wallet Not Loaded');
+		}
 	};
+
+	function showMoreItems() {
+		currentPage++;
+		getData();
+	}
 </script>
 
 {#if data}
@@ -73,19 +57,15 @@
 		</div>
 		<div class="global-grid-left">
 			<div class="size-full">
-				<ProfileNavigation
-					{user}
-					on:cardClicked={() => {
-						getData(retrieveData('selectedProfile'));
-					}}
-				/>
+				<ProfileNavigation {user} />
 			</div>
 		</div>
 		<div class="global-grid-mid">
 			<HistoryPage
-				historyArray={data}
+				{data}
 				isInProfileRoute={true}
 				address={shortenAddress($page.params.address)}
+				on:showMoreClicked={showMoreItems}
 			/>
 		</div>
 	</div>

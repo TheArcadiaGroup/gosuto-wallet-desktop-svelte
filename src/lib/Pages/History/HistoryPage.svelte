@@ -7,47 +7,46 @@
 	@see history
 -->
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+
 	import HistoryComponent from './HistoryComponent/HistoryComponent.svelte';
 	import GridLayout from '$lib/components/GridLayout.svelte';
 	import RoundedSelect from '$lib/components/RoundedSelect.svelte';
 	import Sidebar from '$lib/pages/History/HistoryComponent/Sidebar.svelte';
 	import ReturnHome from '$lib/components/ReturnHome.svelte';
 
-	import { selectedWallet } from '$stores/user/wallets';
-
-	export let historyArray: HistoryObject[];
+	export let data: GetHistoryResponse[];
 	export let hideNavbar: boolean = true;
 	export let isInProfileRoute: boolean = false;
+	export let walletNumber: string;
 	export let address: string;
 
-	let filteredArray: HistoryObject[];
-	let showingArray: HistoryObject[];
+	const dispatch = createEventDispatcher();
 
-	let numberOfItemsShown = 7;
-	let pageNumber = 1;
+	// Get history data from data
+	let historyArray: HistoryObject[] = [];
+	let filteredArray: HistoryObject[];
 
 	type TransactionStatus = 'Received' | 'Sent' | 'Stake' | 'Swap' | 'All' | undefined;
 	let optionsArray: TransactionStatus[] = ['All', 'Received', 'Sent', 'Swap', 'Stake'];
 	let filterId: number = 0;
+
 	$: historyFilter = optionsArray[filterId];
-
-	$: showingArray = historyArray.slice(0, numberOfItemsShown * pageNumber);
-
 	$: switch (filterId) {
 		case 0:
-			filteredArray = showingArray;
+			filteredArray = historyArray;
 			break;
 		case 1:
-			filteredArray = showingArray.filter((obj) => obj.status === 'Received');
+			filteredArray = historyArray.filter((obj) => obj.status === 'Received');
 			break;
 		case 2:
-			filteredArray = showingArray.filter((obj) => obj.status === 'Sent');
+			filteredArray = historyArray.filter((obj) => obj.status === 'Sent');
 			break;
 		case 3:
-			filteredArray = showingArray.filter((obj) => obj.status === 'Swap');
+			filteredArray = historyArray.filter((obj) => obj.status === 'Swap');
 			break;
 		case 4:
-			filteredArray = showingArray.filter((obj) => obj.status === 'Stake');
+			filteredArray = historyArray.filter((obj) => obj.status === 'Stake');
 			break;
 		default:
 			break;
@@ -60,7 +59,7 @@
 	}
 
 	function showMoreItems() {
-		pageNumber++;
+		dispatch('showMoreClicked');
 	}
 </script>
 
@@ -76,11 +75,7 @@
 				{#if !isInProfileRoute}
 					<h3>{historyFilter} History</h3>
 				{:else}
-					<ReturnHome
-						walletName={$selectedWallet?.walletName || 'unknown wallet name'}
-						publicKey={address || '...'}
-						profileLocation="History"
-					/>
+					<ReturnHome {walletNumber} publicKey={address} profileLocation="History" />
 					<br />
 					<h3>History of this wallet</h3>
 				{/if}
@@ -108,9 +103,9 @@
 					/>
 				{/each}
 			</div>
-			{#if filteredArray.length >= numberOfItemsShown}
-				<button on:click={showMoreItems}>Show more</button>
-			{/if}
+			<!-- {#if filteredArray.length >= numberOfItemsShown} -->
+			<button on:click={showMoreItems}>Show more</button>
+			<!-- {/if} -->
 		</div>
 	</div>
 	<Sidebar
@@ -139,7 +134,7 @@
 	}
 
 	:local(.history-holder) {
-		@apply w-full md:overflow-y-auto md:h-[80%] md:pr-6 md:mt-16;
+		@apply w-full md:min-w-max md:overflow-y-auto md:h-[80%] md:pr-6 md:mt-16;
 	}
 
 	:local(button) {

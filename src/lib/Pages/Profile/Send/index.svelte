@@ -6,10 +6,6 @@
 	import PlusIcon from '$icons/PlusIcon.svelte';
 	import TokenCard from '$lib/components/TokenCard.svelte';
 
-	import { selectedWallet } from '$stores/user/wallets';
-	import { page } from '$app/stores';
-	import { shortenAddress } from '$utils';
-
 	export let tokens: IToken[] = [];
 
 	/**
@@ -58,11 +54,7 @@
 <svelte:body on:click={cancelButtonListener} />
 
 <div class="wallet-swap" on:click={deselectListener}>
-	<ReturnHome
-		walletName={$selectedWallet?.walletName || 'unknown wallet name'}
-		publicKey={shortenAddress($page.params.address) || '...'}
-		profileLocation="Send"
-	/>
+	<ReturnHome profileLocation="Send" />
 	<div class="container">
 		<div class="title-row">
 			<p class="tokens-in-wallet-title">Tokens in this wallet</p>
