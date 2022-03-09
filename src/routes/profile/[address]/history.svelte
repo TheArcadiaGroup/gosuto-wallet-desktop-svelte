@@ -18,8 +18,6 @@
 	let itemsPerPage = 10;
 
 	onMount(() => {
-		getData();
-
 		// Retrieve the selected profile off the user
 		user = (retrieveData('user') as IUser) || {
 			name: 'Unknown User',
@@ -27,10 +25,13 @@
 			email: '',
 			wallets: (retrieveData('wallets') as IWallet[]) || [],
 		};
+
+		// Can only be called once the user has been set
+		getData();
 	});
 
 	const getData = async () => {
-		const wallet = user.wallets.filter((wallet) => wallet.walletAddress === walletAddress)[0];
+		const wallet = user?.wallets?.filter((wallet) => wallet.walletAddress === walletAddress)[0];
 		if (wallet) {
 			const historyObj = await getSingleAccountHistory(
 				wallet.accountHash,
