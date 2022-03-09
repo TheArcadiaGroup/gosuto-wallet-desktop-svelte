@@ -12,9 +12,32 @@
 
 	let data: HistoryObject[];
 	let user: IUser;
+	$: walletAddress = $page.params.address;
+
+	let currentPage = 1;
+	let itemsPerPage = 10;
+
+	const fetchHistory = (page = 1, limit = 10) => {
+		const wallet = user.wallets.filter((wallet) => wallet.walletAddress === walletAddress)[0];
+
+		if (wallet) {
+			const fetchObj = {
+				accountHash: wallet.accountHash,
+				page,
+				limit,
+			};
+
+			// Send request to electron
+			window.api.send('getHistory', JSON.stringify(fetchObj));
+		} else {
+			// Better UI Based Error Needed
+			throw Error('Wallet Not Loaded');
+		}
+	};
 
 	onMount(() => {
 		getData($page.params.address);
+
 		// Retrieve the selected profile off the user
 		user = (retrieveData('user') as IUser) || {
 			name: 'Unknown User',
@@ -22,10 +45,19 @@
 			email: '',
 			wallets: (retrieveData('wallets') as IWallet[]) || [],
 		};
+
+		// Fetch History
+		fetchHistory();
+
+		// Receives data from electron once parsed.
+		window.api.receive('getHistoryResponse', (data: GetHistoryResponse) => {
+			// loading function can wait for this data to be fetched
+			console.log(data);
+		});
 	});
 
 	const getData = async (address: string) => {
-		fetch(`/api/profile/${address}/history`)
+		fetch(`/api/profile/${address}/history?page=${currentPage}&limit=${itemsPerPage}`)
 			.then((response) => response.json())
 			.then((response) => (data = response))
 			.catch((error) => {

@@ -27,6 +27,7 @@
 	"dependencies": {
 		"@lapo/asn1js": "^1.2.3",
 		"@tailwindcss/forms": "^0.4.0",
+		"axios": "^0.26.0",
 		"bip39": "^3.0.4",
 		"casper-js-sdk": "^2.8.0",
 		"chart.js": "^3.7.0",
