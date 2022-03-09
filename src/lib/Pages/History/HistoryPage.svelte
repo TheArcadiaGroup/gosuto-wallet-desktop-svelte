@@ -13,11 +13,13 @@
 	import Sidebar from '$lib/pages/History/HistoryComponent/Sidebar.svelte';
 	import ReturnHome from '$lib/components/ReturnHome.svelte';
 
+	import { selectedWallet } from '$stores/user/wallets';
+
 	export let historyArray: HistoryObject[];
 	export let hideNavbar: boolean = true;
 	export let isInProfileRoute: boolean = false;
-	export let walletNumber: string;
 	export let address: string;
+
 	let filteredArray: HistoryObject[];
 	let showingArray: HistoryObject[];
 
@@ -74,7 +76,11 @@
 				{#if !isInProfileRoute}
 					<h3>{historyFilter} History</h3>
 				{:else}
-					<ReturnHome {walletNumber} publicKey={address} profileLocation="History" />
+					<ReturnHome
+						walletName={$selectedWallet?.walletName || 'unknown wallet name'}
+						publicKey={address || '...'}
+						profileLocation="History"
+					/>
 					<br />
 					<h3>History of this wallet</h3>
 				{/if}
@@ -82,7 +88,7 @@
 			</div>
 			<div class="history-holder">
 				<!-- Received -->
-				{#each showingArray as historyObject, i}
+				{#each filteredArray as historyObject, i}
 					<HistoryComponent
 						on:deselect={() => {
 							selectedTokenIndex = -1;
@@ -133,7 +139,7 @@
 	}
 
 	:local(.history-holder) {
-		@apply w-full md:min-w-max md:overflow-y-auto md:h-[80%] md:pr-6 md:mt-16;
+		@apply w-full md:overflow-y-auto md:h-[80%] md:pr-6 md:mt-16;
 	}
 
 	:local(button) {
