@@ -18,8 +18,8 @@
 	export let data: GetHistoryResponse[];
 	export let hideNavbar: boolean = true;
 	export let isInProfileRoute: boolean = false;
-	export let walletNumber: string;
 	export let address: string;
+	export let walletName: string;
 
 	const dispatch = createEventDispatcher();
 
@@ -75,7 +75,7 @@
 				{#if !isInProfileRoute}
 					<h3>{historyFilter} History</h3>
 				{:else}
-					<ReturnHome {walletNumber} publicKey={address} profileLocation="History" />
+					<ReturnHome {walletName} publicKey={address} profileLocation="History" />
 					<br />
 					<h3>History of this wallet</h3>
 				{/if}

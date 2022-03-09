@@ -6,7 +6,6 @@
 	import LockIcon from '$icons/LockIcon.svelte';
 
 	import { goto } from '$app/navigation';
-	import type { JSONString } from '@sveltejs/kit/types/helper';
 	import { retrieveData, saveData } from '$utils/dataStorage';
 	import { onMount } from 'svelte';
 	import { walletNameIsValid } from '$utils/profiles';

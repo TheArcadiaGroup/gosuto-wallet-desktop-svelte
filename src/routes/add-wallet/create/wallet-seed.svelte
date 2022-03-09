@@ -12,9 +12,7 @@
 	import { onMount } from 'svelte';
 
 	import { goto } from '$app/navigation';
-	import type { JSONString } from '@sveltejs/kit/types/helper';
 	import { retrieveData, saveData } from '$utils/dataStorage';
-	import { page } from '$app/stores';
 
 	/** True if user copied seed phrase*/
 	let copied: boolean = false;

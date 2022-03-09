@@ -5,9 +5,9 @@
 	/**
 	 * A location shown in the title of this component (Wallet {profileLocation})
 	 */
-	export let profileLocation: string;
-	export let walletName: string;
-	export let publicKey: string;
+	export let profileLocation: string = '';
+	export let walletName: string = '';
+	export let publicKey: string = '';
 </script>
 
 <div class="return-home">
