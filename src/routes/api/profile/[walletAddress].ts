@@ -6,9 +6,9 @@ let profileData: IWallet = {
 	availableBalanceUSD: 0.0,
 	stakedBalance: 0.0,
 	unclaimedRewards: 0.0,
-	walletTokens: [[]],
-	walletStakes: [[]],
-	walletHistory: [[]],
+	walletTokens: [],
+	walletStakes: [],
+	walletHistory: [],
 	walletAddress: '',
 };
 

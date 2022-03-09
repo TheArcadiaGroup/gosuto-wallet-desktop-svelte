@@ -41,7 +41,8 @@ const createWindow = () => {
 			contextIsolation: true,
 			nodeIntegration: true,
 			spellcheck: false,
-			devTools: dev,
+			// devTools: dev,
+			devTools: true,
 			preload: path.join(__dirname, 'preload/index.cjs'),
 		},
 		icon: path.join('../static/favicon.png'),
@@ -89,6 +90,7 @@ const createMainWindow = () => {
 	if (dev) loadVite(port);
 	else serveURL(mainWindow);
 
+	mainWindow.openDevTools();
 	// if (dev) mainWindow.openDevTools();
 };
 

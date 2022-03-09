@@ -43,32 +43,27 @@
 	};
 
 	/** Sends wallet creation data to api route to create a wallet */
-	const postData = async (
-		object = {
+	const postData = async () => {
+		let wallets: IWallet[] = retrieveData('wallets') || [];
+
+		wallets.push({
 			walletName: walletName.trim(),
-			seedPhrase: null,
-			password: password.trim(),
+			walletPassword: password.trim(),
+			walletImage: '',
+			seedPhrase: [],
+			availableBalanceUSD: 0.0,
+			stakedBalance: 0.0,
+			unclaimedRewards: 0.0,
+			walletTokens: [],
+			walletStakes: [],
+			walletHistory: [],
+			walletAddress: accountHex.trim(),
 			accountHash: accountHash.trim(),
 			privateKey: privateKey.trim(),
-			walletAddress: accountHex.trim(),
-		} as WalletCreationData,
-	) => {
-		let wallets: JSONString[] | null[] = [];
+		});
 
-		fetch('/api/create-wallet/file', {
-			method: 'POST',
-			body: JSON.stringify(object),
-		})
-			.then((response) => response.json())
-			.then((response) => {
-				wallets.push(response);
-				wallets = wallets.concat(retrieveData('wallets') || '[]');
-				saveData('wallets', JSON.stringify(wallets));
-			})
-			.then(() => goto('/profile'))
-			.catch((error) => {
-				console.error('error:', error);
-			});
+		saveData('wallets', JSON.stringify(wallets));
+		goto(`/profile/${accountHex.trim()}`);
 	};
 
 	onMount(() => {
