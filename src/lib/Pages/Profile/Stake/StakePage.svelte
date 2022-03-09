@@ -88,7 +88,7 @@
 	<div class="global-grid-left">
 		<div class="size-full">
 			<!-- feed the user profile data to ProfileNavigation component -->
-			<ProfileNavigation {user} on:cardClicked />
+			<ProfileNavigation {user} />
 		</div>
 	</div>
 	<div class="global-grid-mid size-full">

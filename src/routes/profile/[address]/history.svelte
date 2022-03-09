@@ -7,7 +7,6 @@
 	import { shortenAddress } from '$utils';
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 	import { page } from '$app/stores';
-	import { selectedWallet } from '$stores/user/wallets';
 	import { retrieveData } from '$utils/dataStorage';
 	import { getSingleAccountHistory } from '$utils/getHistory';
 
@@ -58,12 +57,7 @@
 		</div>
 		<div class="global-grid-left">
 			<div class="size-full">
-				<ProfileNavigation
-					{user}
-					on:cardClicked={() => {
-						getData(retrieveData('selectedProfile'));
-					}}
-				/>
+				<ProfileNavigation {user} />
 			</div>
 		</div>
 		<div class="global-grid-mid">

@@ -52,12 +52,7 @@
 		<Navbar />
 	</div>
 	<div class="global-grid-left">
-		<ProfileNavigation
-			{user}
-			on:cardClicked={async () => {
-				tokens = await (await fetch('/api/tokens/1')).json();
-			}}
-		/>
+		<ProfileNavigation {user} />
 	</div>
 	<div class="global-grid-mid">
 		<Send on:selectToken={selectToken} bind:tokens bind:selected />

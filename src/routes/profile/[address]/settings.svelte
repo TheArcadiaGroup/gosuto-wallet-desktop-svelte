@@ -9,10 +9,6 @@
 
 	let user: IUser;
 
-	let settingsData: ProfileSettings;
-
-	updateSettings();
-
 	onMount(() => {
 		// Retrieve the selected profile off the user
 		user = (retrieveData('user') as IUser) || {
@@ -21,24 +17,12 @@
 			email: '',
 			wallets: (retrieveData('wallets') as IWallet[]) || [],
 		};
-		// if ($selectedWallet) {
-		// 	user.wallets = [$selectedWallet];
-		// } else {
-		// 	user.wallets = [user.wallets[0]];
-		// }
-	});
-
-	function updateSettings() {
 		if ($selectedWallet) {
-			settingsData = {
-				walletName: $selectedWallet.walletName,
-				walletAddress: $selectedWallet.walletAddress,
-				publicKey: $selectedWallet.walletAddress,
-				privateKey: $selectedWallet.privateKey,
-				currentPassword: $selectedWallet.walletPassword,
-			};
+			user.wallets = [$selectedWallet];
+		} else {
+			user.wallets = [user.wallets[0]];
 		}
-	}
+	});
 </script>
 
 <div class="flex">
@@ -47,13 +31,11 @@
 	</div>
 	<div class="global-grid-left">
 		<div class="size-full">
-			<ProfileNavigation {user} on:cardClicked={updateSettings} />
+			<ProfileNavigation {user} />
 		</div>
 	</div>
 	<div class="global-grid-mid">
-		{#if settingsData}
-			<Settings {settingsData} />
-		{/if}
+		<Settings />
 	</div>
 </div>
 
