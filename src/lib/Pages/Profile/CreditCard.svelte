@@ -9,6 +9,7 @@
 -->
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { createEventDispatcher } from 'svelte';
 
 	import CardGraphics from '$icons/CardGraphics.svelte';
 	import PurpleTriangle from '$icons/PurpleTriangle.svelte';
@@ -19,9 +20,12 @@
 	export let name = 'unknown name';
 	export let wallet: IWallet;
 
+	const dispatch = createEventDispatcher();
+
 	function saveAddress() {
 		saveData('selectedProfile', wallet.walletAddress);
 		goto(`/profile/${wallet.walletAddress}/history`);
+		dispatch('cardClicked');
 	}
 </script>
 

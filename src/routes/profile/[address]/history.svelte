@@ -24,68 +24,7 @@
 			name: 'Unknown User',
 			avatar: '',
 			email: '',
-			wallets: [
-				{
-					walletName: 'Wallet 1',
-					walletPassword: 'password2',
-					walletImage: 'https://images.pexels.com/photos/11347811/pexels-photo-11347811.jpeg',
-					seedPhrase: [],
-					availableBalanceUSD: 100,
-					stakedBalance: 200,
-					unclaimedRewards: 300,
-					walletTokens: [],
-					walletStakes: [],
-					walletHistory: [],
-					walletAddress: '0x9f98e01d2gj92ngn2g7gn24ed7',
-					accountHash: '0x9f98e01d2gj92ngn2g7gn24ed7',
-					privateKey: '0x9f98e01d2gj92ngn2g7gn24ed7',
-				},
-				{
-					walletName: 'Wallet 2',
-					walletPassword: 'password2',
-					walletImage: 'https://images.pexels.com/photos/3155586/pexels-photo-3155586.jpeg',
-					seedPhrase: [],
-					availableBalanceUSD: 400,
-					stakedBalance: 500,
-					unclaimedRewards: 600,
-					walletTokens: [],
-					walletStakes: [],
-					walletHistory: [],
-					walletAddress: '0x9f98e01d2gj92ngn2g7gn24ed7',
-					accountHash: '0x9f98e01d2gj92ngn2g7gn24ed7',
-					privateKey: '0x9f98e01d2gj92ngn2g7gn24ed7',
-				},
-				{
-					walletName: 'Wallet 3',
-					walletPassword: 'password2',
-					walletImage: 'https://images.pexels.com/photos/11347811/pexels-photo-11347811.jpeg',
-					seedPhrase: [],
-					availableBalanceUSD: 700,
-					stakedBalance: 800,
-					unclaimedRewards: 900,
-					walletTokens: [],
-					walletStakes: [],
-					walletHistory: [],
-					walletAddress: '0x9f98e01d2gj92ngn2g7gn24ed7',
-					accountHash: '0x9f98e01d2gj92ngn2g7gn24ed7',
-					privateKey: '0x9f98e01d2gj92ngn2g7gn24ed7',
-				},
-				{
-					walletName: 'Wallet 4',
-					walletPassword: 'password2',
-					walletImage: 'https://images.pexels.com/photos/3535468/pexels-photo-3535468.jpeg',
-					seedPhrase: [],
-					availableBalanceUSD: 1000,
-					stakedBalance: 1100,
-					unclaimedRewards: 1200,
-					walletTokens: [],
-					walletStakes: [],
-					walletHistory: [],
-					walletAddress: '0x9f98e01d2gj92ngn2g7gn24ed7',
-					accountHash: '0x9f98e01d2gj92ngn2g7gn24ed7',
-					privateKey: '0x9f98e01d2gj92ngn2g7gn24ed7',
-				},
-			],
+			wallets: (retrieveData('wallets') as IWallet[]) || [],
 		};
 
 		// Can only be called once the user has been set
@@ -111,6 +50,10 @@
 		currentPage++;
 		getData();
 	}
+
+	function creditCardClicked() {
+		getData();
+	}
 </script>
 
 {#if data}
@@ -120,7 +63,7 @@
 		</div>
 		<div class="global-grid-left">
 			<div class="size-full">
-				<ProfileNavigation {user} />
+				<ProfileNavigation {user} on:cardClicked={creditCardClicked} />
 			</div>
 		</div>
 		<div class="global-grid-mid">
