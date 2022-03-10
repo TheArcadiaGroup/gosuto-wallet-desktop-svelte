@@ -11,8 +11,12 @@
 	import { retrieveData } from '$utils/dataStorage';
 	import { goto } from '$app/navigation';
 
+	import { page } from '$app/stores';
+
 	let tokens: IToken[] = [];
 	let user: IUser;
+
+	$: wallet = user?.wallets?.filter((wallet) => wallet.walletAddress === $page.params.address)[0];
 
 	/**
 	 * This is the currently selected index of TokenCards.
@@ -55,7 +59,7 @@
 		<ProfileNavigation {user} />
 	</div>
 	<div class="global-grid-mid">
-		<Send on:selectToken={selectToken} bind:tokens bind:selected />
+		<Send on:selectToken={selectToken} bind:tokens bind:selected {wallet} />
 	</div>
 	<div class="global-grid-right sidebar">
 		{#if selected === -2}
