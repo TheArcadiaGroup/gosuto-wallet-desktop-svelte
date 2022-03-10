@@ -12,6 +12,8 @@
 	import { retrieveData } from '$utils/dataStorage';
 	import { selectedWallet } from '$stores/user/wallets';
 
+	import { page } from '$app/stores';
+
 	let tokens: IToken[] = [];
 
 	/**
@@ -21,6 +23,8 @@
 	 */
 	let selected = -1;
 	let user: IUser;
+
+	$: wallet = user?.wallets?.filter((wallet) => wallet.walletAddress === $page.params.address)[0];
 
 	function selectToken(e: { detail: { id: number } }): void {
 		selected = e.detail.id;
@@ -49,7 +53,7 @@
 		<ProfileNavigation {user} />
 	</div>
 	<div class="global-grid-mid">
-		<Swap on:selectToken={selectToken} bind:tokens bind:selected />
+		<Swap on:selectToken={selectToken} bind:tokens bind:selected {wallet} />
 	</div>
 	<div class="global-grid-right swap-sidebar">
 		{#if selected === -2}
