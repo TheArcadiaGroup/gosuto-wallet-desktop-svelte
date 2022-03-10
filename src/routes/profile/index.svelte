@@ -9,24 +9,7 @@
 	import { selectedWallet } from '$stores/user/wallets';
 	import { loadSelectedProfile } from '$utils/profiles';
 
-	let existingWallets: IWallet[] = retrieveData('wallets') || [
-		{},
-		{},
-		{},
-		{},
-		{},
-		{},
-		{},
-		{},
-		{},
-		{},
-		{},
-		{},
-		{},
-		{},
-		{},
-		{},
-	];
+	let existingWallets: IWallet[] = retrieveData('wallets') || [];
 	let defaultWalletIndex: number = Number(retrieveData('defaultWalletIndex')) || 0;
 
 	onMount(() => {
