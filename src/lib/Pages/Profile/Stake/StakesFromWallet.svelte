@@ -17,7 +17,10 @@
 	import { goto } from '$app/navigation';
 	import ReturnHome from '$lib/components/ReturnHome.svelte';
 
+	import { page } from '$app/stores';
 	import { createEventDispatcher } from 'svelte';
+	import { shortenAddress } from '$utils';
+
 	const dispatch = createEventDispatcher();
 
 	export let stakeArray: IStake[];
@@ -57,7 +60,7 @@
 	<div class="header">
 		<ReturnHome
 			walletName={wallet?.walletName || 'Unknown'}
-			publicKey={wallet?.address || '...'}
+			publicKey={shortenAddress($page.params.address)}
 			profileLocation="Stakes"
 		/>
 	</div>
