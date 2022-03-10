@@ -9,7 +9,24 @@
 	import { selectedWallet } from '$stores/user/wallets';
 	import { loadSelectedProfile } from '$utils/profiles';
 
-	let existingWallets: IWallet[] = retrieveData('wallets') || [];
+	let existingWallets: IWallet[] = retrieveData('wallets') || [
+		{},
+		{},
+		{},
+		{},
+		{},
+		{},
+		{},
+		{},
+		{},
+		{},
+		{},
+		{},
+		{},
+		{},
+		{},
+		{},
+	];
 	let defaultWalletIndex: number = Number(retrieveData('defaultWalletIndex')) || 0;
 
 	onMount(() => {
@@ -71,7 +88,6 @@
 	:local(.global-grid-mid) {
 		@apply dark:bg-dark-background;
 		@apply flex justify-center;
-		@apply overflow-y-hidden;
 	}
 
 	:local(.mid-content) {
@@ -96,6 +112,7 @@
 
 	:local(.credit-card-wrapper) {
 		@apply flex flex-col place-items-center gap-8 w-1/2;
+		@apply mb-8;
 	}
 
 	:local(.single-card-wrap) {
