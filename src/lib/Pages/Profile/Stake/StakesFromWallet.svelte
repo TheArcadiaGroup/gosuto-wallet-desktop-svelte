@@ -21,7 +21,7 @@
 	const dispatch = createEventDispatcher();
 
 	export let stakeArray: IStake[];
-	export let wallet: any;
+	export let wallet: IWallet;
 	export let forRoute: 'profile' | 'all-stakes' = 'profile';
 
 	$: showingArray = stakeArray.slice(0, numberOfItemsShown * pageNumber);
@@ -56,8 +56,8 @@
 <div class="main">
 	<div class="header">
 		<ReturnHome
-			walletName={wallet?.name || 'unknown wallet name'}
-			publicKey={wallet?.publicKey || '...'}
+			walletName={wallet?.walletName || 'Unknown'}
+			publicKey={wallet?.address || '...'}
 			profileLocation="Stakes"
 		/>
 	</div>
