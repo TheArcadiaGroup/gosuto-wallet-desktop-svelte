@@ -43,6 +43,10 @@
 	}
 
 	:local(.global-grid-mid) {
+		@apply w-full max-h-screen flex-[4];
+		@apply overflow-y-auto;
+		@apply dark:border-0;
+
 		@apply dark:bg-dark-background;
 		-ms-overflow-style: none;
 		scrollbar-width: none;
