@@ -9,6 +9,8 @@
 	import { page } from '$app/stores';
 	import { retrieveData } from '$utils/dataStorage';
 	import { getSingleAccountHistory } from '$utils/getHistory';
+	import Sidebar from '$lib/pages/History/HistoryComponent/Sidebar.svelte';
+	import { sidebarContent } from '$stores/HistoryStore';
 
 	let data: HistoryObject[] = [];
 	let user: IUser;
@@ -62,9 +64,7 @@
 			<Navbar />
 		</div>
 		<div class="global-grid-left">
-			<div class="size-full">
-				<ProfileNavigation {user} on:cardClicked={creditCardClicked} />
-			</div>
+			<ProfileNavigation {user} on:cardClicked={creditCardClicked} />
 		</div>
 		<div class="global-grid-mid">
 			<HistoryPage
@@ -74,6 +74,9 @@
 				on:showMoreClicked={showMoreItems}
 				walletName={wallet?.walletName || 'Unknown'}
 			/>
+		</div>
+		<div class="global-grid-right">
+			<Sidebar historyObject={$sidebarContent} />
 		</div>
 	</div>
 {/if}

@@ -30,9 +30,7 @@
 		<Navbar />
 	</div>
 	<div class="global-grid-left">
-		<div class="size-full">
-			<ProfileNavigation {user} />
-		</div>
+		<ProfileNavigation {user} />
 	</div>
 	<div class="global-grid-mid">
 		<Settings />

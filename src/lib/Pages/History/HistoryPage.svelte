@@ -12,8 +12,8 @@
 	import HistoryComponent from './HistoryComponent/HistoryComponent.svelte';
 	import GridLayout from '$lib/components/GridLayout.svelte';
 	import RoundedSelect from '$lib/components/RoundedSelect.svelte';
-	import Sidebar from '$lib/pages/History/HistoryComponent/Sidebar.svelte';
 	import ReturnHome from '$lib/components/ReturnHome.svelte';
+	import { sidebarContent } from '$stores/HistoryStore';
 
 	export let data: GetHistoryResponse[];
 	export let hideNavbar: boolean = true;
@@ -22,6 +22,8 @@
 	export let walletName: string;
 
 	const dispatch = createEventDispatcher();
+
+	sidebarContent.set(null);
 
 	// Get history data from data
 	let historyArray: HistoryObject[] = [];
@@ -56,6 +58,7 @@
 
 	function selectToken(e: { detail: { id: number } }): void {
 		selectedTokenIndex = e.detail.id;
+		sidebarContent.set(filteredArray[selectedTokenIndex]);
 	}
 
 	function showMoreItems() {
@@ -63,66 +66,50 @@
 	}
 </script>
 
-<GridLayout {hideNavbar}>
-	<div
-		class="mid-holder"
-		class:spacing={!isInProfileRoute}
-		class:center-mid={!hideNavbar}
-		slot="mid"
-	>
-		<div class="main">
-			<div class="header">
-				{#if !isInProfileRoute}
-					<h3>{historyFilter} History</h3>
-				{:else}
-					<ReturnHome {walletName} publicKey={address} profileLocation="History" />
-					<br />
-					<h3>History of this wallet</h3>
-				{/if}
-				<RoundedSelect {optionsArray} bind:value={filterId} />
-			</div>
-			<div class="history-holder">
-				<!-- Received -->
-				{#each filteredArray as historyObject, i}
-					<HistoryComponent
-						on:deselect={() => {
-							selectedTokenIndex = -1;
-						}}
-						class={i > 0 ? 'top-border' : ''}
-						on:select={selectToken}
-						index={i}
-						clicked={selectedTokenIndex === i}
-						wallet={historyObject.wallet}
-						status={historyObject.status}
-						dateAndTime={historyObject.dateAndTime}
-						SwapData={historyObject.SwapData}
-						amount={historyObject.amount}
-						price={historyObject.price}
-						cryptoUnit={historyObject.cryptoUnit}
-						currencyUnit={historyObject.currencyUnit}
-					/>
-				{/each}
-			</div>
-			<!-- {#if filteredArray.length >= numberOfItemsShown} -->
-			<button on:click={showMoreItems}>Show more</button>
-			<!-- {/if} -->
-		</div>
+<div class="main">
+	<div class="header">
+		{#if !isInProfileRoute}
+			<h3>{historyFilter} History</h3>
+		{:else}
+			<ReturnHome {walletName} publicKey={address} profileLocation="History" />
+			<br />
+			<h3>History of this wallet</h3>
+		{/if}
+		<RoundedSelect {optionsArray} bind:value={filterId} />
 	</div>
-	<Sidebar
-		slot="last"
-		historyObject={selectedTokenIndex !== -1 ? filteredArray[selectedTokenIndex] : null}
-	/>
-</GridLayout>
+	<div class="history-holder">
+		<!-- Received -->
+		{#each filteredArray as historyObject, i}
+			<HistoryComponent
+				on:deselect={() => {
+					selectedTokenIndex = -1;
+				}}
+				class={i > 0 ? 'top-border' : ''}
+				on:select={selectToken}
+				index={i}
+				clicked={selectedTokenIndex === i}
+				wallet={historyObject.wallet}
+				status={historyObject.status}
+				dateAndTime={historyObject.dateAndTime}
+				SwapData={historyObject.SwapData}
+				amount={historyObject.amount}
+				price={historyObject.price}
+				cryptoUnit={historyObject.cryptoUnit}
+				currencyUnit={historyObject.currencyUnit}
+			/>
+		{/each}
+	</div>
+	<!-- {#if filteredArray.length >= numberOfItemsShown} -->
+	<button on:click={showMoreItems}>Show more</button>
+	<!-- {/if} -->
+</div>
 
 <style lang="postcss" global>
-	:local(.mid-holder) {
-		@apply flex w-full mr-[5vw] md:w-auto;
-	}
-
 	:local(.main) {
 		@apply h-screen flex flex-col w-full;
 		@apply px-4 pt-10;
 		@apply lg:px-11 lg:pt-20;
+		@apply dark:bg-dark-background;
 	}
 
 	:local(.spacing) {
