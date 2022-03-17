@@ -60,6 +60,8 @@
 
 	export let user: IUser;
 
+	let defaultWalletIndex = parseInt(retrieveData('defaultWalletIndex'));
+
 	onMount(() => {
 		if (!user) {
 			// Retrieve the selected profile off the user
@@ -119,7 +121,7 @@
 					{#if user}
 						<CardCarousel
 							numberOfCards={user?.wallets.length || 0}
-							position={parseInt(retrieveData('defaultWalletIndex')) - 1}
+							position={defaultWalletIndex - 1 < 0 ? 0 : defaultWalletIndex}
 						>
 							{#each user?.wallets as wallet, i}
 								<CarouselItem {i}>
