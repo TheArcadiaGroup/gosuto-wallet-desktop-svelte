@@ -3,13 +3,13 @@
 
 	import HistoryPage from '$lib/pages/History/HistoryPage.svelte';
 	import ProfileNavigation from '$lib/pages/Profile/ProfileNavigation.svelte';
+	import Navbar from '$lib/components/Navbar/Navbar.svelte';
+	import Sidebar from '$lib/pages/History/HistoryComponent/Sidebar.svelte';
 
 	import { shortenAddress } from '$utils';
-	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 	import { page } from '$app/stores';
 	import { retrieveData } from '$utils/dataStorage';
 	import { getSingleAccountHistory } from '$utils/getHistory';
-	import Sidebar from '$lib/pages/History/HistoryComponent/Sidebar.svelte';
 	import { sidebarContent } from '$stores/HistoryStore';
 
 	let data: HistoryObject[] = [];

@@ -10,7 +10,6 @@
 	import { createEventDispatcher } from 'svelte';
 
 	import HistoryComponent from './HistoryComponent/HistoryComponent.svelte';
-	import GridLayout from '$lib/components/GridLayout.svelte';
 	import RoundedSelect from '$lib/components/RoundedSelect.svelte';
 	import ReturnHome from '$lib/components/ReturnHome.svelte';
 	import { sidebarContent } from '$stores/HistoryStore';
@@ -66,7 +65,7 @@
 	}
 </script>
 
-<div class="main">
+<div class="main" class:centered={!isInProfileRoute}>
 	<div class="header">
 		{#if !isInProfileRoute}
 			<h3>{historyFilter} History</h3>
@@ -109,7 +108,10 @@
 		@apply h-screen flex flex-col w-full;
 		@apply px-4 pt-10;
 		@apply lg:px-11 lg:pt-20;
-		@apply dark:bg-dark-background;
+	}
+
+	:local(.centered) {
+		@apply max-w-[60vw] mr-[5vw];
 	}
 
 	:local(.spacing) {
