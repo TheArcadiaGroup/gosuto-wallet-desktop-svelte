@@ -117,13 +117,17 @@
 			<div class="carousel-container">
 				<div class="carousel">
 					{#if user}
-						<CardCarousel numberOfCards={user?.wallets.length || 0}>
-							{#each user?.wallets as wallet}
-								<CarouselItem>
+						<CardCarousel
+							numberOfCards={user?.wallets.length || 0}
+							position={parseInt(retrieveData('defaultWalletIndex')) - 1}
+						>
+							{#each user?.wallets as wallet, i}
+								<CarouselItem {i}>
 									<CreditCard
 										name={user?.name || 'Unknown Name'}
 										avatar={user?.avatar || ''}
 										{wallet}
+										on:cardClicked
 									/>
 								</CarouselItem>
 							{/each}

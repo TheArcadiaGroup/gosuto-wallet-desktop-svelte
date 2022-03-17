@@ -71,7 +71,6 @@
 	:local(.global-grid-mid) {
 		@apply dark:bg-dark-background;
 		@apply flex justify-center;
-		@apply overflow-y-hidden;
 	}
 
 	:local(.mid-content) {
@@ -96,6 +95,7 @@
 
 	:local(.credit-card-wrapper) {
 		@apply flex flex-col place-items-center gap-8 w-1/2;
+		@apply mb-8;
 	}
 
 	:local(.single-card-wrap) {

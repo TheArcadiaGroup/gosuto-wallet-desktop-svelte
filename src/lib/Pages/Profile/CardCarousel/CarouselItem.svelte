@@ -5,8 +5,18 @@
 	Slots:
 	- `-` = General slot for the content of one item in the carousel.
 -->
+<script lang="ts">
+	import { retrieveData, saveData } from '$utils/dataStorage';
 
-<div class="main">
+	export let i: number;
+</script>
+
+<div
+	class="main"
+	on:click={() => {
+		saveData('defaultWalletIndex', (i + 1).toString());
+	}}
+>
 	<slot />
 </div>
 

@@ -17,11 +17,14 @@
 	import { goto } from '$app/navigation';
 	import ReturnHome from '$lib/components/ReturnHome.svelte';
 
+	import { page } from '$app/stores';
 	import { createEventDispatcher } from 'svelte';
+	import { shortenAddress } from '$utils';
+
 	const dispatch = createEventDispatcher();
 
 	export let stakeArray: IStake[];
-	export let wallet: any;
+	export let wallet: IWallet;
 	export let forRoute: 'profile' | 'all-stakes' = 'profile';
 
 	$: showingArray = stakeArray.slice(0, numberOfItemsShown * pageNumber);
@@ -56,8 +59,8 @@
 <div class="main">
 	<div class="header">
 		<ReturnHome
-			walletName={wallet?.name || 'unknown wallet name'}
-			publicKey={wallet?.publicKey || '...'}
+			walletName={wallet?.walletName || 'Unknown'}
+			publicKey={shortenAddress($page.params.address)}
 			profileLocation="Stakes"
 		/>
 	</div>

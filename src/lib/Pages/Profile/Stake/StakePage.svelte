@@ -15,8 +15,10 @@
 	import { onMount } from 'svelte';
 	import { retrieveData } from '$utils/dataStorage';
 	import { selectedWallet } from '$stores/user/wallets';
+	import { page } from '$app/stores';
 
 	let user: IUser;
+	let wallet: IWallet;
 
 	/**Object of all possible components for the stake detail column (the last column)*/
 	const lastCollumnContent = {
@@ -70,6 +72,8 @@
 
 	export let stakeArray: IStake[];
 
+	$: wallet = user?.wallets?.filter((wallet) => wallet.walletAddress === $page.params.address)[0];
+
 	onMount(() => {
 		// Retrieve the selected profile off the user
 		user = (retrieveData('user') as IUser) || {
@@ -93,12 +97,7 @@
 	</div>
 	<div class="global-grid-mid size-full">
 		{#if stakeArray}
-			<StakesFromWallet
-				on:stakeSelect={stakeSelect}
-				on:addStake={addStake}
-				wallet={$selectedWallet}
-				{stakeArray}
-			/>
+			<StakesFromWallet on:stakeSelect={stakeSelect} on:addStake={addStake} {wallet} {stakeArray} />
 		{/if}
 	</div>
 	<div class="global-grid-right">

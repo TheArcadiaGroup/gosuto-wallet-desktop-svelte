@@ -12,6 +12,7 @@
 
 	let data: HistoryObject[] = [];
 	let user: IUser;
+	let wallet: IWallet;
 	$: walletAddress = $page.params.address;
 
 	let currentPage = 1;
@@ -31,7 +32,7 @@
 	});
 
 	const getData = async () => {
-		const wallet = user?.wallets?.filter((wallet) => wallet.walletAddress === walletAddress)[0];
+		wallet = user?.wallets?.filter((wallet) => wallet.walletAddress === walletAddress)[0];
 		if (wallet) {
 			const historyObj = await getSingleAccountHistory(
 				wallet.accountHash,
@@ -49,6 +50,10 @@
 		currentPage++;
 		getData();
 	}
+
+	function creditCardClicked() {
+		getData();
+	}
 </script>
 
 {#if data}
@@ -58,7 +63,7 @@
 		</div>
 		<div class="global-grid-left">
 			<div class="size-full">
-				<ProfileNavigation {user} />
+				<ProfileNavigation {user} on:cardClicked={creditCardClicked} />
 			</div>
 		</div>
 		<div class="global-grid-mid">
@@ -67,6 +72,7 @@
 				isInProfileRoute={true}
 				address={shortenAddress($page.params.address)}
 				on:showMoreClicked={showMoreItems}
+				walletName={wallet?.walletName || 'Unknown'}
 			/>
 		</div>
 	</div>
