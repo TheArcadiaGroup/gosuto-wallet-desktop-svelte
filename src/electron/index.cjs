@@ -45,7 +45,7 @@ const createWindow = () => {
 			// devTools: true,
 			preload: path.join(__dirname, 'preload/index.cjs'),
 		},
-		icon: path.join('../static/favicon.png'),
+		icon: path.join(__dirname, 'logo.icns'),
 	});
 
 	mainWindow.once('ready-to-show', () => {
