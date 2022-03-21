@@ -90,12 +90,9 @@
 		<Navbar />
 	</div>
 	<div class="global-grid-left">
-		<div class="size-full">
-			<!-- feed the user profile data to ProfileNavigation component -->
-			<ProfileNavigation {user} />
-		</div>
+		<ProfileNavigation {user} />
 	</div>
-	<div class="global-grid-mid size-full">
+	<div class="global-grid-mid">
 		{#if stakeArray}
 			<StakesFromWallet on:stakeSelect={stakeSelect} on:addStake={addStake} {wallet} {stakeArray} />
 		{/if}

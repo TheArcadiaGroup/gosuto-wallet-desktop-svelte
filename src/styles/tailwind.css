@@ -39,6 +39,7 @@
 .global-grid-left {
 	@apply min-w-[16rem] max-w-[18.75rem] max-h-screen flex-1;
 	@apply overflow-y-auto;
+	@apply dark:border-0;
 }
 
 .global-grid-mid {
