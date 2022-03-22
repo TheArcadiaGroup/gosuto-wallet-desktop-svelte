@@ -1,14 +1,60 @@
 {
 	"appId": "com.gosuto.app",
-	"productName": "Gosuto Wallet",
+	"productName": "Gosuto",
 	"directories": {
 		"output": "dist"
 	},
 	"files": [
-		"src/electron/index.cjs",
+		"src/electron/**/*",
 		{
 			"from": "build",
 			"to": ""
 		}
-	]
+	],
+	"mac": {
+		"icon": "./static/images/logo.icns",
+		"target": ["default"],
+		"type": "distribution",
+		"hardenedRuntime": true,
+		"entitlements": "build_assets/entitlements.mac.plist",
+		"entitlementsInherit": "build_assets/entitlements.mac.plist",
+		"gatekeeperAssess": false
+	},
+	"dmg": {
+		"contents": [
+			{
+				"x": 130,
+				"y": 220
+			},
+			{
+				"x": 410,
+				"y": 220,
+				"type": "link",
+				"path": "/Applications"
+			}
+		]
+	},
+	"win": {
+		"target": ["nsis"],
+		"icon": "./static/images/png/logo.png"
+	},
+	"linux": {
+		"target": ["AppImage"],
+		"category": "Development",
+		"icon": "./static/images/png/logo.png"
+	},
+	"protocols": {
+		"name": "gosuto-protocol",
+		"schemes": ["gosuto"]
+	},
+	"publish": {
+		"provider": "github",
+		"private": true,
+		"owner": "TheArcadiaGroup",
+		"repo": "gosuto-wallet-desktop-svelte",
+		"token": "GITHUB_TOKEN_HERE",
+		"vPrefixedTagName": true,
+		"publishAutoUpdate": true,
+		"releaseType": "draft"
+	}
 }

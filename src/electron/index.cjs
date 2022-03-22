@@ -19,8 +19,8 @@ let mainWindow;
 
 const createWindow = () => {
 	let windowState = new windowStateManager({
-		defaultWidth: 1024,
-		defaultHeight: 800,
+		defaultWidth: 1300,
+		defaultHeight: 850,
 	});
 
 	mainWindow = new BrowserWindow({
@@ -29,8 +29,8 @@ const createWindow = () => {
 			y: 32,
 		},
 		backgroundColor: 'whitesmoke',
-		minWidth: 1024,
-		minHeight: 800,
+		minWidth: 1300,
+		minHeight: 850,
 		width: windowState.width,
 		height: windowState.height,
 		x: windowState.x,
@@ -42,9 +42,10 @@ const createWindow = () => {
 			nodeIntegration: true,
 			spellcheck: false,
 			devTools: dev,
+			// devTools: true,
 			preload: path.join(__dirname, 'preload/index.cjs'),
 		},
-		icon: path.join('../static/favicon.png'),
+		icon: path.join(__dirname, 'logo.icns'),
 	});
 
 	mainWindow.once('ready-to-show', () => {
@@ -89,7 +90,8 @@ const createMainWindow = () => {
 	if (dev) loadVite(port);
 	else serveURL(mainWindow);
 
-	if (dev) mainWindow.openDevTools();
+	// mainWindow.openDevTools();
+	// if (dev) mainWindow.openDevTools();
 };
 
 // This method will be called when Electron has finished

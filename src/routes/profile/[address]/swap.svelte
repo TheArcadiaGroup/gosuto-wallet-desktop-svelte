@@ -1,14 +1,18 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	import Navbar from '$components/Navbar/Navbar.svelte';
-	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
+	import Navbar from '$lib/components/Navbar/Navbar.svelte';
+	import ProfileNavigation from '$lib/pages/Profile/ProfileNavigation.svelte';
 
-	import Swap from '$lib/Profile/Swap/index.svelte';
+	import Swap from '$lib/pages/Profile/Swap/index.svelte';
 
-	import TextSidebar from '$components/Profile/TextSidebar.svelte';
-	import SwapCurrency from '$lib/Profile/Swap/Forms/SwapCurrency.svelte';
-	import CreateToken from '$lib/Profile/CreateToken/CreateToken.svelte';
+	import TextSidebar from '$lib/components/TextSidebar.svelte';
+	import SwapCurrency from '$lib/pages/Profile/Swap/Forms/SwapCurrency.svelte';
+	import CreateToken from '$lib/pages/Profile/CreateToken/CreateToken.svelte';
+	import { retrieveData } from '$utils/dataStorage';
+	import { selectedWallet } from '$stores/user/wallets';
+
+	import { page } from '$app/stores';
 
 	let tokens: IToken[] = [];
 
@@ -18,6 +22,9 @@
 	 * -2 = create token
 	 */
 	let selected = -1;
+	let user: IUser;
+
+	$: wallet = user?.wallets?.filter((wallet) => wallet.walletAddress === $page.params.address)[0];
 
 	function selectToken(e: { detail: { id: number } }): void {
 		selected = e.detail.id;
@@ -27,27 +34,15 @@
 		// not an error, this makes my IDE shut up
 		// @ts-ignore
 		tokens = await (await fetch('/api/tokens/1')).json();
-	});
 
-	// dev
-	const user = {
-		name: 'Jake Waterson',
-		ppurl: 'https://miro.medium.com/fit/c/262/262/2*-cdwKPXyVI0ejgxpWkKBeA.jpeg',
-		wallets: [
-			{
-				name: 'Wallet 1',
-				available: 5000,
-				staked: 2500,
-				unclaimed: 375,
-			},
-			{
-				name: 'Wallet 1',
-				available: 5000,
-				staked: 2500,
-				unclaimed: 375,
-			},
-		],
-	};
+		// Retrieve the selected profile off the user
+		user = (retrieveData('user') as IUser) || {
+			name: 'Unknown User',
+			avatar: '',
+			email: '',
+			wallets: (retrieveData('wallets') as IWallet[]) || [],
+		};
+	});
 </script>
 
 <div class="swap-page-container">
@@ -58,7 +53,7 @@
 		<ProfileNavigation {user} />
 	</div>
 	<div class="global-grid-mid">
-		<Swap on:selectToken={selectToken} bind:tokens bind:selected />
+		<Swap on:selectToken={selectToken} bind:tokens bind:selected {wallet} />
 	</div>
 	<div class="global-grid-right swap-sidebar">
 		{#if selected === -2}
@@ -78,6 +73,6 @@
 
 	.swap-sidebar {
 		@apply h-full w-full;
-		@apply lg:h-screen;
+		@apply md:h-screen;
 	}
 </style>

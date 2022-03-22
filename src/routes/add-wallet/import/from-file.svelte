@@ -1,80 +1,193 @@
 <script lang="ts">
-	import Button from '$lib/Common/Button.svelte';
-	import TextInput from '$lib/Common/TextInput.svelte';
+	import Button from '$lib/components/Button.svelte';
+	import LockIcon from '$icons/LockIcon.svelte';
+	import EyeIcon from '$icons/EyeIcon.svelte';
 
 	import GosutoLogoAndText from '$icons/GosutoLogoAndText.svelte';
 
-	import ImportPrivateKey from '$lib/AddWalletComponent/ImportFromFile/ImportPrivateKey.svelte';
+	import ImportPrivateKey from '$lib/pages/AddWallet/ImportFromFile/ImportPrivateKey.svelte';
 
 	import { goto } from '$app/navigation';
 	import type { JSONString } from '@sveltejs/kit/types/helper';
+	import { retrieveData, saveData } from '$utils/dataStorage';
+	import { onMount } from 'svelte';
+	import { walletNameIsValid } from '$utils/profiles';
 
 	let walletName: string;
+	let password: string;
+	let confirmPassword: string;
+	let accountHash: string;
+	let accountHex: string;
+	let privateKey: string;
+	let walletValid = true;
+	let certificateIsInvalid = false;
 
-	/** function for opening the file and getting data private key or json data
-		| to be implemented*/
-	let openFile = () => {
-		let jsonWallet = {
-			address: (Math.random() + 1).toString(36).substring(7),
-			id: '',
-			version: '',
-			Crypto: {
-				cipher: '',
-				cipherparams: {
-					iv: '',
-				},
-				ciphertext: '',
-				kdf: '',
-				kdfparams: {
-					salt: '',
-					n: '',
-					dklen: '',
-					p: '',
-					r: '',
-				},
-				mac: '',
-			},
-		};
+	let passwordInput: HTMLInputElement;
+	let confirmPasswordInput: HTMLInputElement;
 
-		let address = jsonWallet.address;
-		let privateKey = 'e308a23beba3be185e707effd05dde3445a3f9ad30a350b703631bb9a79eaf2b';
+	/**
+	 * @function
+	 * A function to toggle whether is password in the input field is visible or hidden
+	 */
+	const togglePasswordVisibility = (inputElement: HTMLInputElement) => {
+		if (inputElement.type === 'text') {
+			inputElement.type = 'password';
+		} else {
+			inputElement.type = 'text';
+		}
+	};
 
-		postData({ walletName, walletAdress: address });
+	/** function for opening the file and getting data private key or json data */
+	const selectFile = () => {
+		window.api.send('importWalletFromFile', '');
 	};
 
 	/** Sends wallet creation data to api route to create a wallet */
-	const postData = async (object: { walletName: string; walletAdress: string }) => {
-		let profiles: JSONString[] | null[] = [];
+	const postData = async () => {
+		let wallets: IWallet[] = retrieveData('wallets') || [];
 
-		fetch('/api/create-wallet/file', {
-			method: 'POST',
-			body: JSON.stringify(object),
-		})
-			.then((response) => response.json())
-			.then((response) => {
-				profiles.push(response);
-				profiles = profiles.concat(JSON.parse(localStorage.getItem('profiles') || '[]'));
-				localStorage.setItem('profiles', JSON.stringify(profiles));
-			})
-			.then(() => goto('/profile'))
-			.catch((error) => {
-				console.error('error:', error);
-			});
+		wallets.push({
+			walletName: walletName.trim(),
+			walletPassword: password.trim(),
+			walletImage: '',
+			seedPhrase: [],
+			availableBalanceUSD: 0.0,
+			stakedBalance: 0.0,
+			unclaimedRewards: 0.0,
+			walletTokens: [],
+			walletStakes: [],
+			walletHistory: [],
+			walletAddress: accountHex.trim(),
+			accountHash: accountHash.trim(),
+			privateKey: privateKey.trim(),
+		});
+
+		saveData('wallets', JSON.stringify(wallets));
+		goto(`/profile/${accountHex.trim()}`);
 	};
+
+	onMount(() => {
+		window.api.receive(
+			'importWalletFromFileResponse',
+			(data: { accountHex: string; accountHash: string; privateKey: string } | null) => {
+				try {
+					if (data?.accountHex && data?.accountHash && data?.privateKey) {
+						const walletCreationResult = data;
+
+						certificateIsInvalid = false;
+						accountHex = walletCreationResult['accountHex'];
+						accountHash = walletCreationResult['accountHash'];
+						privateKey = walletCreationResult['privateKey'];
+
+						console.log(walletCreationResult);
+					} else {
+						certificateIsInvalid = true;
+					}
+				} catch (error) {
+					console.log(error);
+				}
+			},
+		);
+	});
 </script>
 
 <div class="fileImport-wrapper">
 	<div class="fileImport-content">
 		<GosutoLogoAndText class="gosuto-logo" />
 		<h1 class="fileImport-header">Import From File</h1>
+
 		<div class="fileImport-input-wrapper">
-			<TextInput label={'Wallet Name'} bind:value={walletName} />
+			<label class="fileImport-label" for="name">Wallet Name</label>
+
+			<input
+				name="name"
+				id="name"
+				type="text"
+				class="fileImport-details-input"
+				bind:value={walletName}
+				on:input={() => {
+					walletValid = walletNameIsValid(walletName);
+				}}
+			/>
 		</div>
-		<ImportPrivateKey />
+
+		<div class="error-div">
+			{#if !walletValid}
+				Wallet Name Already Exists
+			{/if}
+		</div>
+
+		<div class="fileImport-input-wrapper">
+			<label class="fileImport-label" for="name">New Password</label>
+			<div class="fileImport-password-input-wrapper">
+				<span class="w-6 h-6">
+					<LockIcon />
+				</span>
+				<input
+					name="password"
+					id="password"
+					type="password"
+					placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;"
+					class="fileImport-details-input"
+					bind:value={password}
+					bind:this={passwordInput}
+				/>
+				<button type="button" on:click={() => togglePasswordVisibility(passwordInput)}>
+					<span class="w-6 h-6">
+						<EyeIcon />
+					</span>
+				</button>
+			</div>
+		</div>
+
+		<div class="fileImport-input-wrapper">
+			<label class="fileImport-label" for="name">Confirm Password</label>
+			<div class="fileImport-password-input-wrapper">
+				<span class="w-6 h-6">
+					<LockIcon />
+				</span>
+				<input
+					name="confirm-password"
+					id="confirm-password"
+					type="password"
+					placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;"
+					class="fileImport-details-input"
+					bind:value={confirmPassword}
+					bind:this={confirmPasswordInput}
+				/>
+				<button type="button" on:click={() => togglePasswordVisibility(confirmPasswordInput)}>
+					<span class="w-6 h-6">
+						<EyeIcon />
+					</span>
+				</button>
+			</div>
+		</div>
+		<div class="error-div">
+			{#if confirmPassword !== password && password && confirmPassword}
+				Passwords do not match.
+			{/if}
+		</div>
+
+		<ImportPrivateKey on:click={selectFile} />
+		<div class="error-div pt-6 text-center leading-5">
+			{#if certificateIsInvalid}
+				Error, the app only supports private keys encrypted using the ED25519 Algorithm
+			{/if}
+		</div>
 	</div>
 	<div class="fileImport-buttons">
 		<div class="fileImport-bt next-bt">
-			<Button on:click={openFile}>
+			<Button
+				isDisabled={!walletValid ||
+					!confirmPassword ||
+					!password ||
+					confirmPassword !== password ||
+					!walletName ||
+					!accountHash ||
+					!accountHex ||
+					!privateKey}
+				on:click={() => postData()}
+			>
 				<span slot="text" class="fileImport-bt-text">Import</span>
 			</Button>
 		</div>
@@ -109,10 +222,10 @@
 		@apply text-dark-gray dark:text-white;
 	}
 
-	.fileImport-input-wrapper {
+	/* .fileImport-input-wrapper {
 		@apply mt-5 4xl:mt-10 mb-10 4xl:mb-20;
 		@apply w-5/6;
-	}
+	} */
 
 	.fileImport-buttons {
 		@apply flex flex-col items-center justify-items-end;
@@ -140,5 +253,29 @@
 
 	.fileImport-cancel-bt-text {
 		@apply text-dark-gray dark:text-white;
+	}
+
+	.fileImport-form-inputs {
+		@apply flex flex-col md:flex-row gap-y-8 gap-x-16;
+	}
+
+	.fileImport-input-wrapper {
+		@apply relative items-center w-96  border border-black border-opacity-10 dark:border-white dark:border-opacity-40 rounded-2xl h-16 flex mt-3 mb-4;
+	}
+
+	.fileImport-label {
+		@apply absolute -top-2 left-5 -mt-px inline-block px-1 text-xs font-medium text-light-grey bg-white dark:text-white dark:bg-dark-background;
+	}
+
+	.fileImport-details-input {
+		@apply w-full h-full bg-transparent px-7 py-3 border-0 resize-none focus:ring-0 sm:text-sm text-opacity-40 text-black dark:text-white;
+	}
+
+	.fileImport-password-input-wrapper {
+		@apply w-full flex items-center px-5 text-opacity-40 text-black dark:text-white dark:text-opacity-40 h-14;
+	}
+
+	.error-div {
+		@apply text-left text-xs text-red-300 -mt-2 mb-5 flex w-96 px-2;
 	}
 </style>

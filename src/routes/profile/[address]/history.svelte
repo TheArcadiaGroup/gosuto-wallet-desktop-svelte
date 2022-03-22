@@ -1,61 +1,61 @@
-<script context="module">
-	export const load = async ({ _, page }) => {
-		const address = page.params.address;
-		return {
-			props: {
-				address,
-			},
-		};
-	};
-</script>
-
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	import GridLayout from '$lib/Common/GridLayout.svelte';
-	import HistoryPage from '$lib/components/HistoryPage.svelte';
-	import ProfileNavigation from '$lib/Profile/ProfileNavigation.svelte';
+	import HistoryPage from '$lib/pages/History/HistoryPage.svelte';
+	import ProfileNavigation from '$lib/pages/Profile/ProfileNavigation.svelte';
+	import Navbar from '$lib/components/Navbar/Navbar.svelte';
+	import Sidebar from '$lib/pages/History/HistoryComponent/Sidebar.svelte';
 
 	import { shortenAddress } from '$utils';
-	import Navbar from '$lib/components/Navbar/Navbar.svelte';
+	import { page } from '$app/stores';
+	import { retrieveData } from '$utils/dataStorage';
+	import { getSingleAccountHistory } from '$utils/getHistory';
+	import { sidebarContent } from '$stores/HistoryStore';
 
-	let data: HistoryObject[];
-	export let address: string;
+	let data: HistoryObject[] = [];
+	let user: IUser;
+	let wallet: IWallet;
+	$: walletAddress = $page.params.address;
+
+	let currentPage = 1;
+	let itemsPerPage = 10;
 
 	onMount(() => {
-		getData(address);
+		// Retrieve the selected profile off the user
+		user = (retrieveData('user') as IUser) || {
+			name: 'Unknown User',
+			avatar: '',
+			email: '',
+			wallets: (retrieveData('wallets') as IWallet[]) || [],
+		};
+
+		// Can only be called once the user has been set
+		getData();
 	});
 
-	const getData = async (address: string) => {
-		fetch(`/api/profile/[address]/history`, { method: 'POST', body: address })
-			.then((response) => response.json())
-			.then((response) => (data = response))
-			.catch((error) => {
-				console.error('error:', error);
-			});
+	const getData = async () => {
+		wallet = user?.wallets?.filter((wallet) => wallet.walletAddress === walletAddress)[0];
+		if (wallet) {
+			const historyObj = await getSingleAccountHistory(
+				wallet.accountHash,
+				currentPage,
+				itemsPerPage,
+			);
+			data = [...data, historyObj.data];
+		} else {
+			// Better UI Based Error Needed
+			throw Error('Wallet Not Loaded');
+		}
 	};
 
-	// DEV
-	const user = {
-		name: 'Jake Waterson',
-		ppurl: 'https://miro.medium.com/fit/c/262/262/2*-cdwKPXyVI0ejgxpWkKBeA.jpeg',
-		wallets: [
-			{
-				name: 'Wallet 1',
-				avalible: 5000,
-				staked: 2500,
-				unclaimed: 375,
-				address: '0xhoiqhgovbnovlwggwrg',
-			},
-			{
-				name: 'Wallet 2',
-				avalible: 5000,
-				staked: 2500,
-				unclaimed: 375,
-				address: '0x567hfgdhjestth53y35y',
-			},
-		],
-	};
+	function showMoreItems() {
+		currentPage++;
+		getData();
+	}
+
+	function creditCardClicked() {
+		getData();
+	}
 </script>
 
 {#if data}
@@ -64,12 +64,19 @@
 			<Navbar />
 		</div>
 		<div class="global-grid-left">
-			<div class="size-full">
-				<ProfileNavigation {user} />
-			</div>
+			<ProfileNavigation {user} on:cardClicked={creditCardClicked} />
 		</div>
 		<div class="global-grid-mid">
-			<HistoryPage historyArray={data} isInProfileRoute={true} address={shortenAddress(address)} />
+			<HistoryPage
+				{data}
+				isInProfileRoute={true}
+				address={shortenAddress($page.params.address)}
+				on:showMoreClicked={showMoreItems}
+				walletName={wallet?.walletName || 'Unknown'}
+			/>
+		</div>
+		<div class="global-grid-right">
+			<Sidebar historyObject={$sidebarContent} />
 		</div>
 	</div>
 {/if}

@@ -39,16 +39,18 @@
 .global-grid-left {
 	@apply min-w-[16rem] max-w-[18.75rem] max-h-screen flex-1;
 	@apply overflow-y-auto;
-	@apply dark:border-l dark:border-r dark:border-dark-background;
+	@apply dark:border-0;
 }
 
 .global-grid-mid {
 	@apply w-full max-h-screen flex-[3];
 	@apply overflow-y-auto;
+	@apply dark:border-0;
 }
 
 .global-grid-right {
 	@apply min-w-[16rem] max-w-[21.875rem] max-h-screen flex-1;
 	@apply overflow-y-auto;
-	@apply dark:border-l dark:border-dark-background;
+	@apply dark:bg-dark-blue;
+	@apply dark:border-0;
 }
