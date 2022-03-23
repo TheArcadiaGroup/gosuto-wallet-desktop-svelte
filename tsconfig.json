@@ -45,13 +45,6 @@
 			"$constants/*": ["./src/constants/*"]
 		}
 	},
-	"include": [
-		"src/**/*.d.ts",
-		"src/**/*.js",
-		"src/**/*.ts",
-		"src/**/*.svelte",
-		"src/electron/index.cjs",
-		"src/electron/preload/index.cjs",
-		"src/electron/utils/walletImportExports.cjs"
-	]
+	"include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.ts", "src/**/*.svelte"],
+	"exclude": ["src/electron/**/*.cjs"]
 }

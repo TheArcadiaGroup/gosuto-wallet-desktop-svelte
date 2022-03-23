@@ -15,7 +15,6 @@
 	import { sidebarContent } from '$stores/HistoryStore';
 
 	export let data: GetHistoryResponse[];
-	export let hideNavbar: boolean = true;
 	export let isInProfileRoute: boolean = false;
 	export let address: string;
 	export let walletName: string;

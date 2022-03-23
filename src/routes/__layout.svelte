@@ -5,7 +5,7 @@
 
 	import { initializeTheme } from '$utils/themeSettings';
 
-	onMount(() => {
+	onMount(async () => {
 		initializeTheme();
 	});
 </script>

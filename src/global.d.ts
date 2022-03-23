@@ -53,7 +53,7 @@ interface ChartPrice {
 
 interface HistoryObject {
 	wallet: string;
-	status: string;
+	status: 'Received' | 'Sent' | 'Stake' | 'Swap' | 'All' | string;
 	dateAndTime: string;
 	amount: number;
 	price: number;
@@ -185,10 +185,12 @@ type MainSendChannels =
 	| 'createWalletFromFile'
 	| 'generateMnemonics'
 	| 'importWalletFromFile'
-	| 'getHistory';
+	| 'getHistory'
+	| 'currentPriceInUsd';
 type MainReceiveChannels =
 	| 'createWalletFromFileResponse'
 	| 'createWalletFromMnemonicsResponse'
 	| 'generateMnemonicsResponse'
 	| 'importWalletFromFileResponse'
-	| 'getHistoryResponse';
+	| 'getHistoryResponse'
+	| 'currentPriceInUsdResponse';

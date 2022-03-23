@@ -5,6 +5,7 @@ const { Keys } = require('casper-js-sdk');
 const profileHistory = require('../utils/profileHistory.cjs');
 const { importWalletFromFile } = require('../utils/walletImportExports.cjs');
 const sendMessage = require('./sendMessage.cjs');
+const { csprUsdPrice } = require('../utils/priceData.cjs');
 
 /**
  * Receiving messages from Renderer
@@ -54,6 +55,20 @@ module.exports = () => {
 	ipcMain.on('importWalletFromFile', async (_event, data) => {
 		const res = await importWalletFromFile();
 		sendMessage('importWalletFromFileResponse', res);
+	});
+
+	ipcMain.on('currentPriceInUsd', async (_event, data) => {
+		switch (data) {
+			case 'CSPR':
+				await csprUsdPrice();
+				break;
+
+			// Other tokens here
+
+			default:
+				await csprUsdPrice();
+				break;
+		}
 	});
 
 	// Send Transaction
