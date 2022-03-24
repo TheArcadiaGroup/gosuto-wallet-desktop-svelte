@@ -3,25 +3,12 @@
 
 	import ProfileNavigation from '$lib/pages/Profile/ProfileNavigation.svelte';
 	import Settings from '$lib/pages/Profile/WalletSettings/index.svelte';
-	import { selectedWallet } from '$stores/user/wallets';
-	import { retrieveData } from '$utils/dataStorage';
+	import pollyfillData from '$utils/pollyfillData';
 	import { onMount } from 'svelte';
-
-	let user: IUser;
 
 	onMount(() => {
 		// Retrieve the selected profile off the user
-		user = (retrieveData('user') as IUser) || {
-			name: 'Unknown User',
-			avatar: '',
-			email: '',
-			wallets: (retrieveData('wallets') as IWallet[]) || [],
-		};
-		if ($selectedWallet) {
-			user.wallets = [$selectedWallet];
-		} else {
-			user.wallets = [user.wallets[0]];
-		}
+		pollyfillData();
 	});
 </script>
 
@@ -30,7 +17,7 @@
 		<Navbar />
 	</div>
 	<div class="global-grid-left">
-		<ProfileNavigation {user} />
+		<ProfileNavigation />
 	</div>
 	<div class="global-grid-mid">
 		<Settings />
@@ -38,9 +25,9 @@
 </div>
 
 <style lang="postcss" global>
-	:local(.size-full) {
+	/* :local(.size-full) {
 		@apply w-full h-full;
-	}
+	} */
 
 	:local(.global-grid-mid) {
 		@apply w-full max-h-screen flex-[4];

@@ -1,9 +1,20 @@
 <script>
 	import { goto } from '$app/navigation';
-
 	import Button from '$lib/components/Button.svelte';
-
+	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
+	import pollyfillData from '$utils/pollyfillData';
+	import { user } from '$stores/user';
+	import { selectedWallet, wallets } from '$stores/user/wallets';
+
+	// Initialize user object if it does not exist
+	onMount(() => {
+		pollyfillData();
+
+		if ($user || $wallets || $selectedWallet) {
+			goto(`/profile`);
+		}
+	});
 </script>
 
 <div class="onboarding-page-wrapper" in:fade>

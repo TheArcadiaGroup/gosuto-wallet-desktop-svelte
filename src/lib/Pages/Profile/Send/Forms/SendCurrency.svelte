@@ -157,7 +157,7 @@
 
 	:local(.currency-money-amount) {
 		@apply flex;
-		@apply ml-8 mt-5;
+		@apply ml-4;
 		@apply font-medium text-sm text-light-grey;
 		@apply dark:text-white;
 	}

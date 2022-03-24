@@ -11,12 +11,10 @@
 
 	import { goto } from '$app/navigation';
 	import { navItems } from '$stores/NavbarActive';
-	import { retrieveData } from '$utils/dataStorage';
+	import { selectedWallet } from '$stores/user/wallets';
 
 	/** An array representing the values of navItems */
 	let navItemsValues: NavIcon[];
-
-	let selectedProfile = retrieveData('selectedProfile');
 
 	navItems.subscribe((value) => {
 		navItemsValues = value;
@@ -41,7 +39,8 @@
 		>
 		<NavItem
 			navItem={navItemsValues[2]}
-			on:click={() => activateItem(navItemsValues[2], `/profile/${selectedProfile}/history`)}
+			on:click={() =>
+				activateItem(navItemsValues[2], `/profile/${$selectedWallet?.walletAddress}/history`)}
 			><div class="navbar-avatar-img" /></NavItem
 		>
 		<NavItem

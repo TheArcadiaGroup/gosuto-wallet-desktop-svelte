@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 
 	import ReturnHome from '$lib/components/ReturnHome.svelte';
 	import Button from '$lib/components/Button.svelte';
@@ -8,10 +8,10 @@
 
 	import { page } from '$app/stores';
 	import { shortenAddress } from '$utils';
+	import { selectedWallet } from '$stores/user/wallets';
+	import pollyfillData from '$utils/pollyfillData';
 
 	export let tokens: IToken[] = [];
-
-	export let wallet: IWallet;
 
 	/**
 	 * This is the currently selected index of TokenCards.
@@ -54,13 +54,19 @@
 				id: -1,
 			});
 	}
+
+	onMount(() => {
+		if (!$selectedWallet) {
+			pollyfillData();
+		}
+	});
 </script>
 
 <svelte:body on:click={cancelButtonListener} />
 
 <div class="wallet-swap" on:click={deselectListener}>
 	<ReturnHome
-		walletName={wallet?.walletName || 'Unknown'}
+		walletName={$selectedWallet?.walletName || "Unknown's Wallet"}
 		publicKey={shortenAddress($page.params.address)}
 		profileLocation="Swap"
 	/>

@@ -10,6 +10,7 @@
 	export let label: string = 'Input Your Text';
 	export let value: string | number = '';
 	export let type: 'text' | 'password' | 'number' | 'email' = 'text';
+	export let isDisabled = false;
 
 	const dispatch = createEventDispatcher();
 </script>
@@ -17,22 +18,46 @@
 {#if type === 'password'}
 	<div class="input-holder">
 		<p class={$$props.class}>{label}</p>
-		<input class={$$props.class} bind:value type="password" on:input={() => dispatch('input')} />
+		<input
+			disabled={isDisabled}
+			class={$$props.class}
+			bind:value
+			type="password"
+			on:input={() => dispatch('input')}
+		/>
 	</div>
 {:else if type === 'email'}
 	<div class="input-holder">
 		<p class={$$props.class}>{label}</p>
-		<input class={$$props.class} bind:value type="email" on:input={() => dispatch('input')} />
+		<input
+			disabled={isDisabled}
+			class={$$props.class}
+			bind:value
+			type="email"
+			on:input={() => dispatch('input')}
+		/>
 	</div>
 {:else if type === 'number'}
 	<div class="input-holder">
 		<p class={$$props.class}>{label}</p>
-		<input class={$$props.class} bind:value type="number" on:input={() => dispatch('input')} />
+		<input
+			disabled={isDisabled}
+			class={$$props.class}
+			bind:value
+			type="number"
+			on:input={() => dispatch('input')}
+		/>
 	</div>
 {:else}
 	<div class="input-holder">
 		<p class={$$props.class}>{label}</p>
-		<input class={$$props.class} bind:value type="text" on:input={() => dispatch('input')} />
+		<input
+			disabled={isDisabled}
+			class={$$props.class}
+			bind:value
+			type="text"
+			on:input={() => dispatch('input')}
+		/>
 	</div>
 {/if}
 

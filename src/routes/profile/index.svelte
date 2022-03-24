@@ -5,35 +5,13 @@
 
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import { retrieveData, saveData } from '$utils/dataStorage';
-	import { selectedWallet } from '$stores/user/wallets';
-	import { loadSelectedProfile } from '$utils/profiles';
-
-	let existingWallets: IWallet[] = retrieveData('wallets') || [];
-	let defaultWalletIndex: number = Number(retrieveData('defaultWalletIndex')) || 0;
+	import { saveData } from '$utils/dataStorage';
+	import { wallets } from '$stores/user/wallets';
+	import pollyfillData from '$utils/pollyfillData';
 
 	onMount(() => {
-		let selectedProfile = loadSelectedProfile();
-		// if (!selectedProfile) {
-		// 	saveData('defaultWalletIndex', '0');
-		// 	selectedWallet.set(null);
-		// 	goto('/add-wallet');
-		// } else {
-		// 	postData(selectedProfile);
-		// }
+		pollyfillData();
 	});
-
-	/** post selected profile data to that profile's api route */
-	const postData = async (object: IWallet) => {
-		fetch('/api/profile/' + object.walletAddress, {
-			method: 'POST',
-			body: JSON.stringify(object),
-		})
-			.then(() => goto(`/profile/${object.walletAddress}/history`))
-			.catch((error) => {
-				console.error('error:', error);
-			});
-	};
 </script>
 
 <div class="flex">
@@ -51,15 +29,14 @@
 				</div>
 			</div>
 			<div class="credit-card-wrapper">
-				{#each existingWallets as p, i}
+				{#each $wallets as wallet}
 					<div
 						class="single-card-wrap"
 						on:click={() => {
-							saveData('defaultWalletIndex', (i + 1).toString());
-							postData(p);
+							saveData('selectedProfile', JSON.stringify(wallet));
 						}}
 					>
-						<CreditCard name={p.walletName} wallet={p} />
+						<CreditCard name={wallet.walletName} {wallet} />
 					</div>
 				{/each}
 			</div>

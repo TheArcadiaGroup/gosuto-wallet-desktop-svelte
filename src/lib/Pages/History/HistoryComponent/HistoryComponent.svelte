@@ -51,8 +51,9 @@
 		class:clicked
 		on:click={select}
 		use:clickOutside
-		on:click_outside={handleClickOutside}
 	>
+		<!-- TODO: REWORK/IMPROVE THIS -->
+		<!-- on:click_outside={handleClickOutside} -->
 		<div class="left">
 			<div class="leftcontent">
 				<div>

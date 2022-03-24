@@ -103,8 +103,16 @@ interface IToken {
 	decimalsOfPrecision: number;
 }
 
+// TODO: RETHINK THE HISTORY OBJECT GIVEN THE DATA WE ARE GETTING BACK
 interface IHistory {
-	transactionType: 'send' | 'recieve' | 'stake' | 'initialStakeUnlock' | 'unstake' | 'claimReward';
+	transactionType:
+		| 'send'
+		| 'swap'
+		| 'recieve'
+		| 'stake'
+		| 'initialStakeUnlock'
+		| 'unstake'
+		| 'claimReward';
 	transactionInitiationDate: Date & { toDate: () => Date };
 	recipientWalletName: string;
 	recipientWalletAddress: string;
@@ -113,7 +121,7 @@ interface IHistory {
 	transactionUSDEquivalent: number;
 	transactionFee: number;
 	transactionHash: string;
-	stakedDate: Date & { toDate: () => Date };
+	transactionDate: Date & { toDate: () => Date };
 }
 
 interface IValidator {
@@ -146,7 +154,7 @@ interface IUser {
 	name: string;
 	email: string;
 	avatar: string;
-	wallets: IWallet[];
+	theme: string;
 }
 
 interface AppSettings {

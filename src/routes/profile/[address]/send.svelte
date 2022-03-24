@@ -8,15 +8,11 @@
 	import TextSidebar from '$lib/components/TextSidebar.svelte';
 	import SendCurrency from '$lib/pages/Profile/Send/Forms/SendCurrency.svelte';
 	import CreateToken from '$lib/pages/Profile/CreateToken/CreateToken.svelte';
-	import { retrieveData } from '$utils/dataStorage';
 	import { goto } from '$app/navigation';
-
-	import { page } from '$app/stores';
+	import { wallets } from '$stores/user/wallets';
+	import pollyfillData from '$utils/pollyfillData';
 
 	let tokens: IToken[] = [];
-	let user: IUser;
-
-	$: wallet = user?.wallets?.filter((wallet) => wallet.walletAddress === $page.params.address)[0];
 
 	/**
 	 * This is the currently selected index of TokenCards.
@@ -30,22 +26,12 @@
 	}
 
 	onMount(async () => {
-		console.log('Selected Send');
+		pollyfillData();
 		// not an error, this makes my IDE shut up
 		// @ts-ignore
 		tokens = await (await fetch('/api/tokens/1')).json();
 
-		// Retrieve the selected profile off the user
-		user = (retrieveData('user') as IUser) || {
-			name: 'Unknown User',
-			avatar: '',
-			email: '',
-			wallets: (retrieveData('wallets') as IWallet[]) || [],
-		};
-
-		console.log(user);
-
-		if (user.wallets.length <= 0) {
+		if ($wallets.length <= 0) {
 			goto('/add-wallet/create');
 		}
 	});
@@ -56,10 +42,10 @@
 		<Navbar />
 	</div>
 	<div class="global-grid-left">
-		<ProfileNavigation {user} />
+		<ProfileNavigation />
 	</div>
 	<div class="global-grid-mid">
-		<Send on:selectToken={selectToken} bind:tokens bind:selected {wallet} />
+		<Send on:selectToken={selectToken} bind:tokens bind:selected />
 	</div>
 	<div class="global-grid-right sidebar">
 		{#if selected === -2}

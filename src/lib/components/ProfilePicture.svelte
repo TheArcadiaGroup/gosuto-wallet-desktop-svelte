@@ -14,6 +14,7 @@
 <style lang="postcss" global>
 	:local(.profile-pic) {
 		background-image: var(--url);
-		@apply w-full h-full bg-cover dark:text-white border;
+		@apply w-full h-full bg-cover bg-center bg-no-repeat dark:text-white;
+		@apply bg-light-orangeShadeOne overflow-hidden;
 	}
 </style>

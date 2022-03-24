@@ -4,12 +4,18 @@ const serve = require('electron-serve');
 const windowStateManager = require('electron-win-state').default;
 const contextMenu = require('electron-context-menu');
 const loadEvents = require('./events/index.cjs');
+// const electronReload = require('electron-reload');
 
-try {
-	require('electron-reloader')(module);
-} catch (error) {
-	console.error(error);
-}
+// try {
+// 	require('electron-reloader')(module);
+// } catch (error) {
+// 	console.error('\n\nELECTRON RELOADER: ', error, '\n\n');
+// }
+
+// require('electron-reload')(path.join(__dirname, '../../'), {
+// 	electron: path.join(__dirname, '../../node_modules', '.bin', 'electron'),
+// 	appArgv: ['src/electron/index.cjs'],
+// });
 
 const dev = process.env.NODE_ENV === 'development' || !app.isPackaged;
 const port = process.env.PORT || 3000;
@@ -91,7 +97,7 @@ const createMainWindow = () => {
 	else serveURL(mainWindow);
 
 	// mainWindow.openDevTools();
-	// if (dev) mainWindow.openDevTools();
+	if (dev) mainWindow.openDevTools();
 };
 
 // This method will be called when Electron has finished
