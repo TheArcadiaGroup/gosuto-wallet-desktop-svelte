@@ -19,7 +19,8 @@
 		"package:always": "rm -rf dist && rm -rf release && cross-env NODE_ENV=production && npm run build:svelte && electron-builder -mwl --config build.config.json --publish always",
 		"package:never": "rm -rf dist && rm -rf release && cross-env NODE_ENV=production && npm run build:svelte && electron-builder -mwl --config build.config.json --publish never",
 		"start": "svelte-kit start",
-		"prepare": "husky install"
+		"prepare": "husky install",
+		"postinstall": "browserify src/utils/pollyfills.js > static/js/nodePackages.js"
 	},
 	"browserslist": [
 		"Chrome 89"
@@ -29,6 +30,7 @@
 		"@tailwindcss/forms": "^0.4.0",
 		"axios": "^0.26.0",
 		"bip39": "^3.0.4",
+		"browserify": "^17.0.0",
 		"casper-js-sdk": "^2.8.0",
 		"chart.js": "^3.7.0",
 		"chartjs": "^0.3.24",

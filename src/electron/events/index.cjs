@@ -6,6 +6,7 @@ const profileHistory = require('../utils/profileHistory.cjs');
 const { importWalletFromFile } = require('../utils/walletImportExports.cjs');
 const sendMessage = require('./sendMessage.cjs');
 const { csprUsdPrice } = require('../utils/priceData.cjs');
+const { getBalance } = require('../utils/account.cjs');
 
 /**
  * Receiving messages from Renderer
@@ -85,5 +86,41 @@ module.exports = () => {
 
 		// return this as an event to the renderer process
 		sendMessage('sendCSPRTokensResponse', '');
+	});
+
+	// token balance
+	ipcMain.on('accountTokenBalance', async (_event, data) => {
+		try {
+			const parsedData = JSON.parse(data); // {walletAddress: publicKey; token: 'CSPR', contractAddress: 'STRING'}
+			switch (parsedData.token) {
+				case 'CSPR':
+					sendMessage('accountTokenBalanceResponse', {
+						token: 'CSPR',
+						walletAddress: parsedData.walletAddress,
+						...(await getBalance(parsedData.walletAddress)),
+					});
+					break;
+
+				case 'TOKEN':
+					// pass in the token contract address and name of the token;
+					sendMessage('accountTokenBalanceResponse', {
+						token: 'TOKEN',
+						walletAddress: parsedData.walletAddress,
+						...(await getBalance(parsedData.walletAddress)),
+					});
+					break;
+
+				default:
+					sendMessage('accountTokenBalanceResponse', {
+						token: 'CSPR',
+						walletAddress: parsedData.walletAddress,
+						...(await getBalance(parsedData.walletAddress)),
+					});
+
+					break;
+			}
+		} catch (_err) {
+			console.log(_err);
+		}
 	});
 };

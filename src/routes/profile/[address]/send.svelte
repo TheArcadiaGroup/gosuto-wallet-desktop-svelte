@@ -10,9 +10,8 @@
 	import CreateToken from '$lib/pages/Profile/CreateToken/CreateToken.svelte';
 	import { goto } from '$app/navigation';
 	import { wallets } from '$stores/user/wallets';
+	import { tokens } from '$stores/user/tokens';
 	import pollyfillData from '$utils/pollyfillData';
-
-	let tokens: IToken[] = [];
 
 	/**
 	 * This is the currently selected index of TokenCards.
@@ -27,14 +26,13 @@
 
 	onMount(async () => {
 		pollyfillData();
-		// not an error, this makes my IDE shut up
-		// @ts-ignore
-		tokens = await (await fetch('/api/tokens/1')).json();
 
 		if ($wallets.length <= 0) {
-			goto('/add-wallet/create');
+			goto('/profile');
 		}
 	});
+
+	$: console.log($tokens);
 </script>
 
 <div class="page-container">
@@ -45,7 +43,7 @@
 		<ProfileNavigation />
 	</div>
 	<div class="global-grid-mid">
-		<Send on:selectToken={selectToken} bind:tokens bind:selected />
+		<Send on:selectToken={selectToken} bind:tokens={$tokens} bind:selected />
 	</div>
 	<div class="global-grid-right sidebar">
 		{#if selected === -2}

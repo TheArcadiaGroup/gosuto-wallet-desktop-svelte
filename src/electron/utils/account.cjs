@@ -6,6 +6,7 @@ const {
 	CLPublicKey,
 	DeployUtil,
 } = require('casper-js-sdk');
+const { csprUsdPrice } = require('./priceData.cjs');
 
 //Create Casper client and service to interact with Casper node.
 // const apiUrl = 'http://34.66.154.252:7777';
@@ -17,6 +18,7 @@ const casperClient = new CasperClient(apiUrl);
 module.exports = {
 	getBalance: async (publicKey) => {
 		try {
+			console.log(publicKey);
 			const latestBlock = await casperService.getLatestBlockInfo();
 			console.log('last block', latestBlock);
 			const root = await casperService.getStateRootHash(latestBlock.block.hash);
@@ -31,9 +33,23 @@ module.exports = {
 				latestBlock.block.header.state_root_hash,
 				balanceUref,
 			);
-			return balance.toString();
+
+			const currentPriceInUsd = await csprUsdPrice();
+
+			return {
+				balance: balance.toString(),
+				balanceInUsd: currentPriceInUsd * balance,
+				tokenPriceInUsd: currentPriceInUsd,
+			};
 		} catch (error) {
-			return error;
+			console.log(error);
+			const currentPriceInUsd = await csprUsdPrice();
+
+			return {
+				balance: 0,
+				balanceInUsd: 0,
+				tokenPriceInUsd: currentPriceInUsd,
+			};
 		}
 	},
 	sendTransaction: async ({ fromPublicKey, fromPrivateKey, toPublicKey, amount }) => {

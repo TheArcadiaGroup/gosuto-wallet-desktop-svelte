@@ -73,7 +73,7 @@
 <div class="main" class:centered={!isInProfileRoute}>
 	<div class="header">
 		{#if !isInProfileRoute}
-			<h3>{historyFilter} History</h3>
+			<h3 class="history-title">{historyFilter} History</h3>
 		{:else}
 			<ReturnHome {walletName} publicKey={shortenAddress(address)} profileLocation="History" />
 			<br />
@@ -140,5 +140,9 @@
 
 	:local(.header) {
 		@apply relative items-center justify-between md:flex-col md:items-start md:justify-start;
+	}
+
+	:local(.history-title) {
+		@apply capitalize;
 	}
 </style>

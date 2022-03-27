@@ -1,8 +1,40 @@
 import { user } from '$stores/user';
+import { tokens } from '$stores/user/tokens';
 import { selectedWallet, wallets } from '$stores/user/wallets';
 import { retrieveData, saveData } from '$utils/dataStorage';
 
 // IMPORTANT: If it becomes too expensive to fetch and save data, only save and fetch when the data has changed or was not previously present. (if statements)
+
+export const pollyFillTokens = () => {
+	// Get current cspr token price in usd
+	window.api.send('currentPriceInUsd', 'CSPR');
+	const selectedWallet = pollyfillSelectedProfile();
+
+	if (selectedWallet) {
+		let dbTokens: IToken[] = retrieveData('tokens') || [
+			{
+				tokenName: 'CSPR',
+				tokenTicker: 'CSPR',
+				tokenAmountHeld: 0,
+				tokenAmountHeldUSD: 0,
+				limitedSupply: false,
+				mintableSupply: false,
+				shareToken: true,
+				contractString: '',
+				contractAddress: '',
+				tokenPriceUSD: 0,
+				decimalsOfPrecision: 5,
+				walletAddress: selectedWallet?.walletAddress,
+			},
+		];
+
+		saveData('tokens', JSON.stringify(dbTokens));
+
+		tokens.set(dbTokens);
+	}
+
+	return tokens;
+};
 
 export const pollyFillUser = () => {
 	// Fetch data if need be here
@@ -53,4 +85,5 @@ export default () => {
 	pollyFillUser();
 	pollyFillWallets();
 	pollyfillSelectedProfile();
+	pollyFillTokens();
 };

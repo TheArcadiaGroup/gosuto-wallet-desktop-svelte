@@ -14,6 +14,7 @@ contextBridge.exposeInMainWorld('api', {
 			'getHistory',
 			'sendCSPRTokens',
 			'currentPriceInUsd',
+			'accountTokenBalance',
 		];
 		if (validChannels.includes(channel)) {
 			ipcRenderer.send(channel, data);
@@ -29,6 +30,7 @@ contextBridge.exposeInMainWorld('api', {
 			'getHistoryResponse',
 			'sendCSPRTokensResponse',
 			'currentPriceInUsdResponse',
+			'accountTokenBalanceResponse',
 		];
 		if (validChannels.includes(channel)) {
 			// Deliberately strip event as it includes `sender`
