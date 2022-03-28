@@ -2,143 +2,6 @@
 /// <reference types="svelte" />
 /// <reference types="vite/client" />
 
-import type {
-	EraSummary,
-	CasperServiceByJsonRPC,
-	BalanceServiceByJsonRPC,
-	DeployWatcher,
-	EventName,
-	EventStream,
-	parseEvent,
-	Contracts,
-	Keys,
-	Serialization,
-	DeployUtil,
-	Signer,
-	resultHelper,
-	CLType,
-	ToBytes,
-	CLValue,
-	CLValueParsers,
-	CLValueBytesParsers,
-	CLTypeBuilder,
-	CLValueBuilder,
-	CL_BYTE_ARRAY_MAX_LENGTH,
-	CLByteArrayType,
-	CLByteArrayBytesParser,
-	CLByteArray,
-	CLKeyType,
-	CLKeyBytesParser,
-	CLKey,
-	CLListType,
-	CLListBytesParser,
-	CLList,
-	CLMapType,
-	CLMapBytesParser,
-	CLMap,
-	CLI32Type,
-	CLI32BytesParser,
-	CLI32,
-	CLI64Type,
-	CLI64BytesParser,
-	CLI64,
-	CLU8Type,
-	CLU8BytesParser,
-	CLU8,
-	CLU32Type,
-	CLU32BytesParser,
-	CLU32,
-	CLU64Type,
-	CLU64BytesParser,
-	CLU64,
-	CLU128Type,
-	CLU128BytesParser,
-	CLU128,
-	CLU256Type,
-	CLU256BytesParser,
-	CLU256,
-	CLU512Type,
-	CLU512BytesParser,
-	CLU512,
-	CLPublicKeyTag,
-	CLPublicKeyType,
-	CLPublicKeyBytesParser,
-	CLPublicKey,
-	CLStringType,
-	CLStringBytesParser,
-	CLString,
-	CLTupleType,
-	CLTupleBytesParser,
-	CLTuple1Type,
-	CLTuple1,
-	CLTuple2Type,
-	CLTuple2,
-	CLTuple3Type,
-	CLTuple3,
-	AccessRights,
-	CLURefType,
-	CLURefBytesParser,
-	CLURef,
-	CLUnitType,
-	CLUnitBytesParser,
-	CLUnit,
-	CLAccountHashType,
-	CLAccountHashBytesParser,
-	CLAccountHash,
-	CLBoolType,
-	CLBoolBytesParser,
-	CLBool,
-	CLResultType,
-	CLResultBytesParser,
-	CLResult,
-	CLOptionType,
-	CLOptionBytesParser,
-	CLOption,
-	ACCOUNT_HASH_LENGTH,
-	CLErrorCodes,
-	KeyVariant,
-	CLTypeTag,
-	BOOL_ID,
-	KEY_ID,
-	PUBLIC_KEY_ID,
-	STRING_ID,
-	UREF_ID,
-	UNIT_ID,
-	I32_ID,
-	I64_ID,
-	U8_ID,
-	U32_ID,
-	U64_ID,
-	U128_ID,
-	U256_ID,
-	U512_ID,
-	BYTE_ARRAY_ID,
-	LIST_ID,
-	MAP_ID,
-	OPTION_ID,
-	RESULT_ID,
-	TUPLE1_ID,
-	TUPLE2_ID,
-	TUPLE3_ID,
-	ACCOUNT_HASH_ID,
-	TUPLE_MATCH_LEN_TO_ID,
-	matchTypeToCLType,
-	matchByteParserByCLType,
-	matchBytesToCLType,
-	padNum,
-	NamedArg,
-	RuntimeArgs,
-	CasperClient,
-	formatMessageWithHeaders,
-	signRawMessage,
-	signFormattedMessage,
-	verifyMessageSignature,
-	base64to16,
-	encodeBase16,
-	decodeBase16,
-	encodeBase64,
-	decodeBase64,
-} from 'casper-js-sdk';
 import CoinGecko from 'coingecko-api';
 
 type dataFunc = (data: string) => void;
@@ -149,146 +12,8 @@ declare global {
 			receive: (channel: MainReceiveChannels, dataFunc) => void;
 			send: (channel: MainSendChannels, data: string) => void;
 		};
-		CasperSDK: CasperSDKType;
+		// CasperSDK: CasperSDKType;
 		CoinGecko: typeof CoinGecko;
-	}
-
-	interface CasperSdkType {
-		EraSummary: EraSummary;
-		CasperServiceByJsonRPC: CasperServiceByJsonRPC;
-		BalanceServiceByJsonRPC: BalanceServiceByJsonRPC;
-		DeployWatcher: DeployWatcher;
-		EventName: EventName;
-		EventStream: EventStream;
-		parseEvent: parseEvent;
-		Contracts: Contracts;
-		Keys: Keys;
-		Serialization: Serialization;
-		DeployUtil: DeployUtil;
-		Signer: Signer;
-		resultHelper: resultHelper;
-		CLType: CLType;
-		ToBytes: ToBytes;
-		CLValue: CLValue;
-		CLValueParsers: CLValueParsers;
-		CLValueBytesParsers: CLValueBytesParsers;
-		CLTypeBuilder: CLTypeBuilder;
-		CLValueBuilder: CLValueBuilder;
-		CL_BYTE_ARRAY_MAX_LENGTH: CL_BYTE_ARRAY_MAX_LENGTH;
-		CLByteArrayType: CLByteArrayType;
-		CLByteArrayBytesParser: CLByteArrayBytesParser;
-		CLByteArray: CLByteArray;
-		CLKeyType: CLKeyType;
-		CLKeyBytesParser: CLKeyBytesParser;
-		CLKey: CLKey;
-		CLListType: CLListType;
-		CLListBytesParser: CLListBytesParser;
-		CLList: CLList;
-		CLMapType: CLMapType;
-		CLMapBytesParser: CLMapBytesParser;
-		CLMap: CLMap;
-		CLI32Type: CLI32Type;
-		CLI32BytesParser: CLI32BytesParser;
-		CLI32: CLI32;
-		CLI64Type: CLI64Type;
-		CLI64BytesParser: CLI64BytesParser;
-		CLI64: CLI64;
-		CLU8Type: CLU8Type;
-		CLU8BytesParser: CLU8BytesParser;
-		CLU8: CLU8;
-		CLU32Type: CLU32Type;
-		CLU32BytesParser: CLU32BytesParser;
-		CLU32: CLU32;
-		CLU64Type: CLU64Type;
-		CLU64BytesParser: CLU64BytesParser;
-		CLU64: CLU64;
-		CLU128Type: CLU128Type;
-		CLU128BytesParser: CLU128BytesParser;
-		CLU128: CLU128;
-		CLU256Type: CLU256Type;
-		CLU256BytesParser: CLU256BytesParser;
-		CLU256: CLU256;
-		CLU512Type: CLU512Type;
-		CLU512BytesParser: CLU512BytesParser;
-		CLU512: CLU512;
-		CLPublicKeyTag: CLPublicKeyTag;
-		CLPublicKeyType: CLPublicKeyType;
-		CLPublicKeyBytesParser: CLPublicKeyBytesParser;
-		CLPublicKey: CLPublicKey;
-		CLStringType: CLStringType;
-		CLStringBytesParser: CLStringBytesParser;
-		CLString: CLString;
-		CLTupleType: CLTupleType;
-		CLTupleBytesParser: CLTupleBytesParser;
-		CLTuple1Type: CLTuple1Type;
-		CLTuple1: CLTuple1;
-		CLTuple2Type: CLTuple2Type;
-		CLTuple2: CLTuple2;
-		CLTuple3Type: CLTuple3Type;
-		CLTuple3: CLTuple3;
-		AccessRights: AccessRights;
-		CLURefType: CLURefType;
-		CLURefBytesParser: CLURefBytesParser;
-		CLURef: CLURef;
-		CLUnitType: CLUnitType;
-		CLUnitBytesParser: CLUnitBytesParser;
-		CLUnit: CLUnit;
-		CLAccountHashType: CLAccountHashType;
-		CLAccountHashBytesParser: CLAccountHashBytesParser;
-		CLAccountHash: CLAccountHash;
-		CLBoolType: CLBoolType;
-		CLBoolBytesParser: CLBoolBytesParser;
-		CLBool: CLBool;
-		CLResultType: CLResultType;
-		CLResultBytesParser: CLResultBytesParser;
-		CLResult: CLResult;
-		CLOptionType: CLOptionType;
-		CLOptionBytesParser: CLOptionBytesParser;
-		CLOption: CLOption;
-		ACCOUNT_HASH_LENGTH: ACCOUNT_HASH_LENGTH;
-		CLErrorCodes: CLErrorCodes;
-		KeyVariant: KeyVariant;
-		CLTypeTag: CLTypeTag;
-		BOOL_ID: BOOL_ID;
-		KEY_ID: KEY_ID;
-		PUBLIC_KEY_ID: PUBLIC_KEY_ID;
-		STRING_ID: STRING_ID;
-		UREF_ID: UREF_ID;
-		UNIT_ID: UNIT_ID;
-		I32_ID: I32_ID;
-		I64_ID: I64_ID;
-		U8_ID: U8_ID;
-		U32_ID: U32_ID;
-		U64_ID: U64_ID;
-		U128_ID: U128_ID;
-		U256_ID: U256_ID;
-		U512_ID: U512_ID;
-		BYTE_ARRAY_ID: BYTE_ARRAY_ID;
-		LIST_ID: LIST_ID;
-		MAP_ID: MAP_ID;
-		OPTION_ID: OPTION_ID;
-		RESULT_ID: RESULT_ID;
-		TUPLE1_ID: TUPLE1_ID;
-		TUPLE2_ID: TUPLE2_ID;
-		TUPLE3_ID: TUPLE3_ID;
-		ACCOUNT_HASH_ID: ACCOUNT_HASH_ID;
-		TUPLE_MATCH_LEN_TO_ID: TUPLE_MATCH_LEN_TO_ID;
-		matchTypeToCLType: matchTypeToCLType;
-		matchByteParserByCLType: matchByteParserByCLType;
-		matchBytesToCLType: matchBytesToCLType;
-		padNum: padNum;
-		NamedArg: NamedArg;
-		RuntimeArgs: RuntimeArgs;
-		CasperClient: CasperClient;
-		formatMessageWithHeaders: formatMessageWithHeaders;
-		signRawMessage: signRawMessage;
-		signFormattedMessage: signFormattedMessage;
-		verifyMessageSignature: verifyMessageSignature;
-		base64to16: base64to16;
-		encodeBase16: encodeBase16;
-		decodeBase16: decodeBase16;
-		encodeBase64: encodeBase64;
-		decodeBase64: decodeBase64;
 	}
 
 	interface infoCategory {
@@ -488,3 +213,284 @@ declare global {
 }
 
 // declare
+
+// import type {
+// 	EraSummary,
+// 	CasperServiceByJsonRPC,
+// 	BalanceServiceByJsonRPC,
+// 	DeployWatcher,
+// 	EventName,
+// 	EventStream,
+// 	parseEvent,
+// 	Contracts,
+// 	Keys,
+// 	Serialization,
+// 	DeployUtil,
+// 	Signer,
+// 	resultHelper,
+// 	CLType,
+// 	ToBytes,
+// 	CLValue,
+// 	CLValueParsers,
+// 	CLValueBytesParsers,
+// 	CLTypeBuilder,
+// 	CLValueBuilder,
+// 	CL_BYTE_ARRAY_MAX_LENGTH,
+// 	CLByteArrayType,
+// 	CLByteArrayBytesParser,
+// 	CLByteArray,
+// 	CLKeyType,
+// 	CLKeyBytesParser,
+// 	CLKey,
+// 	CLListType,
+// 	CLListBytesParser,
+// 	CLList,
+// 	CLMapType,
+// 	CLMapBytesParser,
+// 	CLMap,
+// 	CLI32Type,
+// 	CLI32BytesParser,
+// 	CLI32,
+// 	CLI64Type,
+// 	CLI64BytesParser,
+// 	CLI64,
+// 	CLU8Type,
+// 	CLU8BytesParser,
+// 	CLU8,
+// 	CLU32Type,
+// 	CLU32BytesParser,
+// 	CLU32,
+// 	CLU64Type,
+// 	CLU64BytesParser,
+// 	CLU64,
+// 	CLU128Type,
+// 	CLU128BytesParser,
+// 	CLU128,
+// 	CLU256Type,
+// 	CLU256BytesParser,
+// 	CLU256,
+// 	CLU512Type,
+// 	CLU512BytesParser,
+// 	CLU512,
+// 	CLPublicKeyTag,
+// 	CLPublicKeyType,
+// 	CLPublicKeyBytesParser,
+// 	CLPublicKey,
+// 	CLStringType,
+// 	CLStringBytesParser,
+// 	CLString,
+// 	CLTupleType,
+// 	CLTupleBytesParser,
+// 	CLTuple1Type,
+// 	CLTuple1,
+// 	CLTuple2Type,
+// 	CLTuple2,
+// 	CLTuple3Type,
+// 	CLTuple3,
+// 	AccessRights,
+// 	CLURefType,
+// 	CLURefBytesParser,
+// 	CLURef,
+// 	CLUnitType,
+// 	CLUnitBytesParser,
+// 	CLUnit,
+// 	CLAccountHashType,
+// 	CLAccountHashBytesParser,
+// 	CLAccountHash,
+// 	CLBoolType,
+// 	CLBoolBytesParser,
+// 	CLBool,
+// 	CLResultType,
+// 	CLResultBytesParser,
+// 	CLResult,
+// 	CLOptionType,
+// 	CLOptionBytesParser,
+// 	CLOption,
+// 	ACCOUNT_HASH_LENGTH,
+// 	CLErrorCodes,
+// 	KeyVariant,
+// 	CLTypeTag,
+// 	BOOL_ID,
+// 	KEY_ID,
+// 	PUBLIC_KEY_ID,
+// 	STRING_ID,
+// 	UREF_ID,
+// 	UNIT_ID,
+// 	I32_ID,
+// 	I64_ID,
+// 	U8_ID,
+// 	U32_ID,
+// 	U64_ID,
+// 	U128_ID,
+// 	U256_ID,
+// 	U512_ID,
+// 	BYTE_ARRAY_ID,
+// 	LIST_ID,
+// 	MAP_ID,
+// 	OPTION_ID,
+// 	RESULT_ID,
+// 	TUPLE1_ID,
+// 	TUPLE2_ID,
+// 	TUPLE3_ID,
+// 	ACCOUNT_HASH_ID,
+// 	TUPLE_MATCH_LEN_TO_ID,
+// 	matchTypeToCLType,
+// 	matchByteParserByCLType,
+// 	matchBytesToCLType,
+// 	padNum,
+// 	NamedArg,
+// 	RuntimeArgs,
+// 	CasperClient,
+// 	formatMessageWithHeaders,
+// 	signRawMessage,
+// 	signFormattedMessage,
+// 	verifyMessageSignature,
+// 	base64to16,
+// 	encodeBase16,
+// 	decodeBase16,
+// 	encodeBase64,
+// 	decodeBase64,
+// } from 'casper-js-sdk';
+
+/*
+
+
+
+	interface CasperSdkType {
+		EraSummary: EraSummary;
+		CasperServiceByJsonRPC: CasperServiceByJsonRPC;
+		BalanceServiceByJsonRPC: BalanceServiceByJsonRPC;
+		DeployWatcher: DeployWatcher;
+		EventName: EventName;
+		EventStream: EventStream;
+		parseEvent: parseEvent;
+		Contracts: Contracts;
+		Keys: Keys;
+		Serialization: Serialization;
+		DeployUtil: DeployUtil;
+		Signer: Signer;
+		resultHelper: resultHelper;
+		CLType: CLType;
+		ToBytes: ToBytes;
+		CLValue: CLValue;
+		CLValueParsers: CLValueParsers;
+		CLValueBytesParsers: CLValueBytesParsers;
+		CLTypeBuilder: CLTypeBuilder;
+		CLValueBuilder: CLValueBuilder;
+		CL_BYTE_ARRAY_MAX_LENGTH: CL_BYTE_ARRAY_MAX_LENGTH;
+		CLByteArrayType: CLByteArrayType;
+		CLByteArrayBytesParser: CLByteArrayBytesParser;
+		CLByteArray: CLByteArray;
+		CLKeyType: CLKeyType;
+		CLKeyBytesParser: CLKeyBytesParser;
+		CLKey: CLKey;
+		CLListType: CLListType;
+		CLListBytesParser: CLListBytesParser;
+		CLList: CLList;
+		CLMapType: CLMapType;
+		CLMapBytesParser: CLMapBytesParser;
+		CLMap: CLMap;
+		CLI32Type: CLI32Type;
+		CLI32BytesParser: CLI32BytesParser;
+		CLI32: CLI32;
+		CLI64Type: CLI64Type;
+		CLI64BytesParser: CLI64BytesParser;
+		CLI64: CLI64;
+		CLU8Type: CLU8Type;
+		CLU8BytesParser: CLU8BytesParser;
+		CLU8: CLU8;
+		CLU32Type: CLU32Type;
+		CLU32BytesParser: CLU32BytesParser;
+		CLU32: CLU32;
+		CLU64Type: CLU64Type;
+		CLU64BytesParser: CLU64BytesParser;
+		CLU64: CLU64;
+		CLU128Type: CLU128Type;
+		CLU128BytesParser: CLU128BytesParser;
+		CLU128: CLU128;
+		CLU256Type: CLU256Type;
+		CLU256BytesParser: CLU256BytesParser;
+		CLU256: CLU256;
+		CLU512Type: CLU512Type;
+		CLU512BytesParser: CLU512BytesParser;
+		CLU512: CLU512;
+		CLPublicKeyTag: CLPublicKeyTag;
+		CLPublicKeyType: CLPublicKeyType;
+		CLPublicKeyBytesParser: CLPublicKeyBytesParser;
+		CLPublicKey: CLPublicKey;
+		CLStringType: CLStringType;
+		CLStringBytesParser: CLStringBytesParser;
+		CLString: CLString;
+		CLTupleType: CLTupleType;
+		CLTupleBytesParser: CLTupleBytesParser;
+		CLTuple1Type: CLTuple1Type;
+		CLTuple1: CLTuple1;
+		CLTuple2Type: CLTuple2Type;
+		CLTuple2: CLTuple2;
+		CLTuple3Type: CLTuple3Type;
+		CLTuple3: CLTuple3;
+		AccessRights: AccessRights;
+		CLURefType: CLURefType;
+		CLURefBytesParser: CLURefBytesParser;
+		CLURef: CLURef;
+		CLUnitType: CLUnitType;
+		CLUnitBytesParser: CLUnitBytesParser;
+		CLUnit: CLUnit;
+		CLAccountHashType: CLAccountHashType;
+		CLAccountHashBytesParser: CLAccountHashBytesParser;
+		CLAccountHash: CLAccountHash;
+		CLBoolType: CLBoolType;
+		CLBoolBytesParser: CLBoolBytesParser;
+		CLBool: CLBool;
+		CLResultType: CLResultType;
+		CLResultBytesParser: CLResultBytesParser;
+		CLResult: CLResult;
+		CLOptionType: CLOptionType;
+		CLOptionBytesParser: CLOptionBytesParser;
+		CLOption: CLOption;
+		ACCOUNT_HASH_LENGTH: ACCOUNT_HASH_LENGTH;
+		CLErrorCodes: CLErrorCodes;
+		KeyVariant: KeyVariant;
+		CLTypeTag: CLTypeTag;
+		BOOL_ID: BOOL_ID;
+		KEY_ID: KEY_ID;
+		PUBLIC_KEY_ID: PUBLIC_KEY_ID;
+		STRING_ID: STRING_ID;
+		UREF_ID: UREF_ID;
+		UNIT_ID: UNIT_ID;
+		I32_ID: I32_ID;
+		I64_ID: I64_ID;
+		U8_ID: U8_ID;
+		U32_ID: U32_ID;
+		U64_ID: U64_ID;
+		U128_ID: U128_ID;
+		U256_ID: U256_ID;
+		U512_ID: U512_ID;
+		BYTE_ARRAY_ID: BYTE_ARRAY_ID;
+		LIST_ID: LIST_ID;
+		MAP_ID: MAP_ID;
+		OPTION_ID: OPTION_ID;
+		RESULT_ID: RESULT_ID;
+		TUPLE1_ID: TUPLE1_ID;
+		TUPLE2_ID: TUPLE2_ID;
+		TUPLE3_ID: TUPLE3_ID;
+		ACCOUNT_HASH_ID: ACCOUNT_HASH_ID;
+		TUPLE_MATCH_LEN_TO_ID: TUPLE_MATCH_LEN_TO_ID;
+		matchTypeToCLType: matchTypeToCLType;
+		matchByteParserByCLType: matchByteParserByCLType;
+		matchBytesToCLType: matchBytesToCLType;
+		padNum: padNum;
+		NamedArg: NamedArg;
+		RuntimeArgs: RuntimeArgs;
+		CasperClient: CasperClient;
+		formatMessageWithHeaders: formatMessageWithHeaders;
+		signRawMessage: signRawMessage;
+		signFormattedMessage: signFormattedMessage;
+		verifyMessageSignature: verifyMessageSignature;
+		base64to16: base64to16;
+		encodeBase16: encodeBase16;
+		decodeBase16: decodeBase16;
+		encodeBase64: encodeBase64;
+		decodeBase64: decodeBase64;
+	}
+	*/

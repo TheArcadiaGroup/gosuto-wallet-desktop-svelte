@@ -56,12 +56,12 @@ const apiUrl = async () => {
 
 export const CasperService = async () => {
 	// delay calling CasperServiceByJsonRPC when not in the window object
-	const casperService = new window.CasperSDK.CasperServiceByJsonRPC(await apiUrl());
+	const casperService = new window.CasperSDK.CasperServiceByJsonRPC(apiUrl1);
 	return casperService;
 };
 
 export const CasperClient = async () => {
 	// delay calling CasperServiceByJsonRPC when not in the window object
-	const casperClient = new window.CasperSDK.CasperClient(await apiUrl());
+	const casperClient = new window.CasperSDK.CasperClient(apiUrl1);
 	return casperClient;
 };

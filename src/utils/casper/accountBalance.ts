@@ -4,7 +4,9 @@ import { CasperService } from '.';
 export const accountCsprBalance = async (walletAddress: string) => {
 	const publicKey = walletAddress;
 	try {
+		console.log(publicKey);
 		const casperService = await CasperService();
+		console.log(casperService);
 		const latestBlock = await casperService.getLatestBlockInfo();
 		console.log('last block', latestBlock);
 		const root = await casperService.getStateRootHash(latestBlock.block.hash);

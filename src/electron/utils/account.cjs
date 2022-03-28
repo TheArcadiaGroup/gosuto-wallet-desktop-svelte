@@ -13,14 +13,13 @@ const { csprUsdPrice } = require('./priceData.cjs');
 // const apiUrl = 'http://52.70.214.247:7777';
 const apiUrl = 'http://mainnet.gosuto.io:7777/rpc';
 const casperService = new CasperServiceByJsonRPC(apiUrl);
+
 const casperClient = new CasperClient(apiUrl);
 
 module.exports = {
 	getBalance: async (publicKey) => {
 		try {
-			console.log(publicKey);
 			const latestBlock = await casperService.getLatestBlockInfo();
-			console.log('last block', latestBlock);
 			const root = await casperService.getStateRootHash(latestBlock.block.hash);
 
 			const balanceUref = await casperService.getAccountBalanceUrefByPublicKey(
