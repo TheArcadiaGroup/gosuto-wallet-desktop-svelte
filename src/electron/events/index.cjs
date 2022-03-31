@@ -5,7 +5,6 @@ const { Keys } = require('casper-js-sdk');
 const profileHistory = require('../utils/profileHistory.cjs');
 const { importWalletFromFile } = require('../utils/walletImportExports.cjs');
 const sendMessage = require('./sendMessage.cjs');
-const { csprUsdPrice } = require('../utils/priceData.cjs');
 const { getBalance } = require('../utils/account.cjs');
 
 /**
@@ -29,7 +28,6 @@ module.exports = () => {
 
 			sendMessage('getHistoryResponse', res);
 		} catch (err) {
-			console.log(err);
 			sendMessage('getHistoryResponse', { data: [], pageCount: 0, itemCount: 0, pages: [] });
 		}
 	});
@@ -58,69 +56,62 @@ module.exports = () => {
 		sendMessage('importWalletFromFileResponse', res);
 	});
 
-	ipcMain.on('currentPriceInUsd', async (_event, data) => {
-		switch (data) {
-			case 'CSPR':
-				await csprUsdPrice();
-				break;
-
-			// Other tokens here
-
-			default:
-				await csprUsdPrice();
-				break;
-		}
-	});
-
 	// Send Transaction
 	ipcMain.on('sendCSPRTokens', async (event, data) => {
-		const res = await account.sendTransaction({
-			fromPublicKey: '01cfbe76f5e1b7fd042714d4583e578f47675414efd9c1f8105256cea243f0ab35',
-			fromPrivateKey: Keys.Ed25519.parsePrivateKey(
-				'MC4CAQAwBQYDK2VwBCIEIFvkdWUFtcpt2yOrbWk+v1fHf0y3Ca3+idJYXGkPKV+y',
-			),
-			toPublicKey: '01cfbe76f5e1b7fd042714d4583e578f47675414efd9c1f8105256cea243f0ab35',
-			amount: 2500000000,
-		});
-		console.log('test result', res);
+		const fromPublicKey = data.senderWallet;
+		const fromPrivateKey = data.senderPrivateKey;
+		const toPublicKey = data.recipientWallet;
+		const amount = data.amount;
 
-		// return this as an event to the renderer process
-		sendMessage('sendCSPRTokensResponse', '');
+		const res = await account.sendTransaction({
+			fromPublicKey: fromPublicKey,
+			fromPrivateKey: Keys.Ed25519.parsePrivateKey(fromPrivateKey),
+			toPublicKey: toPublicKey,
+			amount: amount,
+		});
+
+		event.returnValue = res;
 	});
 
 	// token balance
-	ipcMain.on('accountTokenBalance', async (_event, data) => {
+	ipcMain.on('accountTokenBalance', async (event, data) => {
 		try {
 			const parsedData = JSON.parse(data); // {walletAddress: publicKey; token: 'CSPR', contractAddress: 'STRING'}
 			switch (parsedData.token) {
 				case 'CSPR':
-					sendMessage('accountTokenBalanceResponse', {
+					event.returnValue = {
 						token: 'CSPR',
 						walletAddress: parsedData.walletAddress,
-						...(await getBalance(parsedData.walletAddress)),
-					});
+						balance: await getBalance(parsedData.walletAddress),
+					};
 					break;
 
 				case 'TOKEN':
 					// pass in the token contract address and name of the token;
-					sendMessage('accountTokenBalanceResponse', {
+					event.returnValue = {
 						token: 'TOKEN',
 						walletAddress: parsedData.walletAddress,
-						...(await getBalance(parsedData.walletAddress)),
-					});
+						balance: await getBalance(parsedData.walletAddress),
+					};
 					break;
 
 				default:
-					sendMessage('accountTokenBalanceResponse', {
+					event.returnValue = {
 						token: 'CSPR',
 						walletAddress: parsedData.walletAddress,
-						...(await getBalance(parsedData.walletAddress)),
-					});
+						balance: await getBalance(parsedData.walletAddress),
+					};
 
 					break;
 			}
 		} catch (_err) {
 			console.log(_err);
+
+			event.returnValue = {
+				balance: '0',
+				token: parsedData.token,
+				walletAddress: parsedData.walletAddress,
+			};
 		}
 	});
 };

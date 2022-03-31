@@ -1,5 +1,4 @@
 const CoinGecko = require('coingecko-api');
-const sendMessage = require('../events/sendMessage.cjs');
 
 module.exports = {
 	csprUsdPrice: async () => {
@@ -9,28 +8,24 @@ module.exports = {
 			// const casperTotalSupply = casperInformation.data.market_data.total_supply;
 			// const casperCirculatingSupply =
 			//   casperInformation.data.market_data.circulating_supply;
-			// const casperPriceChangePercentage24h =
-			//   casperInformation.data.market_data
-			//     .price_change_percentage_24h_in_currency;
-
-			sendMessage('currentPriceInUsdResponse', {
-				price,
-				currency: 'CSPR',
-			});
+			const casperPriceChangePercentage24h =
+				casperInformation.data.market_data.price_change_percentage_24h_in_currency;
 
 			return {
 				price,
+				token: 'CSPR',
+				change: casperPriceChangePercentage24h,
 				// casperTotalSupply,
 				// casperCirculatingSupply,
 				// casperPriceChangePercentage24h,
 			};
 		} catch (error) {
 			console.log('getCasperMarketInformation Error : ', error);
-			sendMessage('currentPriceInUsdResponse', {
+			return {
 				price: 0,
-				currency: 'CSPR',
-			});
-			return 0;
+				token: 'CSPR',
+				change: 0,
+			};
 		}
 	},
 };

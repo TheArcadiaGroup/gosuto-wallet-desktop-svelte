@@ -1,5 +1,8 @@
 export const getTokenUsdPrice = async (token: string) => {
-	let result = 0;
+	let result = {
+		price: 0,
+		price_change: 0,
+	};
 	switch (token) {
 		case 'CSPR':
 			result = await getCSPRUsdPrice();
@@ -21,18 +24,19 @@ export const getCSPRUsdPrice = async () => {
 		// const casperCirculatingSupply =
 		//   casperInformation.data.market_data.circulating_supply;
 		// const casperPriceChangePercentage24h =
-		//   casperInformation.data.market_data
-		//     .price_change_percentage_24h_in_currency;
+		const casperPriceChangePercentage24h = (casperInformation.data.market_data as any)
+			.price_change_percentage_24h;
 
-		// return {
-		return price;
-		// 	// casperTotalSupply,
-		// 	// casperCirculatingSupply,
-		// 	// casperPriceChangePercentage24h,
-		// };
+		return {
+			price,
+			price_change: casperPriceChangePercentage24h,
+		};
 	} catch (error) {
 		console.log('getCasperMarketInformation Error : ', error);
 
-		return 0;
+		return {
+			price: 0,
+			price_change: 0,
+		};
 	}
 };

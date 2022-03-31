@@ -2,12 +2,13 @@ import { user } from '$stores/user';
 import { tokens } from '$stores/user/tokens';
 import { selectedWallet, wallets } from '$stores/user/wallets';
 import { retrieveData, saveData } from '$utils/dataStorage';
+import { getCsprBalance } from './balances';
+import { getCSPRUsdPrice } from './tokens';
 
 // IMPORTANT: If it becomes too expensive to fetch and save data, only save and fetch when the data has changed or was not previously present. (if statements)
 
-export const pollyFillTokens = () => {
+export const pollyFillTokens = async () => {
 	// Get current cspr token price in usd
-	window.api.send('currentPriceInUsd', 'CSPR');
 	const selectedWallet = pollyfillSelectedProfile();
 
 	if (selectedWallet) {
@@ -15,8 +16,9 @@ export const pollyFillTokens = () => {
 			{
 				tokenName: 'CSPR',
 				tokenTicker: 'CSPR',
-				tokenAmountHeld: 0,
-				tokenAmountHeldUSD: 0,
+				tokenAmountHeld: await getCsprBalance(selectedWallet.walletAddress),
+				tokenAmountHeldUSD:
+					(await getCsprBalance(selectedWallet.walletAddress)) * (await getCSPRUsdPrice()).price,
 				limitedSupply: false,
 				mintableSupply: false,
 				shareToken: true,
@@ -77,6 +79,8 @@ export const pollyfillSelectedProfile = () => {
 	saveData('selectedProfile', JSON.stringify(dbSelectedProfile));
 
 	selectedWallet.set(dbSelectedProfile);
+
+	getCsprBalance(dbSelectedProfile.walletAddress);
 
 	return dbSelectedProfile;
 };

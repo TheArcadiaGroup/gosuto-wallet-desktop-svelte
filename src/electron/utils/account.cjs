@@ -6,12 +6,13 @@ const {
 	CLPublicKey,
 	DeployUtil,
 } = require('casper-js-sdk');
-const { csprUsdPrice } = require('./priceData.cjs');
+const { ethers } = require('ethers');
 
 //Create Casper client and service to interact with Casper node.
 // const apiUrl = 'http://34.66.154.252:7777';
 // const apiUrl = 'http://52.70.214.247:7777';
-const apiUrl = 'http://mainnet.gosuto.io:7777/rpc';
+// const apiUrl = 'http://mainnet.gosuto.io:7777/rpc';
+const apiUrl = 'http://testnet.gosuto.io:7777/rpc';
 const casperService = new CasperServiceByJsonRPC(apiUrl);
 
 const casperClient = new CasperClient(apiUrl);
@@ -33,60 +34,54 @@ module.exports = {
 				balanceUref,
 			);
 
-			const currentPriceInUsd = await csprUsdPrice();
-
-			return {
-				balance: balance.toString(),
-				balanceInUsd: currentPriceInUsd * balance,
-				tokenPriceInUsd: currentPriceInUsd,
-			};
+			return ethers.utils.formatUnits(balance, 9);
 		} catch (error) {
 			console.log(error);
-			const currentPriceInUsd = await csprUsdPrice();
 
-			return {
-				balance: 0,
-				balanceInUsd: 0,
-				tokenPriceInUsd: currentPriceInUsd,
-			};
+			return '0';
 		}
 	},
 	sendTransaction: async ({ fromPublicKey, fromPrivateKey, toPublicKey, amount }) => {
-		// Read keys from the structure created in #Generating keys
-		const signKeyPair = Keys.Ed25519.parseKeyPair(
-			Buffer.from(fromPublicKey, 'hex'),
-			Buffer.from(fromPrivateKey, 'hex'),
-		);
+		try {
+			// Read keys from the structure created in #Generating keys
+			const signKeyPair = Keys.Ed25519.parseKeyPair(
+				Buffer.from(fromPublicKey, 'hex'),
+				Buffer.from(fromPrivateKey, 'hex'),
+			);
 
-		let networkName = 'casper';
+			let networkName = 'casper';
 
-		// For native-transfers the payment price is fixed
-		const paymentAmount = 10000000000;
+			// For native-transfers the payment price is fixed
+			const paymentAmount = 10000000000;
 
-		// transfer_id field in the request to tag the transaction and to correlate it to your back-end storage
-		const id = 187821;
+			// transfer_id field in the request to tag the transaction and to correlate it to your back-end storage
+			const id = 187821;
 
-		// gasPrice for native transfers can be set to 1
-		const gasPrice = 1;
+			// gasPrice for native transfers can be set to 1
+			const gasPrice = 1;
 
-		// Time that the deploy will remain valid for, in milliseconds
-		// The default value is 1800000 ms (30 minutes)
-		const ttl = 1800000;
+			// Time that the deploy will remain valid for, in milliseconds
+			// The default value is 1800000 ms (30 minutes)
+			const ttl = 1800000;
 
-		const publicKey = CLPublicKey.fromHex(fromPublicKey);
+			const publicKey = CLPublicKey.fromHex(fromPublicKey);
 
-		let deployParams = new DeployUtil.DeployParams(publicKey, networkName, gasPrice, ttl);
+			let deployParams = new DeployUtil.DeployParams(publicKey, networkName, gasPrice, ttl);
 
-		// We create a public key from account-address (it is the hex representation of the public-key with an added prefix)
-		const toKey = CLPublicKey.fromHex(toPublicKey);
+			// We create a public key from account-address (it is the hex representation of the public-key with an added prefix)
+			const toKey = CLPublicKey.fromHex(toPublicKey);
 
-		const session = DeployUtil.ExecutableDeployItem.newTransfer(amount, toKey, null, id);
+			const session = DeployUtil.ExecutableDeployItem.newTransfer(amount, toKey, null, id);
 
-		const payment = DeployUtil.standardPayment(paymentAmount);
-		const deploy = DeployUtil.makeDeploy(deployParams, session, payment);
-		const signedDeploy = DeployUtil.signDeploy(deploy, signKeyPair);
+			const payment = DeployUtil.standardPayment(paymentAmount);
+			const deploy = DeployUtil.makeDeploy(deployParams, session, payment);
+			const signedDeploy = DeployUtil.signDeploy(deploy, signKeyPair);
 
-		// Here we are sending the signed deploy
-		return await casperClient.putDeploy(signedDeploy);
+			// Here we are sending the signed deploy
+			return await casperClient.putDeploy(signedDeploy);
+		} catch (err) {
+			console.log(err);
+			return err;
+		}
 	},
 };

@@ -18,10 +18,10 @@
 	 * -1 = none
 	 * -2 = create token
 	 */
-	let selected = -1;
+	let selectedToken: IToken | null = null;
 
 	function selectToken(e: any): void {
-		selected = e.detail.id;
+		selectedToken = e.detail;
 	}
 
 	onMount(async () => {
@@ -43,12 +43,13 @@
 		<ProfileNavigation />
 	</div>
 	<div class="global-grid-mid">
-		<Send on:selectToken={selectToken} bind:tokens={$tokens} bind:selected />
+		<Send on:selectToken={selectToken} bind:tokens={$tokens} bind:selectedToken />
 	</div>
+	<!-- TODO DISPATCH VALUE IS NOT RESET BUG -->
 	<div class="global-grid-right sidebar">
-		{#if selected === -2}
+		{#if selectedToken?.tokenName === 'AddToken'}
 			<CreateToken on:selectToken={selectToken} />
-		{:else if selected === -1}
+		{:else if selectedToken?.tokenName === 'Cancel'}
 			<TextSidebar>Select a currency to send</TextSidebar>
 		{:else}
 			<SendCurrency />

@@ -18,7 +18,7 @@
 	 * -1 = none
 	 * -2 = create token (handled by parent)
 	 */
-	export let selected = -1;
+	export let selectedToken: IToken | null = null;
 
 	let scroll = 0;
 	let scrollWidth = 0;
@@ -40,19 +40,13 @@
 		if (!event.target) return;
 		const isInToken = Boolean(event.target.closest('.token-card'));
 		const isInAddButton = Boolean(event.target.closest('.add-token-button'));
-		if (!isInToken && !isInAddButton)
-			dispatch('selectToken', {
-				id: -1,
-			});
+		if (!isInToken && !isInAddButton) dispatch('selectToken', null);
 	}
 
 	function cancelButtonListener(event: any): void {
 		if (!event.target) return;
 		const isInCancel = Boolean(event.target.closest('.send-currency-cancel-send-button'));
-		if (isInCancel)
-			dispatch('selectToken', {
-				id: -1,
-			});
+		if (isInCancel) dispatch('selectToken');
 	}
 
 	onMount(() => {
@@ -76,7 +70,7 @@
 			<div class="ml-auto">
 				<Button
 					class="add-token-button"
-					on:click={() => dispatch('selectToken', { id: -2 })}
+					on:click={() => dispatch('selectToken', { tokenName: 'AddToken' })}
 					hasGlow={true}
 				>
 					<div slot="text" class="inner-btn">
@@ -91,8 +85,9 @@
 				<div class="token-group">
 					{#each tokens.slice(i * 4, i * 4 + 4) as token, y}
 						<TokenCard
+							{token}
 							cardId={i * 4 + y}
-							selected={selected === i * 4 + y}
+							selected={selectedToken === token}
 							on:selectToken
 							{...token}
 						/>

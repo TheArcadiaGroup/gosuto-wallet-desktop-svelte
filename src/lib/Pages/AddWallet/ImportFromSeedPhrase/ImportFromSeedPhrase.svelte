@@ -54,6 +54,7 @@
 				walletImage: '',
 				seedPhrase: seedPhrase.trim().split(' '),
 				availableBalanceUSD: 0.0,
+				availableBalance: 0.0,
 				stakedBalance: 0.0,
 				unclaimedRewards: 0.0,
 				walletTokens: [],

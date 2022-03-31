@@ -13,11 +13,26 @@ contextBridge.exposeInMainWorld('api', {
 			'importWalletFromFile',
 			'getHistory',
 			'sendCSPRTokens',
-			'currentPriceInUsd',
 			'accountTokenBalance',
 		];
 		if (validChannels.includes(channel)) {
 			ipcRenderer.send(channel, data);
+		}
+	},
+	sendSync: (channel, data) => {
+		// whitelist channels, add your channels here
+		let validChannels = [
+			'toMain',
+			'createWalletFromMnemonics',
+			'createWalletFromFile',
+			'generateMnemonics',
+			'importWalletFromFile',
+			'getHistory',
+			'sendCSPRTokens',
+			'accountTokenBalance',
+		];
+		if (validChannels.includes(channel)) {
+			return ipcRenderer.sendSync(channel, data);
 		}
 	},
 	receive: (channel, func) => {
@@ -29,7 +44,6 @@ contextBridge.exposeInMainWorld('api', {
 			'importWalletFromFileResponse',
 			'getHistoryResponse',
 			'sendCSPRTokensResponse',
-			'currentPriceInUsdResponse',
 			'accountTokenBalanceResponse',
 		];
 		if (validChannels.includes(channel)) {

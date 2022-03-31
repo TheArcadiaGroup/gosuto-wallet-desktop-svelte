@@ -84,7 +84,7 @@
 				<div slot="text" class="my-2 leading-7">Create</div>
 			</Button>
 			<Button
-				on:click={() => dispatch('selectToken', { id: -1 })}
+				on:click={() => dispatch('selectToken', { tokenName: 'Cancel' })}
 				class="create-token-cancel-button"
 				type="button"
 			>

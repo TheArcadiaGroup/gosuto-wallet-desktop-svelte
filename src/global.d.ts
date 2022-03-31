@@ -11,6 +11,7 @@ declare global {
 		api: {
 			receive: (channel: MainReceiveChannels, dataFunc) => void;
 			send: (channel: MainSendChannels, data: string) => void;
+			sendSync: (channel: MainSendChannels, data?: any) => any;
 		};
 		// CasperSDK: CasperSDKType;
 		CoinGecko: typeof CoinGecko;
@@ -84,6 +85,7 @@ declare global {
 		walletImage: string;
 		seedPhrase: string[];
 		availableBalanceUSD: number;
+		availableBalance: number;
 		stakedBalance: number;
 		unclaimedRewards: number;
 		walletTokens: IToken[];
@@ -200,15 +202,14 @@ declare global {
 		| 'generateMnemonics'
 		| 'importWalletFromFile'
 		| 'getHistory'
-		| 'currentPriceInUsd'
-		| 'accountTokenBalance';
+		| 'accountTokenBalance'
+		| 'sendCSPRTokens';
 	type MainReceiveChannels =
 		| 'createWalletFromFileResponse'
 		| 'createWalletFromMnemonicsResponse'
 		| 'generateMnemonicsResponse'
 		| 'importWalletFromFileResponse'
 		| 'getHistoryResponse'
-		| 'currentPriceInUsdResponse'
 		| 'accountTokenBalanceResponse';
 }
 
