@@ -6,7 +6,7 @@ contextBridge.exposeInMainWorld('api', {
 	send: (channel, data) => {
 		// whitelist channels, add your channels here
 		let validChannels = [
-			'toMain',
+			// 'toMain',
 			'createWalletFromMnemonics',
 			'createWalletFromFile',
 			'generateMnemonics',
@@ -37,7 +37,7 @@ contextBridge.exposeInMainWorld('api', {
 	},
 	receive: (channel, func) => {
 		let validChannels = [
-			'fromMain',
+			// 'fromMain',
 			'createWalletFromMnemonicsResponse',
 			'createWalletFromFileResponse',
 			'generateMnemonicsResponse',

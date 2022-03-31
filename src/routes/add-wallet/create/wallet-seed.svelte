@@ -118,44 +118,35 @@
 	};
 
 	const confirmAndSendMnemonics = () => {
-		window.api.send('createWalletFromMnemonics', words.join(' '));
+		const data: { accountHex: string; accountHash: string; privateKey: string } =
+			window.api.sendSync('createWalletFromMnemonics', words.join(' '));
+		try {
+			if (data?.accountHex && data?.accountHash && data?.privateKey) {
+				const walletCreationResult = data;
+				accountHex = walletCreationResult['accountHex'];
+				accountHash = walletCreationResult['accountHash'];
+				privateKey = walletCreationResult['privateKey'];
+
+				console.log(walletCreationResult);
+
+				postData();
+			}
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	onMount(() => {
-		// Receive mnemonics creation response
-		window.api.receive('generateMnemonicsResponse', (data: string) => {
-			// Put the mnemonics words
-			words = data.split(' ').map(
-				(word, i) =>
-					({
-						id: i + 1,
-						word,
-						isEmpty: false,
-					} as SeedWord),
-			);
-		});
+		const mnemonicData: string = window.api.sendSync('generateMnemonics', '');
 
-		window.api.receive(
-			'createWalletFromMnemonicsResponse',
-			(data: { accountHex: string; accountHash: string; privateKey: string }) => {
-				try {
-					if (data?.accountHex && data?.accountHash && data?.privateKey) {
-						const walletCreationResult = data;
-						accountHex = walletCreationResult['accountHex'];
-						accountHash = walletCreationResult['accountHash'];
-						privateKey = walletCreationResult['privateKey'];
-
-						console.log(walletCreationResult);
-
-						postData();
-					}
-				} catch (error) {
-					console.log(error);
-				}
-			},
+		words = mnemonicData.split(' ').map(
+			(word, i) =>
+				({
+					id: i + 1,
+					word,
+					isEmpty: false,
+				} as SeedWord),
 		);
-
-		window.api.send('generateMnemonics', '');
 	});
 </script>
 

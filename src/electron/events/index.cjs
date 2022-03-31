@@ -11,11 +11,6 @@ const { getBalance } = require('../utils/account.cjs');
  * Receiving messages from Renderer
  */
 module.exports = () => {
-	ipcMain.on('toMain', async (_event, data) => {
-		sendMessage('toMain', 'Nope, not that');
-		console.log(data);
-	});
-
 	ipcMain.on('getHistory', async (event, data) => {
 		try {
 			// 34b0394b11dc3ecb1bf6f26c9754aa2e9f38d7bec33003374b4b3fac8566c258 => accountHash
@@ -33,27 +28,31 @@ module.exports = () => {
 	});
 
 	// Generate Wallet Mnemonics
-	ipcMain.on('generateMnemonics', async (_event, _data) => {
+	ipcMain.on('generateMnemonics', async (event, _data) => {
 		// return this as an event to the renderer process
-		sendMessage('generateMnemonicsResponse', createWallet.getMnemonics());
+		// sendMessage('generateMnemonicsResponse', createWallet.getMnemonics());
+		event.returnValue = createWallet.getMnemonics();
 	});
 
 	// Create wallet from mnemonics
-	ipcMain.on('createWalletFromMnemonics', async (_event, data) => {
+	ipcMain.on('createWalletFromMnemonics', async (event, data) => {
 		const res = await createWallet.generateFromMnemonics(data);
-		sendMessage('createWalletFromMnemonicsResponse', res);
+		// sendMessage('createWalletFromMnemonicsResponse', res);
+		event.returnValue = res;
 	});
 
 	// Create wallet from file
-	ipcMain.on('createWalletFromFile', async (_event, data) => {
+	ipcMain.on('createWalletFromFile', async (event, data) => {
 		const res = await createWallet.generateFromFile(data);
-		sendMessage('createWalletFromFileResponse', res);
+		// sendMessage('createWalletFromFileResponse', res);
+		event.returnValue = res;
 	});
 
 	// Import wallet from file
-	ipcMain.on('importWalletFromFile', async (_event, data) => {
+	ipcMain.on('importWalletFromFile', async (event, _data) => {
 		const res = await importWalletFromFile();
-		sendMessage('importWalletFromFileResponse', res);
+		// sendMessage('importWalletFromFileResponse', res);
+		event.returnValue = res;
 	});
 
 	// Send Transaction
