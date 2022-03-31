@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+
 	import BackIcon from '$icons/BackIcon.svelte';
 	import CopyIcon from '$icons/CopyIcon.svelte';
 
@@ -12,12 +14,12 @@
 
 <div class="return-home">
 	<div class="return-back-button">
-		<a href="/">
+		<div on:click={() => goto('/profile')}>
 			<BackIcon />
-		</a>
+		</div>
 	</div>
 	<p class="return-wallet-title">
-		{walletName}
+		{walletName}{walletName.endsWith('s') ? "'" : walletName.endsWith("'") ? 's' : "'s"}
 		<span class="return-swap-text">{profileLocation}</span>
 	</p>
 	<div class="return-wallet-pub-key">

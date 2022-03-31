@@ -40,7 +40,11 @@
 				/>
 			</div>
 			<div class="username">
-				{name.split(' ')[0] || 'unknown name'}'s wallet
+				{name.split(' ')[0] || 'Unknown'}{name.split(' ')[0].endsWith('s')
+					? "'"
+					: name.split(' ')[0].endsWith("'")
+					? 's'
+					: "'s"} Wallet
 			</div>
 		</div>
 		<div class="grow-0">
