@@ -9,7 +9,6 @@
 
 	import { goto } from '$app/navigation';
 	import { retrieveData, saveData } from '$utils/dataStorage';
-	import { onMount } from 'svelte';
 	import { walletNameIsValid } from '$utils/profiles';
 
 	let walletName: string;
@@ -82,28 +81,6 @@
 		saveData('wallets', JSON.stringify(wallets));
 		goto(`/profile/${accountHex.trim()}`);
 	};
-
-	onMount(() => {
-		// window.api.receive(
-		// 	'importWalletFromFileResponse',
-		// 	(data: { accountHex: string; accountHash: string; privateKey: string } | null) => {
-		// 		try {
-		// 			if (data?.accountHex && data?.accountHash && data?.privateKey) {
-		// 				const walletCreationResult = data;
-		// 				certificateIsInvalid = false;
-		// 				accountHex = walletCreationResult['accountHex'];
-		// 				accountHash = walletCreationResult['accountHash'];
-		// 				privateKey = walletCreationResult['privateKey'];
-		// 				console.log(walletCreationResult);
-		// 			} else {
-		// 				certificateIsInvalid = true;
-		// 			}
-		// 		} catch (error) {
-		// 			console.log(error);
-		// 		}
-		// 	},
-		// );
-	});
 </script>
 
 <div class="fileImport-wrapper">
