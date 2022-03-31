@@ -8,7 +8,6 @@
 	import ImportPrivateKey from '$lib/pages/AddWallet/ImportFromFile/ImportPrivateKey.svelte';
 
 	import { goto } from '$app/navigation';
-	import type { JSONString } from '@sveltejs/kit/types/helper';
 	import { retrieveData, saveData } from '$utils/dataStorage';
 	import { onMount } from 'svelte';
 	import { walletNameIsValid } from '$utils/profiles';
@@ -39,7 +38,24 @@
 
 	/** function for opening the file and getting data private key or json data */
 	const selectFile = () => {
-		window.api.send('importWalletFromFile', '');
+		const data: { accountHex: string; accountHash: string; privateKey: string } | null =
+			window.api.sendSync('importWalletFromFile', '');
+		try {
+			if (data?.accountHex && data?.accountHash && data?.privateKey) {
+				const walletCreationResult = data;
+
+				certificateIsInvalid = false;
+				accountHex = walletCreationResult['accountHex'];
+				accountHash = walletCreationResult['accountHash'];
+				privateKey = walletCreationResult['privateKey'];
+
+				console.log(walletCreationResult);
+			} else {
+				certificateIsInvalid = true;
+			}
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	/** Sends wallet creation data to api route to create a wallet */
@@ -51,6 +67,7 @@
 			walletPassword: password.trim(),
 			walletImage: '',
 			seedPhrase: [],
+			availableBalance: 0.0,
 			availableBalanceUSD: 0.0,
 			stakedBalance: 0.0,
 			unclaimedRewards: 0.0,
@@ -67,27 +84,25 @@
 	};
 
 	onMount(() => {
-		window.api.receive(
-			'importWalletFromFileResponse',
-			(data: { accountHex: string; accountHash: string; privateKey: string } | null) => {
-				try {
-					if (data?.accountHex && data?.accountHash && data?.privateKey) {
-						const walletCreationResult = data;
-
-						certificateIsInvalid = false;
-						accountHex = walletCreationResult['accountHex'];
-						accountHash = walletCreationResult['accountHash'];
-						privateKey = walletCreationResult['privateKey'];
-
-						console.log(walletCreationResult);
-					} else {
-						certificateIsInvalid = true;
-					}
-				} catch (error) {
-					console.log(error);
-				}
-			},
-		);
+		// window.api.receive(
+		// 	'importWalletFromFileResponse',
+		// 	(data: { accountHex: string; accountHash: string; privateKey: string } | null) => {
+		// 		try {
+		// 			if (data?.accountHex && data?.accountHash && data?.privateKey) {
+		// 				const walletCreationResult = data;
+		// 				certificateIsInvalid = false;
+		// 				accountHex = walletCreationResult['accountHex'];
+		// 				accountHash = walletCreationResult['accountHash'];
+		// 				privateKey = walletCreationResult['privateKey'];
+		// 				console.log(walletCreationResult);
+		// 			} else {
+		// 				certificateIsInvalid = true;
+		// 			}
+		// 		} catch (error) {
+		// 			console.log(error);
+		// 		}
+		// 	},
+		// );
 	});
 </script>
 
