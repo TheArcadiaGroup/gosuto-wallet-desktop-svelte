@@ -4,9 +4,17 @@
 	import { onMount } from 'svelte';
 
 	import { initializeTheme } from '$utils/themeSettings';
+	import pollyfillData from '$utils/pollyfillData';
+	import globalListeners from '$utils/globalListeners';
 
-	onMount(() => {
+	onMount(async () => {
 		initializeTheme();
+
+		// Global Listeners
+		globalListeners();
+
+		// Fetch and add data to stores
+		pollyfillData();
 	});
 </script>
 

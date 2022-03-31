@@ -25,11 +25,14 @@
 	import Checklist from '$icons/Checklist.svelte';
 
 	import { goto } from '$app/navigation';
-	import { retrieveData, saveData } from '$utils/dataStorage';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
+	import pollyfillData from '$utils/pollyfillData';
+	import { selectedWallet, wallets } from '$stores/user/wallets';
+	import { user } from '$stores/user';
+	import { saveData } from '$utils/dataStorage';
 
-	export let forRoute: 'profile' | 'all-stakes' = 'profile';
+	const forRoute = $page.path.startsWith('/profile') ? 'profile' : 'all-stakes';
 	let walletAddress = $page.params.address;
 
 	/**Options for the content of the menu. Either 'profile' or 'all-stakes'.*/
@@ -58,23 +61,11 @@
 	}[];
 	$: menuItems = menuItemsOptions[forRoute];
 
-	export let user: IUser;
-
-	let defaultWalletIndex = parseInt(retrieveData('defaultWalletIndex'));
-
 	onMount(() => {
-		if (!user) {
-			// Retrieve the selected profile off the user
-			user = (retrieveData('user') as IUser) || {
-				name: 'Unknown User',
-				avatar: '',
-				email: '',
-				wallets: (retrieveData('wallets') as IWallet[]) || [],
-			};
-		}
+		pollyfillData();
 	});
 
-	/**Handler for clicking on a menu item in the menu and redirectin to the corresponding subroute.*/
+	// Handler for clicking on a menu item in the menu and redirectin to the corresponding subroute
 	function menuSelect(e: CustomEvent) {
 		const selection = e.detail.menu_item;
 		if (menuItems == menuItemsOptions['all-stakes']) {
@@ -82,8 +73,11 @@
 		} else {
 			if (walletAddress) {
 				goto(`/${forRoute}/${walletAddress}/${selection}`);
-			} else if (user.wallets.length > 0) {
-				saveData('selectedProfile', walletAddress);
+			} else if ($wallets.length > 0) {
+				saveData(
+					'selectedProfile',
+					JSON.stringify($wallets.filter((wallet) => wallet.walletAddress === walletAddress)[0]),
+				);
 				goto(`/${forRoute}/${walletAddress}/${selection}`);
 			} else {
 				goto('/add-wallet');
@@ -102,10 +96,10 @@
 	<div class="container">
 		<div class="pp-and-name">
 			<div class="pp">
-				<ProfilePicture url={user?.avatar || ''} />
+				<ProfilePicture url={$user?.avatar || ''} />
 			</div>
 			<div class="username">
-				{user?.name || 'Unknown Name'}
+				{$user?.name || 'Unknown Name'}
 			</div>
 		</div>
 		{#if forRoute === 'profile'}
@@ -118,16 +112,17 @@
 			</div>
 			<div class="carousel-container">
 				<div class="carousel">
-					{#if user}
+					<!-- TODO: make sure this works - indexOf -->
+					{#if $user && !$wallets}
 						<CardCarousel
-							numberOfCards={user?.wallets.length || 0}
-							position={defaultWalletIndex - 1 < 0 ? 0 : defaultWalletIndex}
+							numberOfCards={$wallets.length || 0}
+							position={$wallets.indexOf($selectedWallet)}
 						>
-							{#each user?.wallets as wallet, i}
+							{#each wallets as wallet, i}
 								<CarouselItem {i}>
 									<CreditCard
-										name={user?.name || 'Unknown Name'}
-										avatar={user?.avatar || ''}
+										name={$user?.name || 'Unknown Name'}
+										avatar={$user?.avatar || ''}
 										{wallet}
 										on:cardClicked
 									/>
@@ -166,7 +161,7 @@
 	}
 
 	:local(.pp) {
-		@apply w-16 h-16 rounded-xl overflow-hidden;
+		@apply w-16 h-16 rounded-xl overflow-hidden border border-light-orangeShadeOne;
 	}
 
 	:local(.username) {

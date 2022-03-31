@@ -1,8 +1,11 @@
 const { ipcMain } = require('electron');
 const createWallet = require('../utils/createWallet.cjs');
+const account = require('../utils/account.cjs');
+const { Keys } = require('casper-js-sdk');
 const profileHistory = require('../utils/profileHistory.cjs');
 const { importWalletFromFile } = require('../utils/walletImportExports.cjs');
 const sendMessage = require('./sendMessage.cjs');
+const { getBalance } = require('../utils/account.cjs');
 
 /**
  * Receiving messages from Renderer
@@ -25,7 +28,6 @@ module.exports = () => {
 
 			sendMessage('getHistoryResponse', res);
 		} catch (err) {
-			console.log(err);
 			sendMessage('getHistoryResponse', { data: [], pageCount: 0, itemCount: 0, pages: [] });
 		}
 	});
@@ -52,5 +54,64 @@ module.exports = () => {
 	ipcMain.on('importWalletFromFile', async (_event, data) => {
 		const res = await importWalletFromFile();
 		sendMessage('importWalletFromFileResponse', res);
+	});
+
+	// Send Transaction
+	ipcMain.on('sendCSPRTokens', async (event, data) => {
+		const fromPublicKey = data.senderWallet;
+		const fromPrivateKey = data.senderPrivateKey;
+		const toPublicKey = data.recipientWallet;
+		const amount = data.amount;
+
+		const res = await account.sendTransaction({
+			fromPublicKey: fromPublicKey,
+			fromPrivateKey: Keys.Ed25519.parsePrivateKey(fromPrivateKey),
+			toPublicKey: toPublicKey,
+			amount: amount,
+		});
+
+		event.returnValue = res;
+	});
+
+	// token balance
+	ipcMain.on('accountTokenBalance', async (event, data) => {
+		try {
+			const parsedData = JSON.parse(data); // {walletAddress: publicKey; token: 'CSPR', contractAddress: 'STRING'}
+			switch (parsedData.token) {
+				case 'CSPR':
+					event.returnValue = {
+						token: 'CSPR',
+						walletAddress: parsedData.walletAddress,
+						balance: await getBalance(parsedData.walletAddress),
+					};
+					break;
+
+				case 'TOKEN':
+					// pass in the token contract address and name of the token;
+					event.returnValue = {
+						token: 'TOKEN',
+						walletAddress: parsedData.walletAddress,
+						balance: await getBalance(parsedData.walletAddress),
+					};
+					break;
+
+				default:
+					event.returnValue = {
+						token: 'CSPR',
+						walletAddress: parsedData.walletAddress,
+						balance: await getBalance(parsedData.walletAddress),
+					};
+
+					break;
+			}
+		} catch (_err) {
+			console.log(_err);
+
+			event.returnValue = {
+				balance: '0',
+				token: parsedData.token,
+				walletAddress: parsedData.walletAddress,
+			};
+		}
 	});
 };

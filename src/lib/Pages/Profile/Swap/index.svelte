@@ -69,7 +69,7 @@
 			<div class="ml-auto">
 				<Button
 					class="add-token-button"
-					on:click={() => dispatch('selectToken', { id: -2 })}
+					on:click={() => dispatch('selectToken', { tokenName: 'AddToken' })}
 					glow={true}
 				>
 					<div slot="text" class="swap-inner-btn">

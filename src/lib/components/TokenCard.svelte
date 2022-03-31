@@ -18,10 +18,13 @@
 	 */
 	export let positive = true;
 
-	export let tokenName = 'Tether';
-	export let tokenTicker = 'USDT';
-	export let tokenAmountHeld = 2000;
-	export let contractAddress = 'abc';
+	export let token: IToken;
+	export let tokenName = 'Casper'; // defaults
+	export let tokenTicker = 'CSPR'; // defaults
+	export let tokenAmountHeld = 0;
+	export let contractAddress = '';
+	let tokenPriceInUsd = 0;
+	let percentageChange = 0;
 
 	/**
 	 * Code of the real currency shown inside this component
@@ -31,24 +34,18 @@
 	 * Symbol of the real currency shown inside this component
 	 */
 	export let currencySymbol = '$';
-	/**
-	 * Amount of the real currency shown inside this component
-	 */
-	export let tokenAmountHeldUSD = 175;
 
-	let usdValue = 0;
-
-	onMount(() => {
+	onMount(async () => {
 		// @ts-ignore
-		const result = fetch(`/api/tokens/value/${encodeURIComponent(contractAddress)}`);
+		const tokenInfo = await getTokenValue(contractAddress.trim() || tokenTicker);
+		tokenPriceInUsd = tokenInfo.price;
+		percentageChange = tokenInfo.price_change;
 	});
 
 	const dispatch = createEventDispatcher();
 
 	function select(): void {
-		dispatch('selectToken', {
-			id: cardId,
-		});
+		dispatch('selectToken', token);
 	}
 </script>
 
@@ -60,7 +57,7 @@
 			{tokenTicker}
 		</p>
 		<p class="token-card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">
-			{currencySymbol}{tokenAmountHeldUSD}
+			{currencySymbol}{tokenAmountHeld * tokenPriceInUsd}
 			{currencyUnit}
 		</p>
 	</div>
@@ -75,10 +72,10 @@
 			{:else}
 				<ProfitDownIcon />
 			{/if}
-			+15%
+			{percentageChange}%
 		</p>
 		<p class="token-card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">
-			{currencySymbol}{getTokenValue(contractAddress)}
+			{currencySymbol}{tokenPriceInUsd}
 			{currencyUnit}
 		</p>
 		<p class="token-card-text-xs text-light-gray">(24h)</p>

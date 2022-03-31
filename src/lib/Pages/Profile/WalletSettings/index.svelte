@@ -11,183 +11,249 @@
 	import Button from '$lib/components/Button.svelte';
 
 	import { onMount } from 'svelte';
+	import { selectedWallet, wallets } from '$stores/user/wallets';
+	import pollyfillData, { pollyfillSelectedProfile } from '$utils/pollyfillData';
+	import { goto } from '$app/navigation';
+	import { saveData } from '$utils/dataStorage';
 
-	let settingsData: ProfileSettings = {
-		walletName: 'default wallet name',
-		walletAddress: '0x9f98e01d2gj92ngn2g7gn24ed7',
-		publicKey: '0x9f98e01d2gj92ngn2g7gn24ed7',
-		privateKey: '0x9f98e01d2gj92ngn2g7gn24ed7',
-		currentPassword: 'password',
-	};
-
-	let newPassword: string;
-	let reEnterPassword: string;
+	let walletName = '';
+	let privateKey = '';
+	let newPassword = '';
+	let confirmPassword = '';
+	let canSave = false;
+	let canChangePassword = false;
 
 	let showCopyWalletPasswordPopup: boolean = false;
 	let showExportWalletFilePopup: boolean = false;
 	let showWalletCopiedPopup: boolean = false;
 	let passwordIsCorrect: boolean = true;
 
+	let wallet: IWallet = $selectedWallet!;
+
 	onMount(() => {
-		getData();
+		if (!$selectedWallet) {
+			pollyfillData();
+			wallet = $selectedWallet!;
+		}
+
+		if (!wallet) {
+			wallet = pollyfillSelectedProfile();
+			if (!wallet) {
+				goto('/profile');
+			}
+		}
+
+		walletName = wallet.walletName;
+		privateKey = wallet.privateKey.substring(0, 30);
 	});
-
-	const getData = async () => {
-		fetch('/api/settings/profileSettings')
-			.then((response) => response.json())
-			.then((response) => {
-				if (response.walletName) settingsData.walletName = response.walletName;
-				if (response.walletAddress) settingsData.walletAddress = response.walletAddress;
-				if (response.publicKey) settingsData.publicKey = response.publicKey;
-				if (response.privateKey) settingsData.privateKey = response.privateKey;
-				if (response.currentPassword) settingsData.currentPassword = response.currentPassword;
-			});
-	};
-
-	const postData = async () => {
-		fetch('/api/settings/profileSettings', {
-			method: 'POST',
-			body: JSON.stringify(settingsData),
-		}).catch((error) => {
-			console.error('error:', error);
-		});
-	};
 
 	let copyToClipboard = (copyText: string) => {
 		navigator.clipboard.writeText(copyText);
 	};
 
 	let changePassword = () => {
-		if (newPassword && newPassword === reEnterPassword) {
-			settingsData.currentPassword = newPassword;
+		if (newPassword && newPassword === confirmPassword) {
+			wallet.walletPassword = newPassword;
+			canChangePassword = false;
+
+			// clear form state
+			newPassword = '';
+			confirmPassword = '';
+			saveData(
+				'wallets',
+				JSON.stringify(
+					$wallets.map((_wallet) => {
+						if (_wallet.walletAddress === wallet.walletAddress) {
+							_wallet = wallet;
+						}
+
+						return _wallet;
+					}),
+				),
+			);
+
+			saveData('selectedProfile', JSON.stringify(wallet));
+			pollyfillData();
 		}
 	};
+
+	const updateWalletDetails = () => {
+		if (canSave) {
+			wallet.walletName = walletName;
+			const _wallets = $wallets.map((_wallet) => {
+				if (_wallet.walletAddress === wallet.walletAddress) {
+					_wallet = wallet;
+				}
+
+				return _wallet;
+			});
+
+			console.log(_wallets, wallet);
+
+			saveData('wallets', JSON.stringify(_wallets));
+			saveData('selectedProfile', JSON.stringify(wallet));
+			pollyfillData();
+		}
+	};
+
+	$: ((walletName) => {
+		if (walletName.trim() && walletName.trim() !== wallet.walletName.trim()) {
+			canSave = true;
+		} else {
+			canSave = false;
+		}
+	})(walletName);
+
+	$: ((newPassword, confirmPassword) => {
+		if (
+			newPassword.trim() &&
+			confirmPassword.trim() &&
+			newPassword.trim() === confirmPassword.trim() &&
+			newPassword.trim() !== wallet.walletPassword.trim()
+		) {
+			canChangePassword = true;
+		} else {
+			canChangePassword = false;
+		}
+	})(newPassword, confirmPassword);
 </script>
 
-<div class="main">
-	<!-- Popups -->
-	{#if showCopyWalletPasswordPopup}
-		<PasswordToCopyPopup
-			on:confirm={() => {
-				showCopyWalletPasswordPopup = false;
-				if (passwordIsCorrect) {
-					copyToClipboard(settingsData.privateKey);
-					showWalletCopiedPopup = true;
-				}
-			}}
-			on:cancel={() => {
-				showCopyWalletPasswordPopup = false;
-			}}
-		/>
-	{/if}
-	{#if showExportWalletFilePopup}
-		<PasswordToExportPopup
-			on:confirm={() => {
-				showExportWalletFilePopup = false;
-			}}
-			on:cancel={() => {
-				showExportWalletFilePopup = false;
-			}}
-		/>
-	{/if}
-	{#if showWalletCopiedPopup}
-		<WalletCopiedPopup
-			on:confirm={() => {
-				showWalletCopiedPopup = false;
-			}}
-			on:cancel={() => {
-				showWalletCopiedPopup = false;
-			}}
-		/>
-	{/if}
+{#if wallet}
+	<div class="main">
+		<!-- Popups -->
+		{#if showCopyWalletPasswordPopup}
+			<PasswordToCopyPopup
+				on:confirm={() => {
+					showCopyWalletPasswordPopup = false;
+					if (passwordIsCorrect) {
+						copyToClipboard(wallet.privateKey);
+						showWalletCopiedPopup = true;
+					}
+				}}
+				on:cancel={() => {
+					showCopyWalletPasswordPopup = false;
+				}}
+			/>
+		{/if}
+		{#if showExportWalletFilePopup}
+			<PasswordToExportPopup
+				on:confirm={() => {
+					showExportWalletFilePopup = false;
+				}}
+				on:cancel={() => {
+					showExportWalletFilePopup = false;
+				}}
+			/>
+		{/if}
+		{#if showWalletCopiedPopup}
+			<WalletCopiedPopup
+				on:confirm={() => {
+					showWalletCopiedPopup = false;
+				}}
+				on:cancel={() => {
+					showWalletCopiedPopup = false;
+				}}
+			/>
+		{/if}
 
-	<div class="settings-holder">
-		<div class="header">
-			<div class="left-holder">
-				<div class="back-btn">
-					<div class="img">
-						<BackIcon />
+		<div class="settings-holder">
+			<div class="header">
+				<div class="left-holder">
+					<div class="back-btn">
+						<div class="img">
+							<BackIcon />
+						</div>
+						<h1>Wallet Settings</h1>
 					</div>
-					<h1>Wallet Settings</h1>
+					<div class="address">
+						<p>
+							{`${wallet?.walletAddress.slice(0, 11)}...${wallet?.walletAddress.slice(-4)}`}
+						</p>
+						<div class="img">
+							<CopyIcon />
+						</div>
+					</div>
 				</div>
 				<div class="address">
 					<p>
-						{`${settingsData.walletAddress.slice(0, 11)}...${settingsData.walletAddress.slice(-4)}`}
+						{`${wallet?.walletAddress.slice(0, 11)}...${wallet?.walletAddress.slice(-4)}`}
 					</p>
-					<div class="img">
+					<div
+						class="img"
+						on:click={() => {
+							copyToClipboard(wallet?.walletAddress);
+						}}
+					>
 						<CopyIcon />
 					</div>
 				</div>
+				<div class="confirm-button settings-btn">
+					<Button
+						hasGlow={true}
+						on:click={() => {
+							showExportWalletFilePopup = true;
+						}}
+					>
+						<p slot="text" class="settings-btn-text">Export Wallet File</p>
+					</Button>
+				</div>
 			</div>
-			<div class="address">
-				<p>
-					{`${settingsData.walletAddress.slice(0, 11)}...${settingsData.walletAddress.slice(-4)}`}
-				</p>
+			<TextInput bind:value={walletName} label="Wallet Name" type="text" />
+			<br />
+			<TextInput
+				isDisabled={true}
+				bind:value={wallet.walletAddress}
+				label="Public Key"
+				type="text"
+			/>
+			<br />
+			<div class="private-container">
 				<div
 					class="img"
 					on:click={() => {
-						copyToClipboard(settingsData.walletAddress);
+						showCopyWalletPasswordPopup = true;
 					}}
 				>
-					<CopyIcon />
+					<CopyOrange />
+				</div>
+				<TextInput isDisabled={true} bind:value={privateKey} label="Private Key" type="password" />
+			</div>
+			<br />
+			<h2>Change Password</h2>
+			<br />
+			<TextInput
+				isDisabled={true}
+				bind:value={wallet.walletPassword}
+				label="Current Password"
+				type="password"
+			/>
+			<br />
+			<TextInput bind:value={newPassword} label="New Password" type="password" />
+			<br />
+			<TextInput bind:value={confirmPassword} label="Re-Enter New Password" type="password" />
+			<br />
+			<div class="button-holder">
+				<div class="settings-btn">
+					<Button hasGlow={true} isDisabled={!canChangePassword} on:click={changePassword}>
+						<p slot="text" class="settings-btn-text">Change Password</p>
+					</Button>
 				</div>
 			</div>
-			<div class="confirm-button settings-btn">
-				<Button
-					hasGlow={true}
-					on:click={() => {
-						showExportWalletFilePopup = true;
-					}}
-				>
-					<p slot="text" class="settings-btn-text">Export Wallet File</p>
-				</Button>
-			</div>
-		</div>
-		<TextInput bind:value={settingsData.walletName} label="Wallet Name" type="text" />
-		<br />
-		<TextInput bind:value={settingsData.publicKey} label="Public Key" type="text" />
-		<br />
-		<div class="private-container">
-			<div
-				class="img"
-				on:click={() => {
-					showCopyWalletPasswordPopup = true;
-				}}
-			>
-				<CopyOrange />
-			</div>
-			<TextInput bind:value={settingsData.privateKey} label="Private Key" type="password" />
-		</div>
-		<br />
-		<h2>Change Password</h2>
-		<br />
-		<TextInput bind:value={settingsData.currentPassword} label="Current Password" type="password" />
-		<br />
-		<TextInput bind:value={newPassword} label="New Password" type="password" />
-		<br />
-		<TextInput bind:value={reEnterPassword} label="Re-Enter New Password" type="password" />
-		<br />
-		<div class="button-holder">
-			<div class="settings-btn">
-				<Button hasGlow={true} on:click={changePassword}>
-					<p slot="text" class="settings-btn-text">Change Password</p>
-				</Button>
-			</div>
-		</div>
-		<div class="ok-cancel">
-			<div class="save-bt" on:click={postData}>
-				<Button>
-					<p slot="text" class="btn-text">Save</p>
-				</Button>
-			</div>
-			<div class="cancel-bt">
-				<Button hasRing={true}>
-					<p slot="text" class="btn-text">Cancel</p>
-				</Button>
+			<div class="ok-cancel">
+				<div class="save-bt" on:click={updateWalletDetails}>
+					<Button isDisabled={!canSave}>
+						<p slot="text" class="btn-text">Save</p>
+					</Button>
+				</div>
+				<div class="cancel-bt">
+					<Button hasRing={true}>
+						<p slot="text" class="btn-text">Cancel</p>
+					</Button>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
+{/if}
 
 <style lang="postcss" global>
 	:local(.main) {

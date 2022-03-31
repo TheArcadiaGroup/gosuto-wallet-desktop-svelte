@@ -16,14 +16,15 @@
 	import ProfilePicture from '$lib/components/ProfilePicture.svelte';
 	import { saveData } from '$utils/dataStorage';
 
-	export let avatar = '';
-	export let name = 'unknown name';
+	export let avatar =
+		'https://i.pinimg.com/originals/bf/57/02/bf57026ee75af2f414000cec322f7404.gif';
+	export let name = 'Unknown Name';
 	export let wallet: IWallet;
 
 	const dispatch = createEventDispatcher();
 
 	function saveAddress() {
-		saveData('selectedProfile', wallet.walletAddress);
+		saveData('selectedProfile', JSON.stringify(wallet));
 		goto(`/profile/${wallet.walletAddress}/history`);
 		dispatch('cardClicked');
 	}
@@ -33,7 +34,10 @@
 	<div class="data-column">
 		<div class="pp-and-name">
 			<div class="pp">
-				<ProfilePicture url={avatar || ''} />
+				<ProfilePicture
+					url={avatar ||
+						'https://i.pinimg.com/originals/bf/57/02/bf57026ee75af2f414000cec322f7404.gif'}
+				/>
 			</div>
 			<div class="username">
 				{name.split(' ')[0] || 'unknown name'}'s wallet

@@ -1,3 +1,14 @@
+/*
+- Data to store
+- user
+- wallets
+- selectedProfile or wallet
+- history (mapped object)
+- stake information
+- tokens
+
+*/
+
 export const saveData = (key: string, data: string) => {
 	localStorage.setItem(key, data);
 	return true;

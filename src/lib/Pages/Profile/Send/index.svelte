@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 
 	import ReturnHome from '$lib/components/ReturnHome.svelte';
 	import Button from '$lib/components/Button.svelte';
@@ -8,17 +8,17 @@
 
 	import { page } from '$app/stores';
 	import { shortenAddress } from '$utils';
+	import { selectedWallet } from '$stores/user/wallets';
+	import pollyfillData from '$utils/pollyfillData';
 
 	export let tokens: IToken[] = [];
-
-	export let wallet: IWallet;
 
 	/**
 	 * This is the currently selected index of TokenCards.
 	 * -1 = none
 	 * -2 = create token (handled by parent)
 	 */
-	export let selected = -1;
+	export let selectedToken: IToken | null = null;
 
 	let scroll = 0;
 	let scrollWidth = 0;
@@ -40,27 +40,27 @@
 		if (!event.target) return;
 		const isInToken = Boolean(event.target.closest('.token-card'));
 		const isInAddButton = Boolean(event.target.closest('.add-token-button'));
-		if (!isInToken && !isInAddButton)
-			dispatch('selectToken', {
-				id: -1,
-			});
+		if (!isInToken && !isInAddButton) dispatch('selectToken', null);
 	}
 
 	function cancelButtonListener(event: any): void {
 		if (!event.target) return;
 		const isInCancel = Boolean(event.target.closest('.send-currency-cancel-send-button'));
-		if (isInCancel)
-			dispatch('selectToken', {
-				id: -1,
-			});
+		if (isInCancel) dispatch('selectToken');
 	}
+
+	onMount(() => {
+		if (!$selectedWallet) {
+			pollyfillData();
+		}
+	});
 </script>
 
 <svelte:body on:click={cancelButtonListener} />
 
 <div class="wallet-swap" on:click={deselectListener}>
 	<ReturnHome
-		walletName={wallet?.walletName || 'Unknown'}
+		walletName={$selectedWallet?.walletName || "Unknown's Wallet"}
 		publicKey={shortenAddress($page.params.address)}
 		profileLocation="Swap"
 	/>
@@ -70,7 +70,7 @@
 			<div class="ml-auto">
 				<Button
 					class="add-token-button"
-					on:click={() => dispatch('selectToken', { id: -2 })}
+					on:click={() => dispatch('selectToken', { tokenName: 'AddToken' })}
 					hasGlow={true}
 				>
 					<div slot="text" class="inner-btn">
@@ -85,8 +85,9 @@
 				<div class="token-group">
 					{#each tokens.slice(i * 4, i * 4 + 4) as token, y}
 						<TokenCard
+							{token}
 							cardId={i * 4 + y}
-							selected={selected === i * 4 + y}
+							selected={selectedToken === token}
 							on:selectToken
 							{...token}
 						/>

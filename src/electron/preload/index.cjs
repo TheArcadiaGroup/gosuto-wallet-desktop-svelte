@@ -12,9 +12,27 @@ contextBridge.exposeInMainWorld('api', {
 			'generateMnemonics',
 			'importWalletFromFile',
 			'getHistory',
+			'sendCSPRTokens',
+			'accountTokenBalance',
 		];
 		if (validChannels.includes(channel)) {
 			ipcRenderer.send(channel, data);
+		}
+	},
+	sendSync: (channel, data) => {
+		// whitelist channels, add your channels here
+		let validChannels = [
+			'toMain',
+			'createWalletFromMnemonics',
+			'createWalletFromFile',
+			'generateMnemonics',
+			'importWalletFromFile',
+			'getHistory',
+			'sendCSPRTokens',
+			'accountTokenBalance',
+		];
+		if (validChannels.includes(channel)) {
+			return ipcRenderer.sendSync(channel, data);
 		}
 	},
 	receive: (channel, func) => {
@@ -25,6 +43,8 @@ contextBridge.exposeInMainWorld('api', {
 			'generateMnemonicsResponse',
 			'importWalletFromFileResponse',
 			'getHistoryResponse',
+			'sendCSPRTokensResponse',
+			'accountTokenBalanceResponse',
 		];
 		if (validChannels.includes(channel)) {
 			// Deliberately strip event as it includes `sender`

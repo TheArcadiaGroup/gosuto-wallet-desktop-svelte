@@ -57,10 +57,10 @@
 		</div>
 		<div class="confirm-buttons">
 			<Button>
-				<div slot="text" class="leading-7 my-2">Import</div>
+				<div slot="text" class="my-2 leading-7">Import</div>
 			</Button>
 			<Button
-				on:click={() => dispatch('selectToken', { id: -1 })}
+				on:click={() => dispatch('selectToken', { tokenName: 'Cancel' })}
 				class="create-token-cancel-button"
 				type="button"
 			>
@@ -96,7 +96,7 @@
 	}
 
 	.create-token-inactive-button {
-		@apply bg-transparent border-none !important;
+		@apply bg-transparent border-none text-light-buttonText !important;
 		box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.05);
 	}
 

@@ -8,20 +8,16 @@
 	import HistoryPage from '$lib/pages/History/HistoryPage.svelte';
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 	import Sidebar from '$lib/pages/History/HistoryComponent/Sidebar.svelte';
+	import pollyfillData from '$utils/pollyfillData';
+	import { wallets } from '$stores/user/wallets';
 
 	let data: HistoryObject[] = [];
-	let user: IUser;
 
 	let currentPage = 1;
 	let itemsPerPage = 10;
 
 	onMount(() => {
-		user = (retrieveData('user') as IUser) || {
-			name: 'Unknown User',
-			avatar: '',
-			email: '',
-			wallets: (retrieveData('wallets') as IWallet[]) || [],
-		};
+		pollyfillData();
 
 		getAllHistory();
 	});
@@ -41,7 +37,7 @@
 	};
 
 	async function getAllHistory() {
-		user?.wallets?.forEach((wallet) => {
+		$wallets?.forEach((wallet) => {
 			getData(wallet);
 		});
 	}
@@ -58,7 +54,7 @@
 	</div>
 	<div class="global-grid-mid">
 		{#if data}
-			<HistoryPage {data} hideNavbar={false} on:showMoreClicked={showMoreItems} />
+			<HistoryPage on:showMoreClicked={showMoreItems} />
 		{/if}
 	</div>
 	<div class="global-grid-right">

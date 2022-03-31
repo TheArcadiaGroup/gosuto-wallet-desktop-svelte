@@ -6,35 +6,29 @@
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 	import Sidebar from '$lib/pages/History/HistoryComponent/Sidebar.svelte';
 
-	import { shortenAddress } from '$utils';
 	import { page } from '$app/stores';
-	import { retrieveData } from '$utils/dataStorage';
 	import { getSingleAccountHistory } from '$utils/getHistory';
 	import { sidebarContent } from '$stores/HistoryStore';
+	import pollyfillData from '$utils/pollyfillData';
+	import { selectedWallet, wallets } from '$stores/user/wallets';
 
 	let data: HistoryObject[] = [];
-	let user: IUser;
-	let wallet: IWallet;
+	let wallet: IWallet | null = $selectedWallet;
 	$: walletAddress = $page.params.address;
 
 	let currentPage = 1;
 	let itemsPerPage = 10;
 
 	onMount(() => {
-		// Retrieve the selected profile off the user
-		user = (retrieveData('user') as IUser) || {
-			name: 'Unknown User',
-			avatar: '',
-			email: '',
-			wallets: (retrieveData('wallets') as IWallet[]) || [],
-		};
-
+		pollyfillData();
 		// Can only be called once the user has been set
 		getData();
 	});
 
 	const getData = async () => {
-		wallet = user?.wallets?.filter((wallet) => wallet.walletAddress === walletAddress)[0];
+		wallet =
+			$selectedWallet || $wallets?.filter((wallet) => wallet.walletAddress === walletAddress)[0];
+
 		if (wallet) {
 			const historyObj = await getSingleAccountHistory(
 				wallet.accountHash,
@@ -64,16 +58,10 @@
 			<Navbar />
 		</div>
 		<div class="global-grid-left">
-			<ProfileNavigation {user} on:cardClicked={creditCardClicked} />
+			<ProfileNavigation on:cardClicked={creditCardClicked} />
 		</div>
 		<div class="global-grid-mid">
-			<HistoryPage
-				{data}
-				isInProfileRoute={true}
-				address={shortenAddress($page.params.address)}
-				on:showMoreClicked={showMoreItems}
-				walletName={wallet?.walletName || 'Unknown'}
-			/>
+			<HistoryPage on:showMoreClicked={showMoreItems} />
 		</div>
 		<div class="global-grid-right">
 			<Sidebar historyObject={$sidebarContent} />
@@ -82,7 +70,7 @@
 {/if}
 
 <style lang="postcss" global>
-	:local(.size-full) {
+	/* :local(.size-full) {
 		@apply w-full h-full;
-	}
+	} */
 </style>

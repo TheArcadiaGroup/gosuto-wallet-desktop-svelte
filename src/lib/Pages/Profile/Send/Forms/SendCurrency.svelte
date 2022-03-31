@@ -5,9 +5,11 @@
 	import SelectInput from '$lib/components/SelectInput.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import Popup from '$lib/components/Popup.svelte';
+	import { shortenAddress } from '$utils';
+	import { selectedWallet } from '$stores/user/wallets';
 
-	export let selectedTokenName = 'Tether';
-	export let selectedToken = 'USDT';
+	export let selectedTokenName = 'Casper';
+	export let selectedToken = 'CSPR';
 	export let selectedTokenAddress = '';
 
 	let popup = '';
@@ -21,7 +23,9 @@
 
 	function sendCurrency(): void {
 		popup = 'Send CSPR';
-		popupContent = `You are about to send ${tokenAmount} ${selectedToken} to ${recipientAddress} on the ${network}.`;
+		popupContent = `You are about to send ${tokenAmount} ${selectedToken} to ${shortenAddress(
+			recipientAddress,
+		)} on the ${network}.`;
 		confirmPopup = true;
 	}
 
@@ -29,32 +33,16 @@
 		confirmPopup = false;
 		popupContent = '';
 
-		/*
-		// @ts-ignore
-		const result = await fetch('/api/tokens/send', {
-			method: 'post',
-			body: JSON.stringify({
-				wallet: '1',
-				contractAddress: selectedTokenAddress,
-				tokenAmount,
-				recipientAddress,
-				network,
-				note
-			})
-		})
-		const resultData = await result.json()
-*/
-
-		const result = sendToken(
-			'1',
-			selectedTokenAddress,
+		const result = await sendToken(
+			$selectedWallet?.walletAddress,
+			$selectedWallet?.privateKey,
 			tokenAmount,
 			recipientAddress,
-			network,
-			note,
 		);
 
-		if (!result) popup = 'Send Failed!';
+		console.log(result);
+
+		if (typeof result !== 'string') popup = 'Send Failed!';
 		else {
 			popup = 'Success';
 			popupContent = `You sent ${tokenAmount} ${selectedToken} to ${recipientAddress}`;
@@ -101,12 +89,10 @@
 		<div class="currency-form-row">
 			<SelectInput bind:value={network} class="send-currency-dark-sidebar-input" label="Network">
 				<option value="cspr-network">CSPR Network</option>
-				<option value="cspr-network2">CSPR Network 2</option>
-				<option value="cspr-network3">CSPR Network 3</option>
 			</SelectInput>
 		</div>
 		<div class="currency-buttons">
-			<Button>
+			<Button isDisabled={!$selectedWallet || !recipientAddress || tokenAmount <= 0}>
 				<div slot="text" class="leading-7 my-2">Send</div>
 			</Button>
 			<Button class="send-currency-cancel-send-button" type="button">
@@ -157,7 +143,7 @@
 
 	:local(.currency-money-amount) {
 		@apply flex;
-		@apply ml-8 mt-5;
+		@apply ml-4;
 		@apply font-medium text-sm text-light-grey;
 		@apply dark:text-white;
 	}

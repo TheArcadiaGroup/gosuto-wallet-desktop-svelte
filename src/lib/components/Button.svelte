@@ -40,13 +40,13 @@
 	:local(.main) {
 		@apply flex flex-col md:flex-row h-full w-full items-center justify-center;
 		@apply font-semibold text-xs md:text-lg;
+		@apply text-light-buttonText dark:text-white;
 	}
 
 	:local(.has-icon) {
 		@apply w-20 h-20 md:w-auto md:h-auto;
 		@apply my-9 md:my-0;
-		@apply px-5 bg-white dark:bg-dark-grey rounded-xl;
-		@apply text-light-buttonText dark:text-white;
+		@apply px-5 bg-white dark:bg-dark-grey rounded-xl text-light-buttonText dark:text-white;
 		@apply hover:bg-opacity-70 hover:bg-light-purple hover:text-white transition duration-200;
 		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 	}
@@ -57,13 +57,13 @@
 
 	:local(.no-icon) {
 		@apply rounded-3xl 4xl:rounded-[3rem];
-		@apply justify-center p-0 text-white;
+		@apply justify-center p-0 text-light-buttonText dark:text-white;
 		@apply hover:bg-opacity-70 hover:border-opacity-0 transition duration-200;
 		@apply text-sm;
 	}
 
 	:local(.not-transparent) {
-		@apply bg-light-orange border-light-orange border;
+		@apply bg-light-orange border-light-orange border text-white;
 	}
 
 	:local(.transparent) {

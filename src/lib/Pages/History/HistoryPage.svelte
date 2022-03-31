@@ -7,70 +7,75 @@
 	@see history
 -->
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 
-	import HistoryComponent from './HistoryComponent/HistoryComponent.svelte';
+	// import HistoryComponent from './HistoryComponent/HistoryComponent.svelte';
 	import RoundedSelect from '$lib/components/RoundedSelect.svelte';
 	import ReturnHome from '$lib/components/ReturnHome.svelte';
 	import { sidebarContent } from '$stores/HistoryStore';
+	import { page } from '$app/stores';
+	import { selectedWallet } from '$stores/user/wallets';
+	import pollyfillData from '$utils/pollyfillData';
+	import { shortenAddress } from '$utils';
 
-	export let data: GetHistoryResponse[];
-	export let hideNavbar: boolean = true;
-	export let isInProfileRoute: boolean = false;
-	export let address: string;
-	export let walletName: string;
+	$: isInProfileRoute = $page.path.startsWith('/profile');
+	$: address = $page.params.address;
+	$: walletName = $selectedWallet?.walletName || "Unknown's Wallet";
 
 	const dispatch = createEventDispatcher();
 
 	sidebarContent.set(null);
 
 	// Get history data from data
-	let historyArray: HistoryObject[] = [];
-	let filteredArray: HistoryObject[];
+	let historyArray: IHistory[] = $selectedWallet?.walletHistory || [];
+	let filteredArray: IHistory[];
 
-	type TransactionStatus = 'Received' | 'Sent' | 'Stake' | 'Swap' | 'All' | undefined;
-	let optionsArray: TransactionStatus[] = ['All', 'Received', 'Sent', 'Swap', 'Stake'];
+	let optionsArray = ['all', 'receive', 'send', 'swap', 'stake'];
 	let filterId: number = 0;
 
 	$: historyFilter = optionsArray[filterId];
-	$: switch (filterId) {
-		case 0:
-			filteredArray = historyArray;
-			break;
-		case 1:
-			filteredArray = historyArray.filter((obj) => obj.status === 'Received');
-			break;
-		case 2:
-			filteredArray = historyArray.filter((obj) => obj.status === 'Sent');
-			break;
-		case 3:
-			filteredArray = historyArray.filter((obj) => obj.status === 'Swap');
-			break;
-		case 4:
-			filteredArray = historyArray.filter((obj) => obj.status === 'Stake');
-			break;
-		default:
-			break;
-	}
+	// TODO: REBUILD/REWORK THIS
+	// $: switch (filterId) {
+	// 	case 0:
+	// 		filteredArray = historyArray;
+	// 		break;
+	// 	case 1:
+	// 		filteredArray = historyArray.filter((obj) => obj.transactionType === 'receive');
+	// 		break;
+	// 	case 2:
+	// 		filteredArray = historyArray.filter((obj) => obj.transactionType === 'send');
+	// 		break;
+	// 	case 3:
+	// 		filteredArray = historyArray.filter((obj) => obj.transactionType === 'swap');
+	// 		break;
+	// 	case 4:
+	// 		filteredArray = historyArray.filter((obj) => obj.transactionType === 'stake');
+	// 		break;
+	// 	default:
+	// 		break;
+	// }
 
 	let selectedTokenIndex = -1;
 
 	function selectToken(e: { detail: { id: number } }): void {
 		selectedTokenIndex = e.detail.id;
-		sidebarContent.set(filteredArray[selectedTokenIndex]);
+		// TODO: REBUILD/REWORK THIS
+		// sidebarContent.set(filteredArray[selectedTokenIndex]);
 	}
 
 	function showMoreItems() {
 		dispatch('showMoreClicked');
 	}
+
+	onMount(() => pollyfillData());
 </script>
 
 <div class="main" class:centered={!isInProfileRoute}>
 	<div class="header">
 		{#if !isInProfileRoute}
-			<h3>{historyFilter} History</h3>
+			<h3 class="history-title">{historyFilter} History</h3>
 		{:else}
-			<ReturnHome {walletName} publicKey={address} profileLocation="History" />
+			<ReturnHome {walletName} publicKey={shortenAddress(address)} profileLocation="History" />
 			<br />
 			<h3>History of this wallet</h3>
 		{/if}
@@ -78,7 +83,9 @@
 	</div>
 	<div class="history-holder">
 		<!-- Received -->
-		{#each filteredArray as historyObject, i}
+		<!-- TODO: REBUILD/REWORK THIS -->
+		<!-- {#each filteredArray as historyObject, i}
+			<div class="bg-red-400">Replace with Improved History Component</div>
 			<HistoryComponent
 				on:deselect={() => {
 					selectedTokenIndex = -1;
@@ -87,20 +94,18 @@
 				on:select={selectToken}
 				index={i}
 				clicked={selectedTokenIndex === i}
-				wallet={historyObject.wallet}
-				status={historyObject.status}
-				dateAndTime={historyObject.dateAndTime}
+				wallet={$selectedWallet?.walletName}
+				status={historyObject.transactionType}
+				dateAndTime={historyObject.transactionDate}
 				SwapData={historyObject.SwapData}
-				amount={historyObject.amount}
-				price={historyObject.price}
-				cryptoUnit={historyObject.cryptoUnit}
+				amount={historyObject.transactionFee}
+				price={historyObject.transactionFee}
+				cryptoUnit={historyObject.transactionHash}
 				currencyUnit={historyObject.currencyUnit}
 			/>
-		{/each}
+		{/each} -->
 	</div>
-	<!-- {#if filteredArray.length >= numberOfItemsShown} -->
 	<button on:click={showMoreItems}>Show more</button>
-	<!-- {/if} -->
 </div>
 
 <style lang="postcss" global>
@@ -135,5 +140,9 @@
 
 	:local(.header) {
 		@apply relative items-center justify-between md:flex-col md:items-start md:justify-start;
+	}
+
+	:local(.history-title) {
+		@apply capitalize;
 	}
 </style>

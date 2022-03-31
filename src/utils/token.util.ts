@@ -1,18 +1,11 @@
 import { retrieveData, saveData } from './dataStorage';
+import { getTokenUsdPrice } from './tokens';
 
 export function getAllTokens(): IToken[] {
 	// @ts-ignore
-	const wallets: any = JSON.parse(retrieveData('tokens')) ?? {};
-	const allTokens: IToken[] = [];
+	const tokens: IToken[] = JSON.parse(retrieveData('tokens')) ?? [];
 
-	if (!wallets) return [];
-
-	for (const wallet of Object.values(wallets)) {
-		for (const token of Object.values(wallet))
-			if (!allTokens.includes(token)) allTokens.push(token);
-	}
-
-	return allTokens;
+	return tokens;
 }
 
 export function addToken(wallet: string, token: IToken): boolean {
@@ -37,45 +30,60 @@ export function deleteToken(wallet: string, contractAddress: string): boolean {
 	return false;
 }
 
-export function sendToken(
-	wallet: string,
-	contractAddress: string,
+export async function sendToken(
+	walletAddress: string,
+	privateKey: string,
 	tokenAmount: number,
 	recipientAddress: string,
-	network: string,
-	note?: string,
-): boolean {
-	const tokens: any = retrieveData('tokens');
+	contractAddress: string = 'CSPR',
+	network: string = 'CASPER',
+	note: string = '',
+): Promise<boolean> {
+	return window.api.sendSync('sendCSPRTokens', {
+		senderWallet:
+			// '01cfbe76f5e1b7fd042714d4583e578f47675414efd9c1f8105256cea243f0ab35' ||
+			walletAddress,
+		senderPrivateKey:
+			// 'MC4CAQAwBQYDK2VwBCIEIFvkdWUFtcpt2yOrbWk+v1fHf0y3Ca3+idJYXGkPKV+y' ||
+			privateKey,
+		recipientWallet:
+			// '01cfbe76f5e1b7fd042714d4583e578f47675414efd9c1f8105256cea243f0ab35' ||
+			recipientAddress,
+		amount:
+			// 2500000000 ||
+			tokenAmount,
+	});
+	// const tokens: any = retrieveData('tokens');
 
-	const token = JSON.parse(tokens)?.[wallet]?.[contractAddress] ?? undefined;
+	// const token = JSON.parse(tokens)?.[wallet]?.[contractAddress] ?? undefined;
 
-	if (!token) return false;
+	// if (!token) return false;
 
-	const tokenObject = token as IToken;
+	// const tokenObject = token as IToken;
 
-	if (tokenObject.tokenAmountHeld < tokenAmount) return false;
+	// if (tokenObject.tokenAmountHeld < tokenAmount) return false;
 
-	tokenObject.tokenAmountHeld -= tokenAmount;
+	// tokenObject.tokenAmountHeld -= tokenAmount;
 
-	const tokenUSDValue = getTokenValue(contractAddress);
-	tokenObject.tokenAmountHeld = tokenUSDValue * tokenObject.tokenAmountHeld;
+	// const tokenUSDValue = (await getTokenValue(contractAddress)).price;
+	// tokenObject.tokenAmountHeld = tokenUSDValue * tokenObject.tokenAmountHeld;
 
-	tokens[wallet][contractAddress] = tokenObject;
+	// tokens[wallet][contractAddress] = tokenObject;
 
-	saveData('tokens', JSON.stringify(tokens));
+	// saveData('tokens', JSON.stringify(tokens));
 
-	// send token to a wallet & add it to history
+	// // send token to a wallet & add it to history
 
-	return true;
+	// return true;
 }
 
-export function swapToken(
+export async function swapToken(
 	wallet: string,
 	fromContractAddress: string,
 	fromAmount: number,
 	toContractAddress: string,
 	toAmount: number,
-): boolean {
+): Promise<boolean> {
 	const tokens: any = retrieveData('tokens');
 
 	const token = JSON.parse(tokens)?.[wallet]?.[fromContractAddress] ?? undefined;
@@ -91,10 +99,10 @@ export function swapToken(
 	tokenObject.tokenAmountHeld -= fromAmount;
 	toTokenObject.tokenAmountHeld += toAmount;
 
-	const tokenUSDValue = getTokenValue(fromContractAddress);
+	const tokenUSDValue = (await getTokenValue(fromContractAddress)).price;
 	tokenObject.tokenAmountHeld = tokenUSDValue * tokenObject.tokenAmountHeld;
 
-	const toTokenUSDValue = getTokenValue(toContractAddress);
+	const toTokenUSDValue = (await getTokenValue(toContractAddress)).price;
 	toTokenObject.tokenAmountHeld = toTokenUSDValue * toTokenObject.tokenAmountHeld;
 
 	tokens[wallet][fromContractAddress] = tokenObject;
@@ -108,8 +116,10 @@ export function swapToken(
 	return true;
 }
 
-export function getTokenValue(contractAddress: string): number {
-	return Math.floor(Math.random() * 123456) / 10000;
+export async function getTokenValue(
+	contractAddress: string,
+): Promise<{ price: number; price_change: number }> {
+	return await getTokenUsdPrice(contractAddress);
 }
 
 export function createToken(
