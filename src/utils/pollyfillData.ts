@@ -80,7 +80,7 @@ export const pollyfillSelectedProfile = () => {
 
 	selectedWallet.set(dbSelectedProfile);
 
-	getCsprBalance(dbSelectedProfile.walletAddress);
+	// getCsprBalance(dbSelectedProfile.walletAddress);
 
 	return dbSelectedProfile;
 };

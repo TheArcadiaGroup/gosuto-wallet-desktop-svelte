@@ -73,29 +73,42 @@
 	};
 
 	const confirmAndSendMnemonics = () => {
-		window.api.send('createWalletFromMnemonics', seedPhrase);
+		const data: { accountHex: string; accountHash: string; privateKey: string } =
+			window.api.sendSync('createWalletFromMnemonics', seedPhrase);
+		try {
+			if (data?.accountHex && data?.accountHash && data?.privateKey) {
+				const walletCreationResult = data;
+				accountHex = walletCreationResult['accountHex'];
+				accountHash = walletCreationResult['accountHash'];
+				privateKey = walletCreationResult['privateKey'];
+
+				console.log(walletCreationResult);
+
+				postData();
+			}
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	onMount(() => {
-		window.api.receive(
-			'createWalletFromMnemonicsResponse',
-			(data: { accountHex: string; accountHash: string; privateKey: string }) => {
-				try {
-					if (data?.accountHex && data?.accountHash && data?.privateKey) {
-						const walletCreationResult = data;
-						accountHex = walletCreationResult['accountHex'];
-						accountHash = walletCreationResult['accountHash'];
-						privateKey = walletCreationResult['privateKey'];
-
-						console.log(walletCreationResult);
-
-						postData();
-					}
-				} catch (error) {
-					console.log(error);
-				}
-			},
-		);
+		// window.api.receive(
+		// 	'createWalletFromMnemonicsResponse',
+		// 	(data: { accountHex: string; accountHash: string; privateKey: string }) => {
+		// 		try {
+		// 			if (data?.accountHex && data?.accountHash && data?.privateKey) {
+		// 				const walletCreationResult = data;
+		// 				accountHex = walletCreationResult['accountHex'];
+		// 				accountHash = walletCreationResult['accountHash'];
+		// 				privateKey = walletCreationResult['privateKey'];
+		// 				console.log(walletCreationResult);
+		// 				postData();
+		// 			}
+		// 		} catch (error) {
+		// 			console.log(error);
+		// 		}
+		// 	},
+		// );
 	});
 
 	//TODO: input restrictions
