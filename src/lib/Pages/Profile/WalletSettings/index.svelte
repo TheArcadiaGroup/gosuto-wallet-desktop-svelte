@@ -6,6 +6,7 @@
 	import PasswordToCopyPopup from '$lib/components/PopUps/WalletSettings/PasswordToCopyPopup.svelte';
 	import PasswordToExportPopup from '$lib/components/PopUps/WalletSettings/PasswordToExportPopup.svelte';
 	import WalletCopiedPopup from '$lib/components/PopUps/WalletSettings/WalletCopiedPopup.svelte';
+	import ReturnHome from '$lib/components/ReturnHome.svelte';
 
 	import TextInput from '$lib/components/TextInput.svelte';
 	import Button from '$lib/components/Button.svelte';
@@ -13,8 +14,11 @@
 	import { onMount } from 'svelte';
 	import { selectedWallet, wallets } from '$stores/user/wallets';
 	import pollyfillData, { pollyfillSelectedProfile } from '$utils/pollyfillData';
+
 	import { goto } from '$app/navigation';
 	import { saveData } from '$utils/dataStorage';
+	import { page } from '$app/stores';
+	import { shortenAddress } from '$utils';
 
 	let walletName = '';
 	let privateKey = '';
@@ -158,35 +162,11 @@
 
 		<div class="settings-holder">
 			<div class="header">
-				<div class="left-holder">
-					<div class="back-btn">
-						<div class="img">
-							<BackIcon />
-						</div>
-						<h1>Wallet Settings</h1>
-					</div>
-					<div class="address">
-						<p>
-							{`${wallet?.walletAddress.slice(0, 11)}...${wallet?.walletAddress.slice(-4)}`}
-						</p>
-						<div class="img">
-							<CopyIcon />
-						</div>
-					</div>
-				</div>
-				<div class="address">
-					<p>
-						{`${wallet?.walletAddress.slice(0, 11)}...${wallet?.walletAddress.slice(-4)}`}
-					</p>
-					<div
-						class="img"
-						on:click={() => {
-							copyToClipboard(wallet?.walletAddress);
-						}}
-					>
-						<CopyIcon />
-					</div>
-				</div>
+				<ReturnHome
+					walletName={''}
+					publicKey={shortenAddress($page.params.address)}
+					profileLocation="Wallet Settings"
+				/>
 				<div class="confirm-button settings-btn">
 					<Button
 						hasGlow={true}

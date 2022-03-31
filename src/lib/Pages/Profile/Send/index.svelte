@@ -60,9 +60,9 @@
 
 <div class="wallet-swap" on:click={deselectListener}>
 	<ReturnHome
-		walletName={$selectedWallet?.walletName || "Unknown's Wallet"}
+		walletName={''}
 		publicKey={shortenAddress($page.params.address)}
-		profileLocation="Swap"
+		profileLocation="Send Tokens"
 	/>
 	<div class="container">
 		<div class="title-row">

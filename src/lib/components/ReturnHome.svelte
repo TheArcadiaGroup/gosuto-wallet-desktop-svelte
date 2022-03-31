@@ -19,8 +19,12 @@
 		</div>
 	</div>
 	<p class="return-wallet-title">
-		{walletName}{walletName.endsWith('s') ? "'" : walletName.endsWith("'") ? 's' : "'s"}
-		<span class="return-swap-text">{profileLocation}</span>
+		{#if walletName.trim().length > 0}
+			{walletName}{walletName.endsWith('s') ? "'" : walletName.endsWith("'") ? 's' : "'s"}
+			<span class="return-swap-text">{profileLocation}</span>
+		{:else}
+			<span class="return-swap-text">{profileLocation}</span>
+		{/if}
 	</p>
 	<div class="return-wallet-pub-key">
 		<p class="return-pub-key-text">
