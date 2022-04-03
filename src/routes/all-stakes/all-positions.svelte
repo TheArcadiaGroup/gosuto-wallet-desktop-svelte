@@ -87,7 +87,7 @@
 	<div class="global-grid-left">
 		<div class="size-full">
 			<!-- feed the user profile data to ProfileNavigation component -->
-			<ProfileNavigation forRoute={'all-stakes'} {user} />
+			<ProfileNavigation />
 		</div>
 	</div>
 	<div class="global-grid-mid size-full">
@@ -109,7 +109,7 @@
 				<div class="pb-1">Stake</div>
 			</div>
 			<div class="flex-grow">
-				<svelte:component this={lastCollumnContent[selectedLastCollumnContent]} />
+				<!-- <svelte:component this={lastCollumnContent[selectedLastCollumnContent]} /> -->
 			</div>
 		{:else}
 			<TextSidebar>Select currency you want to swap</TextSidebar>
