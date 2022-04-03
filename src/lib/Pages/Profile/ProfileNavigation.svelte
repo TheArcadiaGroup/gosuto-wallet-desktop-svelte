@@ -125,7 +125,6 @@
 									name={wallet.walletName || 'Unknown Name'}
 									avatar={$user?.avatar || ''}
 									{wallet}
-									on:cardClicked
 								/>
 							</CarouselItem>
 						{/each}

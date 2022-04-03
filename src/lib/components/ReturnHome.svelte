@@ -3,13 +3,16 @@
 
 	import BackIcon from '$icons/BackIcon.svelte';
 	import CopyIcon from '$icons/CopyIcon.svelte';
+	import { selectedWallet } from '$stores/user/wallets';
+	import { pollyfillSelectedProfile } from '$utils/pollyfillData';
+	import { onMount } from 'svelte';
 
 	/**
 	 * A location shown in the title of this component (Wallet {profileLocation})
 	 */
 	export let profileLocation: string = '';
-	export let walletName: string = '';
 	export let publicKey: string = '';
+	export let walletName = 'Unknown';
 </script>
 
 <div class="return-home">

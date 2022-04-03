@@ -9,24 +9,22 @@
 -->
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { createEventDispatcher } from 'svelte';
 
 	import CardGraphics from '$icons/CardGraphics.svelte';
 	import PurpleTriangle from '$icons/PurpleTriangle.svelte';
 	import ProfilePicture from '$lib/components/ProfilePicture.svelte';
 	import { saveData } from '$utils/dataStorage';
+	import { selectedWallet } from '$stores/user/wallets';
 
 	export let avatar =
 		'https://i.pinimg.com/originals/bf/57/02/bf57026ee75af2f414000cec322f7404.gif';
 	export let name = 'Unknown Name';
 	export let wallet: IWallet;
 
-	const dispatch = createEventDispatcher();
-
 	function saveAddress() {
 		saveData('selectedProfile', JSON.stringify(wallet));
+		selectedWallet.set(wallet);
 		goto(`/profile/${wallet.walletAddress}/history`);
-		dispatch('cardClicked');
 	}
 </script>
 

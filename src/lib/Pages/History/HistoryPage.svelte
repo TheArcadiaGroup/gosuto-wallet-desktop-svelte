@@ -15,7 +15,7 @@
 	import { sidebarContent } from '$stores/HistoryStore';
 	import { page } from '$app/stores';
 	import { selectedWallet } from '$stores/user/wallets';
-	import pollyfillData from '$utils/pollyfillData';
+	import { pollyfillSelectedProfile } from '$utils/pollyfillData';
 	import { shortenAddress } from '$utils';
 
 	$: isInProfileRoute = $page.path.startsWith('/profile');
@@ -67,7 +67,12 @@
 		dispatch('showMoreClicked');
 	}
 
-	onMount(() => pollyfillData());
+	// selectedWallet.subscribe((wallet) => {
+	// 	if (wallet) {
+	// 		console.log(wallet);
+	// 		walletName = wallet.walletName;
+	// 	}
+	// });
 </script>
 
 <div class="main" class:centered={!isInProfileRoute}>
