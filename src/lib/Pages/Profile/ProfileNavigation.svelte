@@ -96,10 +96,7 @@
 	<div class="container">
 		<div class="profile-picture-and-name">
 			<div class="profile-picture">
-				<ProfilePicture
-					url={$user?.avatar ||
-						'https://i.pinimg.com/originals/bf/57/02/bf57026ee75af2f414000cec322f7404.gif'}
-				/>
+				<ProfilePicture url={$user?.avatar || '/images/png/avatar.png'} />
 			</div>
 			<div class="username">
 				{$user?.name || 'Unknown Name'}
@@ -160,11 +157,11 @@
 	}
 
 	:local(.username) {
-		@apply font-semibold dark:text-white;
+		@apply font-semibold dark:text-white my-2;
 	}
 
 	:local(.button-container) {
-		@apply mx-6 max-w-xs w-full md:px-4;
+		@apply mx-6 max-w-xs w-full md:px-4 my-2;
 	}
 
 	:local(.carousel-container) {

@@ -45,7 +45,7 @@ export const pollyFillUser = () => {
 		// This object has the global user's settings
 		name: 'Unknown User',
 		email: '',
-		avatar: 'https://i.pinimg.com/originals/bf/57/02/bf57026ee75af2f414000cec322f7404.gif',
+		avatar: '/images/png/avatar.png',
 		theme: 'light',
 	};
 

@@ -15,7 +15,7 @@
 
 	export let customClass = '';
 	export let direction: 'left' | 'right' = 'left';
-	export let disabled = false;
+	let disabled = false;
 
 	/**Handler for clicking the button. Dispatches the `click` even with direction in the event details.*/
 	function click(e: any) {
@@ -23,18 +23,19 @@
 	}
 </script>
 
-<div class="{!disabled ? 'not-disabled' : ''} main {customClass}" on:click={click}>
+<button {disabled} class="main {customClass}" on:click={click}>
 	<div class="w-1/2 {direction == 'right' && 'rotate-180'}">
 		<ArrowLeft />
 	</div>
-</div>
+</button>
 
 <style lang="postcss" global>
 	:local(.main) {
 		@apply h-full aspect-square rounded-full border-transparent border-2 grid place-items-center dark:text-white transition-all;
+		@apply cursor-pointer dark:hover:border-white hover:border-light-gray;
 	}
 
-	:local(.not-disabled) {
-		@apply cursor-pointer dark:hover:border-white hover:border-light-gray;
+	:local(.main:disabled) {
+		@apply cursor-default dark:border-none;
 	}
 </style>

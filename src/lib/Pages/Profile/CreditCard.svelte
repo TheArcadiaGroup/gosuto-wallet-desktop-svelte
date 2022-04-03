@@ -16,8 +16,7 @@
 	import { saveData } from '$utils/dataStorage';
 	import { selectedWallet } from '$stores/user/wallets';
 
-	export let avatar =
-		'https://i.pinimg.com/originals/bf/57/02/bf57026ee75af2f414000cec322f7404.gif';
+	export let avatar = '/images/png/avatar.png';
 	export let name = 'Unknown Name';
 	export let wallet: IWallet;
 
@@ -32,10 +31,7 @@
 	<div class="data-column">
 		<div class="pp-and-name">
 			<div class="pp">
-				<ProfilePicture
-					url={avatar ||
-						'https://i.pinimg.com/originals/bf/57/02/bf57026ee75af2f414000cec322f7404.gif'}
-				/>
+				<ProfilePicture url={avatar || '/images/png/avatar.png'} />
 			</div>
 			<div class="wallet_name">
 				<!-- REMOVED SINCE THIS IS RELATED TO THE WALLET NAME NOT USER NAME -->
