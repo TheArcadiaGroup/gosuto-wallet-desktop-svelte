@@ -57,10 +57,10 @@
 	<div class="global-grid-right sidebar">
 		{#if selectedToken?.tokenName === 'AddToken'}
 			<CreateToken on:selectToken={selectToken} />
-		{:else if selectedToken?.tokenName === 'Cancel'}
-			<TextSidebar>Select a currency to send</TextSidebar>
+		{:else if selectedToken}
+			<SendCurrency {selectedToken} />
 		{:else}
-			<SendCurrency />
+			<TextSidebar>Select a currency to send</TextSidebar>
 		{/if}
 	</div>
 </div>

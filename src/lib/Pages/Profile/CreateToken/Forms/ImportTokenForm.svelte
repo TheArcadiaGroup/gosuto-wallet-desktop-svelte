@@ -60,7 +60,7 @@
 				<div slot="text" class="my-2 leading-7">Import</div>
 			</Button>
 			<Button
-				on:click={() => dispatch('selectToken', { tokenName: 'Cancel' })}
+				on:click={() => dispatch('selectToken', null)}
 				class="create-token-cancel-button"
 				type="button"
 			>

@@ -46,7 +46,7 @@
 	function cancelButtonListener(event: any): void {
 		if (!event.target) return;
 		const isInCancel = Boolean(event.target.closest('.send-currency-cancel-send-button'));
-		if (isInCancel) dispatch('selectToken');
+		if (isInCancel) dispatch('selectToken', null);
 	}
 
 	onMount(() => {

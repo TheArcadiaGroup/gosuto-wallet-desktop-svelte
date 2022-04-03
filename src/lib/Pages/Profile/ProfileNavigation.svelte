@@ -45,7 +45,7 @@
 			{ name: 'send', label: 'Send', icon: PaperAirplane },
 			{ name: 'stake', label: 'Stakes', icon: Stake },
 			{ name: 'settings', label: 'Wallet Settings', icon: Wallet },
-			{ name: 'swap', label: 'Swap', icon: Swap },
+			// { name: 'swap', label: 'Swap', icon: Swap },
 		],
 		'all-stakes': [
 			{ name: 'all-positions', label: 'All positions', icon: ChartPie },
