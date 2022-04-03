@@ -15,6 +15,7 @@
 	import ProfilePicture from '$lib/components/ProfilePicture.svelte';
 	import { saveData } from '$utils/dataStorage';
 	import { selectedWallet } from '$stores/user/wallets';
+	import { page } from '$app/stores';
 
 	export let avatar = '/images/png/avatar.png';
 	export let name = 'Unknown Name';
@@ -23,7 +24,12 @@
 	function saveAddress() {
 		saveData('selectedProfile', JSON.stringify(wallet));
 		selectedWallet.set(wallet);
-		goto(`/profile/${wallet.walletAddress}/history`);
+
+		if ($page.params.address !== wallet.walletAddress) {
+			// $page.params.address = wallet.walletAddress;
+			const newUrl = $page.path.replace($page.params.address, wallet.walletAddress);
+			goto(newUrl);
+		}
 	}
 </script>
 

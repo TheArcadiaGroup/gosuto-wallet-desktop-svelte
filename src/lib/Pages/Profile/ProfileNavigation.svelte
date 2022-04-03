@@ -157,11 +157,11 @@
 	}
 
 	:local(.username) {
-		@apply font-semibold dark:text-white my-2;
+		@apply font-semibold dark:text-white mb-2;
 	}
 
 	:local(.button-container) {
-		@apply mx-6 max-w-xs w-full md:px-4 my-2;
+		@apply mx-6 max-w-xs w-full md:px-4 mb-2;
 	}
 
 	:local(.carousel-container) {
