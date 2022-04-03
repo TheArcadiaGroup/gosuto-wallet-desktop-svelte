@@ -90,8 +90,8 @@
 	</div>
 {/if}
 
-<style lang="postcss" global>
+<!-- <style lang="postcss" global>
 	/* :local(.size-full) {
 		@apply w-full h-full;
 	} */
-</style>
+</style> -->

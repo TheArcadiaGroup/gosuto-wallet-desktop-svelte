@@ -43,7 +43,7 @@
 
 <style lang="postcss" global>
 	:local(.main) {
-		@apply py-3 px-6 md:px-0 md:py-0 w-full flex flex-row overflow-x-auto md:flex-col items-stretch gap-2;
+		@apply pb-3 px-6 md:px-0 md:py-0 w-full flex flex-row overflow-x-auto md:flex-col items-stretch gap-2;
 	}
 
 	:local(.menu-item) {

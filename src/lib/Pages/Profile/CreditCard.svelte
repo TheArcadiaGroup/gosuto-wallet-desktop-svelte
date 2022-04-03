@@ -39,12 +39,14 @@
 						'https://i.pinimg.com/originals/bf/57/02/bf57026ee75af2f414000cec322f7404.gif'}
 				/>
 			</div>
-			<div class="username">
-				{name.split(' ')[0] || 'Unknown'}{name.split(' ')[0].endsWith('s')
+			<div class="wallet_name">
+				<!-- REMOVED SINCE THIS IS RELATED TO THE WALLET NAME NOT USER NAME -->
+				<!-- {name.split(' ')[0] || 'Unknown'}{name.split(' ')[0].endsWith('s')
 					? "'"
 					: name.split(' ')[0].endsWith("'")
 					? 's'
-					: "'s"} Wallet
+					: "'s"} Wallet -->
+				{name}
 			</div>
 		</div>
 		<div class="grow-0">
@@ -101,7 +103,7 @@
 		@apply w-6 h-6 rounded-md overflow-hidden mb-1;
 	}
 
-	:local(.username) {
+	:local(.wallet_name) {
 		@apply text-xs font-bold text-light-purple;
 	}
 

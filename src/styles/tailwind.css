@@ -57,3 +57,7 @@
 	@apply dark:bg-dark-blue bg-white;
 	@apply dark:border-0;
 }
+
+.swiper-button-disabled {
+	@apply cursor-pointer dark:hover:border-white hover:border-light-gray;
+}

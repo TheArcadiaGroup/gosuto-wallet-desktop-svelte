@@ -1,4 +1,6 @@
 <script lang="ts">
+	import 'swiper/css';
+	import 'swiper/css/navigation';
 	import '$styles/tailwind.css';
 
 	import { onMount } from 'svelte';

@@ -10,41 +10,28 @@
 	- `position` = Index in the array of cards.
 -->
 <script>
-	import { swipe } from 'svelte-gestures';
-	import NavigationArrows from '../NavigationArrows.svelte';
-
-	export let position = 0; // position of the carousel
-	export let numberOfCards = 0; // number of cards in the carousel
-
-	/**Handler for siwping left or right on the carousel on mobile*/
-	function handler(e) {
-		e.detail.direction = e.detail.direction === 'right' ? -1 : 1;
-		moveCardCarousel(e);
-	}
-
-	/**Function that moves the cards in the carousel only, if the move wont end up behind boundaires.*/
-	function moveCardCarousel(e) {
-		const direction = e.detail.direction;
-		if (position + direction >= 0 && position + direction < numberOfCards) {
-			position += direction;
-		}
-	}
+	import { Swiper } from 'swiper/svelte';
+	import { Navigation } from 'swiper';
+	import WalletSwitcherIcons from '$lib/components/ProfileNavigation/WalletSwitcherIcons.svelte';
 </script>
 
-<div
+<Swiper
+	spaceBetween={5}
+	slidesPerView={1}
 	class="no-scrollbar carousel"
-	style="--scroll: translateX({-position * 100}%);"
-	use:swipe={{ timeframe: 300, minSwipeDistance: 60 }}
-	on:swipe={handler}
+	modules={[Navigation]}
+	navigation={{ nextEl: '.card-carousel-next', prevEl: '.card-carousel-prev' }}
+	allowTouchMove={true}
 >
 	<slot />
-</div>
+</Swiper>
 
-{#if numberOfCards > 1}
-	<div class="arrows not-on-mobile">
-		<NavigationArrows on:move={moveCardCarousel} carouselPosition={position} {numberOfCards} />
+<div class="arrows">
+	<div class="nav-arrows">
+		<WalletSwitcherIcons direction="left" customClass="card-carousel-prev" />
+		<WalletSwitcherIcons direction="right" customClass="card-carousel-next" />
 	</div>
-{/if}
+</div>
 
 <style lang="postcss" global>
 	/* Removing scrollbar */
@@ -53,14 +40,13 @@
 		scrollbar-width: none; /* Firefox */
 	}
 
-	:local(.no-scrollbar)::-webkit-scrollbar {
+	:local(.no-scrollbar::-webkit-scrollbar) {
 		display: none;
 	}
 
-	:local(.carousel) {
-		@apply py-2 transition-all duration-1000 w-full flex flex-row overflow-x-visible snap-x md:px-1 md:gap-2;
-		/* Using a CSS variable to move the items in the carousel via transform property */
-		transform: var(--scroll);
+	.carousel {
+		@apply py-2 w-full relative px-1;
+		/* // flex flex-row overflow-x-hidden snap-x md:px-1 */
 	}
 
 	:local(.not-on-mobile) {
@@ -69,5 +55,9 @@
 
 	:local(.arrows) {
 		@apply h-6 w-full mt-4;
+	}
+
+	:local(.nav-arrows) {
+		@apply w-full h-full flex flex-row items-center justify-center gap-2;
 	}
 </style>
