@@ -15,6 +15,14 @@
 	let droppedDown: boolean = false;
 </script>
 
+<svelte:window
+	on:click={(e) => {
+		// @ts-ignore
+		if (!e?.target?.closest('.select')) {
+			droppedDown = false;
+		}
+	}}
+/>
 <div class="select">
 	<div
 		class="top cursor-pointer"
