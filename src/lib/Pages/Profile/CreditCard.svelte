@@ -25,11 +25,14 @@
 		saveData('selectedProfile', JSON.stringify(wallet));
 		selectedWallet.set(wallet);
 
-		if ($page.params.address !== wallet.walletAddress) {
-			// $page.params.address = wallet.walletAddress;
+		if ($page.params.address !== wallet.walletAddress && $page.path !== '/profile') {
 			const newUrl = $page.path.replace($page.params.address, wallet.walletAddress);
 			goto(newUrl);
+			return;
 		}
+
+		goto(`/profile/${$selectedWallet?.walletAddress}/history`);
+		return;
 	}
 </script>
 
