@@ -7,7 +7,7 @@
 	import UploadIcon from '$icons/UploadIcon.svelte';
 </script>
 
-<button>
+<button on:click>
 	<div class="bt-content-wrapper">
 		<UploadIcon class="icon" />
 		<span>Choose File</span>

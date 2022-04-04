@@ -6,6 +6,7 @@
 <script lang="ts">
 	import DarkThemeIcon from '$icons/DarkThemeIcon.svelte';
 	import LightThemeIcon from '$icons/LightThemeIcon.svelte';
+	import { pollyFillUser } from '$utils/pollyfillData';
 
 	import { toggleDarkMode } from '$utils/themeSettings';
 
@@ -16,7 +17,8 @@
 
 	/** onMount callback to initialize local dark theme */
 	onMount(() => {
-		if (localStorage.theme == 'dark') {
+		const user = pollyFillUser();
+		if (user.theme == 'dark') {
 			dark = true;
 		} else {
 			dark = false;

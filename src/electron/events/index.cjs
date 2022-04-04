@@ -6,6 +6,7 @@ const profileHistory = require('../utils/profileHistory.cjs');
 const { importWalletFromFile } = require('../utils/walletImportExports.cjs');
 const sendMessage = require('./sendMessage.cjs');
 const { getBalance } = require('../utils/account.cjs');
+const { readFileUsingDialog } = require('../utils/fileInteractions.cjs');
 
 /**
  * Receiving messages from Renderer
@@ -112,5 +113,11 @@ module.exports = () => {
 				walletAddress: parsedData.walletAddress,
 			};
 		}
+	});
+
+	ipcMain.on('selectProfileImage', async (event, data) => {
+		const res = await readFileUsingDialog('profileImage');
+
+		event.returnValue = `data:image/png;base64,${res}`;
 	});
 };

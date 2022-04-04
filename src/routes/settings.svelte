@@ -3,69 +3,69 @@
 	import AvatarCard from '$lib/pages/Settings/AvatarCard.svelte';
 	import ChangeThemeBar from '$lib/pages/Settings/ChangeThemeBar.svelte';
 	import InfoInput from '$lib/pages/Settings/InfoInput.svelte';
-	import SelectItems from '$lib/components/Navbar/SelectItems.svelte';
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 	import RoundedSelectIcon from '$icons/RoundedSelectIcon.svelte';
 
 	import { slide } from 'svelte/transition';
+	import { onMount } from 'svelte';
+	import { pollyFillUser } from '$utils/pollyfillData';
+	import { saveData } from '$utils/dataStorage';
 
-	const networkOptionsArr = ['testnet', 'mainnet'];
-	let networkOptionValue = 1;
+	const networkOptionsArr: ('testnet' | 'mainnet')[] = ['testnet', 'mainnet'];
+	$: networkOptionValue = 1;
 	let droppedDown = false;
 
-	import { onMount } from 'svelte';
-
-	let settingsData: AppSettings = {
+	let settingsData: IUser = {
 		name: 'Jake Waterson',
 		email: 'Jake.waterson@gmail.com',
 		avatar: 'https://miro.medium.com/fit/c/262/262/2*-cdwKPXyVI0ejgxpWkKBeA.jpeg',
+		theme: 'dark',
+		network: 'mainnet',
 	};
+
+	let initialized = false;
 
 	onMount(() => {
-		getData();
+		settingsData = pollyFillUser();
+		initialized = true;
 	});
-
-	const getData = async () => {
-		fetch('/api/settings/appSettings')
-			.then((response) => response.json())
-			.then((response) => {
-				if (response.name) {
-					settingsData.name = response.name;
-					info[0].placeholder = response.name;
-				}
-				if (response.email) {
-					settingsData.email = response.email;
-					info[1].placeholder = response.email;
-				}
-				if (response.avatar) settingsData.avatar = response.avatar;
-			});
-	};
-
-	const postData = async () => {
-		fetch('/api/settings/appSettings', {
-			method: 'POST',
-			body: JSON.stringify(settingsData),
-		}).catch((error) => {
-			console.error('error:', error);
-		});
-	};
 
 	let handleSave = (inputValue: string, infoType: infoCategory) => {
 		info[info.indexOf(infoType)].placeholder = inputValue;
 		info = info;
+
+		if (Object.keys(settingsData).includes(infoType.name.toLowerCase())) {
+			// @ts-ignore
+			settingsData[infoType.name.toLowerCase()] = inputValue.trim();
+			saveData('user', JSON.stringify(settingsData));
+		}
+	};
+
+	$: image = settingsData.avatar;
+
+	const selectProfileImage = () => {
+		const res = window.api.sendSync('selectProfileImage');
+		if (res) {
+			settingsData.avatar = res;
+			// image = settingsData.avatar;
+			console.log(settingsData);
+		}
 	};
 
 	/** Array to be used for creating InfoInput components with an each loop */
-	let info: infoCategory[] = [
+	// Also dynamically updates the UI
+	$: info = [
 		{ name: 'Name', placeholder: settingsData.name },
 		{ name: 'Email', placeholder: settingsData.email },
 	];
 
-	$: {
-		info;
-		settingsData.name = info[0].placeholder;
-		settingsData.email = info[1].placeholder;
-	}
+	// Dynamically Update the Selected Network
+	$: ((selectedNetwork) => {
+		if (initialized) {
+			settingsData['network'] = networkOptionsArr[selectedNetwork];
+			saveData('user', JSON.stringify(settingsData));
+		}
+	})(networkOptionValue);
 </script>
 
 <svelte:window
@@ -86,8 +86,8 @@
 			<div class="settings-content">
 				<div class="settings-left-side">
 					<h1 class="settings-header">Account Settings</h1>
-					<AvatarCard avatar={settingsData.avatar} />
-					<ChooseFileButton />
+					<AvatarCard avatar={image} on:click={selectProfileImage} />
+					<ChooseFileButton on:click={selectProfileImage} />
 				</div>
 				<div class="settings-right-side">
 					{#each info as infoType}
@@ -130,18 +130,10 @@
 							{/if}
 						</div>
 					</div>
-					<div class="settings-localization">
-						<div class="settings-language">
-							<SelectItems items={{ usd: 'USD', eur: 'EUR', jpy: 'JPY' }} />
-						</div>
-						<div class="settings-currency">
-							<SelectItems items={{ en: 'EN', de: 'DE' }} />
-						</div>
-					</div>
-					<div class="settings-buttons">
-						<button class="settings-save-bt" on:click={postData}>Save</button>
+					<!-- <div class="settings-buttons">
+						<button class="settings-save-bt" on:click={saveGlobalUserSettings}>Save</button>
 						<button class="settings-cancel-bt">Cancel</button>
-					</div>
+					</div> -->
 				</div>
 			</div>
 		</div>
@@ -185,20 +177,7 @@
 		@apply w-2/3 md:w-full;
 	}
 
-	.settings-localization {
-		@apply w-[60%];
-		@apply md:hidden;
-	}
-
-	.settings-language {
-		@apply float-right ml-1;
-	}
-
-	.settings-currency {
-		@apply float-left mr-1;
-	}
-
-	.settings-buttons {
+	/* .settings-buttons {
 		@apply flex justify-evenly gap-7 md:gap-10;
 		@apply mt-10 md:mt-20 4xl:mt-40 mb-8;
 		@apply w-full;
@@ -215,7 +194,7 @@
 		@apply bg-white dark:bg-dark-gosutoDark rounded-3xl 4xl:rounded-[3rem];
 		@apply border border-light-orange;
 		@apply w-2/5 md:w-1/2 4xl:w-1/2 py-3 4xl:py-6 min-w-fit;
-	}
+	} */
 
 	.settings-network {
 		@apply flex w-full justify-between items-center flex-row relative px-2;

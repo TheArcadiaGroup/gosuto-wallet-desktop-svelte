@@ -30,6 +30,7 @@ contextBridge.exposeInMainWorld('api', {
 			'getHistory',
 			'sendCSPRTokens',
 			'accountTokenBalance',
+			'selectProfileImage',
 		];
 		if (validChannels.includes(channel)) {
 			return ipcRenderer.sendSync(channel, data);
