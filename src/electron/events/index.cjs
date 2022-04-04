@@ -1,4 +1,4 @@
-const { ipcMain } = require('electron');
+const { ipcMain, app } = require('electron');
 const createWallet = require('../utils/createWallet.cjs');
 const account = require('../utils/account.cjs');
 const { Keys } = require('casper-js-sdk');
@@ -115,9 +115,13 @@ module.exports = () => {
 		}
 	});
 
-	ipcMain.on('selectProfileImage', async (event, data) => {
+	ipcMain.on('selectProfileImage', async (event, _data) => {
 		const res = await readFileUsingDialog('profileImage');
 
-		event.returnValue = `data:image/png;base64,${res}`;
+		event.returnValue = res;
+	});
+
+	ipcMain.on('appInfo', (event, _data) => {
+		event.returnValue = { rootPath: app.getAppPath() };
 	});
 };

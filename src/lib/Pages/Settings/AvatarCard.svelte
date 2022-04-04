@@ -7,15 +7,13 @@
 	import PhotoIcon from '$icons/PhotoIcon.svelte';
 
 	export let avatar: string;
-
-	$: console.log(avatar);
 </script>
 
 <div class="avatarCard-wrapper" on:click>
 	<div class="photoIcon-wrapper">
 		<PhotoIcon class="icon" />
 	</div>
-	<div class="avatarCard-bg" style="--url: url({avatar})" />
+	<div class="avatarCard-bg" style="--url: url('{avatar}')" />
 </div>
 
 <style type="postcss">

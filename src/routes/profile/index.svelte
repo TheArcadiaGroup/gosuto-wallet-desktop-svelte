@@ -7,6 +7,7 @@
 	import { onMount } from 'svelte';
 	import { saveData } from '$utils/dataStorage';
 	import { wallets } from '$stores/user/wallets';
+	import { user } from '$stores/user';
 	import pollyfillData from '$utils/pollyfillData';
 
 	onMount(() => {
@@ -40,7 +41,7 @@
 							saveData('selectedProfile', JSON.stringify(wallet));
 						}}
 					>
-						<CreditCard name={wallet.walletName} {wallet} />
+						<CreditCard name={wallet.walletName} {wallet} avatar={$user.avatar} />
 					</div>
 				{/each}
 			</div>

@@ -47,8 +47,6 @@
 		const res = window.api.sendSync('selectProfileImage');
 		if (res) {
 			settingsData.avatar = res;
-			// image = settingsData.avatar;
-			console.log(settingsData);
 		}
 	};
 
