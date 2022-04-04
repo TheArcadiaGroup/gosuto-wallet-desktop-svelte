@@ -163,6 +163,7 @@ declare global {
 		email: string;
 		avatar: string;
 		theme: string;
+		network: 'mainnet' | 'testnet';
 	}
 
 	interface AppSettings {

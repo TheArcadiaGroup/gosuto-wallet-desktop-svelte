@@ -62,6 +62,7 @@
 		@apply px-4 right-0 md:right-auto;
 		@apply transform -translate-y-16 md:translate-y-0;
 	}
+
 	:local(.selection) {
 		@apply py-3 mr-4;
 	}

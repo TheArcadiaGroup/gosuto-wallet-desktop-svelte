@@ -1,12 +1,18 @@
 <script lang="ts">
 	import ChooseFileButton from '$lib/components/ChooseFileButton.svelte';
-
 	import AvatarCard from '$lib/pages/Settings/AvatarCard.svelte';
 	import ChangeThemeBar from '$lib/pages/Settings/ChangeThemeBar.svelte';
 	import InfoInput from '$lib/pages/Settings/InfoInput.svelte';
-
 	import SelectItems from '$lib/components/Navbar/SelectItems.svelte';
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
+	import RoundedSelectIcon from '$icons/RoundedSelectIcon.svelte';
+
+	import { slide } from 'svelte/transition';
+
+	const networkOptionsArr = ['testnet', 'mainnet'];
+	let networkOptionValue = 1;
+	let droppedDown = false;
+
 	import { onMount } from 'svelte';
 
 	let settingsData: AppSettings = {
@@ -62,6 +68,15 @@
 	}
 </script>
 
+<svelte:window
+	on:click={(e) => {
+		// @ts-ignore
+		if (!e?.target?.closest('.settings-network-select')) {
+			droppedDown = false;
+		}
+	}}
+/>
+
 <div class="flex">
 	<div class="global-grid-nav">
 		<Navbar />
@@ -80,6 +95,40 @@
 					{/each}
 					<div class="settings-theme-bar-wrapper">
 						<ChangeThemeBar />
+					</div>
+					<div class="settings-network">
+						<h2 class="settings-network-title">Network</h2>
+						<!-- Rounded Select -->
+						<div class="settings-network-select">
+							<div
+								class="top cursor-pointer"
+								on:click={() => {
+									droppedDown = !droppedDown;
+								}}
+							>
+								<p class="selection">
+									{networkOptionsArr[networkOptionValue]}
+								</p>
+								<div class="icon" class:rotate={droppedDown}>
+									<RoundedSelectIcon />
+								</div>
+							</div>
+							{#if droppedDown}
+								<div class="options-holder" transition:slide>
+									{#each networkOptionsArr as option, i}
+										<p
+											class="option {i === networkOptionValue ? 'selected' : ''}"
+											on:click={() => {
+												networkOptionValue = i;
+												droppedDown = false;
+											}}
+										>
+											{option}
+										</p>
+									{/each}
+								</div>
+							{/if}
+						</div>
 					</div>
 					<div class="settings-localization">
 						<div class="settings-language">
@@ -166,5 +215,44 @@
 		@apply bg-white dark:bg-dark-gosutoDark rounded-3xl 4xl:rounded-[3rem];
 		@apply border border-light-orange;
 		@apply w-2/5 md:w-1/2 4xl:w-1/2 py-3 4xl:py-6 min-w-fit;
+	}
+
+	.settings-network {
+		@apply flex w-full justify-between items-center flex-row relative px-2;
+	}
+
+	.settings-network-title {
+		@apply dark:text-white;
+	}
+
+	:local(.settings-network-select) {
+		@apply min-w-max w-[30%] md:w-[15%] cursor-pointer bg-white dark:bg-dark-background rounded-3xl;
+		@apply border border-light-lighterGray dark:border-white;
+		@apply text-sm dark:text-white;
+		@apply px-4 absolute right-0 -top-2;
+	}
+
+	:local(.selection) {
+		@apply py-3 mr-4 capitalize;
+	}
+
+	:local(.top) {
+		@apply flex justify-between items-center;
+	}
+
+	:local(.option) {
+		@apply cursor-pointer mb-4 capitalize;
+	}
+
+	:local(.options-holder) {
+		@apply border-t pt-2;
+	}
+
+	:local(.selected) {
+		@apply text-light-purple;
+	}
+
+	:local(.rotate) {
+		@apply transform rotate-180 transition;
 	}
 </style>

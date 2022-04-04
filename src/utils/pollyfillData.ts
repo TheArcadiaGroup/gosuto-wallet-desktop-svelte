@@ -47,6 +47,7 @@ export const pollyFillUser = () => {
 		email: '',
 		avatar: '/images/png/avatar.png',
 		theme: 'light',
+		network: 'mainnet',
 	};
 
 	saveData('user', JSON.stringify(dbUser));
