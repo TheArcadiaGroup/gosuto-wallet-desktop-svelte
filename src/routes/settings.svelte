@@ -1,66 +1,79 @@
 <script lang="ts">
 	import ChooseFileButton from '$lib/components/ChooseFileButton.svelte';
-
 	import AvatarCard from '$lib/pages/Settings/AvatarCard.svelte';
 	import ChangeThemeBar from '$lib/pages/Settings/ChangeThemeBar.svelte';
 	import InfoInput from '$lib/pages/Settings/InfoInput.svelte';
-
-	import SelectItems from '$lib/components/Navbar/SelectItems.svelte';
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
-	import { onMount } from 'svelte';
+	import RoundedSelectIcon from '$icons/RoundedSelectIcon.svelte';
 
-	let settingsData: AppSettings = {
+	import { slide } from 'svelte/transition';
+	import { onMount } from 'svelte';
+	import { pollyFillUser } from '$utils/pollyfillData';
+	import { saveData } from '$utils/dataStorage';
+
+	const networkOptionsArr: ('testnet' | 'mainnet')[] = ['testnet', 'mainnet'];
+	$: networkOptionValue = 1;
+	let droppedDown = false;
+
+	let settingsData: IUser = {
 		name: 'Jake Waterson',
 		email: 'Jake.waterson@gmail.com',
 		avatar: 'https://miro.medium.com/fit/c/262/262/2*-cdwKPXyVI0ejgxpWkKBeA.jpeg',
+		theme: 'dark',
+		network: 'mainnet',
 	};
+
+	let initialized = false;
 
 	onMount(() => {
-		getData();
+		settingsData = pollyFillUser();
+		initialized = true;
 	});
-
-	const getData = async () => {
-		fetch('/api/settings/appSettings')
-			.then((response) => response.json())
-			.then((response) => {
-				if (response.name) {
-					settingsData.name = response.name;
-					info[0].placeholder = response.name;
-				}
-				if (response.email) {
-					settingsData.email = response.email;
-					info[1].placeholder = response.email;
-				}
-				if (response.avatar) settingsData.avatar = response.avatar;
-			});
-	};
-
-	const postData = async () => {
-		fetch('/api/settings/appSettings', {
-			method: 'POST',
-			body: JSON.stringify(settingsData),
-		}).catch((error) => {
-			console.error('error:', error);
-		});
-	};
 
 	let handleSave = (inputValue: string, infoType: infoCategory) => {
 		info[info.indexOf(infoType)].placeholder = inputValue;
 		info = info;
+
+		if (Object.keys(settingsData).includes(infoType.name.toLowerCase())) {
+			// @ts-ignore
+			settingsData[infoType.name.toLowerCase()] = inputValue.trim();
+			saveData('user', JSON.stringify(settingsData));
+		}
+	};
+
+	$: image = settingsData.avatar;
+
+	const selectProfileImage = () => {
+		const res = window.api.sendSync('selectProfileImage');
+		if (res) {
+			settingsData.avatar = res;
+		}
 	};
 
 	/** Array to be used for creating InfoInput components with an each loop */
-	let info: infoCategory[] = [
+	// Also dynamically updates the UI
+	$: info = [
 		{ name: 'Name', placeholder: settingsData.name },
 		{ name: 'Email', placeholder: settingsData.email },
 	];
 
-	$: {
-		info;
-		settingsData.name = info[0].placeholder;
-		settingsData.email = info[1].placeholder;
-	}
+	// Dynamically Update the Selected Network
+	$: ((selectedNetwork) => {
+		if (initialized) {
+			settingsData['network'] = networkOptionsArr[selectedNetwork];
+			saveData('user', JSON.stringify(settingsData));
+		}
+	})(networkOptionValue);
 </script>
+
+<svelte:window
+	on:click={(e) => {
+		// @ts-ignore
+		if (!e?.target?.closest('.settings-network-select')) {
+			droppedDown = false;
+		}
+	}}
+/>
 
 <div class="flex">
 	<div class="global-grid-nav">
@@ -71,8 +84,8 @@
 			<div class="settings-content">
 				<div class="settings-left-side">
 					<h1 class="settings-header">Account Settings</h1>
-					<AvatarCard avatar={settingsData.avatar} />
-					<ChooseFileButton />
+					<AvatarCard avatar={image} on:click={selectProfileImage} />
+					<ChooseFileButton on:click={selectProfileImage} />
 				</div>
 				<div class="settings-right-side">
 					{#each info as infoType}
@@ -81,18 +94,44 @@
 					<div class="settings-theme-bar-wrapper">
 						<ChangeThemeBar />
 					</div>
-					<div class="settings-localization">
-						<div class="settings-language">
-							<SelectItems items={{ usd: 'USD', eur: 'EUR', jpy: 'JPY' }} />
-						</div>
-						<div class="settings-currency">
-							<SelectItems items={{ en: 'EN', de: 'DE' }} />
+					<div class="settings-network">
+						<h2 class="settings-network-title">Network</h2>
+						<!-- Rounded Select -->
+						<div class="settings-network-select">
+							<div
+								class="top cursor-pointer"
+								on:click={() => {
+									droppedDown = !droppedDown;
+								}}
+							>
+								<p class="selection">
+									{networkOptionsArr[networkOptionValue]}
+								</p>
+								<div class="icon" class:rotate={droppedDown}>
+									<RoundedSelectIcon />
+								</div>
+							</div>
+							{#if droppedDown}
+								<div class="options-holder" transition:slide>
+									{#each networkOptionsArr as option, i}
+										<p
+											class="option {i === networkOptionValue ? 'selected' : ''}"
+											on:click={() => {
+												networkOptionValue = i;
+												droppedDown = false;
+											}}
+										>
+											{option}
+										</p>
+									{/each}
+								</div>
+							{/if}
 						</div>
 					</div>
-					<div class="settings-buttons">
-						<button class="settings-save-bt" on:click={postData}>Save</button>
+					<!-- <div class="settings-buttons">
+						<button class="settings-save-bt" on:click={saveGlobalUserSettings}>Save</button>
 						<button class="settings-cancel-bt">Cancel</button>
-					</div>
+					</div> -->
 				</div>
 			</div>
 		</div>
@@ -136,20 +175,7 @@
 		@apply w-2/3 md:w-full;
 	}
 
-	.settings-localization {
-		@apply w-[60%];
-		@apply md:hidden;
-	}
-
-	.settings-language {
-		@apply float-right ml-1;
-	}
-
-	.settings-currency {
-		@apply float-left mr-1;
-	}
-
-	.settings-buttons {
+	/* .settings-buttons {
 		@apply flex justify-evenly gap-7 md:gap-10;
 		@apply mt-10 md:mt-20 4xl:mt-40 mb-8;
 		@apply w-full;
@@ -166,5 +192,44 @@
 		@apply bg-white dark:bg-dark-gosutoDark rounded-3xl 4xl:rounded-[3rem];
 		@apply border border-light-orange;
 		@apply w-2/5 md:w-1/2 4xl:w-1/2 py-3 4xl:py-6 min-w-fit;
+	} */
+
+	.settings-network {
+		@apply flex w-full justify-between items-center flex-row relative px-2;
+	}
+
+	.settings-network-title {
+		@apply dark:text-white;
+	}
+
+	:local(.settings-network-select) {
+		@apply min-w-max w-[30%] md:w-[15%] cursor-pointer bg-white dark:bg-dark-background rounded-3xl;
+		@apply border border-light-lighterGray dark:border-white;
+		@apply text-sm dark:text-white;
+		@apply px-4 absolute right-0 -top-2;
+	}
+
+	:local(.selection) {
+		@apply py-3 mr-4 capitalize;
+	}
+
+	:local(.top) {
+		@apply flex justify-between items-center;
+	}
+
+	:local(.option) {
+		@apply cursor-pointer mb-4 capitalize;
+	}
+
+	:local(.options-holder) {
+		@apply border-t pt-2;
+	}
+
+	:local(.selected) {
+		@apply text-light-purple;
+	}
+
+	:local(.rotate) {
+		@apply transform rotate-180 transition;
 	}
 </style>

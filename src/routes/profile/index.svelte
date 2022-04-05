@@ -7,10 +7,13 @@
 	import { onMount } from 'svelte';
 	import { saveData } from '$utils/dataStorage';
 	import { wallets } from '$stores/user/wallets';
+	import { user } from '$stores/user';
 	import pollyfillData from '$utils/pollyfillData';
 
 	onMount(() => {
-		pollyfillData();
+		if ($wallets.length <= 0) {
+			pollyfillData();
+		}
 	});
 </script>
 
@@ -21,11 +24,13 @@
 	<div class="global-grid-mid">
 		<div class="mid-content">
 			<div class="content-header">
-				<h1>Select Wallet</h1>
-				<div class="button-wrapper" on:click={() => goto('/add-wallet')}>
-					<Button>
-						<div slot="text" class="button">+ Add wallet</div>
-					</Button>
+				<div class="content-header_content">
+					<h1>Select Wallet</h1>
+					<div class="button-wrapper" on:click={() => goto('/add-wallet')}>
+						<Button>
+							<div slot="text" class="button">+ Add wallet</div>
+						</Button>
+					</div>
 				</div>
 			</div>
 			<div class="credit-card-wrapper">
@@ -36,7 +41,7 @@
 							saveData('selectedProfile', JSON.stringify(wallet));
 						}}
 					>
-						<CreditCard name={wallet.walletName} {wallet} />
+						<CreditCard name={wallet.walletName} {wallet} avatar={$user.avatar} />
 					</div>
 				{/each}
 			</div>
@@ -51,12 +56,18 @@
 	}
 
 	:local(.mid-content) {
-		@apply h-full w-1/2 overflow-y-scroll;
+		@apply h-full w-1/2;
 		@apply flex flex-col align-middle items-center gap-10;
-		@apply mt-20;
+		/* @apply mt-20; */
 	}
 
 	:local(.content-header) {
+		@apply flex justify-around gap-4;
+		@apply w-full pt-20 pb-4;
+		@apply sticky top-0 bg-white dark:bg-dark-background z-50;
+	}
+
+	.content-header_content {
 		@apply flex justify-around gap-4;
 		@apply w-1/2;
 	}
@@ -71,8 +82,8 @@
 	}
 
 	:local(.credit-card-wrapper) {
-		@apply flex flex-col place-items-center gap-8 w-1/2;
-		@apply mb-8;
+		@apply flex flex-col place-items-center gap-8 w-full lg:w-1/2;
+		@apply mb-8 h-full overflow-y-scroll pr-3 lg:pr-0;
 	}
 
 	:local(.single-card-wrap) {

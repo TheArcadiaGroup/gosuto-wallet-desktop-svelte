@@ -46,7 +46,7 @@
 	function cancelButtonListener(event: any): void {
 		if (!event.target) return;
 		const isInCancel = Boolean(event.target.closest('.send-currency-cancel-send-button'));
-		if (isInCancel) dispatch('selectToken');
+		if (isInCancel) dispatch('selectToken', null);
 	}
 
 	onMount(() => {
@@ -60,9 +60,9 @@
 
 <div class="wallet-swap" on:click={deselectListener}>
 	<ReturnHome
-		walletName={$selectedWallet?.walletName || "Unknown's Wallet"}
+		walletName={''}
 		publicKey={shortenAddress($page.params.address)}
-		profileLocation="Swap"
+		profileLocation="Send Tokens"
 	/>
 	<div class="container">
 		<div class="title-row">

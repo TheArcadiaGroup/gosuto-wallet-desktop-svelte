@@ -45,7 +45,7 @@
 			{ name: 'send', label: 'Send', icon: PaperAirplane },
 			{ name: 'stake', label: 'Stakes', icon: Stake },
 			{ name: 'settings', label: 'Wallet Settings', icon: Wallet },
-			{ name: 'swap', label: 'Swap', icon: Swap },
+			// { name: 'swap', label: 'Swap', icon: Swap },
 		],
 		'all-stakes': [
 			{ name: 'all-positions', label: 'All positions', icon: ChartPie },
@@ -94,9 +94,9 @@
 
 <div class="main">
 	<div class="container">
-		<div class="pp-and-name">
-			<div class="pp">
-				<ProfilePicture url={$user?.avatar || ''} />
+		<div class="profile-picture-and-name">
+			<div class="profile-picture">
+				<ProfilePicture url={$user?.avatar || '/images/png/avatar.png'} />
 			</div>
 			<div class="username">
 				{$user?.name || 'Unknown Name'}
@@ -111,31 +111,22 @@
 				</div>
 			</div>
 			<div class="carousel-container">
-				<div class="carousel">
-					<!-- TODO: make sure this works - indexOf -->
-					{#if $user && !$wallets}
-						<CardCarousel
-							numberOfCards={$wallets.length || 0}
-							position={$wallets.indexOf($selectedWallet)}
-						>
-							{#each wallets as wallet, i}
-								<CarouselItem {i}>
-									<CreditCard
-										name={$user?.name || 'Unknown Name'}
-										avatar={$user?.avatar || ''}
-										{wallet}
-										on:cardClicked
-									/>
-								</CarouselItem>
-							{/each}
-						</CardCarousel>
-					{/if}
-				</div>
-				<div class="plus-container">
-					<div class="plus" on:click={addWallet}>
-						<PlusIcon />
-					</div>
-				</div>
+				{#if $wallets.length > 0}
+					<CardCarousel
+						numberOfCards={$wallets.length || 0}
+						position={$wallets.indexOf($selectedWallet)}
+					>
+						{#each $wallets as wallet, i}
+							<CarouselItem {i}>
+								<CreditCard
+									name={wallet.walletName || 'Unknown Name'}
+									avatar={$user?.avatar || ''}
+									{wallet}
+								/>
+							</CarouselItem>
+						{/each}
+					</CardCarousel>
+				{/if}
 			</div>
 		{/if}
 		<div class="hr not-on-mobile">
@@ -154,46 +145,35 @@
 	}
 
 	:local(.container) {
-		@apply w-full md:h-0 flex-grow flex flex-col items-center gap-6 md:pt-10;
+		@apply w-full md:h-0 flex-grow flex flex-col items-center md:pt-14;
 	}
-	:local(.pp-and-name) {
+
+	:local(.profile-picture-and-name) {
 		@apply flex-col items-center gap-6 hidden md:flex md:px-4;
 	}
 
-	:local(.pp) {
+	:local(.profile-picture) {
 		@apply w-16 h-16 rounded-xl overflow-hidden border border-light-orangeShadeOne;
 	}
 
 	:local(.username) {
-		@apply font-semibold dark:text-white;
+		@apply font-semibold dark:text-white mb-2;
 	}
 
 	:local(.button-container) {
-		@apply mx-6 max-w-xs w-full md:px-4;
+		@apply mx-6 max-w-xs w-full md:px-4 mb-2;
 	}
 
 	:local(.carousel-container) {
-		@apply w-full flex items-center justify-center relative;
-	}
-
-	:local(.carousel) {
-		@apply w-full overflow-x-hidden px-6 md:px-4;
-	}
-
-	:local(.plus-container) {
-		@apply absolute h-full aspect-[16/10] pointer-events-none;
-	}
-
-	:local(.plus) {
-		@apply absolute z-10 w-12 h-12 -right-2 bg-light-orange grid place-items-center -bottom-2 md:hidden rounded-full pointer-events-auto cursor-pointer transition-all hover:scale-105;
+		@apply w-full;
 	}
 
 	:local(.hr) {
-		@apply w-full md:px-4;
+		@apply w-full md:px-4 pt-6;
 	}
 
 	:local(.profile-menu) {
-		@apply w-full md:max-w-xs md:px-4 md:pb-4;
+		@apply w-full md:max-w-xs md:px-4 md:py-4;
 	}
 
 	:local(.button) {

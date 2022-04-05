@@ -6,6 +6,8 @@
 	import ChoiceCard from '$lib/pages/AddWallet/Landing/ChoiceCard.svelte';
 
 	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
+	import { retrieveData } from '$utils/dataStorage';
 
 	/** A variable for the currently selected choice card */
 	let selected: choiceCard;
@@ -50,6 +52,12 @@
 		selected = choiceCard;
 		choiceCards = choiceCards;
 	};
+
+	let wallets: IWallet[];
+
+	onMount(() => {
+		wallets = retrieveData('wallets');
+	});
 </script>
 
 <div class="addWallet-wrapper">
@@ -68,6 +76,15 @@
 			<Button isDisabled={selected === undefined} on:click={() => goto(selected.route)}>
 				<span slot="text" class="addWallet-bt-text">Next</span>
 			</Button>
+			{#if wallets?.length > 0}
+				<Button
+					class="addWallet-bt addWallet-cancel-bt"
+					isTransparent={true}
+					on:click={() => goto('/profile')}
+				>
+					<span slot="text" class="addWallet-bt-text">Cancel</span>
+				</Button>
+			{/if}
 		</div>
 	</div>
 </div>
@@ -124,5 +141,9 @@
 
 	.addWallet-bt-text {
 		@apply text-base md:text-lg 3xl:text-2xl 4xl:text-5xl font-display font-bold;
+	}
+
+	.addWallet-cancel-bt {
+		@apply mt-10 4xl:mt-16;
 	}
 </style>

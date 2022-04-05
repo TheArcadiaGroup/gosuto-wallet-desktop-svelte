@@ -9,24 +9,30 @@
 -->
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { createEventDispatcher } from 'svelte';
 
 	import CardGraphics from '$icons/CardGraphics.svelte';
 	import PurpleTriangle from '$icons/PurpleTriangle.svelte';
 	import ProfilePicture from '$lib/components/ProfilePicture.svelte';
 	import { saveData } from '$utils/dataStorage';
+	import { selectedWallet } from '$stores/user/wallets';
+	import { page } from '$app/stores';
 
-	export let avatar =
-		'https://i.pinimg.com/originals/bf/57/02/bf57026ee75af2f414000cec322f7404.gif';
+	export let avatar = '/images/png/avatar.png';
 	export let name = 'Unknown Name';
 	export let wallet: IWallet;
 
-	const dispatch = createEventDispatcher();
-
 	function saveAddress() {
 		saveData('selectedProfile', JSON.stringify(wallet));
-		goto(`/profile/${wallet.walletAddress}/history`);
-		dispatch('cardClicked');
+		selectedWallet.set(wallet);
+
+		if ($page.params.address !== wallet.walletAddress && $page.path !== '/profile') {
+			const newUrl = $page.path.replace($page.params.address, wallet.walletAddress);
+			goto(newUrl);
+			return;
+		}
+
+		goto(`/profile/${$selectedWallet?.walletAddress}/history`);
+		return;
 	}
 </script>
 
@@ -34,13 +40,16 @@
 	<div class="data-column">
 		<div class="pp-and-name">
 			<div class="pp">
-				<ProfilePicture
-					url={avatar ||
-						'https://i.pinimg.com/originals/bf/57/02/bf57026ee75af2f414000cec322f7404.gif'}
-				/>
+				<ProfilePicture url={avatar || '/images/png/avatar.png'} />
 			</div>
-			<div class="username">
-				{name.split(' ')[0] || 'unknown name'}'s wallet
+			<div class="wallet_name">
+				<!-- REMOVED SINCE THIS IS RELATED TO THE WALLET NAME NOT USER NAME -->
+				<!-- {name.split(' ')[0] || 'Unknown'}{name.split(' ')[0].endsWith('s')
+					? "'"
+					: name.split(' ')[0].endsWith("'")
+					? 's'
+					: "'s"} Wallet -->
+				{name}
 			</div>
 		</div>
 		<div class="grow-0">
@@ -97,7 +106,7 @@
 		@apply w-6 h-6 rounded-md overflow-hidden mb-1;
 	}
 
-	:local(.username) {
+	:local(.wallet_name) {
 		@apply text-xs font-bold text-light-purple;
 	}
 

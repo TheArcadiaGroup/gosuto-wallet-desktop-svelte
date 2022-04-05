@@ -7,10 +7,9 @@
 	import Popup from '$lib/components/Popup.svelte';
 	import { shortenAddress } from '$utils';
 	import { selectedWallet } from '$stores/user/wallets';
+	import { goto } from '$app/navigation';
 
-	export let selectedTokenName = 'Casper';
-	export let selectedToken = 'CSPR';
-	export let selectedTokenAddress = '';
+	export let selectedToken: IToken;
 
 	let popup = '';
 	let popupContent = '';
@@ -33,19 +32,28 @@
 		confirmPopup = false;
 		popupContent = '';
 
-		const result = await sendToken(
-			$selectedWallet?.walletAddress,
-			$selectedWallet?.privateKey,
-			tokenAmount,
-			recipientAddress,
-		);
+		if ($selectedWallet) {
+			const result = await sendToken(
+				$selectedWallet.walletAddress,
+				$selectedWallet.privateKey,
+				tokenAmount,
+				recipientAddress,
+			);
 
-		console.log(result);
+			console.log(result);
 
-		if (typeof result !== 'string') popup = 'Send Failed!';
-		else {
-			popup = 'Success';
-			popupContent = `You sent ${tokenAmount} ${selectedToken} to ${recipientAddress}`;
+			if (typeof result !== 'string') {
+				popup = 'Send Failed!';
+			} else {
+				popup = 'Success';
+				popupContent = `You sent ${tokenAmount} ${selectedToken} to ${recipientAddress}`;
+			}
+
+			return;
+		} else {
+			// TODO: SHOW NOTIFICATION - NO WALLET FOUND
+			goto('/profile');
+			return;
 		}
 	}
 
@@ -58,20 +66,25 @@
 
 <div class="currency">
 	<form class="currency-form" on:submit|preventDefault={sendCurrency}>
-		<h2 class="currency-form-title">Send {selectedTokenName} ({selectedToken})</h2>
+		<h2 class="currency-form-title">
+			Send {selectedToken.tokenName} ({selectedToken.tokenTicker})
+		</h2>
 		<div class="currency-form-row">
 			<TextInput
 				bind:value={tokenAmount}
 				class="send-currency-dark-sidebar-input"
 				type="number"
-				label="Enter {selectedTokenName} amount"
+				label="Enter {selectedToken.tokenName} amount"
 			/>
 		</div>
 		<div class="currency-money-amount">
 			<p>$0.00 USD</p>
 			<p class="money-right">2.5% Fee</p>
 		</div>
-		<p class="currency-money-amount">Recipient receives: {tokenAmount ?? 0} Tether (0 USD)</p>
+		<p class="currency-money-amount">
+			Recipient receives: {tokenAmount ?? 0}
+			{selectedToken.tokenTicker} (0 USD)
+		</p>
 		<div class="currency-form-row">
 			<TextInput
 				bind:value={recipientAddress}

@@ -9,6 +9,7 @@
 	onMount(async () => {
 		// Data should already be pollyfilled from the __layouts file
 		pollyfillData();
+
 		if ($selectedWallet) {
 			// by the time the function is in here, the selectedWallet will have a value
 			setTimeout(() => goto(`/profile/${$selectedWallet!.walletAddress}`), 1000);

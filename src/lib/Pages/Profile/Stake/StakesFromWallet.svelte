@@ -59,9 +59,9 @@
 <div class="main">
 	<div class="header">
 		<ReturnHome
-			walletName={wallet?.walletName || 'Unknown'}
+			walletName={''}
 			publicKey={shortenAddress($page.params.address)}
-			profileLocation="Stakes"
+			profileLocation="Stake CSPR"
 		/>
 	</div>
 

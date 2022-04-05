@@ -9,17 +9,17 @@
 	export let avatar: string;
 </script>
 
-<div class="avatarCard-wrapper">
+<div class="avatarCard-wrapper" on:click>
 	<div class="photoIcon-wrapper">
 		<PhotoIcon class="icon" />
 	</div>
-	<div class="avatarCard-bg" style="--url: url({avatar})" />
+	<div class="avatarCard-bg" style="--url: url('{avatar}')" />
 </div>
 
 <style type="postcss">
 	.avatarCard-wrapper {
 		@apply grid place-items-center;
-		@apply relative;
+		@apply relative cursor-pointer;
 		@apply w-40 h-40 4xl:w-96 4xl:h-96 overflow-hidden;
 		@apply rounded-3xl 4xl:rounded-[3rem];
 	}

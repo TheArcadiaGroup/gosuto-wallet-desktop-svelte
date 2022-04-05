@@ -15,6 +15,14 @@
 	let droppedDown: boolean = false;
 </script>
 
+<svelte:window
+	on:click={(e) => {
+		// @ts-ignore
+		if (!e?.target?.closest('.select')) {
+			droppedDown = false;
+		}
+	}}
+/>
 <div class="select">
 	<div
 		class="top cursor-pointer"
@@ -54,6 +62,7 @@
 		@apply px-4 right-0 md:right-auto;
 		@apply transform -translate-y-16 md:translate-y-0;
 	}
+
 	:local(.selection) {
 		@apply py-3 mr-4;
 	}

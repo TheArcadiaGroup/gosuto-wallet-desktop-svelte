@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+
 	import BackIcon from '$icons/BackIcon.svelte';
 	import CopyIcon from '$icons/CopyIcon.svelte';
 
@@ -6,19 +8,23 @@
 	 * A location shown in the title of this component (Wallet {profileLocation})
 	 */
 	export let profileLocation: string = '';
-	export let walletName: string = '';
 	export let publicKey: string = '';
+	export let walletName = 'Unknown';
 </script>
 
 <div class="return-home">
 	<div class="return-back-button">
-		<a href="/">
+		<div on:click={() => goto('/profile')}>
 			<BackIcon />
-		</a>
+		</div>
 	</div>
 	<p class="return-wallet-title">
-		{walletName}
-		<span class="return-swap-text">{profileLocation}</span>
+		{#if walletName.trim().length > 0}
+			{walletName}{walletName.endsWith('s') ? "'" : walletName.endsWith("'") ? 's' : "'s"}
+			<span class="return-swap-text">{profileLocation}</span>
+		{:else}
+			<span class="return-swap-text">{profileLocation}</span>
+		{/if}
 	</p>
 	<div class="return-wallet-pub-key">
 		<p class="return-pub-key-text">

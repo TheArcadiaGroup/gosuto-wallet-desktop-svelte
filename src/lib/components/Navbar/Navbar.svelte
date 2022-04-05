@@ -66,8 +66,11 @@
 			on:click={() => activateItem(navItemsValues[6], '/settings')}
 			><NavSettingsIcon class="nav-icon" /></NavItem
 		>
-		<SelectItems class="navbar-select-items" items={{ en: 'EN', de: 'DE' }} />
 		<SelectItems class="navbar-select-items" items={{ usd: 'USD', eur: 'EUR', jpy: 'JPY' }} />
+		<!-- <SelectItems
+			class="navbar-select-items -rotate-90 -ml-3"
+			items={{ testnet: 'Testnet', mainnet: 'Mainnet' }}
+		/> -->
 	</div>
 </div>
 

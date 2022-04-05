@@ -18,7 +18,7 @@
 	 */
 	export let positive = true;
 
-	export let token: IToken;
+	export let token: IToken | null = null;
 	export let tokenName = 'Casper'; // defaults
 	export let tokenTicker = 'CSPR'; // defaults
 	export let tokenAmountHeld = 0;

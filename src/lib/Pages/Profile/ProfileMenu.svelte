@@ -10,7 +10,6 @@
 -->
 <script lang="ts">
 	import { page } from '$app/stores';
-	$: currentSubroute = $page.path.split('/')[2] || ''; // variable that determines what subroute the user is currently on and highlightes the coresponding menu element
 
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
@@ -25,6 +24,8 @@
 		label: string;
 		icon: any;
 	}[];
+
+	$: currentSubroute = $page.path.split('/')[$page.path.split('/').length - 1] || '';
 </script>
 
 <div class="no-scrollbar main">
@@ -43,7 +44,7 @@
 
 <style lang="postcss" global>
 	:local(.main) {
-		@apply py-3 px-6 md:px-0 md:py-0 w-full flex flex-row overflow-x-auto md:flex-col items-stretch gap-2;
+		@apply pb-3 px-6 md:px-0 md:py-0 w-full flex flex-row overflow-x-auto md:flex-col items-stretch gap-2;
 	}
 
 	:local(.menu-item) {

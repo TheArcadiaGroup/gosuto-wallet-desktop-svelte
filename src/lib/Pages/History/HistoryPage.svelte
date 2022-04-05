@@ -15,7 +15,6 @@
 	import { sidebarContent } from '$stores/HistoryStore';
 	import { page } from '$app/stores';
 	import { selectedWallet } from '$stores/user/wallets';
-	import pollyfillData from '$utils/pollyfillData';
 	import { shortenAddress } from '$utils';
 
 	$: isInProfileRoute = $page.path.startsWith('/profile');
@@ -66,8 +65,6 @@
 	function showMoreItems() {
 		dispatch('showMoreClicked');
 	}
-
-	onMount(() => pollyfillData());
 </script>
 
 <div class="main" class:centered={!isInProfileRoute}>

@@ -34,23 +34,30 @@
 .global-grid-nav {
 	@apply w-20 max-h-screen overflow-x-hidden;
 	@apply overflow-y-auto;
+	@apply dark:bg-dark-grey bg-white;
 }
 
 .global-grid-left {
 	@apply min-w-[16rem] max-w-[18.75rem] max-h-screen flex-1;
 	@apply overflow-y-auto;
 	@apply dark:border-0;
+	@apply dark:bg-dark-blue bg-white;
 }
 
 .global-grid-mid {
 	@apply w-full max-h-screen flex-[3];
 	@apply overflow-y-auto;
 	@apply dark:border-0;
+	@apply dark:bg-dark-background bg-white;
 }
 
 .global-grid-right {
 	@apply min-w-[16rem] max-w-[21.875rem] max-h-screen flex-1;
 	@apply overflow-y-auto;
-	@apply dark:bg-dark-blue;
+	@apply dark:bg-dark-blue bg-white;
 	@apply dark:border-0;
+}
+
+.swiper-button-disabled {
+	@apply cursor-pointer dark:hover:border-white hover:border-light-gray;
 }

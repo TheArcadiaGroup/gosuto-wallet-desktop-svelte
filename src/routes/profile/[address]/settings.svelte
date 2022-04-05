@@ -1,14 +1,28 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
+
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 
 	import ProfileNavigation from '$lib/pages/Profile/ProfileNavigation.svelte';
 	import Settings from '$lib/pages/Profile/WalletSettings/index.svelte';
-	import pollyfillData from '$utils/pollyfillData';
+	import { selectedWallet, wallets } from '$stores/user/wallets';
+	import { pollyfillSelectedProfile, pollyFillUser } from '$utils/pollyfillData';
 	import { onMount } from 'svelte';
 
 	onMount(() => {
+		// If no wallets, navigate user to create them
+		if ($wallets.length <= 0) {
+			goto('/profile');
+		}
+
+		// load profile first
+		if ($selectedWallet?.walletAddress.toLowerCase() !== $page.params['address'].toLowerCase()) {
+			pollyfillSelectedProfile();
+		}
+
 		// Retrieve the selected profile off the user
-		pollyfillData();
+		pollyFillUser();
 	});
 </script>
 

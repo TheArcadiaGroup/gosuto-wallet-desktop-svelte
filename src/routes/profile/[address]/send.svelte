@@ -9,9 +9,10 @@
 	import SendCurrency from '$lib/pages/Profile/Send/Forms/SendCurrency.svelte';
 	import CreateToken from '$lib/pages/Profile/CreateToken/CreateToken.svelte';
 	import { goto } from '$app/navigation';
-	import { wallets } from '$stores/user/wallets';
+	import { selectedWallet, wallets } from '$stores/user/wallets';
 	import { tokens } from '$stores/user/tokens';
-	import pollyfillData from '$utils/pollyfillData';
+	import { pollyfillSelectedProfile, pollyFillTokens } from '$utils/pollyfillData';
+	import { page } from '$app/stores';
 
 	/**
 	 * This is the currently selected index of TokenCards.
@@ -25,14 +26,21 @@
 	}
 
 	onMount(async () => {
-		pollyfillData();
-
+		// If no wallets, navigate user to create them
 		if ($wallets.length <= 0) {
 			goto('/profile');
 		}
-	});
 
-	$: console.log($tokens);
+		// load profile first
+		if ($selectedWallet?.walletAddress.toLowerCase() !== $page.params['address'].toLowerCase()) {
+			pollyfillSelectedProfile();
+		}
+
+		// If no tokens are present, load them
+		if ($tokens.length <= 0) {
+			pollyFillTokens();
+		}
+	});
 </script>
 
 <div class="page-container">
@@ -49,10 +57,10 @@
 	<div class="global-grid-right sidebar">
 		{#if selectedToken?.tokenName === 'AddToken'}
 			<CreateToken on:selectToken={selectToken} />
-		{:else if selectedToken?.tokenName === 'Cancel'}
-			<TextSidebar>Select a currency to send</TextSidebar>
+		{:else if selectedToken}
+			<SendCurrency {selectedToken} />
 		{:else}
-			<SendCurrency />
+			<TextSidebar>Select a currency to send</TextSidebar>
 		{/if}
 	</div>
 </div>

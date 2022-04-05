@@ -7,19 +7,22 @@
 -->
 <script lang="ts">
 	import { retrieveData, saveData } from '$utils/dataStorage';
+	import { SwiperSlide } from 'swiper/svelte';
 
 	export let i: number;
 </script>
 
-<div
+<!-- <div
 	class="main"
 	on:click={() => {
 		saveData('defaultWalletIndex', (i + 1).toString());
 	}}
->
+> -->
+<SwiperSlide class="main">
 	<slot />
-</div>
+</SwiperSlide>
 
+<!-- </div> -->
 <style lang="postcss" global>
 	:local(.main) {
 		@apply w-full flex-shrink-0 flex items-center justify-center snap-center;
