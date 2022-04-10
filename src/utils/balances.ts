@@ -1,3 +1,4 @@
+import { user } from '$stores/user';
 import { selectedWallet, wallets } from '$stores/user/wallets';
 import { get } from 'svelte/store';
 import { saveData } from './dataStorage';
@@ -6,7 +7,11 @@ import { getCSPRUsdPrice } from './tokens';
 export const getCsprBalance = async (walletAddress: string) => {
 	const data = window.api.sendSync(
 		'accountTokenBalance',
-		JSON.stringify({ token: 'CSPR', walletAddress: walletAddress }),
+		JSON.stringify({
+			token: 'CSPR',
+			walletAddress: walletAddress,
+			network: get(user)?.network || 'testnet',
+		}),
 	);
 
 	console.log(data);

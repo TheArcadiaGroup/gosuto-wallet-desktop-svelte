@@ -3,6 +3,7 @@ import { tokens } from '$stores/user/tokens';
 import { selectedWallet, wallets } from '$stores/user/wallets';
 import { retrieveData, saveData } from '$utils/dataStorage';
 import { getCsprBalance } from './balances';
+import { loadWalletData } from './dataLoaders';
 import { getCSPRUsdPrice } from './tokens';
 
 // IMPORTANT: If it becomes too expensive to fetch and save data, only save and fetch when the data has changed or was not previously present. (if statements)
@@ -81,7 +82,7 @@ export const pollyfillSelectedProfile = () => {
 
 	selectedWallet.set(dbSelectedProfile);
 
-	// getCsprBalance(dbSelectedProfile.walletAddress);
+	loadWalletData(dbSelectedProfile.walletAddress);
 
 	return dbSelectedProfile;
 };

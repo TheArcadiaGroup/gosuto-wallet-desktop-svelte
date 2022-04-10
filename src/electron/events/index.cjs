@@ -62,12 +62,14 @@ module.exports = () => {
 		const fromPrivateKey = data.senderPrivateKey;
 		const toPublicKey = data.recipientWallet;
 		const amount = data.amount;
+		const network = data.network || 'testnet';
 
 		const res = await account.sendTransaction({
 			fromPublicKey: fromPublicKey,
 			fromPrivateKey: Keys.Ed25519.parsePrivateKey(fromPrivateKey),
 			toPublicKey: toPublicKey,
 			amount: amount,
+			network: network,
 		});
 
 		event.returnValue = res;
@@ -76,13 +78,14 @@ module.exports = () => {
 	// token balance
 	ipcMain.on('accountTokenBalance', async (event, data) => {
 		try {
+			// Testnet is the fallback network here
 			const parsedData = JSON.parse(data); // {walletAddress: publicKey; token: 'CSPR', contractAddress: 'STRING'}
 			switch (parsedData.token) {
 				case 'CSPR':
 					event.returnValue = {
 						token: 'CSPR',
 						walletAddress: parsedData.walletAddress,
-						balance: await getBalance(parsedData.walletAddress),
+						balance: await getBalance(parsedData.walletAddress, parsedData.network || 'testnet'),
 					};
 					break;
 
@@ -91,7 +94,7 @@ module.exports = () => {
 					event.returnValue = {
 						token: 'TOKEN',
 						walletAddress: parsedData.walletAddress,
-						balance: await getBalance(parsedData.walletAddress),
+						balance: await getBalance(parsedData.walletAddress, parsedData.network || 'testnet'),
 					};
 					break;
 
@@ -99,7 +102,7 @@ module.exports = () => {
 					event.returnValue = {
 						token: 'CSPR',
 						walletAddress: parsedData.walletAddress,
-						balance: await getBalance(parsedData.walletAddress),
+						balance: await getBalance(parsedData.walletAddress, parsedData.network || 'testnet'),
 					};
 
 					break;

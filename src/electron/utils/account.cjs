@@ -12,14 +12,24 @@ const { ethers } = require('ethers');
 // const apiUrl = 'http://34.66.154.252:7777';
 // const apiUrl = 'http://52.70.214.247:7777';
 // const apiUrl = 'http://mainnet.gosuto.io:7777/rpc';
-const apiUrl = 'http://testnet.gosuto.io:7777/rpc';
-const casperService = new CasperServiceByJsonRPC(apiUrl);
+const mainnetApiUrl = 'http://mainnet.gosuto.io:7777/rpc';
+const testnetApiUrl = 'http://testnet.gosuto.io:7777/rpc';
 
-const casperClient = new CasperClient(apiUrl);
+function getCasperClientAndService(network) {
+	const casperService = new CasperServiceByJsonRPC(
+		network === 'mainnet' ? mainnetApiUrl : testnetApiUrl,
+	);
+
+	const casperClient = new CasperClient(network === 'mainnet' ? mainnetApiUrl : testnetApiUrl);
+
+	return { casperService, casperClient };
+}
 
 module.exports = {
-	getBalance: async (publicKey) => {
+	getBalance: async (publicKey, network = 'testnet') => {
 		try {
+			const { casperService, casperClient } = getCasperClientAndService(network);
+
 			const latestBlock = await casperService.getLatestBlockInfo();
 			const root = await casperService.getStateRootHash(latestBlock.block.hash);
 
@@ -41,8 +51,9 @@ module.exports = {
 			return '0';
 		}
 	},
-	sendTransaction: async ({ fromPublicKey, fromPrivateKey, toPublicKey, amount }) => {
+	sendTransaction: async ({ fromPublicKey, fromPrivateKey, toPublicKey, amount, network }) => {
 		try {
+			const { casperService, casperClient } = getCasperClientAndService(network);
 			// Read keys from the structure created in #Generating keys
 			const signKeyPair = Keys.Ed25519.parseKeyPair(
 				Buffer.from(fromPublicKey, 'hex'),

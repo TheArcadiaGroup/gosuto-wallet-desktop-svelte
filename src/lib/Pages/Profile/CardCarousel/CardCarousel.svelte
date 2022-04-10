@@ -13,11 +13,16 @@
 	import { Swiper } from 'swiper/svelte';
 	import { Navigation } from 'swiper';
 	import WalletSwitcherIcons from '$lib/components/ProfileNavigation/WalletSwitcherIcons.svelte';
+	import { selectedWallet, wallets } from '$stores/user/wallets';
 </script>
 
 <Swiper
 	spaceBetween={5}
 	slidesPerView={1}
+	loop={true}
+	initialSlide={$wallets.indexOf(
+		$wallets.find((_wallet) => _wallet.walletAddress === $selectedWallet.walletAddress),
+	) || 0}
 	class="no-scrollbar carousel"
 	modules={[Navigation]}
 	navigation={{ nextEl: '.card-carousel-next', prevEl: '.card-carousel-prev' }}

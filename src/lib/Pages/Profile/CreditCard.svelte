@@ -16,6 +16,7 @@
 	import { saveData } from '$utils/dataStorage';
 	import { selectedWallet } from '$stores/user/wallets';
 	import { page } from '$app/stores';
+	import { walletLoaders } from '$stores/dataLoaders';
 
 	export let avatar = '/images/png/avatar.png';
 	export let name = 'Unknown Name';
@@ -53,17 +54,44 @@
 			</div>
 		</div>
 		<div class="grow-0">
-			<div class="field-title">avalible</div>
-			<div class="amount">${wallet?.availableBalanceUSD || 0} USD</div>
+			<div class="field-title">Available</div>
+			<div class="amount">
+				{#if !$walletLoaders[wallet.walletAddress]}
+					<span>
+						${wallet?.availableBalanceUSD.toFixed(2) || 0}
+					</span>
+				{:else}
+					<span class="skeleton-loader" />
+				{/if}
+				USD
+			</div>
 		</div>
 		<hr class="w-1/2" />
 		<div class="grow-0">
-			<div class="field-title">staked</div>
-			<div class="amount">${wallet?.stakedBalance || 0} USD</div>
+			<div class="field-title">Staked</div>
+			<div class="amount">
+				{#if !$walletLoaders[wallet.walletAddress]}
+					<span>
+						${wallet?.stakedBalance.toFixed(2) || 0}
+					</span>
+				{:else}
+					<span class="skeleton-loader" />
+				{/if}
+				USD
+			</div>
 		</div>
 		<div class="unclaimed grow-0">
 			<div class="field-title">unclaimed rewards</div>
-			<div class="amount">${wallet?.unclaimedRewards || 0} USD</div>
+			<div class="amount">
+				{#if !$walletLoaders[wallet.walletAddress]}
+					<span>
+						${wallet?.unclaimedRewards.toFixed(2) || 0}
+					</span>
+				{:else}
+					<span class="skeleton-loader" />
+				{/if}
+				USD
+			</div>
 		</div>
 	</div>
 	<div class="grapics-column">
@@ -91,7 +119,11 @@
 	}
 
 	:local(.amount) {
-		@apply text-2xs xl:text-xs font-semibold;
+		@apply text-2xs xl:text-xs font-semibold max-w-[33%] flex;
+	}
+
+	:local(.amount span) {
+		@apply mr-1;
 	}
 
 	:local(.grapics-column) {

@@ -1,3 +1,5 @@
+import { user } from '$stores/user';
+import { get } from 'svelte/store';
 import { retrieveData, saveData } from './dataStorage';
 import { getTokenUsdPrice } from './tokens';
 
@@ -49,32 +51,9 @@ export async function sendToken(
 		recipientWallet:
 			// '01cfbe76f5e1b7fd042714d4583e578f47675414efd9c1f8105256cea243f0ab35' ||
 			recipientAddress,
-		amount:
-			// 2500000000 ||
-			tokenAmount,
+		amount: tokenAmount,
+		network: get(user)?.network || 'testnet', // use testnet just in case the user makes a mistake
 	});
-	// const tokens: any = retrieveData('tokens');
-
-	// const token = JSON.parse(tokens)?.[wallet]?.[contractAddress] ?? undefined;
-
-	// if (!token) return false;
-
-	// const tokenObject = token as IToken;
-
-	// if (tokenObject.tokenAmountHeld < tokenAmount) return false;
-
-	// tokenObject.tokenAmountHeld -= tokenAmount;
-
-	// const tokenUSDValue = (await getTokenValue(contractAddress)).price;
-	// tokenObject.tokenAmountHeld = tokenUSDValue * tokenObject.tokenAmountHeld;
-
-	// tokens[wallet][contractAddress] = tokenObject;
-
-	// saveData('tokens', JSON.stringify(tokens));
-
-	// // send token to a wallet & add it to history
-
-	// return true;
 }
 
 export async function swapToken(
@@ -109,9 +88,6 @@ export async function swapToken(
 	tokens[wallet][toContractAddress] = toTokenObject;
 
 	saveData('tokens', JSON.stringify(tokens));
-
-	//saveData('tokens:' + wallet + ':' + fromContractAddress, JSON.stringify(tokenObject));
-	//saveData('tokens:' + wallet + ':' + toContractAddress, JSON.stringify(toTokenObject));
 
 	return true;
 }
