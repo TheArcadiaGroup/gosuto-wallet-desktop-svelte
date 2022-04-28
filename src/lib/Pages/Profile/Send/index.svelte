@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	import ReturnHome from '$lib/components/ReturnHome.svelte';
 	import Button from '$lib/components/Button.svelte';
@@ -8,8 +8,6 @@
 
 	import { page } from '$app/stores';
 	import { shortenAddress } from '$utils';
-	import { selectedWallet } from '$stores/user/wallets';
-	import pollyfillData from '$utils/pollyfillData';
 
 	export let tokens: IToken[] = [];
 
@@ -48,12 +46,6 @@
 		const isInCancel = Boolean(event.target.closest('.send-currency-cancel-send-button'));
 		if (isInCancel) dispatch('selectToken', null);
 	}
-
-	onMount(() => {
-		if (!$selectedWallet) {
-			pollyfillData();
-		}
-	});
 </script>
 
 <svelte:body on:click={cancelButtonListener} />

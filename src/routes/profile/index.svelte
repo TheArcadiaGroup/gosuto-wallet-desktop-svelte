@@ -41,7 +41,7 @@
 							saveData('selectedProfile', JSON.stringify(wallet));
 						}}
 					>
-						<CreditCard name={wallet.walletName} {wallet} avatar={$user.avatar} />
+						<CreditCard name={wallet.walletName} {wallet} avatar={$user?.avatar} />
 					</div>
 				{/each}
 			</div>

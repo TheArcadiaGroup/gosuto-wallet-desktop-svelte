@@ -206,5 +206,6 @@ declare global {
 		| 'generateMnemonicsResponse'
 		| 'importWalletFromFileResponse'
 		| 'getHistoryResponse'
-		| 'accountTokenBalanceResponse';
+		| 'accountTokenBalanceResponse'
+		| 'sendCSPRTokensResponse';
 }

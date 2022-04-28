@@ -73,6 +73,8 @@ module.exports = () => {
 		});
 
 		event.returnValue = res;
+
+		sendMessage('sendCSPRTokensResponse', res);
 	});
 
 	// token balance
