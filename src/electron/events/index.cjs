@@ -82,41 +82,50 @@ module.exports = () => {
 		try {
 			// Testnet is the fallback network here
 			const parsedData = JSON.parse(data); // {walletAddress: publicKey; token: 'CSPR', contractAddress: 'STRING'}
+			let returnValue = null;
 			switch (parsedData.token) {
 				case 'CSPR':
-					event.returnValue = {
+					returnValue = {
 						token: 'CSPR',
 						walletAddress: parsedData.walletAddress,
 						balance: await getBalance(parsedData.walletAddress, parsedData.network || 'testnet'),
 					};
+					event.returnValue = returnValue;
+					sendMessage('accountTokenBalanceResponse', returnValue);
 					break;
 
 				case 'TOKEN':
 					// pass in the token contract address and name of the token;
-					event.returnValue = {
+					returnValue = {
 						token: 'TOKEN',
 						walletAddress: parsedData.walletAddress,
 						balance: await getBalance(parsedData.walletAddress, parsedData.network || 'testnet'),
 					};
+					event.returnValue = returnValue;
+					sendMessage('accountTokenBalanceResponse', returnValue);
 					break;
 
 				default:
-					event.returnValue = {
+					returnValue = {
 						token: 'CSPR',
 						walletAddress: parsedData.walletAddress,
 						balance: await getBalance(parsedData.walletAddress, parsedData.network || 'testnet'),
 					};
+					event.returnValue = returnValue;
+					sendMessage('accountTokenBalanceResponse', returnValue);
 
 					break;
 			}
 		} catch (_err) {
 			console.log(_err);
 
-			event.returnValue = {
+			const returnValue = {
 				balance: '0',
 				token: parsedData.token,
 				walletAddress: parsedData.walletAddress,
 			};
+			event.returnValue = returnValue;
+			sendMessage('accountTokenBalanceResponse', returnValue);
 		}
 	});
 

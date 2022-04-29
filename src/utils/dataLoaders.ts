@@ -42,36 +42,7 @@ export const loadWalletData = async (address: string) => {
 		return _loader;
 	});
 
-	// Load wallet info
-	// CSPR Balance
-	// const balance = await getCsprBalance(address);
-	// updateWallet(address, 'availableBalance', balance);
-
-	// // Update the loader data
-	// walletLoaders.update((_loader) => {
-	// 	_loader[address] = false;
-	// 	return _loader;
-	// });
-
-	getCsprBalance(address)
-		.then((balance) => {
-			updateWallet(address, 'availableBalance', balance);
-
-			// Update the loader data
-			walletLoaders.update((_loader) => {
-				_loader[address] = false;
-				return _loader;
-			});
-		})
-		.catch((err) => {
-			updateWallet(address, 'availableBalance', 0);
-
-			// Update the loader data
-			walletLoaders.update((_loader) => {
-				_loader[address] = false;
-				return _loader;
-			});
-		});
+	getCsprBalance(address);
 };
 
 export const loadWalletsData = async (addresses: string[]) => {
