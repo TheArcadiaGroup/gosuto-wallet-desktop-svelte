@@ -3,6 +3,7 @@ import { tokens } from '$stores/user/tokens';
 import { selectedWallet, wallets } from '$stores/user/wallets';
 import { retrieveData, saveData } from '$utils/dataStorage';
 import { loadWalletData } from './dataLoaders';
+import { getTokenValue } from './token.util';
 
 // IMPORTANT: If it becomes too expensive to fetch and save data, only save and fetch when the data has changed or was not previously present. (if statements)
 
@@ -19,14 +20,14 @@ export const pollyFillTokens = async () => {
 		walletsInDB['global'].push({
 			tokenName: 'CSPR',
 			tokenTicker: 'CSPR',
-			tokenAmountHeld: 0,
-			tokenAmountHeldUSD: 0,
+			tokenAmountHeld: selectedWallet.availableBalance,
+			tokenAmountHeldUSD: selectedWallet.availableBalanceUSD,
 			limitedSupply: false,
 			mintableSupply: false,
 			shareToken: true,
 			contractString: '',
 			contractAddress: '',
-			tokenPriceUSD: 0,
+			tokenPriceUSD: (await getTokenValue('CSPR')).price,
 			decimalsOfPrecision: 5,
 			walletAddress: selectedWallet?.walletAddress,
 		});
@@ -35,6 +36,18 @@ export const pollyFillTokens = async () => {
 	}
 
 	// Add all global tokens to the array
+	await Promise.all(
+		walletsInDB.global.map(async (token) => {
+			if (token.tokenTicker === 'CSPR') {
+				token.tokenAmountHeld = selectedWallet.availableBalance;
+				token.tokenAmountHeldUSD = selectedWallet.availableBalanceUSD;
+				token.tokenPriceUSD = (await getTokenValue('CSPR')).price;
+			}
+
+			return token;
+		}),
+	);
+
 	let dbTokens = [...walletsInDB.global];
 
 	if (walletsInDB[selectedWallet.walletAddress.toLowerCase()]) {
