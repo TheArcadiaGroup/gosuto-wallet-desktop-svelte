@@ -206,6 +206,10 @@ declare global {
 		global: IToken[];
 	}
 
+	interface SendTokenArr {
+		[key: string]: any;
+	}
+
 	type MainSendChannels =
 		| 'createWalletFromMnemonics'
 		| 'createWalletFromFile'
