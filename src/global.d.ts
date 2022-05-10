@@ -1,6 +1,16 @@
 /// <reference types="@sveltejs/kit" />
 /// <reference types="svelte" />
 /// <reference types="vite/client" />
+/// <reference types="vite/client" />
+
+interface ImportMetaEnv {
+	readonly VITE_SEND_TX_FEE_PERCENTAGE: string;
+	// more env variables...
+}
+
+interface ImportMeta {
+	readonly env: ImportMetaEnv;
+}
 
 import CoinGecko from 'coingecko-api';
 

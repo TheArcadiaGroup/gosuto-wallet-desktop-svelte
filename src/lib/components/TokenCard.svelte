@@ -43,6 +43,9 @@
 	const dispatch = createEventDispatcher();
 
 	function select(): void {
+		if (token) {
+			token.tokenPriceUSD = tokenPriceInUsd;
+		}
 		dispatch('selectToken', token);
 	}
 </script>
@@ -61,9 +64,11 @@
 			{tokenTicker}
 		</p>
 		<p class="token-card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">
-			{currencySymbol}{(tokenTicker.toLowerCase() === 'cspr'
-				? $selectedWallet?.availableBalance ?? tokenAmountHeld
-				: tokenAmountHeld) * tokenPriceInUsd}
+			{currencySymbol}{(
+				(tokenTicker.toLowerCase() === 'cspr'
+					? $selectedWallet?.availableBalance ?? tokenAmountHeld
+					: tokenAmountHeld) * tokenPriceInUsd
+			).toFixed(4)}
 			{currencyUnit}
 		</p>
 	</div>

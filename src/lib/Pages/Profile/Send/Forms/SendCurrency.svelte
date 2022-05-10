@@ -19,6 +19,13 @@
 	let recipientAddress = '';
 	let note = '';
 	let network = 'cspr-network';
+	$: tokenMinusFee =
+		tokenAmount *
+		(1 -
+			(import.meta.env.VITE_SEND_TX_FEE_PERCENTAGE
+				? +import.meta.env.VITE_SEND_TX_FEE_PERCENTAGE
+				: 2.5) /
+				100);
 
 	function sendCurrency(): void {
 		popup = 'Send CSPR';
@@ -78,12 +85,18 @@
 			/>
 		</div>
 		<div class="currency-money-amount">
-			<p>$0.00 USD</p>
-			<p class="money-right">2.5% Fee</p>
+			<p>
+				${(selectedToken.tokenPriceUSD * tokenMinusFee).toFixed(2)} USD
+			</p>
+			<p class="money-right">{import.meta.env.VITE_SEND_TX_FEE_PERCENTAGE || 2.5}% Fee</p>
 		</div>
 		<p class="currency-money-amount">
-			Recipient receives: {tokenAmount ?? 0}
-			{selectedToken.tokenTicker} (0 USD)
+			Recipient receives: {tokenMinusFee ?? 0}
+			{selectedToken.tokenTicker} ({parseFloat(
+				selectedToken.tokenPriceUSD * tokenMinusFee > 99999999
+					? (selectedToken.tokenPriceUSD * tokenMinusFee).toFixed(2)
+					: (selectedToken.tokenPriceUSD * tokenMinusFee).toFixed(3),
+			)} USD)
 		</p>
 		<div class="currency-form-row">
 			<TextInput

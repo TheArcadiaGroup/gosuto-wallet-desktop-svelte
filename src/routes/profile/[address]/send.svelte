@@ -21,7 +21,7 @@
 	 * -2 = create token
 	 */
 	let selectedToken: IToken | null = null;
-	let _tokens = $tokens.filter((token) => token.walletAddress === $selectedWallet?.walletAddress);
+	let _tokens = $tokens;
 
 	function selectToken(e: any): void {
 		selectedToken = e.detail;
