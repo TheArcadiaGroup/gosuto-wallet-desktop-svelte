@@ -21,7 +21,6 @@
 	 * -2 = create token
 	 */
 	let selectedToken: IToken | null = null;
-	let _tokens = $tokens;
 
 	function selectToken(e: any): void {
 		selectedToken = e.detail;
@@ -51,7 +50,7 @@
 		if ($selectedWallet) {
 			userTokens.map((token) => loadTokenBalance(token, $selectedWallet!.walletAddress));
 		}
-	})(_tokens);
+	})($tokens);
 </script>
 
 <div class="page-container">
@@ -62,7 +61,7 @@
 		<ProfileNavigation />
 	</div>
 	<div class="global-grid-mid">
-		<Send on:selectToken={selectToken} bind:tokens={_tokens} bind:selectedToken />
+		<Send on:selectToken={selectToken} bind:tokens={$tokens} bind:selectedToken />
 	</div>
 	<!-- TODO DISPATCH VALUE IS NOT RESET BUG -->
 	<div class="global-grid-right sidebar">
