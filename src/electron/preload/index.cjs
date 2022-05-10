@@ -13,7 +13,7 @@ contextBridge.exposeInMainWorld('api', {
 			'importWalletFromFile',
 			'getHistory',
 			'sendCSPRTokens',
-			'accountTokenBalance',
+			'accountCsprBalance',
 		];
 		if (validChannels.includes(channel)) {
 			ipcRenderer.send(channel, data);
@@ -29,7 +29,7 @@ contextBridge.exposeInMainWorld('api', {
 			'importWalletFromFile',
 			'getHistory',
 			'sendCSPRTokens',
-			'accountTokenBalance',
+			'accountCsprBalance',
 			'selectProfileImage',
 		];
 		if (validChannels.includes(channel)) {
@@ -45,7 +45,7 @@ contextBridge.exposeInMainWorld('api', {
 			'importWalletFromFileResponse',
 			'getHistoryResponse',
 			'sendCSPRTokensResponse',
-			'accountTokenBalanceResponse',
+			'accountCsprBalanceResponse',
 		];
 		if (validChannels.includes(channel)) {
 			// Deliberately strip event as it includes `sender`

@@ -1,3 +1,11 @@
+import { tokenLoaders } from '$stores/dataLoaders';
+import { user } from '$stores/user';
+import { tokens } from '$stores/user/tokens';
+import { selectedWallet } from '$stores/user/wallets';
+import { retrieveData, saveData } from '$utils/dataStorage';
+import { get } from 'svelte/store';
+
+// TOKEN - TRANSFORM TO TOKEN SPECIFIC ADDRESS AND MAKE IT DYNAMIC
 export const getTokenUsdPrice = async (token: string) => {
 	let result = {
 		price: 0,
@@ -39,4 +47,74 @@ export const getCSPRUsdPrice = async () => {
 			price_change: 0,
 		};
 	}
+};
+
+export const loadTokenBalance = async (token: IToken, walletAddress: string) => {
+	// CSPR Is loaded from the wallet not as a token - its the main global token
+	if (token.tokenTicker !== 'CSPR') {
+		tokenLoaders.update((_loader) => {
+			_loader[token.tokenTicker] = true;
+			return _loader;
+		});
+
+		// TODO Improve This to Match which token is being loaded
+		window.api.send(
+			'tokenBalance',
+			JSON.stringify({
+				token: token.tokenTicker,
+				walletAddress: walletAddress,
+				network: get(user)?.network || 'testnet',
+			}),
+		);
+	}
+};
+
+export const receiveTokenBalance = async () => {
+	window.api.receive('tokenBalanceResponse', async (data: any) => {
+		// If its not the current user's data, discard it
+		if (get(selectedWallet)?.walletAddress.toLowerCase() === data.walletAddress.toLowerCase()) {
+			const dbTokens = retrieveData('tokens');
+			const userTokens: IToken[] = dbTokens[data.walletAddress.toLowerCase()];
+
+			userTokens.map((token) => {
+				if (token.tokenTicker === data.token) {
+					token.tokenAmountHeld = +data.balance;
+					// TODO: SET TOKEN USD BALANCE
+				}
+				return token;
+			});
+
+			const globalTokens: IToken[] = dbTokens.global;
+
+			globalTokens.map((token) => {
+				if (token.tokenTicker === data.token) {
+					token.tokenAmountHeld = +data.balance;
+					// TODO: SET TOKEN USD BALANCE
+				}
+				return token;
+			});
+
+			dbTokens[data.walletAddress.toLowerCase()] = userTokens;
+			dbTokens.global = globalTokens;
+
+			saveData('tokens', dbTokens);
+
+			// Only Update the token balances we wish as opposed to resetting everything
+			tokens.update((tokens) => {
+				tokens.map((token) => {
+					if (token.tokenTicker === data.token) {
+						token.tokenAmountHeld = +data.balance;
+						// TODO: SET TOKEN USD BALANCE
+					}
+					return token;
+				});
+				return tokens;
+			});
+		}
+
+		tokenLoaders.update((_loader) => {
+			_loader[data.token] = false;
+			return _loader;
+		});
+	});
 };

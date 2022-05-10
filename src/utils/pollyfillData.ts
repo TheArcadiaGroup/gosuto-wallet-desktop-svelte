@@ -2,41 +2,48 @@ import { user } from '$stores/user';
 import { tokens } from '$stores/user/tokens';
 import { selectedWallet, wallets } from '$stores/user/wallets';
 import { retrieveData, saveData } from '$utils/dataStorage';
-import { getCsprBalance } from './balances';
 import { loadWalletData } from './dataLoaders';
-import { getCSPRUsdPrice } from './tokens';
 
 // IMPORTANT: If it becomes too expensive to fetch and save data, only save and fetch when the data has changed or was not previously present. (if statements)
 
 export const pollyFillTokens = async () => {
 	// Get current cspr token price in usd
 	const selectedWallet = pollyfillSelectedProfile();
+	let walletsInDB: DBTokens = retrieveData('tokens');
 
-	if (selectedWallet) {
-		let dbTokens: IToken[] = retrieveData('tokens') || [
-			{
-				tokenName: 'CSPR',
-				tokenTicker: 'CSPR',
-				tokenAmountHeld: await getCsprBalance(selectedWallet.walletAddress),
-				tokenAmountHeldUSD:
-					(await getCsprBalance(selectedWallet.walletAddress)) * (await getCSPRUsdPrice()).price,
-				limitedSupply: false,
-				mintableSupply: false,
-				shareToken: true,
-				contractString: '',
-				contractAddress: '',
-				tokenPriceUSD: 0,
-				decimalsOfPrecision: 5,
-				walletAddress: selectedWallet?.walletAddress,
-			},
-		];
+	// Add global token to the global tokens array if not present (this is common when the app has been initialized and its data is not available any more)
+	if (!walletsInDB || !walletsInDB.global?.find((token) => token.tokenTicker === 'CSPR')) {
+		if (!walletsInDB) {
+			walletsInDB = { global: [] };
+		}
+		walletsInDB['global'].push({
+			tokenName: 'CSPR',
+			tokenTicker: 'CSPR',
+			tokenAmountHeld: 0,
+			tokenAmountHeldUSD: 0,
+			limitedSupply: false,
+			mintableSupply: false,
+			shareToken: true,
+			contractString: '',
+			contractAddress: '',
+			tokenPriceUSD: 0,
+			decimalsOfPrecision: 5,
+			walletAddress: selectedWallet?.walletAddress,
+		});
 
-		saveData('tokens', JSON.stringify(dbTokens));
-
-		tokens.set(dbTokens);
+		saveData('tokens', JSON.stringify(walletsInDB));
 	}
 
-	return tokens;
+	// Add all global tokens to the array
+	let dbTokens = [...walletsInDB.global];
+
+	if (walletsInDB[selectedWallet.walletAddress.toLowerCase()]) {
+		dbTokens = [...dbTokens, ...walletsInDB[selectedWallet.walletAddress.toLowerCase()]];
+	}
+
+	tokens.set(dbTokens);
+
+	return dbTokens;
 };
 
 export const pollyFillUser = () => {

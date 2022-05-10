@@ -95,4 +95,8 @@ module.exports = {
 			return err;
 		}
 	},
+	getTokenBalance: async () => {
+		// TODO: IMPROVE THIS
+		return '0';
+	},
 };

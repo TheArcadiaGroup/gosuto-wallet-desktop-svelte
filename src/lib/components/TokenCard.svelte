@@ -5,6 +5,8 @@
 
 	import ProfitUpIcon from '$icons/ProfitUpIcon.svelte';
 	import ProfitDownIcon from '$icons/ProfitDownIcon.svelte';
+	import { selectedWallet } from '$stores/user/wallets';
+	import { tokenLoaders } from '$stores/dataLoaders';
 
 	/**
 	 * The index of this card. Used when dispatching selectToken event to parent
@@ -13,11 +15,6 @@
 
 	export let selected = false;
 
-	/**
-	 * Whether the token is rising (true, green values will be shown), or declining (false, red values will be shown)
-	 */
-	export let positive = true;
-
 	export let token: IToken | null = null;
 	export let tokenName = 'Casper'; // defaults
 	export let tokenTicker = 'CSPR'; // defaults
@@ -25,6 +22,7 @@
 	export let contractAddress = '';
 	let tokenPriceInUsd = 0;
 	let percentageChange = 0;
+	let positive = percentageChange > 0;
 
 	/**
 	 * Code of the real currency shown inside this component
@@ -53,11 +51,19 @@
 	<div class="token-card-left-col">
 		<p class="token-card-title">{tokenName} ({tokenTicker})</p>
 		<p class="token-card-text-sm {positive ? 'text-light-green' : 'text-light-red'}">
-			{tokenAmountHeld}
+			{#if !$tokenLoaders[tokenTicker]}
+				{tokenTicker.toLowerCase() === 'cspr'
+					? $selectedWallet?.availableBalance ?? tokenAmountHeld
+					: tokenAmountHeld}
+			{:else}
+				<span class="skeleton-loader" />
+			{/if}
 			{tokenTicker}
 		</p>
 		<p class="token-card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">
-			{currencySymbol}{tokenAmountHeld * tokenPriceInUsd}
+			{currencySymbol}{(tokenTicker.toLowerCase() === 'cspr'
+				? $selectedWallet?.availableBalance ?? tokenAmountHeld
+				: tokenAmountHeld) * tokenPriceInUsd}
 			{currencyUnit}
 		</p>
 	</div>
@@ -111,7 +117,7 @@
 		@apply text-xs font-bold;
 		@apply text-light-grey;
 		@apply mb-0.5;
-		@apply lg:text-base;
+		@apply lg:text-base uppercase;
 		@apply dark:text-white;
 	}
 

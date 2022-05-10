@@ -5,7 +5,7 @@ const { Keys } = require('casper-js-sdk');
 const profileHistory = require('../utils/profileHistory.cjs');
 const { importWalletFromFile } = require('../utils/walletImportExports.cjs');
 const sendMessage = require('./sendMessage.cjs');
-const { getBalance } = require('../utils/account.cjs');
+const { getBalance, getTokenBalance } = require('../utils/account.cjs');
 const { readFileUsingDialog } = require('../utils/fileInteractions.cjs');
 
 /**
@@ -78,44 +78,17 @@ module.exports = () => {
 	});
 
 	// token balance
-	ipcMain.on('accountTokenBalance', async (event, data) => {
+	ipcMain.on('accountCsprBalance', async (event, data) => {
 		try {
 			// Testnet is the fallback network here
 			const parsedData = JSON.parse(data); // {walletAddress: publicKey; token: 'CSPR', contractAddress: 'STRING'}
-			let returnValue = null;
-			switch (parsedData.token) {
-				case 'CSPR':
-					returnValue = {
-						token: 'CSPR',
-						walletAddress: parsedData.walletAddress,
-						balance: await getBalance(parsedData.walletAddress, parsedData.network || 'testnet'),
-					};
-					event.returnValue = returnValue;
-					sendMessage('accountTokenBalanceResponse', returnValue);
-					break;
-
-				case 'TOKEN':
-					// pass in the token contract address and name of the token;
-					returnValue = {
-						token: 'TOKEN',
-						walletAddress: parsedData.walletAddress,
-						balance: await getBalance(parsedData.walletAddress, parsedData.network || 'testnet'),
-					};
-					event.returnValue = returnValue;
-					sendMessage('accountTokenBalanceResponse', returnValue);
-					break;
-
-				default:
-					returnValue = {
-						token: 'CSPR',
-						walletAddress: parsedData.walletAddress,
-						balance: await getBalance(parsedData.walletAddress, parsedData.network || 'testnet'),
-					};
-					event.returnValue = returnValue;
-					sendMessage('accountTokenBalanceResponse', returnValue);
-
-					break;
-			}
+			const returnValue = {
+				token: 'CSPR',
+				walletAddress: parsedData.walletAddress,
+				balance: await getBalance(parsedData.walletAddress, parsedData.network || 'testnet'),
+			};
+			event.returnValue = returnValue;
+			sendMessage('accountCsprBalanceResponse', returnValue);
 		} catch (_err) {
 			console.log(_err);
 
@@ -125,7 +98,32 @@ module.exports = () => {
 				walletAddress: parsedData.walletAddress,
 			};
 			event.returnValue = returnValue;
-			sendMessage('accountTokenBalanceResponse', returnValue);
+			sendMessage('accountCsprBalanceResponse', returnValue);
+		}
+	});
+
+	// LOAD TOKEN BALANCE - TODO
+	ipcMain.on('tokenBalance', async (event, data) => {
+		try {
+			// Testnet is the fallback network here
+			const parsedData = JSON.parse(data); // {walletAddress: publicKey; token: 'CSPR', contractAddress: 'STRING'}
+			const returnValue = {
+				token: parsedData.token,
+				walletAddress: parsedData.walletAddress,
+				balance: await getTokenBalance(),
+			};
+			event.returnValue = returnValue;
+			sendMessage('tokenBalanceResponse', returnValue);
+		} catch (_err) {
+			console.log(_err);
+
+			const returnValue = {
+				balance: '0',
+				token: parsedData.token,
+				walletAddress: parsedData.walletAddress,
+			};
+			event.returnValue = returnValue;
+			sendMessage('tokenBalanceResponse', returnValue);
 		}
 	});
 

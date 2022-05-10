@@ -3,7 +3,7 @@ import { get } from 'svelte/store';
 
 export const getCsprBalance = (walletAddress: string) => {
 	window.api.send(
-		'accountTokenBalance',
+		'accountCsprBalance',
 		JSON.stringify({
 			token: 'CSPR',
 			walletAddress: walletAddress,

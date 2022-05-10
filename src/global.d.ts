@@ -191,21 +191,28 @@ declare global {
 		pages: number[];
 	}
 
+	interface DBTokens {
+		[key: string]: IToken[];
+		global: IToken[];
+	}
+
 	type MainSendChannels =
 		| 'createWalletFromMnemonics'
 		| 'createWalletFromFile'
 		| 'generateMnemonics'
 		| 'importWalletFromFile'
 		| 'getHistory'
-		| 'accountTokenBalance'
+		| 'accountCsprBalance'
 		| 'sendCSPRTokens'
-		| 'selectProfileImage';
+		| 'selectProfileImage'
+		| 'tokenBalance';
 	type MainReceiveChannels =
 		| 'createWalletFromFileResponse'
 		| 'createWalletFromMnemonicsResponse'
 		| 'generateMnemonicsResponse'
 		| 'importWalletFromFileResponse'
 		| 'getHistoryResponse'
-		| 'accountTokenBalanceResponse'
-		| 'sendCSPRTokensResponse';
+		| 'accountCsprBalanceResponse'
+		| 'sendCSPRTokensResponse'
+		| 'tokenBalanceResponse';
 }

@@ -13,6 +13,7 @@
 	import { tokens } from '$stores/user/tokens';
 	import { pollyfillSelectedProfile, pollyFillTokens } from '$utils/pollyfillData';
 	import { page } from '$app/stores';
+	import { loadTokenBalance, receiveTokenBalance } from '$utils/tokens';
 
 	/**
 	 * This is the currently selected index of TokenCards.
@@ -20,6 +21,7 @@
 	 * -2 = create token
 	 */
 	let selectedToken: IToken | null = null;
+	let _tokens = $tokens.filter((token) => token.walletAddress === $selectedWallet?.walletAddress);
 
 	function selectToken(e: any): void {
 		selectedToken = e.detail;
@@ -40,7 +42,16 @@
 		if ($tokens.length <= 0) {
 			pollyFillTokens();
 		}
+
+		receiveTokenBalance();
 	});
+
+	$: ((userTokens) => {
+		// Load all token balances
+		if ($selectedWallet) {
+			userTokens.map((token) => loadTokenBalance(token, $selectedWallet!.walletAddress));
+		}
+	})(_tokens);
 </script>
 
 <div class="page-container">
@@ -51,7 +62,7 @@
 		<ProfileNavigation />
 	</div>
 	<div class="global-grid-mid">
-		<Send on:selectToken={selectToken} bind:tokens={$tokens} bind:selectedToken />
+		<Send on:selectToken={selectToken} bind:tokens={_tokens} bind:selectedToken />
 	</div>
 	<!-- TODO DISPATCH VALUE IS NOT RESET BUG -->
 	<div class="global-grid-right sidebar">
