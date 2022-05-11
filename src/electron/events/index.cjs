@@ -7,6 +7,7 @@ const { importWalletFromFile } = require('../utils/walletImportExports.cjs');
 const sendMessage = require('./sendMessage.cjs');
 const { getBalance, getTokenBalance } = require('../utils/account.cjs');
 const { readFileUsingDialog } = require('../utils/fileInteractions.cjs');
+const { getAllValidators, delegate, undelegate } = require('../utils/staking.cjs');
 
 /**
  * Receiving messages from Renderer
@@ -125,6 +126,27 @@ module.exports = () => {
 			event.returnValue = returnValue;
 			sendMessage('tokenBalanceResponse', returnValue);
 		}
+	});
+
+	// STAKING
+	// Get Validators
+	ipcMain.on('getValidators', async (event, data) => {
+		const validators = await getAllValidators();
+		event.returnValue = validators;
+
+		sendMessage('getValidatorsResponse', validators);
+
+		return validators;
+	});
+
+	// Stake/Delegate
+	ipcMain.on('delegate', async (event, data) => {
+		sendMessage('delegateResponse', null);
+	});
+
+	// Unstake/Undelegate
+	ipcMain.on('undelegate', async (event, data) => {
+		sendMessage('undelegateResponse', null);
 	});
 
 	ipcMain.on('selectProfileImage', async (event, _data) => {

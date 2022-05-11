@@ -219,7 +219,10 @@ declare global {
 		| 'accountCsprBalance'
 		| 'sendCSPRTokens'
 		| 'selectProfileImage'
-		| 'tokenBalance';
+		| 'tokenBalance'
+		| 'getValidators'
+		| 'delegate'
+		| 'undelegate';
 	type MainReceiveChannels =
 		| 'createWalletFromFileResponse'
 		| 'createWalletFromMnemonicsResponse'
@@ -228,5 +231,8 @@ declare global {
 		| 'getHistoryResponse'
 		| 'accountCsprBalanceResponse'
 		| 'sendCSPRTokensResponse'
-		| 'tokenBalanceResponse';
+		| 'tokenBalanceResponse'
+		| 'getValidatorsResponse'
+		| 'delegateResponse'
+		| 'undelegateResponse';
 }

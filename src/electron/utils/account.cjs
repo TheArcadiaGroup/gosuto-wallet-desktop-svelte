@@ -1,29 +1,6 @@
-const bip39 = require('bip39');
-const {
-	CasperClient,
-	Keys,
-	CasperServiceByJsonRPC,
-	CLPublicKey,
-	DeployUtil,
-} = require('casper-js-sdk');
+const { Keys, CLPublicKey, DeployUtil } = require('casper-js-sdk');
 const { ethers } = require('ethers');
-
-//Create Casper client and service to interact with Casper node.
-// const apiUrl = 'http://34.66.154.252:7777';
-// const apiUrl = 'http://52.70.214.247:7777';
-// const apiUrl = 'http://mainnet.gosuto.io:7777/rpc';
-const mainnetApiUrl = 'http://mainnet.gosuto.io:7777/rpc';
-const testnetApiUrl = 'http://testnet.gosuto.io:7777/rpc';
-
-function getCasperClientAndService(network) {
-	const casperService = new CasperServiceByJsonRPC(
-		network === 'mainnet' ? mainnetApiUrl : testnetApiUrl,
-	);
-
-	const casperClient = new CasperClient(network === 'mainnet' ? mainnetApiUrl : testnetApiUrl);
-
-	return { casperService, casperClient };
-}
+const { getCasperClientAndService } = require('./index.cjs');
 
 module.exports = {
 	getBalance: async (publicKey, network = 'testnet') => {
@@ -60,7 +37,7 @@ module.exports = {
 				Buffer.from(fromPrivateKey, 'hex'),
 			);
 
-			let networkName = 'casper';
+			let networkName = network === 'mainnet' ? 'casper' : 'casper-testnet';
 
 			// For native-transfers the payment price is fixed
 			const paymentAmount = 10000000000;
