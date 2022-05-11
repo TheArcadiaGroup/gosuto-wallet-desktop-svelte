@@ -1,36 +1,36 @@
 import { walletLoaders } from '$stores/dataLoaders';
-import { selectedWallet, wallets } from '$stores/user/wallets';
-import { get } from 'svelte/store';
 import { getCsprBalance } from './balances';
-import { saveData } from './dataStorage';
+// import { selectedWallet, wallets } from '$stores/user/wallets';
+// import { get } from 'svelte/store';
+// import { saveData } from './dataStorage';
 
-const updateWallet = (address: string, propertyName: string, propertyValue: any) => {
-	if (get(selectedWallet)?.walletAddress.toLowerCase().trim() === address.toLowerCase().trim()) {
-		selectedWallet.update((wallet) => {
-			if (wallet && wallet.hasOwnProperty(propertyName)) {
-				// @ts-ignore
-				wallet[propertyName] = propertyValue;
-			}
+// const updateWallet = (address: string, propertyName: string, propertyValue: any) => {
+// 	if (get(selectedWallet)?.walletAddress.toLowerCase().trim() === address.toLowerCase().trim()) {
+// 		selectedWallet.update((wallet) => {
+// 			if (wallet && wallet.hasOwnProperty(propertyName)) {
+// 				// @ts-ignore
+// 				wallet[propertyName] = propertyValue;
+// 			}
 
-			return wallet;
-		});
+// 			return wallet;
+// 		});
 
-		saveData('selectedProfile', JSON.stringify(get(selectedWallet)));
-	}
+// 		saveData('selectedProfile', JSON.stringify(get(selectedWallet)));
+// 	}
 
-	const _wallets = get(wallets).map((wallet) => {
-		if (wallet.walletAddress.toLowerCase().trim() === address.toLowerCase().trim()) {
-			if (wallet && wallet.hasOwnProperty(propertyName)) {
-				// @ts-ignore
-				wallet[propertyName] = propertyValue;
-			}
-		}
+// 	const _wallets = get(wallets).map((wallet) => {
+// 		if (wallet.walletAddress.toLowerCase().trim() === address.toLowerCase().trim()) {
+// 			if (wallet && wallet.hasOwnProperty(propertyName)) {
+// 				// @ts-ignore
+// 				wallet[propertyName] = propertyValue;
+// 			}
+// 		}
 
-		return wallet;
-	});
+// 		return wallet;
+// 	});
 
-	saveData('wallets', JSON.stringify(_wallets));
-};
+// 	saveData('wallets', JSON.stringify(_wallets));
+// };
 
 export const loadWalletData = async (address: string) => {
 	// Takes the wallet address and sets its loading status to true in the wallets loading state store
