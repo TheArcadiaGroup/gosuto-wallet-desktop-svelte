@@ -46,6 +46,7 @@
 		"ethers": "^5.6.2",
 		"node-jose": "^2.1.0",
 		"svelte-gestures": "^1.4.1",
+		"svelte-loading-spinners": "^0.1.7",
 		"swiper": "^8.0.7",
 		"tweetnacl": "^1.0.3",
 		"ws": "^8.5.0"

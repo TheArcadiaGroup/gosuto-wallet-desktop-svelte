@@ -144,11 +144,12 @@ declare global {
 
 	interface IValidator {
 		validatorName: string;
-		uptime: number;
+		validatorPosition: number;
 		validatorCommission: number;
-		votingPower: number;
-		selfDelegation: number;
 		delegationReturn: number;
+		currentDelegators: number;
+		currentStaked: number;
+		totalValidators: number;
 	}
 
 	interface IStake {

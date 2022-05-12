@@ -8,34 +8,34 @@
 <script lang="ts">
 	import { decimalToPercentage } from '$utils';
 
-	export let validatorData: IValidator;
+	export let validator: IValidator;
 </script>
 
 <div class="{$$props.class} main">
 	<div class="header">
-		<h4>{validatorData.validatorName}</h4>
+		<h4>{validator.validatorName}</h4>
 		<p class="delegate">Delegate</p>
 	</div>
 	<div class="details-holder">
 		<div class="detail left">
-			<p class="detail-title">Uptime</p>
-			<p class="detail-value">{decimalToPercentage(validatorData.uptime)} %</p>
+			<p class="detail-title">Validator Position</p>
+			<p class="detail-value">{validator.validatorPosition}</p>
 		</div>
 		<div class="detail mid">
 			<p class="detail-title">Validator Commission</p>
-			<p class="detail-value">{decimalToPercentage(validatorData.validatorCommission)} %</p>
+			<p class="detail-value">{decimalToPercentage(validator.validatorCommission)} %</p>
 		</div>
 		<div class="detail right">
-			<p class="detail-title">Voting power</p>
-			<p class="detail-value">{decimalToPercentage(validatorData.votingPower)} %</p>
+			<p class="detail-title">Delegation Return</p>
+			<p class="detail-value">{decimalToPercentage(validator.delegationReturn)} %</p>
 		</div>
 		<div class="detail left">
-			<p class="detail-title">Self-delegation</p>
-			<p class="detail-value">{decimalToPercentage(validatorData.selfDelegation)} %</p>
+			<p class="detail-title">Current Delegators</p>
+			<p class="detail-value">{validator.currentDelegators}</p>
 		</div>
 		<div class="detail mid">
-			<p class="detail-title">Delegation Return</p>
-			<p class="detail-value">{decimalToPercentage(validatorData.delegationReturn)} %</p>
+			<p class="detail-title">Current Staked</p>
+			<p class="detail-value">{validator.currentStaked} CSPR</p>
 		</div>
 	</div>
 </div>

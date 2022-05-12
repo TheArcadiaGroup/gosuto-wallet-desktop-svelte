@@ -4,21 +4,14 @@
 	import ProfileNavigation from '$lib/pages/Profile/ProfileNavigation.svelte';
 	import ValidatorPage from '$lib/pages/AllStakes/ValidatorPage/index.svelte';
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
+	import getValidators from '$utils/getValidators';
+	import { validators } from '$stores/user/stake';
 
-	let validatorData: IValidator[];
-
-	onMount(() => {
-		getData();
+	onMount(async () => {
+		if ($validators.length <= 0) {
+			await getValidators();
+		}
 	});
-
-	const getData = async () => {
-		fetch('/api/all-stakes/validators')
-			.then((response) => response.json())
-			.then((response) => (validatorData = response))
-			.catch((error) => {
-				console.error('error:', error);
-			});
-	};
 </script>
 
 <div class="main">
@@ -32,7 +25,7 @@
 	</div>
 	<div class="global-grid-mid size-full">
 		<div class="validator-holder">
-			<ValidatorPage {validatorData} />
+			<ValidatorPage />
 		</div>
 	</div>
 </div>

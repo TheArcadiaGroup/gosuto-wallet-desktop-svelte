@@ -6,14 +6,14 @@
 	@author MikeBrandon
 -->
 <script lang="ts">
+	import Loading from '$lib/components/Loading.svelte';
+	import { loadingValidators, validators } from '$stores/user/stake';
 	import ValidatorItem from './ValidatorItem.svelte';
-
-	export let validatorData: IValidator[] = [];
 
 	let numberOfItemsShown = 6;
 	let pageNumber = 1;
 
-	$: showingArray = validatorData.slice(0, numberOfItemsShown * pageNumber);
+	$: showingArray = $validators.slice(0, numberOfItemsShown * pageNumber);
 
 	function showMoreItems() {
 		pageNumber++;
@@ -23,20 +23,22 @@
 <div class="main">
 	<h3>Validators</h3>
 	<div class="validator-holder">
-		{#if validatorData.length > 0}
-			{#each showingArray as validatorData, i}
-				<ValidatorItem {validatorData} class={i > 0 ? 'top-border' : ''} />
+		{#if $loadingValidators}
+			<Loading />
+		{:else if $validators.length > 0}
+			{#each showingArray as validator, i}
+				<ValidatorItem {validator} class={i > 0 ? 'top-border' : ''} />
 			{/each}
 		{/if}
 	</div>
-	{#if validatorData.length >= numberOfItemsShown}
+	{#if $validators.length >= numberOfItemsShown}
 		<button on:click={showMoreItems}>Show more</button>
 	{/if}
 </div>
 
 <style lang="postcss" global>
 	:local(.main) {
-		@apply h-screen flex flex-col p-4 md:p-0 w-screen md:w-[65%];
+		@apply h-screen flex flex-col w-full px-4;
 	}
 
 	:local(h3) {
