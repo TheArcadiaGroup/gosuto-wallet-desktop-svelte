@@ -10,18 +10,13 @@
 	import { onMount } from 'svelte';
 	import { pollyFillUser } from '$utils/pollyfillData';
 	import { saveData } from '$utils/dataStorage';
+	import { user } from '$stores/user';
 
 	const networkOptionsArr: ('testnet' | 'mainnet')[] = ['testnet', 'mainnet'];
-	$: networkOptionValue = 1;
+	$: networkOptionValue = networkOptionsArr.indexOf($user?.network!) || 0;
 	let droppedDown = false;
 
-	let settingsData: IUser = {
-		name: 'Jake Waterson',
-		email: 'Jake.waterson@gmail.com',
-		avatar: 'https://miro.medium.com/fit/c/262/262/2*-cdwKPXyVI0ejgxpWkKBeA.jpeg',
-		theme: 'dark',
-		network: 'mainnet',
-	};
+	let settingsData: IUser | null = $user;
 
 	let initialized = false;
 
@@ -34,18 +29,18 @@
 		info[info.indexOf(infoType)].placeholder = inputValue;
 		info = info;
 
-		if (Object.keys(settingsData).includes(infoType.name.toLowerCase())) {
+		if (settingsData && Object.keys(settingsData).includes(infoType.name.toLowerCase())) {
 			// @ts-ignore
 			settingsData[infoType.name.toLowerCase()] = inputValue.trim();
 			saveData('user', JSON.stringify(settingsData));
 		}
 	};
 
-	$: image = settingsData.avatar;
+	$: image = settingsData?.avatar;
 
 	const selectProfileImage = () => {
 		const res = window.api.sendSync('selectProfileImage');
-		if (res) {
+		if (res && settingsData) {
 			settingsData.avatar = res;
 		}
 	};
@@ -53,13 +48,13 @@
 	/** Array to be used for creating InfoInput components with an each loop */
 	// Also dynamically updates the UI
 	$: info = [
-		{ name: 'Name', placeholder: settingsData.name },
-		{ name: 'Email', placeholder: settingsData.email },
+		{ name: 'Name', placeholder: settingsData?.name! },
+		{ name: 'Email', placeholder: settingsData?.email! },
 	];
 
 	// Dynamically Update the Selected Network
 	$: ((selectedNetwork) => {
-		if (initialized) {
+		if (initialized && settingsData) {
 			settingsData['network'] = networkOptionsArr[selectedNetwork];
 			saveData('user', JSON.stringify(settingsData));
 		}

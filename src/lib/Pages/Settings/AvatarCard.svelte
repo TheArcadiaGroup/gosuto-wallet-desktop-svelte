@@ -6,7 +6,7 @@
 <script lang="ts">
 	import PhotoIcon from '$icons/PhotoIcon.svelte';
 
-	export let avatar: string;
+	export let avatar: string = 'https://miro.medium.com/fit/c/262/262/2*-cdwKPXyVI0ejgxpWkKBeA.jpeg';
 </script>
 
 <div class="avatarCard-wrapper" on:click>
