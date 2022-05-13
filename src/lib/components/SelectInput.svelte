@@ -1,11 +1,13 @@
 <script lang="ts">
 	export let label: string = 'Input Your Text';
 	export let value: string | number = '';
+	export let selectCustomClass = '';
+	export let labelCustomClass = '';
 </script>
 
 <div class="input-holder">
-	<p class={$$props.class}>{label}</p>
-	<select class={$$props.class} bind:value>
+	<p class={`${$$props.class} ${labelCustomClass}`}>{label}</p>
+	<select class={`${$$props.class} ${selectCustomClass}`} bind:value>
 		<slot />
 	</select>
 </div>

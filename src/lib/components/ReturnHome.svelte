@@ -10,6 +10,10 @@
 	export let profileLocation: string = '';
 	export let publicKey: string = '';
 	export let walletName = 'Unknown';
+
+	function copyWalletAddress() {
+		navigator.clipboard.writeText(publicKey);
+	}
 </script>
 
 <div class="return-home">
@@ -28,9 +32,12 @@
 	</p>
 	<div class="return-wallet-pub-key">
 		<p class="return-pub-key-text">
-			{publicKey?.slice(0, 12)}...{publicKey?.slice(publicKey.length - 4)}
+			{`${publicKey.substring(0, 6)}...${publicKey.substring(
+				publicKey.length - 7,
+				publicKey.length,
+			)}`}
 		</p>
-		<div class="return-cursor-pointer">
+		<div class="return-cursor-pointer" on:click={copyWalletAddress}>
 			<CopyIcon />
 		</div>
 	</div>

@@ -17,6 +17,7 @@
 	import { selectedWallet } from '$stores/user/wallets';
 	import { page } from '$app/stores';
 	import { walletLoaders } from '$stores/dataLoaders';
+	import { loadWalletData } from '$utils/dataLoaders';
 
 	export let avatar = '/images/png/avatar.png';
 	export let name = 'Unknown Name';
@@ -26,13 +27,22 @@
 		saveData('selectedProfile', JSON.stringify(wallet));
 		selectedWallet.set(wallet);
 
-		if ($page.params.address !== wallet.walletAddress && $page.path !== '/profile') {
+		if ($page.params.address !== wallet.walletAddress) {
 			const newUrl = $page.path.replace($page.params.address, wallet.walletAddress);
+
+			// Only send load request when it is not currently loading
+			if (!$walletLoaders[wallet.walletAddress]) {
+				loadWalletData(wallet.walletAddress);
+			}
+
 			goto(newUrl);
 			return;
 		}
 
-		goto(`/profile/${$selectedWallet?.walletAddress}/history`);
+		if ($page.path === '/profile') {
+			goto(`/profile/${$selectedWallet?.walletAddress}/history`);
+		}
+
 		return;
 	}
 </script>

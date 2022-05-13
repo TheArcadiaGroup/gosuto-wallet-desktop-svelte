@@ -51,6 +51,17 @@
 			userTokens.map((token) => loadTokenBalance(token, $selectedWallet!.walletAddress));
 		}
 	})($tokens);
+
+	selectedWallet.subscribe((wallet) => {
+		if (wallet) {
+			// If no tokens are present, load them
+			if ($tokens.length <= 0) {
+				pollyFillTokens();
+			}
+
+			receiveTokenBalance();
+		}
+	});
 </script>
 
 <div class="page-container">

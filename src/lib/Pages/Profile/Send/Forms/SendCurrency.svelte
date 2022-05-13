@@ -8,6 +8,7 @@
 	import { shortenAddress } from '$utils';
 	import { selectedWallet } from '$stores/user/wallets';
 	import { goto } from '$app/navigation';
+	import { user } from '$stores/user';
 
 	export let selectedToken: IToken;
 
@@ -18,7 +19,7 @@
 	let tokenAmount = 0;
 	let recipientAddress = '';
 	let note = '';
-	let network = 'cspr-network';
+	let network: 'mainnet' | 'testnet' = 'mainnet';
 	$: tokenMinusFee =
 		tokenAmount *
 		(1 -
@@ -40,11 +41,24 @@
 		popupContent = '';
 
 		if ($selectedWallet) {
+			console.log(
+				$selectedWallet.walletAddress,
+				$selectedWallet.privateKey,
+				tokenAmount,
+				recipientAddress,
+				selectedToken.contractAddress,
+				network,
+				note,
+			);
+
 			const result = await sendToken(
 				$selectedWallet.walletAddress,
 				$selectedWallet.privateKey,
 				tokenAmount,
 				recipientAddress,
+				selectedToken.contractAddress,
+				network,
+				note,
 			);
 
 			console.log(result);
@@ -113,8 +127,14 @@
 			/>
 		</div>
 		<div class="currency-form-row">
-			<SelectInput bind:value={network} class="send-currency-dark-sidebar-input" label="Network">
-				<option value="cspr-network">CSPR Network</option>
+			<SelectInput
+				selectCustomClass="text-sm"
+				bind:value={network}
+				class="send-currency-dark-sidebar-input"
+				label="Network"
+			>
+				<option value="mainnet">CSPR Network (Mainnet)</option>
+				<option value="testnet">CSPR Network (Testnet)</option>
 			</SelectInput>
 		</div>
 		<div class="currency-buttons">

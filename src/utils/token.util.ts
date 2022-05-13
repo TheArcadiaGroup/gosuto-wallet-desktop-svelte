@@ -38,29 +38,31 @@ export async function sendToken(
 	tokenAmount: number,
 	recipientAddress: string,
 	contractAddress: string = 'CSPR',
-	network: string = 'CASPER',
+	network: 'testnet' | 'mainnet' = 'testnet',
 	note: string = '',
 ): Promise<void> {
-	window.api.send(
-		'sendCSPRTokens',
-		JSON.stringify({
-			senderWallet:
-				// '01cfbe76f5e1b7fd042714d4583e578f47675414efd9c1f8105256cea243f0ab35' ||
-				walletAddress,
-			senderPrivateKey:
-				// 'MC4CAQAwBQYDK2VwBCIEIFvkdWUFtcpt2yOrbWk+v1fHf0y3Ca3+idJYXGkPKV+y' ||
-				privateKey,
-			recipientWallet:
-				// '01cfbe76f5e1b7fd042714d4583e578f47675414efd9c1f8105256cea243f0ab35' ||
-				recipientAddress,
-			amount: tokenAmount,
-			network: get(user)?.network || 'testnet', // use testnet just in case the user makes a mistake
-		}),
-	);
+	if (contractAddress === 'CSPR') {
+		window.api.send(
+			'sendCSPRTokens',
+			JSON.stringify({
+				senderWallet:
+					// '01cfbe76f5e1b7fd042714d4583e578f47675414efd9c1f8105256cea243f0ab35' ||
+					walletAddress,
+				senderPrivateKey:
+					// 'MC4CAQAwBQYDK2VwBCIEIFvkdWUFtcpt2yOrbWk+v1fHf0y3Ca3+idJYXGkPKV+y' ||
+					privateKey,
+				recipientWallet:
+					// '01cfbe76f5e1b7fd042714d4583e578f47675414efd9c1f8105256cea243f0ab35' ||
+					recipientAddress,
+				amount: tokenAmount,
+				network: get(user)?.network || 'testnet', // use testnet just in case the user makes a mistake
+			}),
+		);
 
-	window.api.receive('sendCSPRTokensResponse', (data: any) => {
-		console.log(data);
-	});
+		window.api.receive('sendCSPRTokensResponse', (data: any) => {
+			console.log(data);
+		});
+	}
 }
 
 export async function swapToken(

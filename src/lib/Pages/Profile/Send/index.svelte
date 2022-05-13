@@ -51,11 +51,7 @@
 <svelte:body on:click={cancelButtonListener} />
 
 <div class="wallet-swap" on:click={deselectListener}>
-	<ReturnHome
-		walletName={''}
-		publicKey={shortenAddress($page.params.address)}
-		profileLocation="Send Tokens"
-	/>
+	<ReturnHome walletName={''} publicKey={$page.params.address} profileLocation="Send Tokens" />
 	<div class="container">
 		<div class="title-row">
 			<p class="tokens-in-wallet-title">Tokens in this wallet</p>

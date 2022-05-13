@@ -1,7 +1,9 @@
+import { walletLoaders } from '$stores/dataLoaders';
 import { user } from '$stores/user';
 import { tokens } from '$stores/user/tokens';
 import { selectedWallet, wallets } from '$stores/user/wallets';
 import { retrieveData, saveData } from '$utils/dataStorage';
+import { get } from 'svelte/store';
 import { loadWalletData } from './dataLoaders';
 import { getTokenValue } from './token.util';
 
@@ -25,8 +27,8 @@ export const pollyFillTokens = async () => {
 			limitedSupply: false,
 			mintableSupply: false,
 			shareToken: true,
-			contractString: '',
-			contractAddress: '',
+			contractString: 'CSPR',
+			contractAddress: 'CSPR', // defaults to this to facilitate sending
 			tokenPriceUSD: (await getTokenValue('CSPR')).price,
 			decimalsOfPrecision: 5,
 			walletAddress: selectedWallet?.walletAddress,
@@ -102,7 +104,9 @@ export const pollyfillSelectedProfile = () => {
 
 	selectedWallet.set(dbSelectedProfile);
 
-	loadWalletData(dbSelectedProfile.walletAddress);
+	if (!get(walletLoaders)[dbSelectedProfile.walletAddress]) {
+		loadWalletData(dbSelectedProfile.walletAddress);
+	}
 
 	return dbSelectedProfile;
 };

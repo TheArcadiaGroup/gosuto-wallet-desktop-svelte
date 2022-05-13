@@ -91,8 +91,6 @@ module.exports = () => {
 			event.returnValue = returnValue;
 			sendMessage('accountCsprBalanceResponse', returnValue);
 		} catch (_err) {
-			console.log(_err);
-
 			const returnValue = {
 				balance: '0',
 				token: parsedData.token,
@@ -116,8 +114,6 @@ module.exports = () => {
 			event.returnValue = returnValue;
 			sendMessage('tokenBalanceResponse', returnValue);
 		} catch (_err) {
-			console.log(_err);
-
 			const returnValue = {
 				balance: '0',
 				token: parsedData.token,

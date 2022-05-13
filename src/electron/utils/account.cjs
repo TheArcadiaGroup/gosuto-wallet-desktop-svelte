@@ -23,7 +23,7 @@ module.exports = {
 
 			return ethers.utils.formatUnits(balance, 9);
 		} catch (error) {
-			console.log(error);
+			console.log('\n\nBalance ERROR: \n\n', error);
 
 			return '0';
 		}
@@ -68,7 +68,6 @@ module.exports = {
 			// Here we are sending the signed deploy
 			return await casperClient.putDeploy(signedDeploy);
 		} catch (err) {
-			console.log(err);
 			return err;
 		}
 	},

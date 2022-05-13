@@ -4,7 +4,7 @@ const serve = require('electron-serve');
 const windowStateManager = require('electron-win-state').default;
 const contextMenu = require('electron-context-menu');
 const loadEvents = require('./events/index.cjs');
-const { getBalance } = require('./utils/account.cjs');
+// const { getBalance } = require('./utils/account.cjs');
 // const electronReload = require('electron-reload');
 
 // try {
