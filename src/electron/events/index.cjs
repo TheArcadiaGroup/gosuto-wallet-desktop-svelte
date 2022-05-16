@@ -60,23 +60,37 @@ module.exports = () => {
 
 	// Send Transaction
 	ipcMain.on('sendCSPRTokens', async (event, data) => {
+		data = JSON.parse(data);
 		const fromPublicKey = data.senderWallet;
 		const fromPrivateKey = data.senderPrivateKey;
 		const toPublicKey = data.recipientWallet;
 		const amount = data.amount;
 		const network = data.network || 'testnet';
 
-		const res = await account.sendTransaction({
-			fromPublicKey: fromPublicKey,
-			fromPrivateKey: Keys.Ed25519.parsePrivateKey(fromPrivateKey),
-			toPublicKey: toPublicKey,
-			amount: amount,
-			network: network,
-		});
+		try {
+			const res = await account.sendTransaction({
+				fromPublicKey: fromPublicKey,
+				fromPrivateKey: fromPrivateKey,
+				toPublicKey: toPublicKey,
+				amount: amount,
+				network: network,
+			});
 
-		event.returnValue = res;
-
-		sendMessage('sendCSPRTokensResponse', res);
+			sendMessage('sendCSPRTokensResponse', JSON.stringify(res));
+			event.returnValue = res;
+		} catch (err) {
+			sendMessage(
+				'sendCSPRTokensResponse',
+				JSON.stringify({
+					error: err,
+					message: 'Encountered Message While Transferring CSPR Tokens',
+				}),
+			);
+			event.returnValue = JSON.stringify({
+				error: err,
+				message: 'Encountered Message While Transferring CSPR Tokens',
+			});
+		}
 	});
 
 	// token balance
@@ -90,8 +104,9 @@ module.exports = () => {
 			accountHash: parsedData.accountHash,
 			balance: await getBalance(parsedData.accountHash, parsedData.network || 'testnet'),
 		};
-		event.returnValue = returnValue;
 		sendMessage('accountCsprBalanceResponse', returnValue);
+
+		event.returnValue = returnValue;
 	});
 
 	// LOAD TOKEN BALANCE - TODO

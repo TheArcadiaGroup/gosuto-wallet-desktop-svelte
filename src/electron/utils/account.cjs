@@ -4,8 +4,8 @@ const { getCasperClientAndService } = require('./index.cjs');
 
 module.exports = {
 	getBalance: async (accountHash, network = 'testnet') => {
-		console.log('\n\n GET BALANCE: ', accountHash, network, '\n\n');
 		try {
+			// TODO - FIX MOST RECENT BLOCK INFORMATION BUG
 			const { casperService, casperClient } = getCasperClientAndService(network);
 			const balanceBigNumber = await casperClient.balanceOfByAccountHash(accountHash);
 
@@ -20,15 +20,22 @@ module.exports = {
 	},
 	sendTransaction: async ({ fromPublicKey, fromPrivateKey, toPublicKey, amount, network }) => {
 		console.log('\n\n', { fromPublicKey, fromPrivateKey, toPublicKey, amount, network }, '\n\n');
+		// Todo: Convert Amount to Ethers 1e9
 		try {
 			const { casperService, casperClient } = getCasperClientAndService(network);
 			// Read keys from the structure created in #Generating keys
+			if (fromPrivateKey.length !== 128) {
+				fromPrivateKey = Keys.Ed25519.parsePrivateKey(fromPrivateKey);
+			}
+
+			amount = ethers.utils.parseUnits(amount.toString(), 9); // Convert the digit amount to BigNumber
+
 			const signKeyPair = Keys.Ed25519.parseKeyPair(
 				Buffer.from(fromPublicKey, 'hex'),
 				Buffer.from(fromPrivateKey, 'hex'),
 			);
 
-			let networkName = network === 'mainnet' ? 'casper' : 'casper-testnet';
+			let networkName = network === 'mainnet' ? 'casper' : 'casper-test';
 
 			// For native-transfers the payment price is fixed
 			const paymentAmount = 10000000000;
@@ -56,12 +63,13 @@ module.exports = {
 			const deploy = DeployUtil.makeDeploy(deployParams, session, payment);
 			const signedDeploy = DeployUtil.signDeploy(deploy, signKeyPair);
 
-			// Here we are sending the signed deploy
-			const response = await casperClient.putDeploy(signedDeploy);
+			// Here we are sending the signed deploy - returns the hash
+			const deployHash = await casperClient.putDeploy(signedDeploy);
 
-			return response;
+			// Return the deploy info using the deployHash
+			return await casperClient.getDeploy(deployHash);
 		} catch (err) {
-			return err;
+			throw err;
 		}
 	},
 	getTokenBalance: async () => {

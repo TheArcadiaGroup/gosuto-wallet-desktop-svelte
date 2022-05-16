@@ -23,7 +23,7 @@ module.exports = {
 	// Delegate stake
 	delegate: async ({ privateKey, validatorPublicKey, amount, network = 'testnet' }) => {
 		const { casperService, casperClient } = getCasperClientAndService(network);
-		const networkName = network === 'mainnet' ? 'casper' : 'casper-testnet';
+		const networkName = network === 'mainnet' ? 'casper' : 'casper-test';
 		const client = casperClient;
 		const publicKey = Keys.Ed25519.privateToPublicKey(privateKey);
 		const keyPair = Keys.Ed25519.parseKeyPair(publicKey, privateKey);

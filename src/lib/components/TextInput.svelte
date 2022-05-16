@@ -11,6 +11,7 @@
 	export let value: string | number = '';
 	export let type: 'text' | 'password' | 'number' | 'email' = 'text';
 	export let isDisabled = false;
+	export let step = 1;
 
 	const dispatch = createEventDispatcher();
 </script>
@@ -45,6 +46,7 @@
 			class={$$props.class}
 			bind:value
 			type="number"
+			{step}
 			on:input={() => dispatch('input')}
 		/>
 	</div>

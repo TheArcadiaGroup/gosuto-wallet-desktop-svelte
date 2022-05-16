@@ -19,7 +19,7 @@
 	let tokenAmount = 0;
 	let recipientAddress = '';
 	let note = '';
-	let network: 'mainnet' | 'testnet' = 'mainnet';
+	let network: 'mainnet' | 'testnet' = $user?.network || 'mainnet';
 	$: tokenMinusFee =
 		tokenAmount *
 		(1 -
@@ -41,16 +41,6 @@
 		popupContent = '';
 
 		if ($selectedWallet) {
-			console.log(
-				$selectedWallet.walletAddress,
-				$selectedWallet.privateKey,
-				tokenAmount,
-				recipientAddress,
-				selectedToken.contractAddress,
-				network,
-				note,
-			);
-
 			const result = await sendToken(
 				$selectedWallet.walletAddress,
 				$selectedWallet.privateKey,
@@ -95,6 +85,7 @@
 				bind:value={tokenAmount}
 				class="send-currency-dark-sidebar-input"
 				type="number"
+				step={1 / 1e18}
 				label="Enter {selectedToken.tokenName} amount"
 			/>
 		</div>

@@ -79,4 +79,8 @@
 		@apply lg:text-base;
 		@apply dark:text-white;
 	}
+
+	.return-cursor-pointer {
+		@apply cursor-pointer;
+	}
 </style>

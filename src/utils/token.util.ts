@@ -41,8 +41,16 @@ export async function sendToken(
 	network: 'testnet' | 'mainnet' = 'testnet',
 	note: string = '',
 ): Promise<void> {
+	console.log({
+		'Wallet Address': walletAddress,
+		'Private Key': privateKey,
+		Amount: tokenAmount,
+		Recipient: recipientAddress,
+		'Contract Address': contractAddress,
+		Network: network,
+		Note: note,
+	});
 	if (contractAddress === 'CSPR') {
-		console.log('Sending CSPR');
 		window.api.send(
 			'sendCSPRTokens',
 			JSON.stringify({
@@ -59,10 +67,6 @@ export async function sendToken(
 				network: get(user)?.network || 'testnet', // use testnet just in case the user makes a mistake
 			}),
 		);
-
-		window.api.receive('sendCSPRTokensResponse', (data: any) => {
-			console.log(data);
-		});
 	}
 }
 
