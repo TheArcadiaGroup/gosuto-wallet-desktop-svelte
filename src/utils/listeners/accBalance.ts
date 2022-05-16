@@ -1,4 +1,4 @@
-import { walletLoaders } from '$stores/dataLoaders';
+import { tokenLoaders, walletLoaders } from '$stores/dataLoaders';
 import { wallets, selectedWallet } from '$stores/user/wallets';
 import { saveData } from '$utils/dataStorage';
 import { getCSPRUsdPrice } from '$utils/tokens';
@@ -6,6 +6,7 @@ import { get } from 'svelte/store';
 
 export default function () {
 	window.api.receive('accountCsprBalanceResponse', async (data: any) => {
+		console.log(data);
 		const csprPrice = await getCSPRUsdPrice();
 
 		const _wallets = get(wallets).map((wallet) => {
@@ -25,8 +26,13 @@ export default function () {
 			saveData('selectedProfile', JSON.stringify(thisWallet));
 		}
 
+		tokenLoaders.update((_loader) => {
+			_loader['CSPR'] = null;
+			return _loader;
+		});
+
 		walletLoaders.update((_loader) => {
-			_loader[data.walletAddress] = false;
+			_loader[data.walletAddress] = null;
 			return _loader;
 		});
 

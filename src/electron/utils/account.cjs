@@ -3,32 +3,23 @@ const { ethers } = require('ethers');
 const { getCasperClientAndService } = require('./index.cjs');
 
 module.exports = {
-	getBalance: async (publicKey, network = 'testnet') => {
+	getBalance: async (accountHash, network = 'testnet') => {
+		console.log('\n\n GET BALANCE: ', accountHash, network, '\n\n');
 		try {
 			const { casperService, casperClient } = getCasperClientAndService(network);
+			const balanceBigNumber = await casperClient.balanceOfByAccountHash(accountHash);
 
-			const latestBlock = await casperService.getLatestBlockInfo();
-			const root = await casperService.getStateRootHash(latestBlock.block.hash);
+			console.log('Account Balance: ', ethers.utils.formatUnits(balanceBigNumber, 9));
 
-			const balanceUref = await casperService.getAccountBalanceUrefByPublicKey(
-				root,
-				CLPublicKey.fromHex(publicKey),
-			);
-
-			//account balance from the last block
-			const balance = await casperService.getAccountBalance(
-				latestBlock.block.header.state_root_hash,
-				balanceUref,
-			);
-
-			return ethers.utils.formatUnits(balance, 9);
+			return ethers.utils.formatUnits(balanceBigNumber, 9);
 		} catch (error) {
-			console.log('\n\nBalance ERROR: \n\n', error);
+			console.log('\n\nBalance ERROR: \n\n', accountHash, '\n\n', error);
 
 			return '0';
 		}
 	},
 	sendTransaction: async ({ fromPublicKey, fromPrivateKey, toPublicKey, amount, network }) => {
+		console.log('\n\n', { fromPublicKey, fromPrivateKey, toPublicKey, amount, network }, '\n\n');
 		try {
 			const { casperService, casperClient } = getCasperClientAndService(network);
 			// Read keys from the structure created in #Generating keys
@@ -66,7 +57,9 @@ module.exports = {
 			const signedDeploy = DeployUtil.signDeploy(deploy, signKeyPair);
 
 			// Here we are sending the signed deploy
-			return await casperClient.putDeploy(signedDeploy);
+			const response = await casperClient.putDeploy(signedDeploy);
+
+			return response;
 		} catch (err) {
 			return err;
 		}

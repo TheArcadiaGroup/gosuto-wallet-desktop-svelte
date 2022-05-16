@@ -42,6 +42,7 @@ export async function sendToken(
 	note: string = '',
 ): Promise<void> {
 	if (contractAddress === 'CSPR') {
+		console.log('Sending CSPR');
 		window.api.send(
 			'sendCSPRTokens',
 			JSON.stringify({

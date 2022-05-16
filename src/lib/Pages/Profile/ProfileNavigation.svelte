@@ -112,10 +112,7 @@
 			</div>
 			<div class="carousel-container">
 				{#if $wallets.length > 0}
-					<CardCarousel
-						numberOfCards={$wallets.length || 0}
-						position={$wallets.indexOf($selectedWallet)}
-					>
+					<CardCarousel>
 						{#each $wallets as wallet, i}
 							<CarouselItem {i}>
 								<CreditCard

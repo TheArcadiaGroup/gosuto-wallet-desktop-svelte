@@ -64,11 +64,15 @@
 			{tokenTicker}
 		</p>
 		<p class="token-card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">
-			{currencySymbol}{(
-				(tokenTicker.toLowerCase() === 'cspr'
-					? $selectedWallet?.availableBalance ?? tokenAmountHeld
-					: tokenAmountHeld) * tokenPriceInUsd
-			).toFixed(4)}
+			{#if !$tokenLoaders[tokenTicker]}
+				{currencySymbol}{(
+					(tokenTicker.toLowerCase() === 'cspr'
+						? $selectedWallet?.availableBalance ?? tokenAmountHeld
+						: tokenAmountHeld) * tokenPriceInUsd
+				).toFixed(4)}
+			{:else}
+				<span class="skeleton-loader" />
+			{/if}
 			{currencyUnit}
 		</p>
 	</div>

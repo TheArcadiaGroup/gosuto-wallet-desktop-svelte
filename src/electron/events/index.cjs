@@ -14,6 +14,7 @@ const { getAllValidators, delegate, undelegate } = require('../utils/staking.cjs
  */
 module.exports = () => {
 	ipcMain.on('getHistory', async (event, data) => {
+		console.log('\n\n Get History \n\n');
 		try {
 			// 34b0394b11dc3ecb1bf6f26c9754aa2e9f38d7bec33003374b4b3fac8566c258 => accountHash
 			const parsedData = JSON.parse(data);
@@ -80,25 +81,17 @@ module.exports = () => {
 
 	// token balance
 	ipcMain.on('accountCsprBalance', async (event, data) => {
-		try {
-			// Testnet is the fallback network here
-			const parsedData = JSON.parse(data); // {walletAddress: publicKey; token: 'CSPR', contractAddress: 'STRING'}
-			const returnValue = {
-				token: 'CSPR',
-				walletAddress: parsedData.walletAddress,
-				balance: await getBalance(parsedData.walletAddress, parsedData.network || 'testnet'),
-			};
-			event.returnValue = returnValue;
-			sendMessage('accountCsprBalanceResponse', returnValue);
-		} catch (_err) {
-			const returnValue = {
-				balance: '0',
-				token: parsedData.token,
-				walletAddress: parsedData.walletAddress,
-			};
-			event.returnValue = returnValue;
-			sendMessage('accountCsprBalanceResponse', returnValue);
-		}
+		// Testnet is the fallback network here
+		const parsedData = JSON.parse(data); // {walletAddress: publicKey; token: 'CSPR', contractAddress: 'STRING'}
+
+		const returnValue = {
+			token: 'CSPR',
+			walletAddress: parsedData.walletAddress,
+			accountHash: parsedData.accountHash,
+			balance: await getBalance(parsedData.accountHash, parsedData.network || 'testnet'),
+		};
+		event.returnValue = returnValue;
+		sendMessage('accountCsprBalanceResponse', returnValue);
 	});
 
 	// LOAD TOKEN BALANCE - TODO

@@ -53,7 +53,7 @@ export const loadTokenBalance = async (token: IToken, walletAddress: string) => 
 	// CSPR Is loaded from the wallet not as a token - its the main global token
 	if (token.tokenTicker !== 'CSPR') {
 		tokenLoaders.update((_loader) => {
-			_loader[token.tokenTicker] = true;
+			_loader[token.tokenTicker] = new Date();
 			return _loader;
 		});
 
@@ -113,7 +113,7 @@ export const receiveTokenBalance = async () => {
 		}
 
 		tokenLoaders.update((_loader) => {
-			_loader[data.token] = false;
+			_loader[data.token] = null;
 			return _loader;
 		});
 	});

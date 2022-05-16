@@ -105,6 +105,7 @@ export const pollyfillSelectedProfile = () => {
 	selectedWallet.set(dbSelectedProfile);
 
 	if (!get(walletLoaders)[dbSelectedProfile.walletAddress]) {
+		console.log('Loading Wallet Info');
 		loadWalletData(dbSelectedProfile.walletAddress);
 	}
 

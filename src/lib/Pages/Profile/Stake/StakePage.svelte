@@ -3,21 +3,15 @@
 	import ProfileNavigation from '$lib/pages/Profile/ProfileNavigation.svelte';
 	import ArrowInCircle from '$lib/components/ArrowInCircle.svelte';
 	import StakesFromWallet from '$lib/pages/Profile/Stake/StakesFromWallet.svelte';
-
 	import Confirm from '$lib/pages/Profile/Stake/detail/Confirm.svelte';
 	import ClaimReward from '$lib/pages/Profile/Stake/detail/ClaimReward.svelte';
 	import UnlockInitialStake from '$lib/pages/Profile/Stake/detail/UnlockInitialStake.svelte';
 	import Unstake from '$lib/pages/Profile/Stake/detail/Unstake.svelte';
 	import TextSidebar from '../../../components/TextSidebar.svelte';
-
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 
-	import { onMount } from 'svelte';
-	import { retrieveData } from '$utils/dataStorage';
 	import { selectedWallet } from '$stores/user/wallets';
-	import { page } from '$app/stores';
 
-	let user: IUser;
 	let wallet: IWallet;
 
 	/**Object of all possible components for the stake detail column (the last column)*/
@@ -72,17 +66,7 @@
 
 	export let stakeArray: IStake[];
 
-	$: wallet = user?.wallets?.filter((wallet) => wallet.walletAddress === $page.params.address)[0];
-
-	onMount(() => {
-		// Retrieve the selected profile off the user
-		user = (retrieveData('user') as IUser) || {
-			name: 'Unknown User',
-			avatar: '',
-			email: '',
-			wallets: (retrieveData('wallets') as IWallet[]) || [],
-		};
-	});
+	$: wallet = $selectedWallet!;
 </script>
 
 <div class="flex main">
@@ -90,7 +74,7 @@
 		<Navbar />
 	</div>
 	<div class="global-grid-left">
-		<ProfileNavigation {user} />
+		<ProfileNavigation />
 	</div>
 	<div class="global-grid-mid">
 		{#if stakeArray}

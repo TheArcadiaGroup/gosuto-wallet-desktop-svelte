@@ -164,7 +164,7 @@
 			<div class="header">
 				<ReturnHome
 					walletName={''}
-					publicKey={shortenAddress($page.params.address)}
+					publicKey={$page.params.address}
 					profileLocation="Wallet Settings"
 				/>
 				<div class="confirm-button settings-btn">

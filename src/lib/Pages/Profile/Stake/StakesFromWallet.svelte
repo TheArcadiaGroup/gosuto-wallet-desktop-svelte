@@ -10,21 +10,19 @@
 	- `stakeSelect` = Dispatched when a stake card is clicked. Passes the stake data via event details.
 -->
 <script lang="ts">
-	import ArrowInCircle from '$lib/components/ArrowInCircle.svelte';
+	// import ArrowInCircle from '$lib/components/ArrowInCircle.svelte';
 	import Button from '$lib/components/Button.svelte';
-	import Duplicate from '$icons/Duplicate.svelte';
+	// import Duplicate from '$icons/Duplicate.svelte';
 	import StakeCard from './StakeCard.svelte';
 	import { goto } from '$app/navigation';
 	import ReturnHome from '$lib/components/ReturnHome.svelte';
 
 	import { page } from '$app/stores';
 	import { createEventDispatcher } from 'svelte';
-	import { shortenAddress } from '$utils';
 
 	const dispatch = createEventDispatcher();
 
 	export let stakeArray: IStake[];
-	export let wallet: IWallet;
 	export let forRoute: 'profile' | 'all-stakes' = 'profile';
 
 	$: showingArray = stakeArray.slice(0, numberOfItemsShown * pageNumber);
@@ -58,11 +56,7 @@
 
 <div class="main">
 	<div class="header">
-		<ReturnHome
-			walletName={''}
-			publicKey={shortenAddress($page.params.address)}
-			profileLocation="Stake CSPR"
-		/>
+		<ReturnHome walletName={''} publicKey={$page.params.address} profileLocation="Stake CSPR" />
 	</div>
 
 	<div class="title item">

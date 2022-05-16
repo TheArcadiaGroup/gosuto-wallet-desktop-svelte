@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 
 type UnknownObjectMap = {
-	[key: string]: boolean;
+	[key: string]: Date | null;
 };
 
 export const walletLoaders = writable<UnknownObjectMap>({});

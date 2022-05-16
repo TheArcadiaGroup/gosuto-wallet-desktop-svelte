@@ -1,3 +1,5 @@
+import { tokenLoaders, walletLoaders } from '$stores/dataLoaders';
+
 const monthNames = [
 	'Jan',
 	'Feb',
@@ -86,5 +88,31 @@ export const shortenAddress = (address: string): string => {
 		return `${address.slice(0, 11)}...${address.slice(-4)}`;
 	} else {
 		return address;
+	}
+};
+
+// Improve this function
+export const loaderTimeout = (
+	loaderTime: { fieldValue: Date; fieldName: string },
+	type: 'token' | 'wallet',
+) => {
+	const loadingTimePassed = Date.now() > loaderTime.fieldValue.getTime() + 1000 * 60; // User can wait for one minute
+	if (loadingTimePassed) {
+		if (type === 'token') {
+			tokenLoaders.update((loader) => {
+				if (loader[loaderTime.fieldName]) {
+					loader[loaderTime.fieldName] = null;
+				}
+				return loader;
+			});
+		}
+		if (type === 'wallet') {
+			walletLoaders.update((loader) => {
+				if (loader[loaderTime.fieldName]) {
+					loader[loaderTime.fieldName] = null;
+				}
+				return loader;
+			});
+		}
 	}
 };

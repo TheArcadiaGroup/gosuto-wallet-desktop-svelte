@@ -1,4 +1,4 @@
-import { walletLoaders } from '$stores/dataLoaders';
+import { tokenLoaders, walletLoaders } from '$stores/dataLoaders';
 import { getCsprBalance } from './balances';
 
 export const loadWalletData = async (address: string) => {
@@ -7,7 +7,12 @@ export const loadWalletData = async (address: string) => {
 
 	// Data to be loaded => wallet balance (CSPR)
 	walletLoaders.update((_loader) => {
-		_loader[address] = true;
+		_loader[address] = new Date();
+		return _loader;
+	});
+
+	tokenLoaders.update((_loader) => {
+		_loader['CSPR'] = new Date();
 		return _loader;
 	});
 

@@ -15,7 +15,7 @@
 	import { sidebarContent } from '$stores/HistoryStore';
 	import { page } from '$app/stores';
 	import { selectedWallet } from '$stores/user/wallets';
-	import { shortenAddress } from '$utils';
+	// import { shortenAddress } from '$utils';
 
 	$: isInProfileRoute = $page.path.startsWith('/profile');
 	$: address = $page.params.address;
@@ -72,7 +72,7 @@
 		{#if !isInProfileRoute}
 			<h3 class="history-title">{historyFilter} History</h3>
 		{:else}
-			<ReturnHome {walletName} publicKey={shortenAddress(address)} profileLocation="History" />
+			<ReturnHome {walletName} publicKey={address} profileLocation="History" />
 			<br />
 			<h3>History of this wallet</h3>
 		{/if}
