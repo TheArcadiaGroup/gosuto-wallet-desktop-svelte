@@ -3,19 +3,47 @@ const { ethers } = require('ethers');
 const { getCasperClientAndService } = require('./index.cjs');
 
 module.exports = {
-	getBalance: async (accountHash, network = 'testnet') => {
+	getBalance: async (accountHash, publicKey, network = 'testnet') => {
 		try {
 			// TODO - FIX MOST RECENT BLOCK INFORMATION BUG
 			const { casperService, casperClient } = getCasperClientAndService(network);
-			const balanceBigNumber = await casperClient.balanceOfByAccountHash(accountHash);
 
-			console.log('Account Balance: ', ethers.utils.formatUnits(balanceBigNumber, 9));
+			const latestBlock = await casperService.getLatestBlockInfo();
+			const root = await casperService.getStateRootHash(latestBlock.block.hash);
 
-			return ethers.utils.formatUnits(balanceBigNumber, 9);
+			const balanceUref = await casperService.getAccountBalanceUrefByPublicKey(
+				root,
+				CLPublicKey.fromHex(publicKey),
+			);
+
+			//account balance from the last block
+			const balanceBigNumber = await casperService.getAccountBalance(
+				latestBlock.block.header.state_root_hash,
+				balanceUref,
+			);
+
+			const actualBalance = ethers.utils.formatUnits(balanceBigNumber, 9);
+
+			console.log('Account Balance: ', actualBalance);
+
+			return actualBalance;
 		} catch (error) {
-			console.log('\n\nBalance ERROR: \n\n', accountHash, '\n\n', error);
+			const { casperService, casperClient } = getCasperClientAndService(network);
 
-			return '0';
+			await casperClient
+				.balanceOfByAccountHash(accountHash)
+				.then((balanceBigNumber) => {
+					const actualBalance = ethers.utils.formatUnits(balanceBigNumber, 9);
+
+					console.log('Fallback Balance: ', actualBalance, '\n\n', error);
+
+					return actualBalance;
+				})
+				.catch((_err) => {
+					console.log('\n\nBalance ERROR: \n\n', accountHash, '\n\n', _err);
+
+					return '0';
+				});
 		}
 	},
 	sendTransaction: async ({ fromPublicKey, fromPrivateKey, toPublicKey, amount, network }) => {

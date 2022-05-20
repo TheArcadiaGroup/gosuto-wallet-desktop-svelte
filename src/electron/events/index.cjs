@@ -102,7 +102,11 @@ module.exports = () => {
 			token: 'CSPR',
 			walletAddress: parsedData.walletAddress,
 			accountHash: parsedData.accountHash,
-			balance: await getBalance(parsedData.accountHash, parsedData.network || 'testnet'),
+			balance: await getBalance(
+				parsedData.accountHash,
+				parsedData.walletAddress,
+				parsedData.network || 'testnet',
+			),
 		};
 		sendMessage('accountCsprBalanceResponse', returnValue);
 

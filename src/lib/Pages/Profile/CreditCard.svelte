@@ -65,15 +65,28 @@
 		</div>
 		<div class="grow-0">
 			<div class="field-title">Available</div>
-			<div class="amount">
-				{#if !$walletLoaders[wallet.walletAddress]}
-					<span>
-						${wallet?.availableBalanceUSD.toFixed(2) || 0}
-					</span>
-				{:else}
-					<span class="skeleton-loader" />
-				{/if}
-				USD
+			<div class="acc-balance">
+				<div class="balance-item">
+					{#if !$walletLoaders[wallet.walletAddress]}
+						<span class="block mr-1">
+							{wallet?.availableBalance}
+						</span>
+					{:else}
+						<span class="skeleton-loader block mr-1" />
+					{/if}
+					CSPR
+				</div>
+
+				<div class="balance-item">
+					{#if !$walletLoaders[wallet.walletAddress]}
+						<span class="block mr-1">
+							{wallet?.availableBalanceUSD.toFixed(2) || 0}
+						</span>
+					{:else}
+						<span class="skeleton-loader block mr-1" />
+					{/if}
+					USD
+				</div>
 			</div>
 		</div>
 		<hr class="w-1/2" />
@@ -81,11 +94,11 @@
 			<div class="field-title">Staked</div>
 			<div class="amount">
 				{#if !$walletLoaders[wallet.walletAddress]}
-					<span>
+					<span class="block mr-1">
 						${wallet?.stakedBalance.toFixed(2) || 0}
 					</span>
 				{:else}
-					<span class="skeleton-loader" />
+					<span class="skeleton-loader block mr-1" />
 				{/if}
 				USD
 			</div>
@@ -94,11 +107,11 @@
 			<div class="field-title">unclaimed rewards</div>
 			<div class="amount">
 				{#if !$walletLoaders[wallet.walletAddress]}
-					<span>
+					<span class="block mr-1">
 						${wallet?.unclaimedRewards.toFixed(2) || 0}
 					</span>
 				{:else}
-					<span class="skeleton-loader" />
+					<span class="skeleton-loader block mr-1" />
 				{/if}
 				USD
 			</div>
@@ -129,11 +142,15 @@
 	}
 
 	:local(.amount) {
-		@apply text-2xs xl:text-xs font-semibold max-w-[33%] flex;
+		@apply text-2xs xl:text-xs font-semibold max-w-[33%] flex items-center;
 	}
 
-	:local(.amount span) {
-		@apply mr-1;
+	:local(.acc-balance) {
+		@apply text-2xs xl:text-xs font-semibold max-w-[40%] flex flex-col justify-between;
+	}
+
+	:local(.balance-item) {
+		@apply w-full flex;
 	}
 
 	:local(.grapics-column) {
