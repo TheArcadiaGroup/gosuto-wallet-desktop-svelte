@@ -76,17 +76,19 @@ module.exports = () => {
 				network: network,
 			});
 
-			sendMessage('sendCSPRTokensResponse', JSON.stringify(res));
-			event.returnValue = res;
+			sendMessage('sendCSPRTokensResponse', JSON.stringify({ id: data.id, data: res }));
+			event.returnValue = { id: data.id, data: res };
 		} catch (err) {
 			sendMessage(
 				'sendCSPRTokensResponse',
 				JSON.stringify({
+					id: data.id,
 					error: err,
 					message: 'Encountered Message While Transferring CSPR Tokens',
 				}),
 			);
 			event.returnValue = JSON.stringify({
+				id: data.id,
 				error: err,
 				message: 'Encountered Message While Transferring CSPR Tokens',
 			});

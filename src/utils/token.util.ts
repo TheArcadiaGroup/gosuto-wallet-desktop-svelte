@@ -1,3 +1,4 @@
+import { sendTokenTracker } from '$stores/activityLoaders';
 import { user } from '$stores/user';
 import { get } from 'svelte/store';
 import { retrieveData, saveData } from './dataStorage';
@@ -40,7 +41,17 @@ export async function sendToken(
 	contractAddress: string = 'CSPR',
 	network: 'testnet' | 'mainnet' = 'testnet',
 	note: string = '',
-): Promise<void> {
+	tokenTicker: string = 'CSPR',
+): Promise<void | {
+	id: string;
+	senderWallet: any;
+	senderPrivateKey: any;
+	recipientWallet: any;
+	amount: any;
+	network: 'mainnet' | 'testnet';
+	error: null;
+	fulfilled: boolean;
+}> {
 	console.log({
 		'Wallet Address': walletAddress,
 		'Private Key': privateKey,
@@ -51,22 +62,36 @@ export async function sendToken(
 		Note: note,
 	});
 	if (contractAddress === 'CSPR') {
-		window.api.send(
-			'sendCSPRTokens',
-			JSON.stringify({
-				senderWallet:
-					// '01cfbe76f5e1b7fd042714d4583e578f47675414efd9c1f8105256cea243f0ab35' ||
-					walletAddress,
-				senderPrivateKey:
-					// 'MC4CAQAwBQYDK2VwBCIEIFvkdWUFtcpt2yOrbWk+v1fHf0y3Ca3+idJYXGkPKV+y' ||
-					privateKey,
-				recipientWallet:
-					// '01cfbe76f5e1b7fd042714d4583e578f47675414efd9c1f8105256cea243f0ab35' ||
-					recipientAddress,
-				amount: tokenAmount,
-				network: get(user)?.network || 'testnet', // use testnet just in case the user makes a mistake
-			}),
-		);
+		// Create unique tx ID to track it once its returned
+
+		const requestObj = {
+			id: Math.random().toString(16).slice(2),
+			senderWallet:
+				// '01cfbe76f5e1b7fd042714d4583e578f47675414efd9c1f8105256cea243f0ab35' ||
+				walletAddress,
+			senderPrivateKey:
+				// 'MC4CAQAwBQYDK2VwBCIEIFvkdWUFtcpt2yOrbWk+v1fHf0y3Ca3+idJYXGkPKV+y' ||
+				privateKey,
+			recipientWallet:
+				// '01cfbe76f5e1b7fd042714d4583e578f47675414efd9c1f8105256cea243f0ab35' ||
+				recipientAddress,
+			amount: tokenAmount,
+			network: get(user)?.network || 'testnet', // use testnet just in case the user makes a mistake
+		};
+
+		sendTokenTracker.update((transactions) => {
+			transactions[requestObj.id] = {
+				...requestObj,
+				error: null,
+				fulfilled: false,
+				token: tokenTicker,
+			};
+			return transactions;
+		});
+
+		window.api.send('sendCSPRTokens', JSON.stringify(requestObj));
+
+		return { ...requestObj, error: null, fulfilled: false };
 	}
 }
 

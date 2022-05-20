@@ -1,12 +1,17 @@
 <script>
-	import { Firework } from 'svelte-loading-spinners';
+	import { Firework, Diamonds } from 'svelte-loading-spinners';
 
 	export let size = 80;
 	export let color = '#FF8266';
+	export let useFirework = true;
 </script>
 
 <div class="loading-wrapper">
-	<Firework {size} {color} unit="px" duration="1s" />
+	{#if useFirework}
+		<Firework {size} {color} unit="px" duration="1s" />
+	{:else}
+		<Diamonds {size} {color} unit="px" duration="1s" />
+	{/if}
 </div>
 
 <style>

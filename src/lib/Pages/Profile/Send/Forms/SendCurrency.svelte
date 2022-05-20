@@ -9,6 +9,8 @@
 	import { selectedWallet } from '$stores/user/wallets';
 	import { goto } from '$app/navigation';
 	import { user } from '$stores/user';
+	import Loading from '$lib/components/Loading.svelte';
+	import { sendTokenTracker } from '$stores/activityLoaders';
 
 	export let selectedToken: IToken;
 
@@ -49,16 +51,24 @@
 				selectedToken.contractAddress,
 				network,
 				note,
+				selectedToken.tokenTicker,
 			);
 
-			console.log(result);
-
-			if (typeof result !== 'string') {
-				popup = 'Send Failed!';
+			// The result in this case matches the ID of the transaction that has just been sent out, or will be undefined until non-cspr token sending is enabled
+			if (result) {
+				// Show Loading Animation or start checker for the successful token sending
+				if (result.error) {
+					popup = 'Send Failed!';
+					popupContent = result.error ?? '';
+				} else {
+					popup = 'Sending';
+					popupContent = `Currently sending, ${tokenAmount} ${selectedToken.tokenTicker} to ${recipientAddress}. You can check its progress here`;
+				}
 			} else {
-				popup = 'Success';
-				popupContent = `You sent ${tokenAmount} ${selectedToken} to ${recipientAddress}`;
+				popup = 'Send Failed!';
 			}
+
+			console.log(result);
 
 			return;
 		} else {
@@ -67,6 +77,32 @@
 			return;
 		}
 	}
+
+	$: ((sendTokensTxs) => {
+		if (sendTokensTxs) {
+			// Called everytime there's an update so we have time to only get rid of one popup or show a success popup
+			// First check if new transactions came in
+			Object.keys(sendTokensTxs).map((item) => {
+				if (sendTokensTxs[item]?.error) {
+					// Show error
+					popup = 'Send Failed!';
+					popupContent =
+						sendTokensTxs[item]?.error ||
+						`Failed to send ${sendTokensTxs[item]?.amount} ${sendTokensTxs[item]?.token} to ${sendTokensTxs[item]?.recipientWallet}`;
+				} else if (sendTokensTxs[item]?.fulfilled) {
+					// Clear loader and show respective popup with tx details
+					popup = 'Send Failed!';
+					popupContent = `Succcessfully sent ${sendTokensTxs[item]?.amount} ${sendTokensTxs[item]?.token} to ${sendTokensTxs[item]?.recipientWallet}`;
+				}
+
+				if (sendTokensTxs[item]?.fulfilled) {
+					// remove the item from the sendTokenTrackers list
+					delete sendTokensTxs[item];
+					sendTokenTracker.set(sendTokensTxs);
+				}
+			});
+		}
+	})($sendTokenTracker);
 
 	function closePopup(): void {
 		confirmPopup = false;
@@ -146,7 +182,13 @@
 			}}
 			on:cancel={closePopup}
 		>
-			<p class="popup-text">{popupContent}</p>
+			<p class="popup-text">
+				{#if popup === 'Sending'}
+					<Loading useFirework={false} size={60} />
+				{:else}
+					{popupContent}
+				{/if}
+			</p>
 		</Popup>
 	{/if}
 </div>
@@ -197,7 +239,7 @@
 	}
 
 	:local(.popup-text) {
-		@apply dark:text-white;
+		@apply dark:text-white break-words;
 	}
 
 	.send-currency-cancel-send-button {
