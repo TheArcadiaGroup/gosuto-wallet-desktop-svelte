@@ -1,10 +1,12 @@
 <script lang="ts">
+	import { user } from '$stores/user';
+
 	export let price: number;
 	export let percentageChange: number;
 </script>
 
 <div class="price-wrapper">
-	<h3 class="price ">${price} USD</h3>
+	<h3 class="price ">${price} ${$user?.currency.toUpperCase() || 'USD'}</h3>
 	<span
 		class="percentage-change {percentageChange > 0
 			? 'text-light-green'

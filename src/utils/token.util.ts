@@ -117,10 +117,14 @@ export async function swapToken(
 	tokenObject.tokenAmountHeld -= fromAmount;
 	toTokenObject.tokenAmountHeld += toAmount;
 
-	const tokenUSDValue = (await getTokenValue(fromContractAddress)).price;
+	const tokenUSDValue = (await getTokenValue(fromContractAddress)).price[
+		get(user)?.currency || 'usd'
+	];
 	tokenObject.tokenAmountHeld = tokenUSDValue * tokenObject.tokenAmountHeld;
 
-	const toTokenUSDValue = (await getTokenValue(toContractAddress)).price;
+	const toTokenUSDValue = (await getTokenValue(toContractAddress)).price[
+		get(user)?.currency || 'usd'
+	];
 	toTokenObject.tokenAmountHeld = toTokenUSDValue * toTokenObject.tokenAmountHeld;
 
 	tokens[wallet][fromContractAddress] = tokenObject;
@@ -131,9 +135,14 @@ export async function swapToken(
 	return true;
 }
 
-export async function getTokenValue(
-	contractAddress: string,
-): Promise<{ price: number; price_change: number }> {
+export async function getTokenValue(contractAddress: string): Promise<{
+	price: {
+		usd: number;
+		eur: number;
+		jpy: number;
+	};
+	price_change: number;
+}> {
 	return await getTokenUsdPrice(contractAddress);
 }
 

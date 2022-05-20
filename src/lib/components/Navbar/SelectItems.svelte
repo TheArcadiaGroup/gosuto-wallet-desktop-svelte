@@ -6,9 +6,10 @@
 <script>
 	/** Representing the select options */
 	export let items = {};
+	export let selectedItem;
 </script>
 
-<select class={$$props.class}>
+<select class={$$props.class} bind:value={selectedItem} on:change>
 	{#each Object.keys(items) as item}
 		<option class="navbar-selectOptions" value={item}>{items[item]}</option>
 	{/each}

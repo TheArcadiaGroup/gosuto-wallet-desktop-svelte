@@ -7,6 +7,7 @@
 	import ProfitDownIcon from '$icons/ProfitDownIcon.svelte';
 	import { selectedWallet } from '$stores/user/wallets';
 	import { tokenLoaders } from '$stores/dataLoaders';
+	import { user } from '$stores/user';
 
 	/**
 	 * The index of this card. Used when dispatching selectToken event to parent
@@ -27,16 +28,12 @@
 	/**
 	 * Code of the real currency shown inside this component
 	 */
-	export let currencyUnit = 'USD';
-	/**
-	 * Symbol of the real currency shown inside this component
-	 */
-	export let currencySymbol = '$';
+	export let currencyUnit = $user?.currency.toUpperCase() || 'USD';
 
 	onMount(async () => {
 		// @ts-ignore
 		const tokenInfo = await getTokenValue(contractAddress.trim() || tokenTicker);
-		tokenPriceInUsd = tokenInfo.price;
+		tokenPriceInUsd = tokenInfo.price[$user?.currency || 'usd'];
 		percentageChange = tokenInfo.price_change;
 	});
 
@@ -65,7 +62,7 @@
 		</p>
 		<p class="token-card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">
 			{#if !$tokenLoaders[tokenTicker]}
-				{currencySymbol}{(
+				{(
 					(tokenTicker.toLowerCase() === 'cspr'
 						? $selectedWallet?.availableBalance ?? tokenAmountHeld
 						: tokenAmountHeld) * tokenPriceInUsd
@@ -90,7 +87,7 @@
 			{percentageChange}%
 		</p>
 		<p class="token-card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">
-			{currencySymbol}{tokenPriceInUsd}
+			{tokenPriceInUsd}
 			{currencyUnit}
 		</p>
 		<p class="token-card-text-xs text-light-gray">(24h)</p>

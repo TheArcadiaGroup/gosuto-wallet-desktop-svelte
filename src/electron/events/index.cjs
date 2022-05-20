@@ -20,8 +20,9 @@ module.exports = () => {
 			const parsedData = JSON.parse(data);
 			const res = await profileHistory.getTransferHistory({
 				accountHash: parsedData?.accountHash,
-				page: parsedData?.page,
-				limit: parsedData?.limit,
+				network: parsedData?.network || 'testnet',
+				page: parsedData?.page || 1,
+				limit: parsedData?.limit || 10,
 			});
 
 			sendMessage('getHistoryResponse', res);

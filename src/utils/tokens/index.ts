@@ -8,7 +8,11 @@ import { get } from 'svelte/store';
 // TOKEN - TRANSFORM TO TOKEN SPECIFIC ADDRESS AND MAKE IT DYNAMIC
 export const getTokenUsdPrice = async (token: string) => {
 	let result = {
-		price: 0,
+		price: {
+			usd: 0,
+			eur: 0,
+			jpy: 0,
+		},
 		price_change: 0,
 	};
 	switch (token) {
@@ -27,7 +31,11 @@ export const getTokenUsdPrice = async (token: string) => {
 export const getCSPRUsdPrice = async () => {
 	try {
 		const casperInformation = await new window.CoinGecko().coins.fetch('casper-network', {});
-		const price = casperInformation.data.market_data.current_price.usd;
+		const price = {
+			usd: casperInformation.data.market_data.current_price.usd,
+			eur: casperInformation.data.market_data.current_price.eur,
+			jpy: casperInformation.data.market_data.current_price.jpy,
+		};
 		// const casperTotalSupply = casperInformation.data.market_data.total_supply;
 		// const casperCirculatingSupply =
 		//   casperInformation.data.market_data.circulating_supply;
@@ -43,7 +51,11 @@ export const getCSPRUsdPrice = async () => {
 		console.log('getCasperMarketInformation Error : ', error);
 
 		return {
-			price: 0,
+			price: {
+				usd: 0,
+				eur: 0,
+				jpy: 0,
+			},
 			price_change: 0,
 		};
 	}

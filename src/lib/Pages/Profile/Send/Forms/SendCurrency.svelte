@@ -127,7 +127,8 @@
 		</div>
 		<div class="currency-money-amount">
 			<p>
-				${(selectedToken.tokenPriceUSD * tokenMinusFee).toFixed(2)} USD
+				${(selectedToken.tokenPriceUSD * tokenMinusFee).toFixed(2)}
+				{$user?.currency.toUpperCase() || 'USD'}
 			</p>
 			<p class="money-right">{import.meta.env.VITE_SEND_TX_FEE_PERCENTAGE || 2.5}% Fee</p>
 		</div>
@@ -137,7 +138,8 @@
 				selectedToken.tokenPriceUSD * tokenMinusFee > 99999999
 					? (selectedToken.tokenPriceUSD * tokenMinusFee).toFixed(2)
 					: (selectedToken.tokenPriceUSD * tokenMinusFee).toFixed(3),
-			)} USD)
+			)}
+			{$user?.currency.toUpperCase() || 'USD'})
 		</p>
 		<div class="currency-form-row">
 			<TextInput

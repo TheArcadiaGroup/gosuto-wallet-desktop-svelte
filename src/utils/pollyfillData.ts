@@ -29,7 +29,7 @@ export const pollyFillTokens = async () => {
 			shareToken: true,
 			contractString: 'CSPR',
 			contractAddress: 'CSPR', // defaults to this to facilitate sending
-			tokenPriceUSD: (await getTokenValue('CSPR')).price,
+			tokenPriceUSD: (await getTokenValue('CSPR')).price[get(user)?.currency || 'usd'],
 			decimalsOfPrecision: 5,
 			walletAddress: selectedWallet?.walletAddress,
 		});
@@ -43,7 +43,7 @@ export const pollyFillTokens = async () => {
 			if (token.tokenTicker === 'CSPR') {
 				token.tokenAmountHeld = selectedWallet.availableBalance;
 				token.tokenAmountHeldUSD = selectedWallet.availableBalanceUSD;
-				token.tokenPriceUSD = (await getTokenValue('CSPR')).price;
+				token.tokenPriceUSD = (await getTokenValue('CSPR')).price[get(user)?.currency || 'usd'];
 			}
 
 			return token;
@@ -71,6 +71,7 @@ export const pollyFillUser = () => {
 		avatar: '/images/png/avatar.png',
 		theme: 'light',
 		network: 'mainnet',
+		currency: 'usd',
 	};
 
 	saveData('user', JSON.stringify(dbUser));

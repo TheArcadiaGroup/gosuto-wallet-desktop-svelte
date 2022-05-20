@@ -169,12 +169,15 @@ declare global {
 		parentWalletAddress: string;
 	}
 
+	type SupportedCurrencies = 'usd' | 'jpy' | 'eur';
+
 	interface IUser {
 		name: string;
 		email: string;
 		avatar: string;
 		theme: 'dark' | 'light';
 		network: 'mainnet' | 'testnet';
+		currency: SupportedCurrencies; // defaults to usd
 	}
 
 	interface ProfileSettings {

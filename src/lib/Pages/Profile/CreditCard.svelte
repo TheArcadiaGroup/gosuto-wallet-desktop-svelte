@@ -18,6 +18,7 @@
 	import { page } from '$app/stores';
 	import { walletLoaders } from '$stores/dataLoaders';
 	import { loadWalletData } from '$utils/dataLoaders';
+	import { user } from '$stores/user';
 
 	export let avatar = '/images/png/avatar.png';
 	export let name = 'Unknown Name';
@@ -85,7 +86,7 @@
 					{:else}
 						<span class="skeleton-loader block mr-1" />
 					{/if}
-					USD
+					{$user?.currency.toUpperCase() || 'USD'}
 				</div>
 			</div>
 		</div>
@@ -95,12 +96,12 @@
 			<div class="amount">
 				{#if !$walletLoaders[wallet.walletAddress]}
 					<span class="block mr-1">
-						${wallet?.stakedBalance.toFixed(2) || 0}
+						{wallet?.stakedBalance.toFixed(2) || 0}
 					</span>
 				{:else}
 					<span class="skeleton-loader block mr-1" />
 				{/if}
-				USD
+				{$user?.currency.toUpperCase() || 'USD'}
 			</div>
 		</div>
 		<div class="unclaimed grow-0">
@@ -108,12 +109,12 @@
 			<div class="amount">
 				{#if !$walletLoaders[wallet.walletAddress]}
 					<span class="block mr-1">
-						${wallet?.unclaimedRewards.toFixed(2) || 0}
+						{wallet?.unclaimedRewards.toFixed(2) || 0}
 					</span>
 				{:else}
 					<span class="skeleton-loader block mr-1" />
 				{/if}
-				USD
+				{$user?.currency.toUpperCase() || 'USD'}
 			</div>
 		</div>
 	</div>

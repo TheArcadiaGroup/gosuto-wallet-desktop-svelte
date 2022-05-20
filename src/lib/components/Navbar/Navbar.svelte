@@ -12,6 +12,9 @@
 	import { goto } from '$app/navigation';
 	import { navItems } from '$stores/NavbarActive';
 	import { selectedWallet } from '$stores/user/wallets';
+	import { user } from '$stores/user';
+	import { saveData } from '$utils/dataStorage';
+	import { loadWalletData } from '$utils/dataLoaders';
 
 	/** An array representing the values of navItems */
 	let navItemsValues: NavIcon[];
@@ -29,6 +32,20 @@
 		navItem.active = true;
 		if (route) goto(route);
 	};
+
+	const updateUniversalToken = (e: any) => {
+		if ($user) {
+			const prevUser = $user;
+			prevUser.currency = e.target.value.toLowerCase() as SupportedCurrencies;
+			user.set(prevUser);
+			saveData('user', JSON.stringify(prevUser));
+			if ($selectedWallet) {
+				loadWalletData($selectedWallet.walletAddress);
+			}
+		}
+	};
+
+	let selectedCurrency = $user?.currency.toLowerCase() || 'usd';
 </script>
 
 <div class="navbar">
@@ -66,7 +83,12 @@
 			on:click={() => activateItem(navItemsValues[6], '/settings')}
 			><NavSettingsIcon class="nav-icon" /></NavItem
 		>
-		<SelectItems class="navbar-select-items" items={{ usd: 'USD', eur: 'EUR', jpy: 'JPY' }} />
+		<SelectItems
+			on:change={updateUniversalToken}
+			selectedItem={selectedCurrency}
+			class="navbar-select-items"
+			items={{ usd: 'USD', eur: 'EUR', jpy: 'JPY' }}
+		/>
 		<!-- <SelectItems
 			class="navbar-select-items -rotate-90 -ml-3"
 			items={{ testnet: 'Testnet', mainnet: 'Mainnet' }}

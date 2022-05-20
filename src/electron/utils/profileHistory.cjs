@@ -1,14 +1,14 @@
 const axios = require('axios');
 
 module.exports = {
-	getTransferHistory: async ({ accountHash, page = 1, limit = 10 }) => {
+	getTransferHistory: async ({ accountHash, network = 'testnet', page = 1, limit = 10 }) => {
 		/**
 		 * accountHash: account hash
 		 * page: number of page
 		 * limit: size of page
 		 */
 		let res = await axios.get(
-			`https://event-store-api-clarity-mainnet.make.services/accounts/${accountHash}/transfers?page=${page}&limit=${limit}`,
+			`https://event-store-api-clarity-${network}.make.services/accounts/${accountHash}/transfers?page=${page}&limit=${limit}`,
 		);
 
 		return res.data;

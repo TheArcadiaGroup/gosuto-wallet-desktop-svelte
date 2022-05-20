@@ -4,7 +4,11 @@ export const getCasperMarketInformation = async () => {
 	try {
 		const casperInformation = await new CoinGecko().coins.fetch('casper-network', {});
 		console.log(casperInformation);
-		const price = casperInformation.data.market_data.current_price.usd;
+		const price = {
+			usd: casperInformation.data.market_data.current_price.usd,
+			eur: casperInformation.data.market_data.current_price.eur,
+			jpy: casperInformation.data.market_data.current_price.jpy,
+		};
 		// const casperTotalSupply = casperInformation.data.market_data.total_supply;
 		// const casperCirculatingSupply =
 		//   casperInformation.data.market_data.circulating_supply;
