@@ -2,8 +2,6 @@ import CoinGecko from 'coingecko-api';
 
 export const getCasperMarketInformation = async () => {
 	try {
-		let data = await new CoinGecko().coins.fetch('bitcoin', {});
-		console.log(data);
 		const casperInformation = await new CoinGecko().coins.fetch('casper-network', {});
 		console.log(casperInformation);
 		const price = casperInformation.data.market_data.current_price.usd;

@@ -17,6 +17,7 @@
 	export let title: String = 'Title Test';
 	export let hasCancel: boolean = false;
 	export let goBack: boolean = false;
+	export let confirmText = 'Confirm';
 </script>
 
 <div transition:fade class="darker" />
@@ -36,7 +37,7 @@
 						dispatch('confirm');
 					}}
 				>
-					{!goBack ? 'Confirm' : 'Go back'}
+					{!goBack ? confirmText : 'Go back'}
 				</button>
 				{#if hasCancel}
 					<button

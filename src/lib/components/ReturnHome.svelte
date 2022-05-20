@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 
+	import Popup from '$components/Popup.svelte';
 	import BackIcon from '$icons/BackIcon.svelte';
 	import CopyIcon from '$icons/CopyIcon.svelte';
 
@@ -11,8 +12,18 @@
 	export let publicKey: string = '';
 	export let walletName = 'Unknown';
 
+	$: hasCopied = false;
+	$: popupContent = '';
+
+	function closePopup(): void {
+		popupContent = '';
+		hasCopied = false;
+	}
+
 	function copyWalletAddress() {
 		navigator.clipboard.writeText(publicKey);
+		hasCopied = true;
+		popupContent = `${publicKey}`;
 	}
 </script>
 
@@ -42,6 +53,18 @@
 		</div>
 	</div>
 </div>
+
+{#if hasCopied}
+	<Popup
+		title={'Text Copied'}
+		hasCancel={false}
+		on:confirm={closePopup}
+		on:cancel={closePopup}
+		confirmText={'OK'}
+	>
+		<p class="dark:text-white break-words">{popupContent}</p>
+	</Popup>
+{/if}
 
 <style lang="postcss" global>
 	.return-home {
