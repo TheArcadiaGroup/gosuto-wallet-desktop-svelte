@@ -72,7 +72,7 @@
 							{wallet?.availableBalance}
 						</span>
 					{:else}
-						<span class="skeleton-loader block mr-1" />
+						<span class="skeleton-loader block mr-1 sm:mb-[2px]" />
 					{/if}
 					CSPR
 				</div>
