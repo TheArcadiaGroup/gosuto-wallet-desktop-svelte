@@ -7,7 +7,6 @@ import { get } from 'svelte/store';
 
 export default function () {
 	window.api.receive('accountCsprBalanceResponse', async (data: any) => {
-		console.log(data);
 		const csprPrice = await getCSPRUsdPrice();
 
 		const _wallets = get(wallets).map((wallet) => {

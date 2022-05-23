@@ -24,7 +24,7 @@
 <!-- Layout -->
 <div class={!historyObject ? 'history-sidebar h-screen justify-center' : 'history-sidebar'}>
 	{#if historyObject}
-		<div class="sidebar-holder" transition:slide>
+		<div class="sidebar-holder" transition:slide|local>
 			<SideBarCard
 				walletName={walletName || shortenAddress(historyObject.accountHash)}
 				sidebarData={historyObject}

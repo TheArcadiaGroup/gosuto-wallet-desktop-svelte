@@ -38,7 +38,7 @@
 	}
 </script>
 
-<div class="history-card {$$props.class}" transition:slide>
+<div class="history-card {$$props.class}" transition:slide|local>
 	<div
 		class="container {clicked ? 'clicked' : ' '} hover:cursor-pointer"
 		class:clicked

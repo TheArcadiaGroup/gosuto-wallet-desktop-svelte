@@ -27,6 +27,8 @@
 	}
 
 	onMount(async () => {
+		console.log('On Send Page');
+
 		// If no wallets, navigate user to create them
 		if ($wallets.length <= 0) {
 			goto('/profile');

@@ -20,8 +20,8 @@
 	export let confirmText = 'Confirm';
 </script>
 
-<div transition:fade class="darker" />
-<div class="popup-holder" transition:scale>
+<div transition:fade|local class="darker" />
+<div class="popup-holder" transition:scale|local>
 	<div class="popup bg-white dark:bg-dark-blue">
 		<div class="pcontainer">
 			<div class="popuptitle">{title}</div>

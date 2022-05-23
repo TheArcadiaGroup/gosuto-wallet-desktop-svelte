@@ -35,7 +35,7 @@
 			<!-- </div> -->
 		</div>
 		{#if $$slots.last}
-			<div class="last-column" transition:slide>
+			<div class="last-column" transition:slide|local>
 				<div class="mobile">
 					<LastColumnRectangle />
 				</div>
@@ -60,7 +60,7 @@
 			<!-- </div> -->
 		</div>
 		{#if $$slots.last}
-			<div class="last-column" transition:slide>
+			<div class="last-column" transition:slide|local>
 				<div class="mobile">
 					<LastColumnRectangle />
 				</div>

@@ -97,10 +97,7 @@
 		</div>
 	</div>
 
-	<div
-		class="block-explorer-link"
-		on:click={() => window.api.sendSync('openUrl', blockExplorerURL)}
-	>
+	<div class="block-explorer-link" on:click={() => window.api.send('openUrl', blockExplorerURL)}>
 		View on block explorer
 	</div>
 </div>

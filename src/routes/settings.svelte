@@ -107,7 +107,7 @@
 								</div>
 							</div>
 							{#if droppedDown}
-								<div class="options-holder" transition:slide>
+								<div class="options-holder" transition:slide|local>
 									{#each networkOptionsArr as option, i}
 										<p
 											class="option {i === networkOptionValue ? 'selected' : ''}"

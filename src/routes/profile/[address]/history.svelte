@@ -11,6 +11,7 @@
 	import { selectedWallet, wallets } from '$stores/user/wallets';
 	import { saveData } from '$utils/dataStorage';
 	import { user } from '$stores/user';
+	import { onMount } from 'svelte';
 
 	let historyData: HistoryResponse | null = null;
 	let wallet: IWallet | null = $selectedWallet;
@@ -95,10 +96,10 @@
 		getData();
 	}
 
-	$: ((address: string) => {
+	onMount(() => {
 		historyData = null;
-		address && populateData();
-	})($page.params.address);
+		populateData();
+	});
 </script>
 
 <div class="flex">
