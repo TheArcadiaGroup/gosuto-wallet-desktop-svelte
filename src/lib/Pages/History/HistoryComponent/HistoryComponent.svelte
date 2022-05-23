@@ -24,8 +24,7 @@
 
 	export let amount = 0.0;
 	export let price = 0.0;
-	export let cryptoUnit = 'USDT';
-	export let currencyUnit = 'USD';
+	export let cryptoUnit = 'CSPR';
 
 	export let index: number = 0;
 	export let clicked: boolean = false;
@@ -65,11 +64,11 @@
 				{#if status == 'swap' && swapData}
 					<Swap {swapData} {clicked} />
 				{:else if status == 'send'}
-					<Amount type="negative" {amount} {price} {cryptoUnit} {currencyUnit} {clicked} />
+					<Amount type="negative" {amount} {price} {cryptoUnit} {clicked} />
 				{:else if status == 'receive'}
-					<Amount type="positive" {amount} {price} {cryptoUnit} {currencyUnit} {clicked} />
+					<Amount type="positive" {amount} {price} {cryptoUnit} {clicked} />
 				{:else if status == 'stake'}
-					<Amount type="negative" {amount} {price} {cryptoUnit} {currencyUnit} {clicked} />
+					<Amount type="negative" {amount} {price} {cryptoUnit} {clicked} />
 				{/if}
 			</div>
 		</div>

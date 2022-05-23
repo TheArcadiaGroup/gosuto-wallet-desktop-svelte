@@ -7,12 +7,14 @@
 	@see historyComponent
 -->
 <script lang="ts">
+	import { user } from '$stores/user';
 	import { shortenAddress } from '$utils/index';
 
 	import Amount from './Amount.svelte';
 	import Swap from './Swap.svelte';
 
-	export let wallet = 'Wallet 1';
+	export let walletName = '';
+	export let sidebarData: IHistory;
 
 	export let status:
 		| 'Received'
@@ -23,21 +25,9 @@
 		| 'Unstake'
 		| 'Claimed Reward' = 'Sent';
 
-	export let dateAndTime: string = 'Apr 01, 2021 07:15:20 am (CST)';
-	export let stakedOn: string = '01 Dec 2021';
-
-	export let SwapData: SwapData;
-
-	export let amount: number = 0;
-	export let price: number = 0;
-	export let cryptoUnit: string = 'USDT';
-	export let currencyUnit: string = 'USD';
-
-	export let toAccount: string = '0x9f98e01d2gj92ngn2g7gn24ed7';
-	export let fromAccount: string = '0x9f98e01d2gj92ngn2g7gn24ed7';
-
-	export let transactionHash: string = '0x9f98e01d2gj92ngn2g7gn24ed7';
-	export let blockExplorerURL: string = '0x9f98e01d2gj92ngn2g7gn24ed7';
+	let blockExplorerURL = `https://${
+		$user?.network === 'testnet' ? 'testnet.' : ''
+	}cspr.live/deploy/${sidebarData?.deployHash}`;
 </script>
 
 <div class="main">
@@ -46,7 +36,7 @@
 			{status}
 		</h4>
 		<h5>
-			{wallet}
+			{walletName}
 		</h5>
 	</div>
 	<div class="top-details">
@@ -54,43 +44,40 @@
 			<div class="address-holder">
 				<p class="to-from">To</p>
 				<p class="address">
-					{shortenAddress(toAccount)}
+					{shortenAddress(sidebarData?.recipient)}
 				</p>
 			</div>
 		{/if}
-		{#if status == 'Initial Stake Unlocked' || status == 'Unstake' || status == 'Claimed Reward'}
+		{#if status == 'Initial Stake Unlocked' || status == 'Unstake' || (status == 'Claimed Reward' && sidebarData?.stake)}
 			<div class="address-holder">
 				<p class="to-from">Staked On</p>
 				<p class="address">
-					{stakedOn}
+					{window.moment(sidebarData?.stake?.initialStakeDate).format('DD MMMM YYYY')}
 				</p>
 			</div>
 		{/if}
 		<div class="address-holder">
 			<p class="to-from">From</p>
 			<p class="address">
-				{shortenAddress(fromAccount)}
+				{shortenAddress(sidebarData?.sender)}
 			</p>
 		</div>
 		<div class="address-holder date">
 			<p class="to-from">Transaction Date</p>
 			<p class="address">
-				{dateAndTime}
+				{window.moment(sidebarData?.transactionDate).format('MMMM DD, YYYY h:mm:ss a')}
 			</p>
 		</div>
 	</div>
 	<div class="amount-holder">
 		<p class="to-from">Amount</p>
-		{#if status == 'Swap'}
-			<Swap {SwapData} smaller={true} />
+		{#if status == 'Swap' && sidebarData.swap}
+			<Swap swapData={sidebarData.swap} smaller={true} />
 		{:else}
 			<div class="amount">
 				<Amount
 					type={status == 'Sent' || status == 'Stake' ? 'negative' : 'positive'}
-					{amount}
-					{price}
-					{cryptoUnit}
-					{currencyUnit}
+					amount={sidebarData?.amount}
 					clicked={false}
 					smaller={true}
 				/>
@@ -98,14 +85,14 @@
 		{/if}
 	</div>
 	<div class="bottom-holder">
-		<div class="address-holder">
+		<!-- <div class="address-holder">
 			<p class="to-from">Transaction Fee</p>
 			<p class="address">2.5%</p>
-		</div>
+		</div> -->
 		<div class="address-holder date">
 			<p class="to-from">Transaction Hash</p>
 			<p class="address">
-				{shortenAddress(transactionHash)}
+				{shortenAddress(sidebarData?.deployHash)}
 			</p>
 		</div>
 	</div>

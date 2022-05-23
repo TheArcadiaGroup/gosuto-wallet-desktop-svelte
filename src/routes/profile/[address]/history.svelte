@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-
 	import HistoryPage from '$lib/pages/History/HistoryPage.svelte';
 	import ProfileNavigation from '$lib/pages/Profile/ProfileNavigation.svelte';
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
@@ -55,28 +53,27 @@
 			$selectedWallet || $wallets?.filter((wallet) => wallet.walletAddress === walletAddress)[0];
 
 		if (wallet) {
-			const historyResponseObj = await getSingleAccountHistory(
-				wallet.accountHash,
-				$user?.network,
-				currentPage,
-				itemsPerPage,
-			);
+			getSingleAccountHistory(wallet.accountHash, $user?.network, currentPage, itemsPerPage)
+				.then((historyResponseObj) => {
+					if (historyData) {
+						const filteredItems = historyResponseObj.data.filter(
+							(item) =>
+								!historyData?.data.find(
+									(prevItem) => prevItem.deployHash.toLowerCase() === item.deployHash.toLowerCase(),
+								),
+						);
 
-			if (historyData) {
-				const filteredItems = historyResponseObj.data.filter(
-					(item) =>
-						!historyData?.data.find(
-							(prevItem) => prevItem.deployHash.toLowerCase() === item.deployHash.toLowerCase(),
-						),
-				);
+						historyData.data = [...historyData?.data, ...filteredItems];
+					} else {
+						historyData = historyResponseObj;
+					}
 
-				historyData.data = [...historyData?.data, ...filteredItems];
-			} else {
-				historyData = historyResponseObj;
-			}
-
-			totalPages = historyResponseObj.pageCount;
-			currentPage = historyResponseObj.page;
+					totalPages = historyResponseObj.pageCount;
+					currentPage = historyResponseObj.page;
+				})
+				.catch(() => {
+					console.log('Encountered Error Loadin Page');
+				});
 
 			// TODO: Potentially Cache these results
 		} else {

@@ -11,23 +11,23 @@
 
 	import SideBarCard from './SideBarCard.svelte';
 	import TextSidebar from '$lib/components/TextSidebar.svelte';
+	import { wallets } from '$stores/user/wallets';
+	import { shortenAddress } from '$utils';
 
-	export let historyObject: HistoryObject | null = null;
+	export let historyObject: IHistory | null = null;
+
+	let walletName = $wallets.find(
+		(item) => item.accountHash.toLowerCase() === historyObject?.accountHash.toLowerCase(),
+	)?.walletName;
 </script>
 
 <!-- Layout -->
-<div class={!historyObject ? 'main h-screen justify-center' : 'main'}>
+<div class={!historyObject ? 'history-sidebar h-screen justify-center' : 'history-sidebar'}>
 	{#if historyObject}
 		<div class="sidebar-holder" transition:slide>
 			<SideBarCard
-				wallet={$$props.historyObject.wallet}
-				status={$$props.historyObject.status}
-				dateAndTime={$$props.historyObject.dateAndTime}
-				SwapData={$$props.historyObject.SwapData}
-				amount={$$props.historyObject.amount}
-				price={$$props.historyObject.price}
-				cryptoUnit={$$props.historyObject.cryptoUnit}
-				currencyUnit={$$props.historyObject.currencyUnit}
+				walletName={walletName || shortenAddress(historyObject.accountHash)}
+				sidebarData={historyObject}
 			/>
 		</div>
 	{:else}
@@ -36,7 +36,7 @@
 </div>
 
 <style lang="postcss" global>
-	:local(.main) {
+	:local(.history-sidebar) {
 		@apply flex flex-col items-center md:pt-20 px-12 md:px-5 h-full md:h-screen w-full;
 	}
 

@@ -3,18 +3,20 @@
 
 	import { getSingleAccountHistory } from '$utils/getHistory';
 	import { sidebarContent } from '$stores/HistoryStore';
-	import { retrieveData } from '$utils/dataStorage';
 
 	import HistoryPage from '$lib/pages/History/HistoryPage.svelte';
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 	import Sidebar from '$lib/pages/History/HistoryComponent/Sidebar.svelte';
 	import pollyfillData from '$utils/pollyfillData';
 	import { wallets } from '$stores/user/wallets';
+	import { user } from '$stores/user';
 
-	let data: HistoryObject[] = [];
+	let historyData: HistoryResponse | null = null;
 
 	let currentPage = 1;
 	let itemsPerPage = 10;
+	let totalPages = 1;
+	let loading = false;
 
 	onMount(() => {
 		pollyfillData();
@@ -23,17 +25,37 @@
 	});
 
 	const getData = async (wallet: IWallet) => {
+		loading = true;
+
 		if (wallet) {
-			const historyObj = await getSingleAccountHistory(
-				wallet.accountHash,
-				currentPage,
-				itemsPerPage,
-			);
-			data = [...data, historyObj.data];
+			getSingleAccountHistory(wallet.accountHash, $user?.network, currentPage, itemsPerPage)
+				.then((historyResponseObj) => {
+					if (historyData) {
+						const filteredItems = historyResponseObj.data.filter(
+							(item) =>
+								!historyData?.data.find(
+									(prevItem) => prevItem.deployHash.toLowerCase() === item.deployHash.toLowerCase(),
+								),
+						);
+
+						historyData.data = [...historyData?.data, ...filteredItems];
+					} else {
+						historyData = historyResponseObj;
+					}
+
+					totalPages = historyResponseObj.pageCount;
+					currentPage = historyResponseObj.page;
+				})
+				.catch(() => {
+					console.log('Encountered Error Loadin Page');
+				});
+
+			// TODO: Potentially Cache these results
 		} else {
 			// Better UI Based Error Needed
 			throw Error('Wallet Not Loaded');
 		}
+		loading = false;
 	};
 
 	async function getAllHistory() {
@@ -53,9 +75,13 @@
 		<Navbar />
 	</div>
 	<div class="global-grid-mid">
-		{#if data}
-			<HistoryPage on:showMoreClicked={showMoreItems} />
-		{/if}
+		<HistoryPage
+			{loading}
+			{totalPages}
+			{currentPage}
+			historyArray={historyData?.data || []}
+			on:showMoreClicked={showMoreItems}
+		/>
 	</div>
 	<div class="global-grid-right">
 		<Sidebar historyObject={$sidebarContent} />

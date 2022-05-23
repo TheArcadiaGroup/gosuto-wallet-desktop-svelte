@@ -1,9 +1,11 @@
 <script type="ts">
-	export let amount = 10;
+	import { user } from '$stores/user';
+
+	export let amount = 0;
 	export let price = 0.0;
 
-	export let cryptoUnit = 'USDT';
-	export let currencyUnit = 'USD';
+	// TODO: Improve this when we get to tokens
+	export let cryptoUnit = 'CSPR';
 	export let type: 'positive' | 'negative' = 'positive';
 
 	export let clicked: boolean = false;
@@ -23,13 +25,13 @@
 </div>
 <div>
 	<span
-		class="{smaller ? 'text-xs md:text-sm' : 'text-xs md:text-base'}  {!clicked
+		class="uppercase {smaller ? 'text-xs md:text-sm' : 'text-xs md:text-base'}  {!clicked
 			? type == 'negative'
 				? 'text-light-red'
 				: 'text-light-green'
 			: 'text-white'}"
 	>
-		{price}&nbsp;{currencyUnit}
+		{price}&nbsp;{$user?.currency}
 	</span>
 </div>
 

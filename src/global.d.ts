@@ -160,6 +160,9 @@ declare global {
 
 		// Swap History
 		swap: SwapData | null;
+
+		// Stake
+		stake: IStake | null;
 	}
 
 	interface IValidator {

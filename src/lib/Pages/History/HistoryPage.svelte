@@ -35,8 +35,6 @@
 
 	let filteredArray: IHistory[];
 
-	$: console.log(historyArray, filteredArray, filterId);
-
 	let optionsArray = ['all', 'receive', 'sent', 'swap', 'stake'];
 	let filterId: number = 0;
 
@@ -66,8 +64,7 @@
 
 	function selectHistoryCard(e: { detail: { id: number } }): void {
 		selectedHistoryItemIndex = e.detail.id;
-		// TODO: REBUILD/REWORK THIS
-		// sidebarContent.set(filteredArray[selectedHistoryItemIndex]);
+		sidebarContent.set(filteredArray[selectedHistoryItemIndex]);
 	}
 
 	function showMoreItems() {
