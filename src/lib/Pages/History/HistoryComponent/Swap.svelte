@@ -2,7 +2,7 @@
 	import Swap from '$icons/Swap.svelte';
 	import Amount from './Amount.svelte';
 
-	export let SwapData: SwapData = {
+	export let swapData: SwapData = {
 		fromAmount: 0.0,
 		toAmount: 0.0,
 		fromPrice: 0.0,
@@ -20,10 +20,10 @@
 	<div class="text-right">
 		<Amount
 			type="negative"
-			amount={SwapData.fromAmount}
-			price={SwapData.fromPrice}
-			cryptoUnit={SwapData.fromCryptoUnit}
-			currencyUnit={SwapData.fromPriceUnit}
+			amount={swapData.fromAmount}
+			price={swapData.fromPrice}
+			cryptoUnit={swapData.fromCryptoUnit}
+			currencyUnit={swapData.fromPriceUnit}
 			{smaller}
 			{clicked}
 		/>
@@ -33,10 +33,10 @@
 	</div>
 	<div class="text-right">
 		<Amount
-			amount={SwapData.toAmount}
-			price={SwapData.toPrice}
-			cryptoUnit={SwapData.toCryptoUnit}
-			currencyUnit={SwapData.toPriceUnit}
+			amount={swapData.toAmount}
+			price={swapData.toPrice}
+			cryptoUnit={swapData.toCryptoUnit}
+			currencyUnit={swapData.toPriceUnit}
 			{smaller}
 			{clicked}
 		/>

@@ -10,18 +10,17 @@
 	import { createEventDispatcher } from 'svelte';
 	import { slide } from 'svelte/transition';
 
-	import { clickOutside } from '$utils/clickOutside';
-
 	import Amount from './Amount.svelte';
 	import Swap from './Swap.svelte';
 
-	export let wallet = 'Wallet 1';
+	export let wallet = '';
 
-	export let status: 'Received' | 'Sent' | 'Stake' | 'Swap' | 'All' = 'Sent';
+	export let status: TxStatus = 'send';
+	export let blockHash: string = '';
+	export let deployHash: string = '';
+	export let date: Date;
 
-	export let dateAndTime = 'Apr 01, 2021 07:15:20 am (CST)';
-
-	export let SwapData: SwapData;
+	export let swapData: SwapData | null = null;
 
 	export let amount = 0.0;
 	export let price = 0.0;
@@ -38,22 +37,14 @@
 			id: index,
 		});
 	}
-
-	function handleClickOutside(event: any) {
-		clicked = false;
-		dispatch('deselect');
-	}
 </script>
 
-<div class="main {$$props.class}" transition:slide>
+<div class="history-card {$$props.class}" transition:slide>
 	<div
 		class="container {clicked ? 'clicked' : ' '} hover:cursor-pointer"
 		class:clicked
 		on:click={select}
-		use:clickOutside
 	>
-		<!-- TODO: REWORK/IMPROVE THIS -->
-		<!-- on:click_outside={handleClickOutside} -->
 		<div class="left">
 			<div class="leftcontent">
 				<div>
@@ -64,20 +55,20 @@
 				</div>
 				<div>
 					<span class="dateAndime">
-						{dateAndTime}
+						{window.moment(date).format('MMMM DD, YYYY h:mm:ss a')}
 					</span>
 				</div>
 			</div>
 		</div>
 		<div class="right">
 			<div class="text-right">
-				{#if status == 'Swap'}
-					<Swap {SwapData} {clicked} />
-				{:else if status == 'Sent'}
+				{#if status == 'swap' && swapData}
+					<Swap {swapData} {clicked} />
+				{:else if status == 'send'}
 					<Amount type="negative" {amount} {price} {cryptoUnit} {currencyUnit} {clicked} />
-				{:else if status == 'Received'}
+				{:else if status == 'receive'}
 					<Amount type="positive" {amount} {price} {cryptoUnit} {currencyUnit} {clicked} />
-				{:else if status == 'Stake'}
+				{:else if status == 'stake'}
 					<Amount type="negative" {amount} {price} {cryptoUnit} {currencyUnit} {clicked} />
 				{/if}
 			</div>
@@ -86,7 +77,7 @@
 </div>
 
 <style lang="postcss" global>
-	:local(.main) {
+	:local(.history-card) {
 		@apply py-2;
 	}
 	:local(.container) {
@@ -103,7 +94,7 @@
 		@apply text-left;
 	}
 	:local(.status) {
-		@apply text-sm md:text-xl font-bold dark:text-white;
+		@apply text-sm md:text-xl font-bold dark:text-white capitalize;
 	}
 	:local(.wallet) {
 		@apply text-xs md:font-bold dark:text-dark-textGray;

@@ -7,7 +7,6 @@
 	import TokenCard from '$lib/components/TokenCard.svelte';
 
 	import { page } from '$app/stores';
-	import { shortenAddress } from '$utils';
 
 	export let tokens: IToken[] = [];
 

@@ -12,15 +12,18 @@
 	import { pollyFillWallets, pollyFillUser, pollyfillSelectedProfile } from '$utils/pollyfillData';
 	import { selectedWallet, wallets } from '$stores/user/wallets';
 	import { saveData } from '$utils/dataStorage';
+	import { user } from '$stores/user';
 
-	let data: HistoryObject[] = [];
+	let historyData: HistoryResponse | null = null;
 	let wallet: IWallet | null = $selectedWallet;
 	$: walletAddress = $page.params.address;
 
 	let currentPage = 1;
 	let itemsPerPage = 10;
+	let totalPages = 1;
+	let loading = false;
 
-	onMount(() => {
+	const populateData = () => {
 		pollyFillUser();
 
 		// select the desired profile
@@ -44,51 +47,83 @@
 
 		// Can only be called once the user has been set
 		getData();
-	});
+	};
 
 	const getData = async () => {
+		loading = true;
 		wallet =
 			$selectedWallet || $wallets?.filter((wallet) => wallet.walletAddress === walletAddress)[0];
 
 		if (wallet) {
-			const historyObj = await getSingleAccountHistory(
+			const historyResponseObj = await getSingleAccountHistory(
 				wallet.accountHash,
+				$user?.network,
 				currentPage,
 				itemsPerPage,
 			);
-			data = [...data, historyObj.data];
+
+			if (historyData) {
+				const filteredItems = historyResponseObj.data.filter(
+					(item) =>
+						!historyData?.data.find(
+							(prevItem) => prevItem.deployHash.toLowerCase() === item.deployHash.toLowerCase(),
+						),
+				);
+
+				historyData.data = [...historyData?.data, ...filteredItems];
+			} else {
+				historyData = historyResponseObj;
+			}
+
+			totalPages = historyResponseObj.pageCount;
+			currentPage = historyResponseObj.page;
+
+			// TODO: Potentially Cache these results
 		} else {
 			// Better UI Based Error Needed
 			throw Error('Wallet Not Loaded');
 		}
+		loading = false;
 	};
 
 	function showMoreItems() {
-		currentPage++;
-		getData();
+		const totalPages = historyData?.pageCount || 0;
+		if (currentPage !== totalPages) {
+			currentPage++;
+			getData();
+		}
 	}
 
 	function creditCardClicked() {
 		getData();
 	}
+
+	$: ((address: string) => {
+		historyData = null;
+		address && populateData();
+	})($page.params.address);
 </script>
 
-{#if data}
-	<div class="flex">
-		<div class="global-grid-nav">
-			<Navbar />
-		</div>
-		<div class="global-grid-left">
-			<ProfileNavigation on:cardClicked={creditCardClicked} />
-		</div>
-		<div class="global-grid-mid">
-			<HistoryPage on:showMoreClicked={showMoreItems} />
-		</div>
-		<div class="global-grid-right">
-			<Sidebar historyObject={$sidebarContent} />
-		</div>
+<div class="flex">
+	<div class="global-grid-nav">
+		<Navbar />
 	</div>
-{/if}
+	<div class="global-grid-left">
+		<ProfileNavigation on:cardClicked={creditCardClicked} />
+	</div>
+	<div class="global-grid-mid">
+		<HistoryPage
+			{loading}
+			{totalPages}
+			{currentPage}
+			historyArray={historyData?.data || []}
+			on:showMoreClicked={showMoreItems}
+		/>
+	</div>
+	<div class="global-grid-right">
+		<Sidebar historyObject={$sidebarContent} />
+	</div>
+</div>
 
 <!-- <style lang="postcss" global>
 	/* :local(.size-full) {

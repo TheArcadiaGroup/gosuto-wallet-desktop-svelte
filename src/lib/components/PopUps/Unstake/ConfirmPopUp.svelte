@@ -30,7 +30,7 @@
 	</p>
 	<p class="total-time-until">Total Time Until Reward: {realtimeRemaining}</p>
 	<p class="description">
-		If you unstake this position, you will recieve you initial investment, but will forfeit you
+		If you unstake this position, you will receive you initial investment, but will forfeit you
 		reward
 	</p>
 </Popup>

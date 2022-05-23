@@ -7,7 +7,7 @@
 	@see history
 -->
 <script lang="ts">
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	// import HistoryComponent from './HistoryComponent/HistoryComponent.svelte';
 	import RoundedSelect from '$lib/components/RoundedSelect.svelte';
@@ -15,6 +15,8 @@
 	import { sidebarContent } from '$stores/HistoryStore';
 	import { page } from '$app/stores';
 	import { selectedWallet } from '$stores/user/wallets';
+	import HistoryComponent from './HistoryComponent/HistoryComponent.svelte';
+	import Loading from '$lib/components/Loading.svelte';
 	// import { shortenAddress } from '$utils';
 
 	$: isInProfileRoute = $page.path.startsWith('/profile');
@@ -26,48 +28,62 @@
 	sidebarContent.set(null);
 
 	// Get history data from data
-	let historyArray: IHistory[] = $selectedWallet?.walletHistory || [];
+	export let historyArray: IHistory[] = [];
+	export let loading = false;
+	export let totalPages = 1;
+	export let currentPage = 1;
+
 	let filteredArray: IHistory[];
 
-	let optionsArray = ['all', 'receive', 'send', 'swap', 'stake'];
+	$: console.log(historyArray, filteredArray, filterId);
+
+	let optionsArray = ['all', 'receive', 'sent', 'swap', 'stake'];
 	let filterId: number = 0;
 
 	$: historyFilter = optionsArray[filterId];
 	// TODO: REBUILD/REWORK THIS
-	// $: switch (filterId) {
-	// 	case 0:
-	// 		filteredArray = historyArray;
-	// 		break;
-	// 	case 1:
-	// 		filteredArray = historyArray.filter((obj) => obj.transactionType === 'receive');
-	// 		break;
-	// 	case 2:
-	// 		filteredArray = historyArray.filter((obj) => obj.transactionType === 'send');
-	// 		break;
-	// 	case 3:
-	// 		filteredArray = historyArray.filter((obj) => obj.transactionType === 'swap');
-	// 		break;
-	// 	case 4:
-	// 		filteredArray = historyArray.filter((obj) => obj.transactionType === 'stake');
-	// 		break;
-	// 	default:
-	// 		break;
-	// }
+	$: switch (filterId) {
+		case 0:
+			filteredArray = historyArray;
+			break;
+		case 1:
+			filteredArray = historyArray.filter((obj) => obj.transactionType === 'receive');
+			break;
+		case 2:
+			filteredArray = historyArray.filter((obj) => obj.transactionType === 'send');
+			break;
+		case 3:
+			filteredArray = historyArray.filter((obj) => obj.transactionType === 'swap');
+			break;
+		case 4:
+			filteredArray = historyArray.filter((obj) => obj.transactionType === 'stake');
+			break;
+		default:
+			break;
+	}
 
-	let selectedTokenIndex = -1;
+	export let selectedHistoryItemIndex = -1;
 
-	function selectToken(e: { detail: { id: number } }): void {
-		selectedTokenIndex = e.detail.id;
+	function selectHistoryCard(e: { detail: { id: number } }): void {
+		selectedHistoryItemIndex = e.detail.id;
 		// TODO: REBUILD/REWORK THIS
-		// sidebarContent.set(filteredArray[selectedTokenIndex]);
+		// sidebarContent.set(filteredArray[selectedHistoryItemIndex]);
 	}
 
 	function showMoreItems() {
 		dispatch('showMoreClicked');
 	}
+
+	function deselectListener(event: any): void {
+		if (!event.target) return;
+		const isInToken = Boolean(event.target.closest('.history-card'));
+		if (!isInToken) {
+			selectedHistoryItemIndex = -1;
+		}
+	}
 </script>
 
-<div class="main" class:centered={!isInProfileRoute}>
+<div class="history-cards-parent" class:centered={!isInProfileRoute} on:click={deselectListener}>
 	<div class="header">
 		{#if !isInProfileRoute}
 			<h3 class="history-title">{historyFilter} History</h3>
@@ -79,34 +95,33 @@
 		<RoundedSelect {optionsArray} bind:value={filterId} />
 	</div>
 	<div class="history-holder">
-		<!-- Received -->
-		<!-- TODO: REBUILD/REWORK THIS -->
-		<!-- {#each filteredArray as historyObject, i}
-			<div class="bg-red-400">Replace with Improved History Component</div>
+		{#each filteredArray as historyObject, i}
 			<HistoryComponent
-				on:deselect={() => {
-					selectedTokenIndex = -1;
-				}}
 				class={i > 0 ? 'top-border' : ''}
-				on:select={selectToken}
+				on:select={selectHistoryCard}
 				index={i}
-				clicked={selectedTokenIndex === i}
+				clicked={selectedHistoryItemIndex === i}
 				wallet={$selectedWallet?.walletName}
 				status={historyObject.transactionType}
-				dateAndTime={historyObject.transactionDate}
-				SwapData={historyObject.SwapData}
-				amount={historyObject.transactionFee}
-				price={historyObject.transactionFee}
-				cryptoUnit={historyObject.transactionHash}
-				currencyUnit={historyObject.currencyUnit}
+				date={historyObject.transactionDate}
+				swapData={historyObject.swap}
+				amount={historyObject.amount}
+				blockHash={historyObject.blockHash}
+				deployHash={historyObject.deployHash}
 			/>
-		{/each} -->
+		{/each}
+		{#if loading}
+			<Loading />
+		{/if}
 	</div>
-	<button on:click={showMoreItems}>Show more</button>
+
+	{#if totalPages !== currentPage}
+		<button on:click={showMoreItems}>Show more</button>
+	{/if}
 </div>
 
 <style lang="postcss" global>
-	:local(.main) {
+	:local(.history-cards-parent) {
 		@apply h-screen flex flex-col w-full;
 		@apply px-4 pt-10;
 		@apply lg:px-11 lg:pt-20;

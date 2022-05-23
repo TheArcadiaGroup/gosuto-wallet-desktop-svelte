@@ -2,6 +2,7 @@
 /// <reference types="svelte" />
 /// <reference types="vite/client" />
 /// <reference types="vite/client" />
+import type { Moment } from 'moment';
 
 interface ImportMetaEnv {
 	readonly VITE_SEND_TX_FEE_PERCENTAGE: string;
@@ -25,6 +26,7 @@ declare global {
 		};
 		// CasperSDK: CasperSDKType;
 		CoinGecko: typeof CoinGecko;
+		moment: Moment;
 	}
 
 	interface infoCategory {
@@ -67,13 +69,28 @@ declare global {
 		y: number;
 	}
 
+	interface HistoryResponse {
+		data: IHistory[];
+		total: number;
+		page: number;
+		pageCount: number;
+	}
+
 	interface HistoryObject {
 		wallet: string;
-		status: 'Received' | 'Sent' | 'Stake' | 'Swap' | 'All' | string;
+		status:
+			| 'stake'
+			| 'swap'
+			| 'send'
+			| 'receive'
+			| 'initialStakeUnlock'
+			| 'unstake'
+			| 'claimReward'
+			| string;
 		dateAndTime: string;
 		amount: number;
 		price: number;
-		SwapData: SwapData;
+		swapData: SwapData | null; // When its swap transaction
 		toAccount: string;
 		fromAccount: string;
 		cryptoUnit: string;
@@ -121,25 +138,28 @@ declare global {
 		walletAddress: string;
 	}
 
+	type TxStatus =
+		| 'send'
+		| 'swap'
+		| 'receive'
+		| 'stake'
+		| 'initialStakeUnlock'
+		| 'unstake'
+		| 'claimReward';
+
 	// TODO: RETHINK THE HISTORY OBJECT GIVEN THE DATA WE ARE GETTING BACK
 	interface IHistory {
-		transactionType:
-			| 'send'
-			| 'swap'
-			| 'recieve'
-			| 'stake'
-			| 'initialStakeUnlock'
-			| 'unstake'
-			| 'claimReward';
-		transactionInitiationDate: Date & { toDate: () => Date };
-		recipientWalletName: string;
-		recipientWalletAddress: string;
-		senderWalletAddress: string;
-		transactionTokenAmount: number;
-		transactionUSDEquivalent: number;
-		transactionFee: number;
-		transactionHash: string;
-		transactionDate: Date & { toDate: () => Date };
+		transactionType: TxStatus;
+		accountHash: string; // Account Hash
+		recipient: string;
+		sender: string;
+		amount: number;
+		blockHash: string;
+		deployHash: string;
+		transactionDate: Date;
+
+		// Swap History
+		swap: SwapData | null;
 	}
 
 	interface IValidator {

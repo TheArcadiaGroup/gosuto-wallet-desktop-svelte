@@ -45,6 +45,7 @@
 		"electron-serve": "^1.1.0",
 		"electron-win-state": "^1.1.22",
 		"ethers": "^5.6.2",
+		"moment": "^2.29.3",
 		"node-jose": "^2.1.0",
 		"svelte-gestures": "^1.4.1",
 		"svelte-loading-spinners": "^0.1.7",
