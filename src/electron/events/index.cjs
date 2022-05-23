@@ -1,7 +1,6 @@
 const { ipcMain, app } = require('electron');
 const createWallet = require('../utils/createWallet.cjs');
 const account = require('../utils/account.cjs');
-const { Keys } = require('casper-js-sdk');
 const profileHistory = require('../utils/profileHistory.cjs');
 const { importWalletFromFile } = require('../utils/walletImportExports.cjs');
 const sendMessage = require('./sendMessage.cjs');
@@ -158,6 +157,10 @@ module.exports = () => {
 	// Unstake/Undelegate
 	ipcMain.on('undelegate', async (event, data) => {
 		sendMessage('undelegateResponse', null);
+	});
+
+	ipcMain.on('openUrl', (event, data) => {
+		require('electron').shell.openExternal(data);
 	});
 
 	ipcMain.on('selectProfileImage', async (event, _data) => {

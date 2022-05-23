@@ -96,7 +96,13 @@
 			</p>
 		</div>
 	</div>
-	<a href={blockExplorerURL}>View on block explorer</a>
+
+	<div
+		class="block-explorer-link"
+		on:click={() => window.api.sendSync('openUrl', blockExplorerURL)}
+	>
+		View on block explorer
+	</div>
 </div>
 
 <style lang="postcss" global>
@@ -152,7 +158,7 @@
 		@apply text-right;
 	}
 
-	:local(a) {
-		@apply self-center mb-2 text-sm text-light-orange md:text-light-urlColor;
+	:local(.block-explorer-link) {
+		@apply self-center mb-2 text-sm cursor-pointer text-light-orange md:text-light-urlColor;
 	}
 </style>

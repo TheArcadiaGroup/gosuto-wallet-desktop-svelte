@@ -249,7 +249,8 @@ declare global {
 		| 'tokenBalance'
 		| 'getValidators'
 		| 'delegate'
-		| 'undelegate';
+		| 'undelegate'
+		| 'openUrl';
 	type MainReceiveChannels =
 		| 'createWalletFromFileResponse'
 		| 'createWalletFromMnemonicsResponse'
