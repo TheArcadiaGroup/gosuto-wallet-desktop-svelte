@@ -183,7 +183,9 @@ declare global {
 	}
 
 	interface CSPRPrices {
-		[key: SupportedCurrencies]: number;
+		usd: number;
+		jpy: number;
+		eur: number;
 	}
 
 	interface ProfileSettings {

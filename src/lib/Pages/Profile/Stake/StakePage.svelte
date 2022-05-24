@@ -2,7 +2,7 @@
 	import ProfileNavigation from '$lib/pages/Profile/ProfileNavigation.svelte';
 	import ArrowInCircle from '$lib/components/ArrowInCircle.svelte';
 	import StakesFromWallet from '$lib/pages/Profile/Stake/StakesFromWallet.svelte';
-	import Confirm from '$lib/pages/Profile/Stake/detail/Confirm.svelte';
+	import StakeToken from '$lib/Pages/Profile/Stake/detail/StakeToken.svelte';
 	import ClaimReward from '$lib/pages/Profile/Stake/detail/ClaimReward.svelte';
 	import UnlockInitialStake from '$lib/pages/Profile/Stake/detail/UnlockInitialStake.svelte';
 	import Unstake from '$lib/pages/Profile/Stake/detail/Unstake.svelte';
@@ -11,12 +11,12 @@
 
 	/**Object of all possible components for the stake detail column (the last column)*/
 	const lastColumnContent: {
-		confirm: typeof Confirm;
+		confirm: typeof StakeToken;
 		claimReward: typeof ClaimReward;
 		unlockInitialStake: typeof UnlockInitialStake;
 		unstake: typeof Unstake;
 	} = {
-		confirm: Confirm,
+		confirm: StakeToken,
 		claimReward: ClaimReward,
 		unlockInitialStake: UnlockInitialStake,
 		unstake: Unstake,
@@ -66,7 +66,6 @@
 
 	function addStake(e: CustomEvent) {
 		selectedLastColumnContent = 'confirm';
-		console.log('selectedLastCollumnContent:', selectedLastColumnContent);
 	}
 
 	export let stakeArray: IStake[];
@@ -87,17 +86,18 @@
 	<div class="global-grid-right">
 		<div class="size-full last-column">
 			{#if selectedLastColumnContent}
-				<div class="last-column-header">
-					<div class="w-6 h-6">
-						<ArrowInCircle disabled={false} on:click={closeStake} />
+				{#if selectedLastColumnContent !== 'confirm'}
+					<div class="last-column-header">
+						<div class="w-6 h-6">
+							<ArrowInCircle disabled={false} on:click={closeStake} />
+						</div>
 					</div>
-					<div class="pb-1">Stake</div>
-				</div>
-				<div class="pb-1">Stake</div>
+				{/if}
 				<div class="flex-grow">
 					<svelte:component
 						this={lastColumnContent[selectedLastColumnContent]}
 						disabled={allowUnstake}
+						on:cancelStake={() => (selectedLastColumnContent = null)}
 					/>
 				</div>
 			{:else}

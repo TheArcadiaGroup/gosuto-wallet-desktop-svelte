@@ -121,8 +121,9 @@
 				bind:value={tokenAmount}
 				class="send-currency-dark-sidebar-input"
 				type="number"
-				step={1 / 1e18}
+				step={0.00001}
 				label="Enter {selectedToken.tokenName} amount"
+				addTextBg={true}
 			/>
 		</div>
 		<div class="currency-money-amount">
@@ -146,6 +147,7 @@
 				bind:value={recipientAddress}
 				class="send-currency-dark-sidebar-input"
 				label="Recipient Address"
+				addTextBg={true}
 			/>
 		</div>
 		<div class="currency-form-row">
@@ -153,6 +155,7 @@
 				bind:value={note}
 				class="send-currency-dark-sidebar-input"
 				label="Note (optional)"
+				addTextBg={true}
 			/>
 		</div>
 		<div class="currency-form-row">
@@ -255,10 +258,10 @@
 		@apply lg:text-sm;
 		@apply dark:text-white;
 	}
-
+	/* 
 	.send-currency-dark-sidebar-input {
 		@apply dark:bg-dark-grey !important;
-	}
+	} */
 
 	/* hide number input arrows */
 
