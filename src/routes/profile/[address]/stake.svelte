@@ -1,28 +1,17 @@
-<script context="module">
-	export const load = async ({ _, page }) => {
-		const address = page.params.address;
-		return {
-			props: {
-				address,
-			},
-		};
-	};
-</script>
-
 <script lang="ts">
 	import { onMount } from 'svelte';
-
-	import StakePage from '$lib/pages/Profile/Stake/StakePage.svelte';
 	import { page } from '$app/stores';
 
-	let data: IStake[];
-	let address: string;
+	import StakePage from '$lib/pages/Profile/Stake/StakePage.svelte';
+
+	let data: IStake[] = [];
+	let address = $page.params.address;
 
 	onMount(() => {
-		address = $page.params.address;
 		getData(address);
 	});
 
+	// TODO: LOAD STAKING HISTORY
 	const getData = async (address: string) => {
 		fetch(`/api/profile/[address]/stake`, { method: 'POST', body: address })
 			.then((response) => response.json())

@@ -7,14 +7,13 @@
 	- `wallet` = Object with data of the wallet (name & public key).
 	
 	Events:
-	- `stakeSelect` = Dispatched when a stake card is clicked. Passes the stake data via event details.
+	- `selectStake` = Dispatched when a stake card is clicked. Passes the stake data via event details.
 -->
 <script lang="ts">
 	// import ArrowInCircle from '$lib/components/ArrowInCircle.svelte';
 	import Button from '$lib/components/Button.svelte';
 	// import Duplicate from '$icons/Duplicate.svelte';
 	import StakeCard from './StakeCard.svelte';
-	import { goto } from '$app/navigation';
 	import ReturnHome from '$lib/components/ReturnHome.svelte';
 
 	import { page } from '$app/stores';
@@ -22,27 +21,17 @@
 
 	const dispatch = createEventDispatcher();
 
-	export let stakeArray: IStake[];
-	export let forRoute: 'profile' | 'all-stakes' = 'profile';
+	export let stakeArray: IStake[] = [];
 
 	$: showingArray = stakeArray.slice(0, numberOfItemsShown * pageNumber);
 
 	let numberOfItemsShown = 6;
 	let pageNumber = 1;
-
-	/**Handler for clicking the back button in the middle column. Redirects back from `/profile/stakes` to `/profile`*/
-	function backHandler() {
-		goto(`/${forRoute}`);
-	}
-
-	/**Handler for clicking the public key that copies the PK to user's clipboard.*/
-	function copyPK() {
-		// TODO copy public key to clipboard (I assume that this is what this is supposed to do)
-	}
+	let forRoute = $page.path.startsWith('/profile') ? 'profile' : 'all-stakes';
 
 	/**Triggered when a stake card is clicked. Dispatches an event of stake selection*/
-	function stakeSelect(e: CustomEvent) {
-		dispatch('stakeSelect', e.detail);
+	function selectStake(e: CustomEvent) {
+		dispatch('selectStake', e.detail);
 	}
 
 	function addStake() {
@@ -55,21 +44,24 @@
 </script>
 
 <div class="main">
-	<div class="header">
-		<ReturnHome walletName={''} publicKey={$page.params.address} profileLocation="Stake CSPR" />
-	</div>
-
-	<div class="title item">
-		<div class="title-label">Stakes from this wallet</div>
-		<div>
-			<Button>
-				<div slot="text" class="button-label" on:click={addStake}>+ Stake</div>
-			</Button>
+	{#if forRoute === 'profile'}
+		<div class="header">
+			<ReturnHome walletName={''} publicKey={$page.params.address} profileLocation="Stake CSPR" />
 		</div>
-	</div>
+
+		<div class="title item">
+			<div class="title-label">Stakes from this wallet</div>
+			<div>
+				<Button>
+					<div slot="text" class="button-label" on:click={addStake}>+ Stake</div>
+				</Button>
+			</div>
+		</div>
+	{/if}
+
 	<div class="stake-cards-container item">
 		{#each showingArray as stake}
-			<StakeCard {stake} on:click={stakeSelect} />
+			<StakeCard {stake} on:click={selectStake} />
 		{/each}
 	</div>
 	<div class="show-more-container">

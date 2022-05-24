@@ -1,4 +1,5 @@
 import { tokenLoaders } from '$stores/dataLoaders';
+import { csprPrice } from '$stores/tokens';
 import { user } from '$stores/user';
 import { tokens } from '$stores/user/tokens';
 import { selectedWallet } from '$stores/user/wallets';
@@ -43,6 +44,8 @@ export const getCSPRUsdPrice = async () => {
 		const casperPriceChangePercentage24h = (casperInformation.data.market_data as any)
 			.price_change_percentage_24h;
 
+		csprPrice.set(price);
+
 		return {
 			price,
 			price_change: casperPriceChangePercentage24h,
@@ -52,9 +55,9 @@ export const getCSPRUsdPrice = async () => {
 
 		return {
 			price: {
-				usd: 0,
-				eur: 0,
-				jpy: 0,
+				usd: 1,
+				eur: 1,
+				jpy: 1,
 			},
 			price_change: 0,
 		};

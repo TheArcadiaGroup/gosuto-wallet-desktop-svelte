@@ -4,65 +4,60 @@
 	import ArrowInCircle from '$lib/components/ArrowInCircle.svelte';
 	import StakesFromWallet from '$lib/pages/Profile/Stake/StakesFromWallet.svelte';
 
-	import Confirm from '$lib/pages/Profile/Stake/detail/Confirm.svelte';
 	import ClaimReward from '$lib/pages/Profile/Stake/detail/ClaimReward.svelte';
 	import UnlockInitialStake from '$lib/pages/Profile/Stake/detail/UnlockInitialStake.svelte';
 	import Unstake from '$lib/pages/Profile/Stake/detail/Unstake.svelte';
 	import TextSidebar from '$lib/components/TextSidebar.svelte';
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
+
 	/**Object of all possible components for the stake detail column (the last column)*/
-	const lastCollumnContent = {
-		confirm: Confirm,
-		claimReward: ClaimReward,
-		unlockInitialStake: UnlockInitialStake,
-		unstake: Unstake,
+	const lastColumnContent = {
+		claimReward: typeof ClaimReward,
+		unlockInitialStake: typeof UnlockInitialStake,
+		unstake: typeof Unstake,
 	};
 
 	// stake bind StakesFromWallet
-	let selectedLastCollumnContent: any = null;
+	let selectedLastColumnContent: 'unstake' | 'claimReward' | 'unlockInitialStake' | null = null;
 	let selectedStake: any = null;
 
-	/**Handler for clicking back arrown in the last collumn and closing the stake detail*/
+	/**Handler for clicking back arrown in the last Column and closing the stake detail*/
 	function closeStake() {
-		selectedLastCollumnContent = null;
+		selectedLastColumnContent = null;
 		selectedStake.closeStake();
 		selectedStake = null;
 	}
 
 	/**Event handler for clicking a stake in StakesFromWallet component that shows the detail of that stake in the third column*/
-	function stakeSelect(e: CustomEvent) {
+	function selectStake(e: CustomEvent) {
+		// selectedStake && closeStake();
+		// selectedStake = e.detail;
+
+		// TODO: change selectedLastColumnContent based on the state of the stake
+		// DEV
+		// selectedLastColumnContent = 'confirm';
+		console.log(e.detail);
 		selectedStake && closeStake();
 		selectedStake = e.detail;
 
-		// TODO: change selectedLastCollumnContent based on the state of the stake
-		// DEV
-		selectedLastCollumnContent = 'confirm';
+		// TODO: add tests for the different sidebars
+		let unstakeSidebar: boolean = false;
+		let unstakeProgressSidebar: boolean = false;
+		let claimRewardSidebar: boolean = false;
+		let unlockInitialStakeSidebar: boolean = false;
+
+		if (unstakeSidebar) {
+			selectedLastColumnContent = 'unstake';
+			// allowUnstake = true;
+		} else if (unstakeProgressSidebar) {
+			selectedLastColumnContent = 'unstake';
+			// allowUnstake = false;
+		} else if (claimRewardSidebar) {
+			selectedLastColumnContent = 'claimReward';
+		} else if (unlockInitialStakeSidebar) {
+			selectedLastColumnContent = 'unlockInitialStake';
+		}
 	}
-
-	// DEV
-	const user = {
-		name: 'Jake Waterson',
-		ppurl: 'https://miro.medium.com/fit/c/262/262/2*-cdwKPXyVI0ejgxpWkKBeA.jpeg',
-		wallets: [
-			{
-				name: 'Wallet 1',
-				avalible: 5000,
-				staked: 2500,
-				unclaimed: 375,
-			},
-			{
-				name: 'Wallet 1',
-				avalible: 5000,
-				staked: 2500,
-				unclaimed: 375,
-			},
-		],
-	};
-
-	const wallet = {
-		name: 'Wallet 1',
-		publicKey: '0x9f98e01d2...4ed7',
-	};
 
 	let stakeArray: IStake[] = [];
 
@@ -92,16 +87,11 @@
 	</div>
 	<div class="global-grid-mid size-full">
 		{#if stakeArray.length > 0}
-			<StakesFromWallet
-				forRoute={'all-stakes'}
-				on:stakeSelect={stakeSelect}
-				{wallet}
-				{stakeArray}
-			/>
+			<StakesFromWallet on:selectStake={selectStake} {stakeArray} />
 		{/if}
 	</div>
 	<div class="global-grid-right">
-		{#if selectedLastCollumnContent}
+		{#if selectedLastColumnContent}
 			<div class="last-column-header">
 				<div class="w-6 h-6">
 					<ArrowInCircle disabled={false} on:click={closeStake} />
@@ -109,10 +99,10 @@
 				<div class="pb-1">Stake</div>
 			</div>
 			<div class="flex-grow">
-				<!-- <svelte:component this={lastCollumnContent[selectedLastCollumnContent]} /> -->
+				<svelte:component this={lastColumnContent[selectedLastColumnContent]} />
 			</div>
 		{:else}
-			<TextSidebar>Select currency you want to swap</TextSidebar>
+			<TextSidebar>Select a stake for more information</TextSidebar>
 		{/if}
 	</div>
 </div>

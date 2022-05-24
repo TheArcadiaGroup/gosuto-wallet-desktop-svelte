@@ -76,27 +76,6 @@ declare global {
 		pageCount: number;
 	}
 
-	interface HistoryObject {
-		wallet: string;
-		status:
-			| 'stake'
-			| 'swap'
-			| 'send'
-			| 'receive'
-			| 'initialStakeUnlock'
-			| 'unstake'
-			| 'claimReward'
-			| string;
-		dateAndTime: string;
-		amount: number;
-		price: number;
-		swapData: SwapData | null; // When its swap transaction
-		toAccount: string;
-		fromAccount: string;
-		cryptoUnit: string;
-		currencyUnit: string;
-	}
-
 	interface WalletCreationData {
 		walletName: string;
 		walletAddress: string;
@@ -201,6 +180,10 @@ declare global {
 		theme: 'dark' | 'light';
 		network: 'mainnet' | 'testnet';
 		currency: SupportedCurrencies; // defaults to usd
+	}
+
+	interface CSPRPrices {
+		[key: SupportedCurrencies]: number;
 	}
 
 	interface ProfileSettings {

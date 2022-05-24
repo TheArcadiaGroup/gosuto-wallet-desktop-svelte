@@ -19,6 +19,7 @@
 	import { walletLoaders } from '$stores/dataLoaders';
 	import { loadWalletData } from '$utils/dataLoaders';
 	import { user } from '$stores/user';
+	import { csprPrice } from '$stores/tokens';
 
 	export let avatar = '/images/png/avatar.png';
 	export let name = 'Unknown Name';
@@ -81,7 +82,7 @@
 				<div class="balance-item">
 					{#if !$walletLoaders[wallet.walletAddress]}
 						<span class="block mr-1">
-							{wallet?.availableBalanceUSD.toFixed(2) || 0}
+							{(wallet?.availableBalance * $csprPrice[$user?.currency || 'usd']).toFixed(2) || 0}
 						</span>
 					{:else}
 						<span class="skeleton-loader block mr-1" />

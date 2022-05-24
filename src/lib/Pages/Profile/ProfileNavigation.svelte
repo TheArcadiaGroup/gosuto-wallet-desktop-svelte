@@ -7,7 +7,6 @@
 	- `forRoute` = Either `profile` OR `all-stakes`. Used for deciding what to show in the UI.
 -->
 <script lang="ts">
-	import PlusIcon from '$icons/PlusIcon.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import ProfilePicture from '$lib/components/ProfilePicture.svelte';
 	import CardCarousel from './CardCarousel/CardCarousel.svelte';
@@ -19,7 +18,7 @@
 	import Bookmark from '$icons/Bookmark.svelte';
 	import PaperAirplane from '$icons/PaperAirplane.svelte';
 	import Stake from '$icons/Stake.svelte';
-	import Swap from '$icons/Swap.svelte';
+	// import Swap from '$icons/Swap.svelte';
 	import Wallet from '$icons/Wallet.svelte';
 	import ChartPie from '$icons/ChartPie.svelte';
 	import Checklist from '$icons/Checklist.svelte';
@@ -28,11 +27,11 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import pollyfillData from '$utils/pollyfillData';
-	import { selectedWallet, wallets } from '$stores/user/wallets';
+	import { wallets } from '$stores/user/wallets';
 	import { user } from '$stores/user';
 	import { saveData } from '$utils/dataStorage';
 
-	const forRoute = $page.path.startsWith('/profile') ? 'profile' : 'all-stakes';
+	let forRoute = $page.path.startsWith('/profile') ? 'profile' : 'all-stakes';
 	let walletAddress = $page.params.address;
 
 	/**Options for the content of the menu. Either 'profile' or 'all-stakes'.*/
