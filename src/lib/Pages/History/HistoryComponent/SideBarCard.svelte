@@ -93,18 +93,18 @@
 	<div class="bottom-holder">
 		<div class="address-holder">
 			<p class="to-from">Transaction Fee</p>
-			<div class="amount">
-				<Amount
-					type={'negative'}
-					amount={sidebarData?.transactionFee}
-					clicked={false}
-					smaller={true}
-				/>
+			<div class="amount text-light-red">
+				{sidebarData?.transactionFee}
+				CSPR
 			</div>
 		</div>
-		<div class="address-holder date">
+		<div class="address-holder">
 			<p class="to-from">Transaction Hash</p>
-			<p class="address">
+			<p
+				class="address overflow-clip clickable-address"
+				on:click={() =>
+					window.api.send('openUrl', `${blockExplorerURLBase}/deploy/${sidebarData?.deployHash}`)}
+			>
 				{shortenAddress(sidebarData?.deployHash)}
 			</p>
 		</div>
@@ -141,10 +141,6 @@
 
 	:local(.top-details) {
 		@apply w-[70%];
-	}
-
-	:local(.bottom-holder) {
-		@apply w-[60%];
 	}
 
 	:local(.address-holder) {

@@ -43,9 +43,6 @@
 				pollyfillSelectedProfile();
 			}
 		}
-
-		// Can only be called once the user has been set
-		getData();
 	};
 
 	const getData = async () => {
@@ -99,6 +96,13 @@
 	onMount(() => {
 		historyData = null;
 		populateData();
+	});
+
+	selectedWallet.subscribe((_wallet) => {
+		if (_wallet) {
+			historyData = null;
+			getData();
+		}
 	});
 </script>
 

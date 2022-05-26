@@ -91,7 +91,7 @@
 						`Failed to send ${sendTokensTxs[item]?.amount} ${sendTokensTxs[item]?.token} to ${sendTokensTxs[item]?.recipientWallet}`;
 				} else if (sendTokensTxs[item]?.fulfilled) {
 					// Clear loader and show respective popup with tx details
-					popup = 'Send Failed!';
+					popup = 'Success';
 					popupContent = `Succcessfully sent ${sendTokensTxs[item]?.amount} ${sendTokensTxs[item]?.token} to ${sendTokensTxs[item]?.recipientWallet}`;
 				}
 
