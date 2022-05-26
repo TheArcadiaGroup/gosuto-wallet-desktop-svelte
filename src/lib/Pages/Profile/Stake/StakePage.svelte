@@ -8,6 +8,41 @@
 	import Unstake from '$lib/pages/Profile/Stake/detail/Unstake.svelte';
 	import TextSidebar from '../../../components/TextSidebar.svelte';
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
+	import ConfirmStake from '$components/PopUps/StakePopups/ConfirmStake.svelte';
+
+	import { selectedWallet } from '$stores/user/wallets';
+	import { delegate } from '$utils/staking';
+	import { user } from '$stores/user';
+	import Popup from '$lib/components/Popup.svelte';
+	import Loading from '$lib/components/Loading.svelte';
+
+	// Popup
+	let popup: 'confirmStake' | 'failedStake' | 'successStake' | 'loadingStake' | null = null;
+
+	let selectedValidatorHash = '';
+	let stakeAmount = 0;
+
+	/**Handler for clicking the "Confirm" button. Confirms the stake.*/
+	function confirmStake() {
+		console.log('Hey Just Staked');
+		// confirm stake
+		const result = delegate(
+			$selectedWallet!.walletAddress,
+			$selectedWallet!.accountHash,
+			$selectedWallet!.privateKey,
+			selectedValidatorHash,
+			stakeAmount,
+			$user!.network,
+		);
+
+		if (result) {
+			if (result.error) {
+				popup = 'failedStake';
+			} else {
+				popup = 'loadingStake';
+			}
+		}
+	}
 
 	/**Object of all possible components for the stake detail column (the last column)*/
 	const lastColumnContent: {
@@ -38,6 +73,18 @@
 		selectedLastColumnContent = null;
 		selectedStake.closeStake();
 		selectedStake = null;
+	}
+
+	function showConfirmStakePopup(stakeDetails: { validatorHash: string; amount: number }) {
+		popup = 'confirmStake';
+		selectedValidatorHash = stakeDetails.validatorHash;
+		stakeAmount = stakeDetails.amount;
+	}
+
+	function closePopup() {
+		popup = null;
+		selectedValidatorHash = '';
+		stakeAmount = 0;
 	}
 
 	/**Event handler for clicking a stake in StakesFromWallet component that shows the detail of that stake in the third column*/
@@ -98,6 +145,7 @@
 						this={lastColumnContent[selectedLastColumnContent]}
 						disabled={allowUnstake}
 						on:cancelStake={() => (selectedLastColumnContent = null)}
+						on:showStakePopup={(e) => showConfirmStakePopup(e.detail)}
 					/>
 				</div>
 			{:else}
@@ -106,6 +154,18 @@
 		</div>
 	</div>
 </div>
+
+{#if popup === 'confirmStake'}
+	<ConfirmStake amount={stakeAmount} on:confirm={() => confirmStake()} on:cancel={closePopup} />
+{:else if popup === 'loadingStake'}
+	<Popup
+		title="Currently Staking Your {stakeAmount} CSPR"
+		hasCancel={false}
+		on:confirm={() => (popup = null)}
+	>
+		<Loading useFirework={false} size={60} />
+	</Popup>
+{/if}
 
 <style lang="postcss" global>
 	:local(.placeholder-text) {

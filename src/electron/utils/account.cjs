@@ -47,7 +47,6 @@ module.exports = {
 		}
 	},
 	sendTransaction: async ({ fromPublicKey, fromPrivateKey, toPublicKey, amount, network }) => {
-		console.log('\n\n', { fromPublicKey, fromPrivateKey, toPublicKey, amount, network }, '\n\n');
 		// Todo: Convert Amount to Ethers 1e9
 		try {
 			const { casperService, casperClient } = getCasperClientAndService(network);

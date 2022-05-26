@@ -21,6 +21,7 @@ export default async () => {
 			currentStaked: validator.currentCsprStaked,
 			delegationReturn: validator.previousAPY / 100, // APY
 			totalValidators: validator.currentTotalValidators,
+			validatorHash: key,
 		});
 	});
 

@@ -7,7 +7,7 @@
 
 <div class="input-holder">
 	<p class={`${$$props.class} ${labelCustomClass}`}>{label}</p>
-	<select class={`${$$props.class} ${selectCustomClass}`} bind:value>
+	<select class={`${$$props.class} ${selectCustomClass}`} bind:value on:change>
 		<slot />
 	</select>
 </div>

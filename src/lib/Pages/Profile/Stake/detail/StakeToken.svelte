@@ -16,22 +16,10 @@
 	import { getCSPRUsdPrice } from '$utils/tokens';
 	import { createEventDispatcher, onMount } from 'svelte';
 
-	export let amount: number;
-	export let recipient: string;
-
 	const dispatch = createEventDispatcher();
 
-	/**Handler for clicking the "Confirm" button. Confirms the stake.*/
-	function confirmStake() {
-		// confirm stake
-		dispatch('confirmStake');
-	}
-
-	/**Handler for clicking the "Cancel" button. Cancels the stake.*/
-	function cancelStake() {
-		// cancel stake
-		dispatch('cancelStake');
-	}
+	let amount = 0;
+	let selectedValidatorHash: string = '';
 
 	onMount(async () => {
 		await getCSPRUsdPrice();
@@ -55,18 +43,43 @@
 			2,
 		)}&nbsp;{$user?.currency.toUpperCase()}
 	</div>
-	<div class="select-container">
-		<SelectInput label={'Recipient Address'} bind:value={recipient}>
-			{#each $validators as validator}
-				<option value={validator}>{validator.validatorName}</option>
-			{/each}
-		</SelectInput>
-	</div>
+	{#if $user?.network === 'mainnet'}
+		<div class="select-container">
+			<SelectInput
+				label={'Recipient Address'}
+				bind:value={selectedValidatorHash}
+				on:change={(e) => console.log(e)}
+			>
+				{#each $validators as validator}
+					<option value={validator.validatorHash}>{validator.validatorName}</option>
+				{/each}
+			</SelectInput>
+			{#if $validators.find((validator) => validator.validatorHash === selectedValidatorHash && validator.currentDelegators > 952)}
+				<div class="validator-warning">
+					This validator has reached the network limit for total delegators and therefore cannot be
+					delegated to by new accounts. Please select another validator with fewer than 952 total
+					delegators
+				</div>
+			{/if}
+		</div>
+	{:else}
+		<div class="input-container">
+			<TextInput
+				class="stake-amount-input"
+				type="text"
+				label={'Validator Public Key'}
+				bind:value={selectedValidatorHash}
+				addTextBg={true}
+			/>
+		</div>
+	{/if}
 	<div class="buttons">
-		<Button on:click={confirmStake}>
+		<Button
+			on:click={() => dispatch('showStakePopup', { validatorHash: selectedValidatorHash, amount })}
+		>
 			<div slot="text" class="button-text">Stake</div>
 		</Button>
-		<Button isTransparent={true} on:click={cancelStake}>
+		<Button isTransparent={true} on:click={() => dispatch('cancelStake')}>
 			<div slot="text" class="button-text">Cancel</div>
 		</Button>
 	</div>
@@ -99,5 +112,9 @@
 
 	:local(option) {
 		@apply capitalize;
+	}
+
+	:local(.validator-warning) {
+		@apply text-red-400 text-xs p-2;
 	}
 </style>

@@ -13,7 +13,6 @@ const { getAllValidators, delegate, undelegate } = require('../utils/staking.cjs
  */
 module.exports = () => {
 	ipcMain.on('getHistory', async (event, data) => {
-		console.log('\n\n Get History \n\n');
 		try {
 			// 34b0394b11dc3ecb1bf6f26c9754aa2e9f38d7bec33003374b4b3fac8566c258 => accountHash
 			const parsedData = JSON.parse(data);
@@ -151,12 +150,85 @@ module.exports = () => {
 
 	// Stake/Delegate
 	ipcMain.on('delegate', async (event, data) => {
-		sendMessage('delegateResponse', null);
+		data = JSON.parse(data);
+
+		const { id, privateKey, accountHash, walletAddress, validatorPublicKey, amount, network } =
+			data;
+
+		try {
+			const response = await delegate({
+				privateKey,
+				accountHash,
+				publicKey: walletAddress,
+				validatorPublicKey,
+				amount,
+				network: network ?? 'testnet',
+			});
+			sendMessage(
+				'delegateResponse',
+				JSON.stringify({
+					id,
+					data: response,
+				}),
+			);
+
+			event.returnValue = JSON.stringify({
+				id,
+				data: response,
+			});
+		} catch (error) {
+			// Handle Error and Return Error Object
+			console.log(error);
+			sendMessage(
+				'delegateResponse',
+				JSON.stringify({
+					id: data.id,
+					error: error,
+					message: 'Encountered Message While Executing Staking Request',
+				}),
+			);
+			event.returnValue = JSON.stringify({
+				id: data.id,
+				error: error,
+				message: 'Encountered Message While Executing Staking Request',
+			});
+		}
 	});
 
 	// Unstake/Undelegate
 	ipcMain.on('undelegate', async (event, data) => {
-		sendMessage('undelegateResponse', null);
+		data = JSON.parse(data);
+
+		try {
+			const response = await undelegate(data);
+			sendMessage(
+				'undelegateResponse',
+				JSON.stringify({
+					id,
+					data: response,
+				}),
+			);
+
+			event.returnValue = JSON.stringify({
+				id,
+				data: response,
+			});
+		} catch (error) {
+			// Handle Error and Return Error Object
+			sendMessage(
+				'undelegateResponse',
+				JSON.stringify({
+					id: data.id,
+					error: error,
+					message: 'Encountered Message While Executing Unstake Request',
+				}),
+			);
+			event.returnValue = JSON.stringify({
+				id: data.id,
+				error: error,
+				message: 'Encountered Message While Executing Unstake Request',
+			});
+		}
 	});
 
 	ipcMain.on('openUrl', (event, data) => {

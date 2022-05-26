@@ -12,8 +12,25 @@ interface SendTokenDetails {
 	token: string;
 }
 
-type UnknownObjectMap = {
+interface StakeCSPRDetails {
+	id: string;
+	walletAddress: string;
+	accountHash: string;
+	privateKey: string;
+	validatorPublicKey: string;
+	amount: number;
+	network: 'testnet' | 'mainnet';
+	error: string | null;
+	fulfilled: boolean;
+}
+
+type UnknownSendTokenObjectMap = {
 	[key: string]: SendTokenDetails | null;
 };
 
-export const sendTokenTracker = writable<UnknownObjectMap>({});
+type UnknownStakeCSPRObjectMap = {
+	[key: string]: StakeCSPRDetails | null;
+};
+
+export const sendTokenTracker = writable<UnknownSendTokenObjectMap>({});
+export const stakeCsprTracker = writable<UnknownStakeCSPRObjectMap>({});

@@ -14,6 +14,8 @@ contextBridge.exposeInMainWorld('api', {
 			'getHistory',
 			'sendCSPRTokens',
 			'accountCsprBalance',
+			'delegate',
+			'undelegate',
 		];
 		if (validChannels.includes(channel)) {
 			ipcRenderer.send(channel, data);
@@ -32,6 +34,8 @@ contextBridge.exposeInMainWorld('api', {
 			'accountCsprBalance',
 			'selectProfileImage',
 			'openUrl',
+			'delegate',
+			'undelegate',
 		];
 		if (validChannels.includes(channel)) {
 			return ipcRenderer.sendSync(channel, data);
@@ -47,6 +51,8 @@ contextBridge.exposeInMainWorld('api', {
 			'getHistoryResponse',
 			'sendCSPRTokensResponse',
 			'accountCsprBalanceResponse',
+			'delegateResponse',
+			'undelegateResponse',
 		];
 		if (validChannels.includes(channel)) {
 			// Deliberately strip event as it includes `sender`

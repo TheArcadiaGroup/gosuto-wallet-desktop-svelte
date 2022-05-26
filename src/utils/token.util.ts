@@ -52,15 +52,6 @@ export async function sendToken(
 	error: null;
 	fulfilled: boolean;
 }> {
-	console.log({
-		'Wallet Address': walletAddress,
-		'Private Key': privateKey,
-		Amount: tokenAmount,
-		Recipient: recipientAddress,
-		'Contract Address': contractAddress,
-		Network: network,
-		Note: note,
-	});
 	if (contractAddress === 'CSPR') {
 		// Create unique tx ID to track it once its returned
 
@@ -76,7 +67,7 @@ export async function sendToken(
 				// '01cfbe76f5e1b7fd042714d4583e578f47675414efd9c1f8105256cea243f0ab35' ||
 				recipientAddress,
 			amount: tokenAmount,
-			network: get(user)?.network || 'testnet', // use testnet just in case the user makes a mistake
+			network: network, // use testnet just in case the user makes a mistake
 		};
 
 		sendTokenTracker.update((transactions) => {

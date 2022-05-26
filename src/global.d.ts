@@ -152,6 +152,7 @@ declare global {
 		currentDelegators: number;
 		currentStaked: number;
 		totalValidators: number;
+		validatorHash: string;
 	}
 
 	interface IStake {

@@ -7,8 +7,6 @@ export default function () {
 		response = JSON.parse(response) as { id: string; data: any };
 		const data = response.data;
 
-		console.log(data);
-
 		if (Array.isArray(data)) {
 			// Its the deploy Object returned
 			// Get the address
@@ -30,8 +28,6 @@ export default function () {
 				totalSent: amtSent,
 				receivedByRecipient: valueSent,
 			};
-
-			console.log(returnObject);
 
 			sendTokenTracker.update((transactions) => {
 				if (response.id && transactions[response.id]) {
