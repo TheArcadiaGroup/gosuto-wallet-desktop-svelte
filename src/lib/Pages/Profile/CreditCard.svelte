@@ -29,7 +29,7 @@
 		saveData('selectedProfile', JSON.stringify(wallet));
 		selectedWallet.set(wallet);
 
-		if ($page.params.address !== wallet.walletAddress) {
+		if ($page.params.address && $page.params.address !== wallet.walletAddress) {
 			const newUrl = $page.path.replace($page.params.address, wallet.walletAddress);
 
 			// Only send load request when it is not currently loading

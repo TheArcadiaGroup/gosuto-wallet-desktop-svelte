@@ -1,3 +1,4 @@
+import { goto } from '$app/navigation';
 import { walletLoaders } from '$stores/dataLoaders';
 import { user } from '$stores/user';
 import { tokens } from '$stores/user/tokens';
@@ -22,8 +23,8 @@ export const pollyFillTokens = async () => {
 		walletsInDB['global'].push({
 			tokenName: 'CSPR',
 			tokenTicker: 'CSPR',
-			tokenAmountHeld: selectedWallet.availableBalance,
-			tokenAmountHeldUSD: selectedWallet.availableBalanceUSD,
+			tokenAmountHeld: selectedWallet?.availableBalance ?? 0,
+			tokenAmountHeldUSD: selectedWallet?.availableBalanceUSD ?? 0,
 			limitedSupply: false,
 			mintableSupply: false,
 			shareToken: true,
@@ -31,7 +32,7 @@ export const pollyFillTokens = async () => {
 			contractAddress: 'CSPR', // defaults to this to facilitate sending
 			tokenPriceUSD: (await getTokenValue('CSPR')).price[get(user)?.currency || 'usd'],
 			decimalsOfPrecision: 5,
-			walletAddress: selectedWallet?.walletAddress,
+			walletAddress: selectedWallet?.walletAddress ?? '',
 		});
 
 		saveData('tokens', JSON.stringify(walletsInDB));
@@ -40,7 +41,7 @@ export const pollyFillTokens = async () => {
 	// Add all global tokens to the array
 	await Promise.all(
 		walletsInDB.global.map(async (token) => {
-			if (token.tokenTicker === 'CSPR') {
+			if (token.tokenTicker === 'CSPR' && selectedWallet) {
 				token.tokenAmountHeld = selectedWallet.availableBalance;
 				token.tokenAmountHeldUSD = selectedWallet.availableBalanceUSD;
 				token.tokenPriceUSD = (await getTokenValue('CSPR')).price[get(user)?.currency || 'usd'];
@@ -52,7 +53,7 @@ export const pollyFillTokens = async () => {
 
 	let dbTokens = [...walletsInDB.global];
 
-	if (walletsInDB[selectedWallet.walletAddress.toLowerCase()]) {
+	if (selectedWallet && walletsInDB[selectedWallet.walletAddress.toLowerCase()]) {
 		dbTokens = [...dbTokens, ...walletsInDB[selectedWallet.walletAddress.toLowerCase()]];
 	}
 
@@ -88,6 +89,10 @@ export const pollyFillWallets = () => {
 
 	wallets.set(dbWallets);
 
+	if (dbWallets.length === 0) {
+		goto('/onboarding');
+	}
+
 	return dbWallets;
 };
 
@@ -101,13 +106,15 @@ export const pollyfillSelectedProfile = () => {
 		dbSelectedProfile = dbWallets[0] || null;
 	}
 
-	saveData('selectedProfile', JSON.stringify(dbSelectedProfile));
+	if (dbSelectedProfile) {
+		saveData('selectedProfile', JSON.stringify(dbSelectedProfile));
 
-	selectedWallet.set(dbSelectedProfile);
+		selectedWallet.set(dbSelectedProfile);
 
-	if (!get(walletLoaders)[dbSelectedProfile.walletAddress]) {
-		console.log('Loading Wallet Info');
-		loadWalletData(dbSelectedProfile.walletAddress);
+		if (!get(walletLoaders)[dbSelectedProfile.walletAddress]) {
+			console.log('Loading Wallet Info');
+			loadWalletData(dbSelectedProfile.walletAddress);
+		}
 	}
 
 	return dbSelectedProfile;

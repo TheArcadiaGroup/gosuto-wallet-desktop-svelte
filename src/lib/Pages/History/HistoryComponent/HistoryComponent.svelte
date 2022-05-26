@@ -9,7 +9,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { slide } from 'svelte/transition';
-
+	import { page } from '$app/stores';
 	import Amount from './Amount.svelte';
 	import Swap from './Swap.svelte';
 
@@ -49,7 +49,9 @@
 					<span class="status">
 						{status}
 					</span>
-					<span class="wallet {clicked ? 'text-white' : 'text-light-grey'}">{wallet}</span>
+					{#if !$page.params.address}
+						<span class="wallet {clicked ? 'text-white' : 'text-light-grey'}">{wallet}</span>
+					{/if}
 				</div>
 				<div>
 					<span class="dateAndime">
