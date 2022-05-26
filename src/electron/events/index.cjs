@@ -238,7 +238,7 @@ module.exports = () => {
 
 	ipcMain.on('openUrl', async (event, data) => {
 		try {
-			console.log(await require('electron').shell.openExternal(data));
+			await require('electron').shell.openExternal(data);
 		} catch (error) {
 			console.log(error);
 		}

@@ -91,10 +91,17 @@
 		{/if}
 	</div>
 	<div class="bottom-holder">
-		<!-- <div class="address-holder">
+		<div class="address-holder">
 			<p class="to-from">Transaction Fee</p>
-			<p class="address">2.5%</p>
-		</div> -->
+			<div class="amount">
+				<Amount
+					type={'negative'}
+					amount={sidebarData?.transactionFee}
+					clicked={false}
+					smaller={true}
+				/>
+			</div>
+		</div>
 		<div class="address-holder date">
 			<p class="to-from">Transaction Hash</p>
 			<p class="address">

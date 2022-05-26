@@ -43,8 +43,13 @@ const consumeHistoryData = async (
 	await Promise.all(
 		historyResponse.data.map(async (item) => {
 			const casperClient = new CasperClient('http://testnet.gosuto.io:7777/rpc');
-			const deploySession = (await casperClient.getDeploy(item.deployHash))[1].deploy.session;
-			// console.log((deploySession as any)['StoredContractByHash']);
+			const deployResult = await casperClient.getDeploy(item.deployHash);
+			const deploySession = deployResult[1].deploy.session;
+			const txFee = +ethers.utils.formatUnits(
+				deployResult[1].execution_results[0].result.Success?.cost.toString() ?? '1000000000',
+				9,
+			);
+			// console.log(deployResult);
 			returnedHistory.data.push({
 				accountHash: accountHash,
 				transactionType: (deploySession as any)['StoredContractByHash']
@@ -58,6 +63,7 @@ const consumeHistoryData = async (
 				deployHash: item.deployHash,
 				blockHash: item.blockHash,
 				transactionDate: new Date(item.timestamp),
+				transactionFee: txFee,
 				swap: null,
 				stake: null,
 			});

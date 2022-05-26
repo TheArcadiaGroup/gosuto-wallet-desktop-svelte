@@ -136,6 +136,7 @@ declare global {
 		blockHash: string;
 		deployHash: string;
 		transactionDate: Date;
+		transactionFee: number;
 
 		// Swap History
 		swap: SwapData | null;
