@@ -1,8 +1,8 @@
 <script type="ts">
 	import { user } from '$stores/user';
+	import { csprPrice } from '$stores/tokens';
 
 	export let amount = 0;
-	export let price = 0.0;
 
 	// TODO: Improve this when we get to tokens
 	export let cryptoUnit = 'CSPR';
@@ -31,7 +31,7 @@
 				: 'text-light-green'
 			: 'text-white'}"
 	>
-		{price}&nbsp;{$user?.currency}
+		{(amount * $csprPrice[$user?.currency ?? 'usd']).toFixed(2)}&nbsp;{$user?.currency}
 	</span>
 </div>
 

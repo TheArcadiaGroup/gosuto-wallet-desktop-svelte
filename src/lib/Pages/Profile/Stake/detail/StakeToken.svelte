@@ -38,24 +38,25 @@
 			addTextBg={true}
 		/>
 	</div>
-	<div class="w-full text-sm dark:text-white">
+	{#if amount < 500 && amount !== 0}
+		<div class="input-error-warning">
+			Total delegation amount to one validator cannot be less than 500 CSPR
+		</div>
+	{/if}
+	<div class="w-full text-sm px-2 dark:text-white">
 		{(amount * $csprPrice[$user?.currency || 'usd']).toFixed(
 			2,
 		)}&nbsp;{$user?.currency.toUpperCase()}
 	</div>
 	{#if $user?.network === 'mainnet'}
 		<div class="select-container">
-			<SelectInput
-				label={'Recipient Address'}
-				bind:value={selectedValidatorHash}
-				on:change={(e) => console.log(e)}
-			>
+			<SelectInput label={'Recipient Address'} bind:value={selectedValidatorHash}>
 				{#each $validators as validator}
 					<option value={validator.validatorHash}>{validator.validatorName}</option>
 				{/each}
 			</SelectInput>
 			{#if $validators.find((validator) => validator.validatorHash === selectedValidatorHash && validator.currentDelegators > 952)}
-				<div class="validator-warning">
+				<div class="input-error-warning">
 					This validator has reached the network limit for total delegators and therefore cannot be
 					delegated to by new accounts. Please select another validator with fewer than 952 total
 					delegators
@@ -114,7 +115,7 @@
 		@apply capitalize;
 	}
 
-	:local(.validator-warning) {
+	:local(.input-error-warning) {
 		@apply text-red-400 text-xs p-2;
 	}
 </style>

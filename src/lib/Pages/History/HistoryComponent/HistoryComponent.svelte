@@ -23,7 +23,6 @@
 	export let swapData: SwapData | null = null;
 
 	export let amount = 0.0;
-	export let price = 0.0;
 	export let cryptoUnit = 'CSPR';
 
 	export let index: number = 0;
@@ -64,11 +63,11 @@
 				{#if status == 'swap' && swapData}
 					<Swap {swapData} {clicked} />
 				{:else if status == 'send'}
-					<Amount type="negative" {amount} {price} {cryptoUnit} {clicked} />
+					<Amount type="negative" {amount} {cryptoUnit} {clicked} />
 				{:else if status == 'receive'}
-					<Amount type="positive" {amount} {price} {cryptoUnit} {clicked} />
+					<Amount type="positive" {amount} {cryptoUnit} {clicked} />
 				{:else if status == 'stake'}
-					<Amount type="negative" {amount} {price} {cryptoUnit} {clicked} />
+					<Amount type="negative" {amount} {cryptoUnit} {clicked} />
 				{/if}
 			</div>
 		</div>

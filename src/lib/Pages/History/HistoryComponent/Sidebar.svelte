@@ -28,6 +28,21 @@
 			<SideBarCard
 				walletName={walletName || shortenAddress(historyObject.accountHash)}
 				sidebarData={historyObject}
+				status={historyObject?.transactionType === 'send'
+					? 'Sent'
+					: historyObject?.transactionType === 'receive'
+					? 'Received'
+					: historyObject?.transactionType === 'stake'
+					? 'Stake'
+					: historyObject?.transactionType === 'initialStakeUnlock'
+					? 'Initial Stake Unlocked'
+					: historyObject?.transactionType === 'swap'
+					? 'Swap'
+					: historyObject?.transactionType === 'claimReward'
+					? 'Claimed Reward'
+					: historyObject?.transactionType === 'unstake'
+					? 'Unstake'
+					: 'Sent'}
 			/>
 		</div>
 	{:else}

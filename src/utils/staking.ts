@@ -8,7 +8,6 @@ export const delegate = (
 	amount: number,
 	network: 'testnet' | 'mainnet' = 'testnet',
 ) => {
-	console.log('Called Delegate Function');
 	const txId = Math.random().toString(16).slice(2);
 	window.api.send(
 		'delegate',

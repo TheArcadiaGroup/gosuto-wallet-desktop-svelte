@@ -75,20 +75,25 @@ module.exports = () => {
 				network: network,
 			});
 
-			sendMessage('sendCSPRTokensResponse', JSON.stringify({ id: data.id, data: res }));
-			event.returnValue = { id: data.id, data: res };
+			sendMessage(
+				'sendCSPRTokensResponse',
+				JSON.stringify({ id: data.id, data: res, error: null }),
+			);
+			event.returnValue = { id: data.id, data: res, error: null };
 		} catch (err) {
 			sendMessage(
 				'sendCSPRTokensResponse',
 				JSON.stringify({
 					id: data.id,
 					error: err,
+					data: null,
 					message: 'Encountered Message While Transferring CSPR Tokens',
 				}),
 			);
 			event.returnValue = JSON.stringify({
 				id: data.id,
 				error: err,
+				data: null,
 				message: 'Encountered Message While Transferring CSPR Tokens',
 			});
 		}
@@ -231,8 +236,12 @@ module.exports = () => {
 		}
 	});
 
-	ipcMain.on('openUrl', (event, data) => {
-		require('electron').shell.openExternal(data);
+	ipcMain.on('openUrl', async (event, data) => {
+		try {
+			console.log(await require('electron').shell.openExternal(data));
+		} catch (error) {
+			console.log(error);
+		}
 	});
 
 	ipcMain.on('selectProfileImage', async (event, _data) => {

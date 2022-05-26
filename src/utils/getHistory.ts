@@ -1,5 +1,7 @@
 import axios from 'axios';
+import { CasperClient } from 'casper-js-sdk';
 import { ethers } from 'ethers';
+import { getCSPRUsdPrice } from './tokens';
 
 interface TransferHistory {
 	pageCount: number;
@@ -21,7 +23,11 @@ interface TransferHistory {
 	}[];
 }
 
-const consumeHistoryData = (historyResponse: TransferHistory, accountHash: string, page = 1) => {
+const consumeHistoryData = async (
+	historyResponse: TransferHistory,
+	accountHash: string,
+	page = 1,
+) => {
 	// Parse history response - transfer history
 	const returnedHistory: HistoryResponse = {
 		data: [],
@@ -34,22 +40,31 @@ const consumeHistoryData = (historyResponse: TransferHistory, accountHash: strin
 	returnedHistory.page = page;
 	returnedHistory.pageCount = historyResponse.pageCount;
 
-	historyResponse.data.map((item) => {
-		returnedHistory.data.push({
-			accountHash: accountHash,
-			transactionType:
-				item.fromAccount.toLowerCase() === accountHash.toLowerCase() ? 'send' : 'receive',
-			recipient: item.toAccount,
-			sender: item.fromAccount,
-			amount: +ethers.utils.formatUnits(item.amount, 9),
-			deployHash: item.deployHash,
-			blockHash: item.blockHash,
-			transactionDate: new Date(item.timestamp),
-			swap: null,
-		});
+	await Promise.all(
+		historyResponse.data.map(async (item) => {
+			const casperClient = new CasperClient('http://testnet.gosuto.io:7777/rpc');
+			const deploySession = (await casperClient.getDeploy(item.deployHash))[1].deploy.session;
+			// console.log((deploySession as any)['StoredContractByHash']);
+			returnedHistory.data.push({
+				accountHash: accountHash,
+				transactionType: (deploySession as any)['StoredContractByHash']
+					? 'stake'
+					: item.fromAccount.toLowerCase() === accountHash.toLowerCase()
+					? 'send'
+					: 'receive',
+				recipient: item.toAccount,
+				sender: item.fromAccount,
+				amount: +ethers.utils.formatUnits(item.amount, 9),
+				deployHash: item.deployHash,
+				blockHash: item.blockHash,
+				transactionDate: new Date(item.timestamp),
+				swap: null,
+				stake: null,
+			});
 
-		return item;
-	});
+			return item;
+		}),
+	);
 
 	return returnedHistory;
 };
@@ -63,8 +78,12 @@ export const getSingleAccountHistory = async (
 	const res = (await axios.get(
 		`https://event-store-api-clarity-${network}.make.services/accounts/${accountHash}/transfers?page=${page}&limit=${limit}`,
 	)) as { data: TransferHistory };
+	getCSPRUsdPrice();
 
-	const response = consumeHistoryData(res.data, accountHash, page);
+	const response = await consumeHistoryData(res.data, accountHash, page);
+	response.data = response.data.sort(
+		(a, b) => b.transactionDate.getTime() - a.transactionDate.getTime(),
+	);
 
 	return response;
 };

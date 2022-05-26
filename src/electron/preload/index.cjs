@@ -16,6 +16,7 @@ contextBridge.exposeInMainWorld('api', {
 			'accountCsprBalance',
 			'delegate',
 			'undelegate',
+			'openUrl',
 		];
 		if (validChannels.includes(channel)) {
 			ipcRenderer.send(channel, data);

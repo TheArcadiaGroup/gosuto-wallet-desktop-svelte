@@ -23,7 +23,6 @@
 			amount={swapData.fromAmount}
 			price={swapData.fromPrice}
 			cryptoUnit={swapData.fromCryptoUnit}
-			currencyUnit={swapData.fromPriceUnit}
 			{smaller}
 			{clicked}
 		/>
@@ -36,7 +35,6 @@
 			amount={swapData.toAmount}
 			price={swapData.toPrice}
 			cryptoUnit={swapData.toCryptoUnit}
-			currencyUnit={swapData.toPriceUnit}
 			{smaller}
 			{clicked}
 		/>

@@ -25,12 +25,10 @@
 		| 'Unstake'
 		| 'Claimed Reward' = 'Sent';
 
-	let blockExplorerURL = `https://${
-		$user?.network === 'testnet' ? 'testnet.' : ''
-	}cspr.live/deploy/${sidebarData?.deployHash}`;
+	let blockExplorerURLBase = `https://${$user?.network === 'testnet' ? 'testnet.' : ''}cspr.live`;
 </script>
 
-<div class="main">
+<div class="sidebar-card">
 	<div class="header">
 		<h4>
 			{status}
@@ -43,7 +41,11 @@
 		{#if status == 'Received' || status == 'Sent'}
 			<div class="address-holder">
 				<p class="to-from">To</p>
-				<p class="address">
+				<p
+					class="address clickable-address"
+					on:click={() =>
+						window.api.send('openUrl', `${blockExplorerURLBase}/account/${sidebarData?.recipient}`)}
+				>
 					{shortenAddress(sidebarData?.recipient)}
 				</p>
 			</div>
@@ -58,7 +60,11 @@
 		{/if}
 		<div class="address-holder">
 			<p class="to-from">From</p>
-			<p class="address">
+			<p
+				class="address clickable-address"
+				on:click={() =>
+					window.api.send('openUrl', `${blockExplorerURLBase}/account/${sidebarData?.sender}`)}
+			>
 				{shortenAddress(sidebarData?.sender)}
 			</p>
 		</div>
@@ -97,14 +103,18 @@
 		</div>
 	</div>
 
-	<div class="block-explorer-link" on:click={() => window.api.send('openUrl', blockExplorerURL)}>
+	<div
+		class="block-explorer-link"
+		on:click={() =>
+			window.api.send('openUrl', `${blockExplorerURLBase}/deploy/${sidebarData?.deployHash}`)}
+	>
 		View on block explorer
 	</div>
 </div>
 
 <style lang="postcss" global>
-	:local(.main) {
-		@apply pt-6 px-8 mb-4 md:mb-0 w-full;
+	:local(.sidebar-card) {
+		@apply pt-6 pb-4 px-8 mb-4 md:mb-0 w-full;
 		@apply border border-black dark:border-white dark:md:border-0 border-opacity-10 dark:border-opacity-40 rounded-3xl;
 		@apply bg-white dark:bg-dark-background flex flex-col dark:md:bg-dark-grey;
 		box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
@@ -153,6 +163,10 @@
 
 	:local(.amount) {
 		@apply text-right;
+	}
+
+	:local(.clickable-address) {
+		@apply text-light-urlColor dark:text-light-urlColor cursor-pointer;
 	}
 
 	:local(.block-explorer-link) {

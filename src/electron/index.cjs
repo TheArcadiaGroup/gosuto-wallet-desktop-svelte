@@ -50,6 +50,7 @@ const createWindow = () => {
 			devTools: dev,
 			// devTools: true,
 			preload: path.join(__dirname, 'preload/index.cjs'),
+			webSecurity: false,
 		},
 		icon: path.join(__dirname, 'logo.icns'),
 	});
@@ -135,3 +136,5 @@ app.on('activate', () => {
 		createWindow();
 	}
 });
+
+app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors');

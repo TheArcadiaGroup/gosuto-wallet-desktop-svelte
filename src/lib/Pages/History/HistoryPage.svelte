@@ -57,6 +57,7 @@
 			filteredArray = historyArray.filter((obj) => obj.transactionType === 'stake');
 			break;
 		default:
+			filteredArray = historyArray;
 			break;
 	}
 
