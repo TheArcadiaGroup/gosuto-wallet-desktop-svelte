@@ -174,12 +174,14 @@ module.exports = () => {
 				JSON.stringify({
 					id,
 					data: response,
+					error: null,
 				}),
 			);
 
 			event.returnValue = JSON.stringify({
 				id,
 				data: response,
+				error: null,
 			});
 		} catch (error) {
 			// Handle Error and Return Error Object
@@ -188,12 +190,14 @@ module.exports = () => {
 				'delegateResponse',
 				JSON.stringify({
 					id: data.id,
+					data: null,
 					error: error,
 					message: 'Encountered Message While Executing Staking Request',
 				}),
 			);
 			event.returnValue = JSON.stringify({
 				id: data.id,
+				data: null,
 				error: error,
 				message: 'Encountered Message While Executing Staking Request',
 			});
@@ -204,8 +208,19 @@ module.exports = () => {
 	ipcMain.on('undelegate', async (event, data) => {
 		data = JSON.parse(data);
 
+		const { id, privateKey, accountHash, walletAddress, validatorPublicKey, amount, network } =
+			data;
+
 		try {
-			const response = await undelegate(data);
+			const response = await undelegate({
+				id,
+				privateKey,
+				accountHash,
+				publicKey: walletAddress,
+				validatorPublicKey,
+				amount,
+				network,
+			});
 			sendMessage(
 				'undelegateResponse',
 				JSON.stringify({

@@ -15,6 +15,9 @@
 	import { user } from '$stores/user';
 	import Popup from '$lib/components/Popup.svelte';
 	import Loading from '$lib/components/Loading.svelte';
+	import { stakeCsprTracker } from '$stores/activityLoaders';
+	import FailedStake from '$lib/components/PopUps/StakePopups/FailedStake.svelte';
+	import SuccessStake from '$lib/components/PopUps/StakePopups/SuccessStake.svelte';
 
 	// Popup
 	let popup: 'confirmStake' | 'failedStake' | 'successStake' | 'loadingStake' | null = null;
@@ -24,8 +27,9 @@
 
 	/**Handler for clicking the "Confirm" button. Confirms the stake.*/
 	function confirmStake() {
-		console.log('Hey Just Staked');
 		// confirm stake
+		popup = 'loadingStake';
+
 		const result = delegate(
 			$selectedWallet!.walletAddress,
 			$selectedWallet!.accountHash,
@@ -40,6 +44,7 @@
 				popup = 'failedStake';
 			} else {
 				popup = 'loadingStake';
+				popupAmount = stakeAmount;
 			}
 		}
 	}
@@ -65,6 +70,7 @@
 		| 'confirm'
 		| null = null;
 	let selectedStake: any = null;
+	let popupAmount = 0;
 
 	let allowUnstake = false;
 
@@ -114,6 +120,30 @@
 	function addStake(e: CustomEvent) {
 		selectedLastColumnContent = 'confirm';
 	}
+
+	$: ((stakeCsprTxs) => {
+		if (stakeCsprTxs) {
+			// Called everytime there's an update so we have time to only get rid of one popup or show a success popup
+			// First check if new transactions came in
+			Object.keys(stakeCsprTxs).map((item) => {
+				if (stakeCsprTxs[item]?.error) {
+					// Show error
+					popup = 'failedStake';
+					popupAmount = stakeCsprTxs[item]?.amount!;
+				} else if (stakeCsprTxs[item]?.fulfilled) {
+					// Clear loader and show respective popup with tx details
+					popup = 'successStake';
+					popupAmount = stakeCsprTxs[item]?.amount!;
+				}
+
+				if (stakeCsprTxs[item]?.fulfilled) {
+					// remove the item from the sendTokenTrackers list
+					delete stakeCsprTxs[item];
+					stakeCsprTracker.set(stakeCsprTxs);
+				}
+			});
+		}
+	})($stakeCsprTracker);
 
 	export let stakeArray: IStake[];
 </script>
@@ -165,6 +195,10 @@
 	>
 		<Loading useFirework={false} size={60} />
 	</Popup>
+{:else if popup === 'failedStake'}
+	<FailedStake amount={popupAmount} on:confirm={() => (popup = null)} />
+{:else if popup === 'successStake'}
+	<SuccessStake amount={popupAmount} on:confirm={() => (popup = null)} />
 {/if}
 
 <style lang="postcss" global>

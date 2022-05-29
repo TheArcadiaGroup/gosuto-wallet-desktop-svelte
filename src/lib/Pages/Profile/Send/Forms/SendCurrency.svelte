@@ -32,9 +32,9 @@
 
 	function sendCurrency(): void {
 		popup = 'Send CSPR';
-		popupContent = `You are about to send ${tokenAmount} ${selectedToken} to ${shortenAddress(
-			recipientAddress,
-		)} on the ${network}.`;
+		popupContent = `<p>You are about to send <span class='amount'>${tokenAmount}</span> ${
+			selectedToken.tokenTicker
+		} to ${shortenAddress(recipientAddress)} on the ${network}.</p>`;
 		confirmPopup = true;
 	}
 
@@ -59,10 +59,12 @@
 				// Show Loading Animation or start checker for the successful token sending
 				if (result.error) {
 					popup = 'Send Failed!';
-					popupContent = result.error ?? '';
+					popupContent = `<p>${result.error ?? ''}</p>`;
 				} else {
 					popup = 'Sending';
-					popupContent = `Currently sending, ${tokenAmount} ${selectedToken.tokenTicker} to ${recipientAddress}. You can check its progress here`;
+					popupContent = `<p>Currently sending, <span class='amount'>${tokenAmount}</span> ${
+						selectedToken.tokenTicker
+					} to ${shortenAddress(recipientAddress)}.</p>`;
 				}
 			} else {
 				popup = 'Send Failed!';
@@ -88,11 +90,18 @@
 					popup = 'Send Failed!';
 					popupContent =
 						sendTokensTxs[item]?.error ||
-						`Failed to send ${sendTokensTxs[item]?.amount} ${sendTokensTxs[item]?.token} to ${sendTokensTxs[item]?.recipientWallet}`;
+						`<p>Failed to send <span class='amount'>${sendTokensTxs[item]?.amount}</span> ${
+							sendTokensTxs[item]?.token
+						} to ${shortenAddress(sendTokensTxs[item]?.recipientWallet)}</p>`;
 				} else if (sendTokensTxs[item]?.fulfilled) {
 					// Clear loader and show respective popup with tx details
+
 					popup = 'Success';
-					popupContent = `Succcessfully sent ${sendTokensTxs[item]?.amount} ${sendTokensTxs[item]?.token} to ${sendTokensTxs[item]?.recipientWallet}`;
+					popupContent = `<p>Succcessfully sent <span class='amount'>${
+						sendTokensTxs[item]?.amount
+					}</span> ${sendTokensTxs[item]?.token} to ${shortenAddress(
+						sendTokensTxs[item]?.recipientWallet,
+					)}.</p>`;
 				}
 
 				if (sendTokensTxs[item]?.fulfilled) {
@@ -191,7 +200,7 @@
 				{#if popup === 'Sending'}
 					<Loading useFirework={false} size={60} />
 				{:else}
-					{popupContent}
+					{@html popupContent}
 				{/if}
 			</p>
 		</Popup>

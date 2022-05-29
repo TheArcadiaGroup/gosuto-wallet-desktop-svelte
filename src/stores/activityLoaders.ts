@@ -24,11 +24,11 @@ interface StakeCSPRDetails {
 	fulfilled: boolean;
 }
 
-type UnknownSendTokenObjectMap = {
+export type UnknownSendTokenObjectMap = {
 	[key: string]: SendTokenDetails | null;
 };
 
-type UnknownStakeCSPRObjectMap = {
+export type UnknownStakeCSPRObjectMap = {
 	[key: string]: StakeCSPRDetails | null;
 };
 

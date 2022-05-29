@@ -25,7 +25,7 @@
 	<div class="popup bg-white dark:bg-dark-blue">
 		<div class="pcontainer">
 			<div class="popuptitle">{title}</div>
-			<div class="content">
+			<div class="popup-content">
 				<slot />
 			</div>
 			<div class="button-container">
@@ -95,5 +95,13 @@
 
 	:local(.darker) {
 		@apply fixed top-0 bottom-0 left-0 right-0 z-30 bg-[#00000077];
+	}
+
+	.popup-content p {
+		@apply text-sm mb-1;
+	}
+
+	.popup-content .amount {
+		@apply text-lg font-bold text-light-purple;
 	}
 </style>
