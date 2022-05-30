@@ -56,12 +56,6 @@
 				<ProfilePicture url={avatar || '/images/png/avatar.png'} />
 			</div>
 			<div class="wallet_name">
-				<!-- REMOVED SINCE THIS IS RELATED TO THE WALLET NAME NOT USER NAME -->
-				<!-- {name.split(' ')[0] || 'Unknown'}{name.split(' ')[0].endsWith('s')
-					? "'"
-					: name.split(' ')[0].endsWith("'")
-					? 's'
-					: "'s"} Wallet -->
 				{name}
 			</div>
 		</div>
@@ -71,7 +65,7 @@
 				<div class="balance-item">
 					{#if !$walletLoaders[wallet.walletAddress]}
 						<span class="block mr-1">
-							{wallet?.availableBalance}
+							{wallet?.availableBalance.toFixed(4)}
 						</span>
 					{:else}
 						<span class="skeleton-loader block mr-1 sm:mb-[2px]" />
@@ -97,7 +91,7 @@
 			<div class="amount">
 				{#if !$walletLoaders[wallet.walletAddress]}
 					<span class="block mr-1">
-						{wallet?.stakedBalance.toFixed(2) || 0}
+						{(wallet?.stakedBalance * $csprPrice[$user?.currency || 'usd']).toFixed(2) || 0}
 					</span>
 				{:else}
 					<span class="skeleton-loader block mr-1" />
@@ -105,12 +99,12 @@
 				{$user?.currency.toUpperCase() || 'USD'}
 			</div>
 		</div>
-		<div class="unclaimed grow-0">
+		<div class="grow-0">
 			<div class="field-title">unclaimed rewards</div>
 			<div class="amount">
 				{#if !$walletLoaders[wallet.walletAddress]}
 					<span class="block mr-1">
-						{wallet?.unclaimedRewards.toFixed(2) || 0}
+						{(wallet?.unclaimedRewards * $csprPrice[$user?.currency || 'usd']).toFixed(2) || 0}
 					</span>
 				{:else}
 					<span class="skeleton-loader block mr-1" />

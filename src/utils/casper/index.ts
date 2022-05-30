@@ -137,6 +137,7 @@ export const getDelegatorRewards = async (
 		return parseFloat(jsonResponse.data) / 1e9;
 	} catch (error) {
 		console.log('error = ', error);
+		return 0;
 	}
 };
 
@@ -221,14 +222,14 @@ export const getUserDelegatedAmount = async (
 					stakedAmount += +delegator.staked_amount / 1e9;
 				}
 			}
-			// delegators.forEach((delegator) => {
-
-			// });
 		});
-		return { stakedAmount, stakingOperations };
+
+		const unclaimedRewards = await getDelegatorRewards(publicKey, network);
+
+		return { stakedAmount, unclaimedRewards, stakingOperations };
 	} catch (error) {
 		console.log('error =', error);
-		return null;
+		return { stakedAmount: 0, unclaimedRewards: 0, stakingOperations: [] };
 	}
 };
 
@@ -251,61 +252,5 @@ export const getValidatorByDeploy = async (
 	} catch (error) {
 		console.log('error in get validator = ', error, sess);
 		return '';
-	}
-};
-
-export const getAccountHistory: (
-	accountHash: string,
-	page: number,
-	limit: number,
-	network: 'testnet' | 'mainnet',
-) => Promise<TransferHistory> = async (accountHash, page = 1, limit = 10, network = 'testnet') => {
-	try {
-		// accountHash = '993399c97855cec203c3b789d2996e950063e7b420090382ca2ac0ead0ce5cd4';
-		const url = `https://event-store-api-clarity-${network}.make.services/accounts/${accountHash}/transfers?page=${page}&limit=${limit}`;
-		const response = await fetch(url);
-		const jsonResponse = await response.json();
-
-		const newData = jsonResponse.data.map(
-			async (transfer: {
-				toAccount: null;
-				deployHash: string;
-				fromAccount: string;
-				transferId: null | string;
-			}) => {
-				if (!transfer.toAccount || !transfer.transferId) {
-					const validator = await getValidatorByDeploy(transfer.deployHash, network);
-
-					const newTransfer = {
-						...transfer,
-						toAccount: validator,
-						validator,
-					};
-					return {
-						...newTransfer,
-						method: 'stake',
-					};
-				}
-				return {
-					...transfer,
-					method: transfer.fromAccount === accountHash ? 'send' : 'receive',
-					validator: null,
-				};
-			},
-		);
-		const historyItems = await Promise.all(newData);
-
-		return {
-			...jsonResponse,
-			data: historyItems,
-		};
-	} catch (error) {
-		console.log('error = ', error);
-		return {
-			pageCount: 0,
-			itemCount: 0,
-			pages: [],
-			data: [],
-		};
 	}
 };

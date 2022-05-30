@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { CasperClient } from 'casper-js-sdk';
 import { ethers } from 'ethers';
-import { getValidatorByDeploy } from './casper';
 import { getCSPRUsdPrice } from './tokens';
 
 const consumeHistoryData = async (

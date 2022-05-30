@@ -113,10 +113,11 @@ module.exports = () => {
 				parsedData.walletAddress,
 				parsedData.network || 'testnet',
 			),
+			network: parsedData.network || 'testnet',
 		};
-		sendMessage('accountCsprBalanceResponse', returnValue);
+		sendMessage('accountCsprBalanceResponse', JSON.stringify(returnValue));
 
-		event.returnValue = returnValue;
+		event.returnValue = JSON.stringify(returnValue);
 	});
 
 	// LOAD TOKEN BALANCE - TODO
