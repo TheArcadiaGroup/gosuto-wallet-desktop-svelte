@@ -46,39 +46,47 @@
 	};
 
 	const getData = async () => {
-		loading = true;
-		wallet =
-			$selectedWallet || $wallets?.filter((wallet) => wallet.walletAddress === walletAddress)[0];
+		if (!loading) {
+			loading = true;
+			wallet =
+				$selectedWallet || $wallets?.filter((wallet) => wallet.walletAddress === walletAddress)[0];
 
-		if (wallet) {
-			getSingleAccountHistory(wallet.accountHash, $user?.network, currentPage, itemsPerPage)
-				.then((historyResponseObj) => {
-					if (historyData) {
-						const filteredItems = historyResponseObj.data.filter(
-							(item) =>
-								!historyData?.data.find(
-									(prevItem) => prevItem.deployHash.toLowerCase() === item.deployHash.toLowerCase(),
-								),
-						);
+			if (wallet) {
+				await getSingleAccountHistory(wallet.accountHash, $user?.network, currentPage, itemsPerPage)
+					.then((historyResponseObj) => {
+						// If wallet has changed since this call was made, do not assign the values
+						if (wallet?.accountHash.toLowerCase() === $selectedWallet?.accountHash.toLowerCase()) {
+							if (historyData) {
+								const filteredItems = historyResponseObj.data.filter(
+									(item) =>
+										!historyData?.data.find(
+											(prevItem) =>
+												prevItem.deployHash.toLowerCase() === item.deployHash.toLowerCase(),
+										),
+								);
 
-						historyData.data = [...historyData?.data, ...filteredItems];
-					} else {
-						historyData = historyResponseObj;
-					}
+								historyData.data = [...historyData?.data, ...filteredItems];
+							} else {
+								historyData = historyResponseObj;
+							}
 
-					totalPages = historyResponseObj.pageCount;
-					currentPage = historyResponseObj.page;
-				})
-				.catch(() => {
-					console.log('Encountered Error Loadin Page');
-				});
+							totalPages = historyResponseObj.pageCount;
+							currentPage = historyResponseObj.page;
+						}
+					})
+					.catch(() => {
+						console.log('Encountered Error Loading Page');
+						loading = false;
+					});
 
-			// TODO: Potentially Cache these results
-		} else {
-			// Better UI Based Error Needed
-			throw Error('Wallet Not Loaded');
+				// TODO: Potentially Cache these results
+			} else {
+				// Better UI Based Error Needed
+				throw Error('Wallet Not Loaded');
+			}
+
+			loading = false;
 		}
-		loading = false;
 	};
 
 	function showMoreItems() {
@@ -90,6 +98,7 @@
 	}
 
 	function creditCardClicked() {
+		historyData = null;
 		getData();
 	}
 
