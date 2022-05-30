@@ -108,6 +108,21 @@
 				{shortenAddress(sidebarData?.deployHash)}
 			</p>
 		</div>
+		{#if status === 'Stake'}
+			<div class="address-holder">
+				<p class="to-from">Validator</p>
+				<p
+					class="address overflow-clip clickable-address"
+					on:click={() =>
+						window.api.send(
+							'openUrl',
+							`${blockExplorerURLBase}/validator/${sidebarData?.validator}`,
+						)}
+				>
+					{shortenAddress(sidebarData?.validator)}
+				</p>
+			</div>
+		{/if}
 	</div>
 
 	<div

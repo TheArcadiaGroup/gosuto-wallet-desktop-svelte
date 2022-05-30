@@ -236,28 +236,30 @@ export const getValidatorByDeploy = async (
 	deployHash: string,
 	network: 'testnet' | 'mainnet' = 'testnet',
 ) => {
+	let sess = null;
 	try {
 		const casperService = new CasperServiceByJsonRPC(getEndpointByNetwork(network));
-		console.log('in deployHash =', deployHash);
-		const { session } = (await casperService.getDeployInfo(deployHash)).deploy;
+		const deploy = (await casperService.getDeployInfo(deployHash)).deploy;
 
+		const session = deploy.session;
+		sess = deploy;
 		return (session as any).ModuleBytes
 			? (session as any).ModuleBytes?.args[2][1]?.parsed
 			: (session as any).StoredContractByHash
 			? (session as any).StoredContractByHash?.args[1][1]?.parsed
 			: '';
 	} catch (error) {
-		console.log('error in get validator = ', error);
+		console.log('error in get validator = ', error, sess);
 		return '';
 	}
 };
 
-export const getAccountHistory = async (
+export const getAccountHistory: (
 	accountHash: string,
-	page: number = 1,
-	limit: number = 10,
-	network: 'testnet' | 'mainnet' = 'testnet',
-) => {
+	page: number,
+	limit: number,
+	network: 'testnet' | 'mainnet',
+) => Promise<TransferHistory> = async (accountHash, page = 1, limit = 10, network = 'testnet') => {
 	try {
 		// accountHash = '993399c97855cec203c3b789d2996e950063e7b420090382ca2ac0ead0ce5cd4';
 		const url = `https://event-store-api-clarity-${network}.make.services/accounts/${accountHash}/transfers?page=${page}&limit=${limit}`;
@@ -272,7 +274,6 @@ export const getAccountHistory = async (
 				transferId: null | string;
 			}) => {
 				if (!transfer.toAccount || !transfer.transferId) {
-					console.log('transfer to == null', transfer.deployHash);
 					const validator = await getValidatorByDeploy(transfer.deployHash, network);
 
 					const newTransfer = {
@@ -288,12 +289,23 @@ export const getAccountHistory = async (
 				return {
 					...transfer,
 					method: transfer.fromAccount === accountHash ? 'send' : 'receive',
+					validator: null,
 				};
 			},
 		);
-		return await Promise.all(newData);
+		const historyItems = await Promise.all(newData);
+
+		return {
+			...jsonResponse,
+			data: historyItems,
+		};
 	} catch (error) {
 		console.log('error = ', error);
-		return null;
+		return {
+			pageCount: 0,
+			itemCount: 0,
+			pages: [],
+			data: [],
+		};
 	}
 };

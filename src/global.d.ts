@@ -137,6 +137,7 @@ declare global {
 		deployHash: string;
 		transactionDate: Date;
 		transactionFee: number;
+		validator: string | null; // only present in stake operations
 
 		// Swap History
 		swap: SwapData | null;
@@ -213,6 +214,28 @@ declare global {
 		pageCount: number;
 		itemCount: number;
 		pages: number[];
+	}
+
+	interface TransferHistory {
+		pageCount: number;
+		itemCount: number;
+		pages: {
+			number: number;
+			url: string; // Specific url route to get this page's data. However, the domain and network is not included
+		}[];
+		data: {
+			transferId: string; // Number in string format
+			deployHash: string;
+			blockHash: string;
+			sourcePurse: string;
+			targetPurse: string;
+			amount: string; //Number in string format
+			fromAccount: string; // Account Hash
+			toAccount: string; // Account Hash
+			timestamp: string; // ISODate
+			validator: string | null;
+			method: 'stake' | 'receive' | 'send';
+		}[];
 	}
 
 	interface DBTokens {
