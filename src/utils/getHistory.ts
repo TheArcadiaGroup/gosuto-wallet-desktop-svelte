@@ -5,6 +5,7 @@ import { getCSPRUsdPrice } from './tokens';
 
 const consumeHistoryData = async (
 	historyResponse: TransferHistory,
+	publicKey: string,
 	accountHash: string,
 	page = 1,
 	network: 'mainnet' | 'testnet' = 'testnet',
@@ -31,28 +32,81 @@ const consumeHistoryData = async (
 				9,
 			);
 
-			const method: TxStatus =
-				(deploySession as any)['StoredContractByHash']?.entry_point === 'delegate'
-					? 'stake'
-					: item.fromAccount.toLowerCase() === accountHash.toLowerCase()
-					? 'send'
-					: 'receive';
-			const validator =
-				(deploySession as any)['StoredContractByHash']?.args[1][0] === 'validator'
-					? (deploySession as any)['StoredContractByHash']?.args[1][1].parsed
-					: null;
+			// from txs
+			const amount =
+				(deploySession as any)['Transfer']?.args[0][1].parsed ||
+				(deploySession as any)['ModuleBytes']?.args[1][1].parsed ||
+				(deploySession as any)['StoredContractByHash']?.args[2][1].parsed;
+
+			// TODO Improve checks here
+			let method: TxType = 'send';
+			let validator: null | string = null;
+
+			let fromAccount = deployResult[0].header.account
+				.toAccountHashStr()
+				.replace('account-hash-', '');
+
+			let toAccount = '';
+
+			if ((deploySession as any)['Transfer'] || (deploySession as any)['ModuleBytes']) {
+				// Check for send or receive
+				if (fromAccount.toLowerCase() === accountHash.toLowerCase()) {
+					method = 'send';
+
+					if ((deploySession as any)['Transfer']) {
+						if ((deploySession as any)['Transfer']?.args[1][0] === 'target') {
+							// if its the current account, then its a receive transaction
+							toAccount = (deploySession as any)['Transfer']?.args[1][1].parsed;
+						}
+					}
+
+					if ((deploySession as any)['ModuleBytes']) {
+						if ((deploySession as any)['ModuleBytes']?.args[1][0] === 'target') {
+							// if its the current account, then its a receive transaction
+							toAccount = (deploySession as any)['ModuleBytes']?.args[1][1].parsed;
+
+							if (
+								toAccount.toLowerCase() === accountHash.toLowerCase() ||
+								toAccount.toLowerCase() === publicKey.toLowerCase()
+							) {
+								method = 'receive';
+							}
+						}
+					}
+				} else {
+					method = 'receive';
+					toAccount = accountHash;
+				}
+			} else if ((deploySession as any)['StoredContractByHash']) {
+				// Check for delegate or undelegate
+				validator =
+					(deploySession as any)['StoredContractByHash']?.args[1][0] === 'validator'
+						? (deploySession as any)['StoredContractByHash']?.args[1][1].parsed
+						: null;
+				if ((deploySession as any)['StoredContractByHash']?.entry_point === 'delegate') {
+					method = 'stake';
+					toAccount = validator!;
+					fromAccount = accountHash;
+				}
+				if ((deploySession as any)['StoredContractByHash']?.entry_point === 'undelegate') {
+					method = 'unstake';
+					toAccount = accountHash;
+					fromAccount = validator!;
+				}
+			}
 
 			returnedHistory.data.push({
 				accountHash: accountHash,
 				transactionType: method,
-				recipient: item.toAccount,
-				sender: item.fromAccount,
-				amount: +ethers.utils.formatUnits(item.amount, 9),
+				recipient: toAccount,
+				sender: fromAccount,
+				amount: +ethers.utils.formatUnits(amount, 9),
 				deployHash: item.deployHash,
 				blockHash: item.blockHash,
 				transactionDate: new Date(item.timestamp),
 				transactionFee: txFee,
 				validator,
+				error: item.errorMessage ?? null,
 				swap: null,
 				stake: null,
 			});
@@ -66,17 +120,32 @@ const consumeHistoryData = async (
 
 export const getSingleAccountHistory = async (
 	accountHash: string,
+	publicKey: string,
 	network: 'mainnet' | 'testnet' = 'testnet',
 	page = 1,
-	limit = 10,
+	limit = 20,
 ) => {
-	const res = (await axios.get(
+	const deployRes = (await axios.get(
+		`https://event-store-api-clarity-${network}.make.services/accounts/${publicKey}/deploys?page=${page}&limit=${limit}`,
+	)) as { data: TransferHistory; pageCount: number; itemCount: number };
+	const transferRes = (await axios.get(
 		`https://event-store-api-clarity-${network}.make.services/accounts/${accountHash}/transfers?page=${page}&limit=${limit}`,
-	)) as { data: TransferHistory };
+	)) as { data: TransferHistory; pageCount: number; itemCount: number };
 
 	getCSPRUsdPrice();
 
-	const response = await consumeHistoryData(res.data, accountHash, page, network);
+	const dataToParse = {
+		...deployRes.data,
+		data: [
+			...deployRes.data.data,
+			...transferRes.data.data.filter(
+				(item) => !deployRes.data.data.find((dItem) => dItem.deployHash === item.deployHash),
+			),
+		],
+		pageCount: Math.max(deployRes.pageCount, transferRes.pageCount),
+	};
+
+	const response = await consumeHistoryData(dataToParse, publicKey, accountHash, page, network);
 	response.data = response.data.sort(
 		(a, b) => b.transactionDate.getTime() - a.transactionDate.getTime(),
 	);

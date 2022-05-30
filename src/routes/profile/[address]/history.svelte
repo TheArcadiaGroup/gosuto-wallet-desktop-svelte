@@ -18,7 +18,7 @@
 	$: walletAddress = $page.params.address;
 
 	let currentPage = 1;
-	let itemsPerPage = 10;
+	let itemsPerPage = 20;
 	let totalPages = 1;
 	let loading = false;
 
@@ -52,7 +52,13 @@
 				$selectedWallet || $wallets?.filter((wallet) => wallet.walletAddress === walletAddress)[0];
 
 			if (wallet) {
-				await getSingleAccountHistory(wallet.accountHash, $user?.network, currentPage, itemsPerPage)
+				await getSingleAccountHistory(
+					wallet.accountHash,
+					wallet.walletAddress,
+					$user?.network,
+					currentPage,
+					itemsPerPage,
+				)
 					.then((historyResponseObj) => {
 						// If wallet has changed since this call was made, do not assign the values
 						if (wallet?.accountHash.toLowerCase() === $selectedWallet?.accountHash.toLowerCase()) {
@@ -105,14 +111,15 @@
 	onMount(() => {
 		historyData = null;
 		populateData();
+		getData();
 	});
 
-	selectedWallet.subscribe((_wallet) => {
-		if (_wallet) {
-			historyData = null;
-			getData();
-		}
-	});
+	// selectedWallet.subscribe((_wallet) => {
+	// 	if (_wallet) {
+	// 		historyData = null;
+	// 		getData();
+	// 	}
+	// });
 </script>
 
 <div class="flex">

@@ -108,7 +108,7 @@
 				{shortenAddress(sidebarData?.deployHash)}
 			</p>
 		</div>
-		{#if status === 'Stake'}
+		{#if status === 'Stake' && sidebarData?.validator}
 			<div class="address-holder">
 				<p class="to-from">Validator</p>
 				<p
@@ -123,6 +123,15 @@
 				</p>
 			</div>
 		{/if}
+		<div class="address-holder {sidebarData?.error ? 'flex-col' : ''}">
+			<p class="to-from">Transaction Status</p>
+			<p
+				class="address text-2xs break-words"
+				style="color: {sidebarData?.error ? 'rgb(230, 51, 42)' : 'rgb(49, 222, 145)'}"
+			>
+				{sidebarData?.error || 'Success'}
+			</p>
+		</div>
 	</div>
 
 	<div

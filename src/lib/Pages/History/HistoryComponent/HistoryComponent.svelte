@@ -12,12 +12,13 @@
 	import { page } from '$app/stores';
 	import Amount from './Amount.svelte';
 	import Swap from './Swap.svelte';
+	import SuccessIcon from '$icons/SuccessIcon.svelte';
+	import ErrorIcon from '$icons/ErrorIcon.svelte';
 
 	export let wallet = '';
 
-	export let status: TxStatus = 'send';
-	export let blockHash: string = '';
-	export let deployHash: string = '';
+	export let txType: TxType = 'send';
+	export let error: null | string = null;
 	export let date: Date;
 
 	export let swapData: SwapData | null = null;
@@ -46,8 +47,15 @@
 		<div class="left">
 			<div class="leftcontent">
 				<div>
-					<span class="status">
-						{status}
+					<span class="tx-type">
+						{txType}
+						<span class="tx-status block ml-2" title={error ? error : ''}>
+							{#if error}
+								<ErrorIcon fill="rgb(230, 51, 42)" />
+							{:else}
+								<SuccessIcon fill="rgb(49, 222, 145)" />
+							{/if}
+						</span>
 					</span>
 					{#if !$page.params.address}
 						<span class="wallet {clicked ? 'text-white' : 'text-light-grey'}">{wallet}</span>
@@ -62,13 +70,13 @@
 		</div>
 		<div class="right">
 			<div class="text-right">
-				{#if status == 'swap' && swapData}
+				{#if txType == 'swap' && swapData}
 					<Swap {swapData} {clicked} />
-				{:else if status == 'send'}
+				{:else if txType == 'send'}
 					<Amount type="negative" {amount} {cryptoUnit} {clicked} />
-				{:else if status == 'receive'}
+				{:else if txType == 'receive'}
 					<Amount type="positive" {amount} {cryptoUnit} {clicked} />
-				{:else if status == 'stake'}
+				{:else if txType == 'stake'}
 					<Amount type="negative" {amount} {cryptoUnit} {clicked} />
 				{/if}
 			</div>
@@ -93,8 +101,8 @@
 	:local(.leftcontent) {
 		@apply text-left;
 	}
-	:local(.status) {
-		@apply text-sm md:text-xl font-bold dark:text-white capitalize;
+	:local(.tx-type) {
+		@apply text-sm md:text-xl font-bold dark:text-white capitalize flex items-center;
 	}
 	:local(.wallet) {
 		@apply text-xs md:font-bold dark:text-dark-textGray;

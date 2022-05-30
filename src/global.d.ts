@@ -117,7 +117,7 @@ declare global {
 		walletAddress: string;
 	}
 
-	type TxStatus =
+	type TxType =
 		| 'send'
 		| 'swap'
 		| 'receive'
@@ -128,7 +128,7 @@ declare global {
 
 	// TODO: RETHINK THE HISTORY OBJECT GIVEN THE DATA WE ARE GETTING BACK
 	interface IHistory {
-		transactionType: TxStatus;
+		transactionType: TxType;
 		accountHash: string; // Account Hash
 		recipient: string;
 		sender: string;
@@ -138,6 +138,7 @@ declare global {
 		transactionDate: Date;
 		transactionFee: number;
 		validator: string | null; // only present in stake operations
+		error: string | null;
 
 		// Swap History
 		swap: SwapData | null;
@@ -224,17 +225,22 @@ declare global {
 			url: string; // Specific url route to get this page's data. However, the domain and network is not included
 		}[];
 		data: {
-			transferId: string; // Number in string format
+			account: string; // public key
+			cost: string; // tx fee in string format
+			errorMessage: string | null;
+			status: string; // mostly executed
+
+			// transferId: string; // Number in string format
 			deployHash: string;
 			blockHash: string;
-			sourcePurse: string;
-			targetPurse: string;
-			amount: string; //Number in string format
-			fromAccount: string; // Account Hash
-			toAccount: string; // Account Hash
+			// sourcePurse: string;
+			// targetPurse: string;
+			// amount: string; //Number in string format
+			// fromAccount: string; // Account Hash
+			// toAccount: string; // Account Hash
 			timestamp: string; // ISODate
-			validator: string | null;
-			method: 'stake' | 'receive' | 'send';
+			// validator: string | null;
+			// method: 'stake' | 'receive' | 'send';
 		}[];
 	}
 

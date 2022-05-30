@@ -6,7 +6,7 @@
 	export let useFirework = true;
 </script>
 
-<div class="loading-wrapper">
+<div class="loading-wrapper {$$props.class}">
 	{#if useFirework}
 		<Firework {size} {color} unit="px" duration="1s" />
 	{:else}

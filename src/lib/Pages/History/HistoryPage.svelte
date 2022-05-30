@@ -100,16 +100,15 @@
 				index={i}
 				clicked={selectedHistoryItemIndex === i}
 				wallet={$selectedWallet?.walletName}
-				status={historyObject.transactionType}
+				txType={historyObject.transactionType}
 				date={historyObject.transactionDate}
 				swapData={historyObject.swap}
 				amount={historyObject.amount}
-				blockHash={historyObject.blockHash}
-				deployHash={historyObject.deployHash}
+				error={historyObject.error}
 			/>
 		{/each}
 		{#if loading}
-			<Loading />
+			<Loading class="h-1/3 w-1/3" />
 		{/if}
 	</div>
 
