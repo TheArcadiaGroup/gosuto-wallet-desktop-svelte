@@ -34,13 +34,13 @@
 					? 'Received'
 					: historyObject?.transactionType === 'stake'
 					? 'Stake'
-					: historyObject?.transactionType === 'initialStakeUnlock'
+					: historyObject?.transactionType === 'initialStakeUnlock' // Not currently available
 					? 'Initial Stake Unlocked'
-					: historyObject?.transactionType === 'swap'
+					: historyObject?.transactionType === 'swap' // not supported yet
 					? 'Swap'
-					: historyObject?.transactionType === 'claimReward'
+					: historyObject?.transactionType === 'claimReward' // not currently available
 					? 'Claimed Reward'
-					: historyObject?.transactionType === 'unstake'
+					: historyObject?.transactionType === 'unstake' // not currently available
 					? 'Unstake'
 					: 'Sent'}
 			/>

@@ -6,7 +6,7 @@
 
 <Popup title="Success!" on:confirm on:cancel>
 	<p>
-		Successfully delegated <span class="amount">
+		Successfully staked <span class="amount">
 			{amount}
 		</span>
 		CSPR.

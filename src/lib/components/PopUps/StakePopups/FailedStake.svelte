@@ -6,7 +6,7 @@
 
 <Popup title="Stake Failed!" on:confirm on:cancel>
 	<p>
-		Failed to delegate <span class="amount">
+		Failed to stake <span class="amount">
 			{amount}
 		</span>
 		CSPR.
