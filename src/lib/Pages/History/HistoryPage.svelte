@@ -107,11 +107,12 @@
 		{#if loading}
 			<Loading class="h-1/3 w-1/3" />
 		{/if}
+		{#if historyArray.length !== totalItems}
+			<div class="show-more-btn">
+				<button on:click={showMoreItems}>Show more</button>
+			</div>
+		{/if}
 	</div>
-
-	{#if historyArray.length !== totalItems}
-		<button on:click={showMoreItems}>Show more</button>
-	{/if}
 </div>
 
 <style lang="postcss" global>
@@ -142,6 +143,10 @@
 		@apply text-sm font-bold dark:text-white;
 		@apply my-6 py-2 px-4 self-center;
 		@apply hover:bg-light-purple hover:text-white hover:border-light-purple transition duration-500;
+	}
+
+	:local(.show-more-btn) {
+		@apply flex items-center justify-center w-full h-12 my-4;
 	}
 
 	:local(.header) {
