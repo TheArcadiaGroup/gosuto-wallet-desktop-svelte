@@ -8,7 +8,7 @@
 	import { getSingleAccountHistory } from '$utils/getHistory';
 	import { sidebarContent } from '$stores/HistoryStore';
 	import { pollyFillWallets, pollyFillUser, pollyfillSelectedProfile } from '$utils/pollyfillData';
-	import { selectedWallet, wallets } from '$stores/user/wallets';
+	import { previousSelectedWallet, selectedWallet, wallets } from '$stores/user/wallets';
 	import { saveData } from '$utils/dataStorage';
 	import { user } from '$stores/user';
 	import { onMount } from 'svelte';
@@ -17,10 +17,10 @@
 	let wallet: IWallet | null = $selectedWallet;
 	$: walletAddress = $page.params.address;
 
-	let currentPage = 1;
-	let itemsPerPage = 20;
-	let totalPages = 1;
-	let loading = false;
+	$: currentPage = 1;
+	$: itemsPerPage = 20;
+	$: totalItems = 0;
+	$: loading = false;
 
 	const populateData = () => {
 		pollyFillUser();
@@ -62,26 +62,13 @@
 					.then((historyResponseObj) => {
 						// If wallet has changed since this call was made, do not assign the values
 						if (wallet?.accountHash.toLowerCase() === $selectedWallet?.accountHash.toLowerCase()) {
-							if (historyData) {
-								const filteredItems = historyResponseObj.data.filter(
-									(item) =>
-										!historyData?.data.find(
-											(prevItem) =>
-												prevItem.deployHash.toLowerCase() === item.deployHash.toLowerCase(),
-										),
-								);
-
-								historyData.data = [...historyData?.data, ...filteredItems];
-							} else {
-								historyData = historyResponseObj;
-							}
-
-							totalPages = historyResponseObj.pageCount;
+							historyData = historyResponseObj;
 							currentPage = historyResponseObj.page;
+							totalItems = historyResponseObj.total;
 						}
 					})
-					.catch(() => {
-						console.log('Encountered Error Loading Page');
+					.catch((err) => {
+						console.log('Encountered Error Loading Page', err);
 						loading = false;
 					});
 
@@ -96,8 +83,7 @@
 	};
 
 	function showMoreItems() {
-		const totalPages = historyData?.pageCount || 0;
-		if (currentPage !== totalPages) {
+		if (historyData?.data.length !== totalItems) {
 			currentPage++;
 			getData();
 		}
@@ -114,12 +100,14 @@
 		getData();
 	});
 
-	// selectedWallet.subscribe((_wallet) => {
-	// 	if (_wallet) {
-	// 		historyData = null;
-	// 		getData();
-	// 	}
-	// });
+	selectedWallet.subscribe((_wallet) => {
+		if (_wallet?.walletAddress !== $previousSelectedWallet?.walletAddress) {
+			historyData = null;
+			currentPage = 1;
+			totalItems = 0;
+			getData();
+		}
+	});
 </script>
 
 <div class="flex">
@@ -132,8 +120,7 @@
 	<div class="global-grid-mid">
 		<HistoryPage
 			{loading}
-			{totalPages}
-			{currentPage}
+			{totalItems}
 			historyArray={historyData?.data || []}
 			on:showMoreClicked={showMoreItems}
 		/>

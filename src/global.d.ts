@@ -74,6 +74,10 @@ declare global {
 		total: number;
 		page: number;
 		pageCount: number;
+		lastFetch: {
+			transfersCount: number;
+			deploysCount: number;
+		};
 	}
 
 	interface WalletCreationData {

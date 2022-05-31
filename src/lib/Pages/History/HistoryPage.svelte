@@ -9,7 +9,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 
-	// import HistoryComponent from './HistoryComponent/HistoryComponent.svelte';
 	import RoundedSelect from '$lib/components/RoundedSelect.svelte';
 	import ReturnHome from '$lib/components/ReturnHome.svelte';
 	import { sidebarContent } from '$stores/HistoryStore';
@@ -17,7 +16,6 @@
 	import { selectedWallet } from '$stores/user/wallets';
 	import HistoryComponent from './HistoryComponent/HistoryComponent.svelte';
 	import Loading from '$lib/components/Loading.svelte';
-	// import { shortenAddress } from '$utils';
 
 	$: isInProfileRoute = $page.path.startsWith('/profile');
 	$: address = $page.params.address;
@@ -30,8 +28,7 @@
 	// Get history data from data
 	export let historyArray: IHistory[] = [];
 	export let loading = false;
-	export let totalPages = 1;
-	export let currentPage = 1;
+	export let totalItems = 0;
 
 	let filteredArray: IHistory[];
 
@@ -112,7 +109,7 @@
 		{/if}
 	</div>
 
-	{#if totalPages !== currentPage}
+	{#if historyArray.length !== totalItems}
 		<button on:click={showMoreItems}>Show more</button>
 	{/if}
 </div>
