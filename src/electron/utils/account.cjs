@@ -30,7 +30,7 @@ module.exports = {
 		} catch (error) {
 			const { casperService, casperClient } = getCasperClientAndService(network);
 
-			await casperClient
+			return await casperClient
 				.balanceOfByAccountHash(accountHash)
 				.then((balanceBigNumber) => {
 					const actualBalance = ethers.utils.formatUnits(balanceBigNumber, 9);

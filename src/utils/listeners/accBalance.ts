@@ -18,7 +18,7 @@ export default function () {
 				if (wallet.walletAddress === data.walletAddress) {
 					wallet.availableBalanceUSD =
 						+data.balance * csprPrice.price[get(user)?.currency || 'usd'];
-					wallet.availableBalance = +data.balance; // returned as string
+					wallet.availableBalance = +data.balance ?? 0; // returned as string
 					wallet.unclaimedRewards = stakingData.unclaimedRewards;
 					wallet.stakedBalance = stakingData.stakedAmount;
 				}
@@ -30,7 +30,7 @@ export default function () {
 			if (thisWallet && thisWallet.walletAddress === data.walletAddress) {
 				thisWallet.availableBalanceUSD =
 					+data.balance * csprPrice.price[get(user)?.currency || 'usd'];
-				thisWallet.availableBalance = +data.balance; // returned as string
+				thisWallet.availableBalance = +data.balance ?? 0; // returned as string
 				console.log(stakingData);
 				thisWallet.unclaimedRewards = stakingData.unclaimedRewards;
 				thisWallet.stakedBalance = stakingData.stakedAmount;

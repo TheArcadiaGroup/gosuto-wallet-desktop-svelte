@@ -47,8 +47,7 @@ const createWindow = () => {
 			contextIsolation: true,
 			nodeIntegration: true,
 			spellcheck: false,
-			devTools: dev,
-			// devTools: true,
+			devTools: true,
 			preload: path.join(__dirname, 'preload/index.cjs'),
 			webSecurity: false,
 		},
@@ -85,6 +84,10 @@ contextMenu({
 		{
 			label: 'Make App 💻',
 		},
+		{
+			label: 'Open Dev Tools 😉',
+			click: () => mainWindow.webContents.openDevTools({ mode: 'detach' }),
+		},
 	],
 });
 
@@ -96,8 +99,6 @@ const createMainWindow = () => {
 
 	if (dev) loadVite(port);
 	else serveURL(mainWindow);
-
-	if (dev) mainWindow.openDevTools();
 
 	// mainWindow.on('focus', (event) => {
 	// 	electronLocalshortcut.register(
