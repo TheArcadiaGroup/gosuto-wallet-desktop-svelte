@@ -72,12 +72,13 @@
 			<div class="text-right">
 				{#if txType == 'swap' && swapData}
 					<Swap {swapData} {clicked} />
-				{:else if txType == 'send'}
-					<Amount type="negative" {amount} {cryptoUnit} {clicked} />
-				{:else if txType == 'receive'}
-					<Amount type="positive" {amount} {cryptoUnit} {clicked} />
-				{:else if txType == 'stake'}
-					<Amount type="negative" {amount} {cryptoUnit} {clicked} />
+				{:else}
+					<Amount
+						type={txType === 'stake' || txType === 'send' ? 'negative' : 'positive'}
+						{amount}
+						{cryptoUnit}
+						{clicked}
+					/>
 				{/if}
 			</div>
 		</div>
