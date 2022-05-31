@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { CasperClient } from 'casper-js-sdk';
 import { ethers } from 'ethers';
+import { getEndpointByNetwork } from './casper';
 import { retrieveData, saveData } from './dataStorage';
 import { getCSPRUsdPrice } from './tokens';
 
@@ -10,6 +11,7 @@ const consumeHistoryData = async (
 	accountHash: string,
 	page = 1,
 	network: 'mainnet' | 'testnet' = 'testnet',
+	walletName = '',
 ) => {
 	// Parse history response - transfer history
 	const returnedHistory: HistoryResponse = {
@@ -29,7 +31,7 @@ const consumeHistoryData = async (
 
 	await Promise.all(
 		historyResponse.data.map(async (item) => {
-			const casperClient = new CasperClient('http://testnet.gosuto.io:7777/rpc');
+			const casperClient = new CasperClient(getEndpointByNetwork(network));
 			const deployResult = await casperClient.getDeploy(item.deployHash);
 			const deploySession = deployResult[1].deploy.session;
 			const txFee = +ethers.utils.formatUnits(
@@ -114,6 +116,7 @@ const consumeHistoryData = async (
 				error: item.errorMessage ?? null,
 				swap: null,
 				stake: null,
+				walletName,
 			});
 
 			return item;
@@ -129,6 +132,7 @@ export const getSingleAccountHistory = async (
 	network: 'mainnet' | 'testnet' = 'testnet',
 	page = 1,
 	limit = 20,
+	walletName = '',
 ) => {
 	let cachedHistory: { [key: string]: HistoryResponse } = retrieveData('history');
 
@@ -198,7 +202,14 @@ export const getSingleAccountHistory = async (
 			!cachedHistory[accountHash].data.some(({ deployHash }) => item.deployHash === deployHash),
 	);
 	// Code only runs when data does not match up - we need to prevent this function from being called if not necessary, so we only need to call it when necessary or for the items that need it
-	const response = await consumeHistoryData(dataToParse, publicKey, accountHash, page, network);
+	const response = await consumeHistoryData(
+		dataToParse,
+		publicKey,
+		accountHash,
+		page,
+		network,
+		walletName,
+	);
 
 	// Add the items that have just been filtered and added in
 	cachedHistory[accountHash] = {

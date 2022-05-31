@@ -96,7 +96,7 @@
 				on:select={selectHistoryCard}
 				index={i}
 				clicked={selectedHistoryItemIndex === i}
-				wallet={$selectedWallet?.walletName}
+				wallet={historyObject?.walletName}
 				txType={historyObject.transactionType}
 				date={historyObject.transactionDate}
 				swapData={historyObject.swap}
@@ -107,7 +107,7 @@
 		{#if loading}
 			<Loading class="h-1/3 w-1/3" />
 		{/if}
-		{#if historyArray.length !== totalItems}
+		{#if historyArray.length !== totalItems && totalItems !== -1}
 			<div class="show-more-btn">
 				<button on:click={showMoreItems}>Show more</button>
 			</div>

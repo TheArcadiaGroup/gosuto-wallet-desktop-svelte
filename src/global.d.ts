@@ -143,6 +143,7 @@ declare global {
 		transactionFee: number;
 		validator: string | null; // only present in stake operations
 		error: string | null;
+		walletName: string;
 
 		// Swap History
 		swap: SwapData | null;

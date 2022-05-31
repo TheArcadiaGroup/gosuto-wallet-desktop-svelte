@@ -10,52 +10,80 @@
 	import pollyfillData from '$utils/pollyfillData';
 	import { wallets } from '$stores/user/wallets';
 	import { user } from '$stores/user';
-
-	let historyData: HistoryResponse | null = null;
+	import { allHistoryData, previousAllHistoryData } from '$stores/user/history';
 
 	let currentPage = 1;
 	let itemsPerPage = 10;
-	let totalPages = 1;
-	let loading = false;
+	let walletProxyStorage: { [key: string]: { total: number; loading: boolean; fetched: number } } =
+		{};
+	$: totalItems = 0;
+	$: loading = Object.keys(walletProxyStorage).some((key) => walletProxyStorage[key].loading);
 
 	onMount(() => {
 		pollyfillData();
-
 		getAllHistory();
 	});
 
 	const getData = async (wallet: IWallet) => {
-		loading = true;
+		walletProxyStorage[wallet.accountHash] = {
+			total: walletProxyStorage[wallet.accountHash]?.total ?? 0,
+			fetched: walletProxyStorage[wallet.accountHash]?.fetched ?? 0,
+			loading: true,
+		};
 
-		if (wallet) {
-			getSingleAccountHistory(wallet.accountHash, $user?.network, currentPage, itemsPerPage)
-				.then((historyResponseObj) => {
-					if (historyData) {
-						const filteredItems = historyResponseObj.data.filter(
+		getSingleAccountHistory(
+			wallet.accountHash,
+			wallet.walletAddress,
+			$user?.network,
+			currentPage,
+			itemsPerPage,
+			wallet.walletName,
+		)
+			.then((historyResponseObj) => {
+				// If wallet has changed since this call was made, do not assign the values
+				if ($allHistoryData) {
+					const newData = [
+						...$allHistoryData.data,
+						...historyResponseObj.data.filter(
 							(item) =>
-								!historyData?.data.find(
-									(prevItem) => prevItem.deployHash.toLowerCase() === item.deployHash.toLowerCase(),
+								!$allHistoryData?.data.some(
+									(presentItem) => presentItem.deployHash === item.deployHash,
 								),
-						);
+						),
+					].sort(
+						(a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime(),
+					);
 
-						historyData.data = [...historyData?.data, ...filteredItems];
-					} else {
-						historyData = historyResponseObj;
-					}
+					allHistoryData.update((items) => {
+						if (items) {
+							items.data = newData;
+						}
 
-					totalPages = historyResponseObj.pageCount;
-					currentPage = historyResponseObj.page;
-				})
-				.catch(() => {
-					console.log('Encountered Error Loadin Page');
-				});
+						return items;
+					});
+				} else {
+					allHistoryData.update(() => historyResponseObj);
+				}
 
-			// TODO: Potentially Cache these results
-		} else {
-			// Better UI Based Error Needed
-			throw Error('Wallet Not Loaded');
-		}
-		loading = false;
+				currentPage = historyResponseObj.page;
+				walletProxyStorage[wallet.accountHash] = {
+					total: historyResponseObj.total,
+					loading: false,
+					fetched: historyResponseObj.data.length,
+				};
+
+				if ($allHistoryData?.data.length === $previousAllHistoryData?.data.length) {
+					totalItems = -1;
+				}
+			})
+			.catch((err) => {
+				console.log('Encountered Error Loading Page', err);
+				walletProxyStorage[wallet.accountHash] = {
+					total: walletProxyStorage[wallet.accountHash]?.total ?? 0,
+					loading: false,
+					fetched: walletProxyStorage[wallet.accountHash]?.fetched ?? 0,
+				};
+			});
 	};
 
 	async function getAllHistory() {
@@ -77,9 +105,8 @@
 	<div class="global-grid-mid">
 		<HistoryPage
 			{loading}
-			{totalPages}
-			{currentPage}
-			historyArray={historyData?.data || []}
+			{totalItems}
+			historyArray={$allHistoryData?.data || []}
 			on:showMoreClicked={showMoreItems}
 		/>
 	</div>

@@ -19,7 +19,7 @@
 
 	$: currentPage = 1;
 	$: itemsPerPage = 20;
-	$: totalItems = 0;
+	$: totalItems = -1;
 	$: loading = false;
 
 	const populateData = () => {
@@ -52,12 +52,13 @@
 				$selectedWallet || $wallets?.filter((wallet) => wallet.walletAddress === walletAddress)[0];
 
 			if (wallet) {
-				await getSingleAccountHistory(
+				getSingleAccountHistory(
 					wallet.accountHash,
 					wallet.walletAddress,
 					$user?.network,
 					currentPage,
 					itemsPerPage,
+					wallet.walletName,
 				)
 					.then((historyResponseObj) => {
 						// If wallet has changed since this call was made, do not assign the values
@@ -66,19 +67,17 @@
 							currentPage = historyResponseObj.page;
 							totalItems = historyResponseObj.total;
 						}
+						loading = false;
 					})
 					.catch((err) => {
 						console.log('Encountered Error Loading Page', err);
 						loading = false;
 					});
-
-				// TODO: Potentially Cache these results
 			} else {
 				// Better UI Based Error Needed
+				loading = false;
 				throw Error('Wallet Not Loaded');
 			}
-
-			loading = false;
 		}
 	};
 
