@@ -1,6 +1,9 @@
 import { BalanceServiceByJsonRPC, CasperServiceByJsonRPC, CLPublicKey } from 'casper-js-sdk';
 import { ethers } from 'ethers';
 import CoinGecko from 'coingecko-api';
+import { retrieveData, saveData } from '$utils/dataStorage';
+import { selectedWallet, wallets } from '$stores/user/wallets';
+import { get } from 'svelte/store';
 
 export const getEndpointByNetwork = (network: 'testnet' | 'mainnet' = 'testnet') => {
 	if (network === 'mainnet') {
@@ -204,9 +207,11 @@ export const getUserDelegatedAmount = async (
 
 		bids.forEach((bid) => {
 			const { delegators } = bid.bid;
+			// TODO: Since we are only interested in one item (one validator), we can just find that one and leave the rest
 			for (let index = 0; index < delegators.length; index++) {
 				const delegator = delegators[index];
 				if (delegator.public_key == publicKey) {
+					console.log(delegator);
 					const validatorWeight =
 						+eraValidators.validator_weights.filter(
 							(validator) => validator.public_key === bid.public_key,
@@ -225,6 +230,39 @@ export const getUserDelegatedAmount = async (
 		});
 
 		const unclaimedRewards = await getDelegatorRewards(publicKey, network);
+
+		// PollyFill Staking Data
+		const dbWallets: IWallet[] = retrieveData('wallets') || [];
+		// Filter through the wallets finding the wallet we need and add the data to it
+		dbWallets.map((wallet) => {
+			if (wallet.walletAddress === publicKey) {
+				wallet.walletStakes = stakingOperations.map((item) => ({
+					validator: item.validator, // validator public key
+					walletName: wallet.walletName,
+					stakeAmount: item.stakedAmount,
+					initialStakeDate: new Date(),
+					latestRewardDate: new Date(),
+					// difference between rewardDate and initialStakeDate
+					rewardCountdown: 100,
+					reward: 90,
+					// unlocked: number,
+					personalStakeWeight: item.stakedAmount / item.validatorWeight, // percentage of user stake on validator
+					publicKey: publicKey,
+				}));
+
+				if (publicKey === get(selectedWallet)?.walletAddress) {
+					const selWallet = get(selectedWallet);
+					if (selWallet) {
+						selWallet.walletStakes = wallet.walletStakes;
+						selectedWallet.update(() => selWallet);
+						saveData('selectedProfile', JSON.stringify(selWallet));
+					}
+				}
+			}
+			return wallet;
+		});
+
+		saveData('wallets', JSON.stringify(dbWallets));
 
 		return { stakedAmount, unclaimedRewards, stakingOperations };
 	} catch (error) {

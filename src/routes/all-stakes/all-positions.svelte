@@ -19,12 +19,11 @@
 
 	// stake bind StakesFromWallet
 	let selectedLastColumnContent: 'unstake' | 'claimReward' | 'unlockInitialStake' | null = null;
-	let selectedStake: any = null;
+	let selectedStake: IStake | null = null;
 
 	/**Handler for clicking back arrown in the last Column and closing the stake detail*/
 	function closeStake() {
 		selectedLastColumnContent = null;
-		selectedStake.closeStake();
 		selectedStake = null;
 	}
 
@@ -87,7 +86,7 @@
 	</div>
 	<div class="global-grid-mid size-full">
 		{#if stakeArray.length > 0}
-			<StakesFromWallet on:selectStake={selectStake} {stakeArray} />
+			<StakesFromWallet {stakeArray} bind:selectedStake />
 		{/if}
 	</div>
 	<div class="global-grid-right">

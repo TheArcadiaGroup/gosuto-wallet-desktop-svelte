@@ -164,20 +164,17 @@ declare global {
 	}
 
 	interface IStake {
-		parentWallet: string;
+		validator: string; // validator public key
+		walletName: string;
 		stakeAmount: number;
-		unstakeDatetime: Date & { toDate: () => Date };
-		//difference between stakeDate and reclamationDate
-		unstakeCountdown: number;
-		reclamationDate: Date & { toDate: () => Date };
-		initialStakeDate: Date & { toDate: () => Date };
-		rewardDate: Date & { toDate: () => Date };
+		initialStakeDate: Date;
+		latestRewardDate: Date;
 		// difference between rewardDate and initialStakeDate
 		rewardCountdown: number;
 		reward: number;
-		unlocked: number;
-		stakePercent: number;
-		parentWalletAddress: string;
+		// unlocked: number;
+		personalStakeWeight: number; // percentage of user stake on validator
+		publicKey: string;
 	}
 
 	type SupportedCurrencies = 'usd' | 'jpy' | 'eur';

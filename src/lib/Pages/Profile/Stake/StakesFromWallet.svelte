@@ -22,28 +22,33 @@
 	const dispatch = createEventDispatcher();
 
 	export let stakeArray: IStake[] = [];
+	export let selectedStake: IStake | null = null;
 
-	$: showingArray = stakeArray.slice(0, numberOfItemsShown * pageNumber);
-
-	let numberOfItemsShown = 6;
-	let pageNumber = 1;
 	let forRoute = $page.path.startsWith('/profile') ? 'profile' : 'all-stakes';
 
 	/**Triggered when a stake card is clicked. Dispatches an event of stake selection*/
-	function selectStake(e: CustomEvent) {
-		dispatch('selectStake', e.detail);
+	function selectStake(selectedItem: IStake) {
+		selectedStake = selectedItem;
 	}
 
 	function addStake() {
 		dispatch('addStake');
+		// selectedStake = null;
 	}
 
-	function showMoreItems() {
-		pageNumber++;
+	function deselectListener(event: any): void {
+		if (!event.target) return;
+		const isStakeCard = Boolean(event.target.closest('.stake-card-item'));
+
+		if (!isStakeCard) {
+			selectedStake = null;
+		}
 	}
 </script>
 
-<div class="main">
+<svelte:body on:click={deselectListener} />
+
+<div class="wallet-stakes-container">
 	{#if forRoute === 'profile'}
 		<div class="header">
 			<ReturnHome walletName={''} publicKey={$page.params.address} profileLocation="Stake CSPR" />
@@ -52,7 +57,7 @@
 		<div class="title item">
 			<div class="title-label">Stakes from this wallet</div>
 			<div>
-				<Button>
+				<Button class="add-stake-btn">
 					<div slot="text" class="button-label" on:click={addStake}>+ Stake</div>
 				</Button>
 			</div>
@@ -60,19 +65,19 @@
 	{/if}
 
 	<div class="stake-cards-container item">
-		{#each showingArray as stake}
-			<StakeCard {stake} on:click={selectStake} />
+		{#each stakeArray as stake}
+			<StakeCard {stake} on:click={() => selectStake(stake)} {selectedStake} />
 		{/each}
 	</div>
-	<div class="show-more-container">
+	<!-- <div class="show-more-container">
 		{#if stakeArray.length >= numberOfItemsShown}
 			<div class="show-more" on:click={showMoreItems}>Show more</div>
 		{/if}
-	</div>
+	</div> -->
 </div>
 
 <style lang="postcss" global>
-	:local(.main) {
+	:local(.wallet-stakes-container) {
 		@apply h-screen w-full flex flex-col gap-4 items-center dark:text-white dark:bg-dark-gosutoDark;
 		@apply px-4 pt-10;
 		@apply lg:px-11 lg:pt-20;

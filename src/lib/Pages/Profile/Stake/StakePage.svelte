@@ -69,7 +69,7 @@
 		| 'unlockInitialStake'
 		| 'confirm'
 		| null = null;
-	let selectedStake: any = null;
+	let selectedStake: IStake | null = null;
 	let popupAmount = 0;
 
 	let allowUnstake = false;
@@ -77,7 +77,7 @@
 	/**Handler for clicking back arrown in the last collumn and closing the stake detail*/
 	function closeStake() {
 		selectedLastColumnContent = null;
-		selectedStake.closeStake();
+		selectedStake = null;
 		selectedStake = null;
 	}
 
@@ -157,7 +157,7 @@
 	</div>
 	<div class="global-grid-mid">
 		{#if stakeArray}
-			<StakesFromWallet on:stakeSelect={stakeSelect} on:addStake={addStake} {stakeArray} />
+			<StakesFromWallet on:addStake={addStake} {stakeArray} bind:selectedStake />
 		{/if}
 	</div>
 	<div class="global-grid-right">

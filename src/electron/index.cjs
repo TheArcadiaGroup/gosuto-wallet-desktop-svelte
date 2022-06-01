@@ -100,6 +100,8 @@ const createMainWindow = () => {
 	if (dev) loadVite(port);
 	else serveURL(mainWindow);
 
+	if (dev) mainWindow.webContents.openDevTools();
+
 	// mainWindow.on('focus', (event) => {
 	// 	electronLocalshortcut.register(
 	// 		mainWindow,

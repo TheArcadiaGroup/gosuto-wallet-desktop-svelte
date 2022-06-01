@@ -80,7 +80,11 @@
 		>
 			<div slot="text" class="button-text">Stake</div>
 		</Button>
-		<Button isTransparent={true} on:click={() => dispatch('cancelStake')}>
+		<Button
+			class="cancel-stake-button"
+			isTransparent={true}
+			on:click={() => dispatch('cancelStake')}
+		>
 			<div slot="text" class="button-text">Cancel</div>
 		</Button>
 	</div>

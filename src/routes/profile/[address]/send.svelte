@@ -9,7 +9,7 @@
 	import SendCurrency from '$lib/pages/Profile/Send/Forms/SendCurrency.svelte';
 	import CreateToken from '$lib/pages/Profile/CreateToken/CreateToken.svelte';
 	import { goto } from '$app/navigation';
-	import { selectedWallet, wallets } from '$stores/user/wallets';
+	import { previousSelectedWallet, selectedWallet, wallets } from '$stores/user/wallets';
 	import { tokens } from '$stores/user/tokens';
 	import { pollyfillSelectedProfile, pollyFillTokens } from '$utils/pollyfillData';
 	import { page } from '$app/stores';
@@ -53,7 +53,7 @@
 	})($tokens);
 
 	selectedWallet.subscribe((wallet) => {
-		if (wallet) {
+		if (wallet?.walletAddress !== $previousSelectedWallet?.walletAddress) {
 			// If no tokens are present, load them
 			if ($tokens.length <= 0) {
 				pollyFillTokens();

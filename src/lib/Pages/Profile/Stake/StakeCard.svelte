@@ -10,63 +10,77 @@
 -->
 <script lang="ts">
 	import ProgressBar from '$lib/components/ProgressBar.svelte';
-	import { convertDate } from '$utils';
-
-	import { createEventDispatcher } from 'svelte';
-	const dispatch = createEventDispatcher();
+	import { convertDate, shortenAddress } from '$utils';
 
 	export let stake: IStake;
+	export let selectedStake: IStake | null = null;
 
-	let elapsedSeconds = Math.abs(new Date() - new Date(stake?.initialStakeDate)) / 1000;
+	let elapsedSeconds =
+		Math.abs(new Date().getTime() - new Date(stake?.initialStakeDate).getTime()) / 1000;
 	let fullSeconds =
-		Math.abs(new Date(stake?.rewardDate) - new Date(stake?.initialStakeDate)) / 1000;
-
-	$: progress = elapsedSeconds / fullSeconds; // progress in % of the stake
+		Math.abs(
+			new Date(stake?.latestRewardDate).getTime() - new Date(stake?.initialStakeDate).getTime(),
+		) / 1000;
 
 	/**Function that formats time from seconds to specified displaying format*/
 	function formatTime(sec: number) {
 		return new Date((sec || 0) * 1000).toUTCString().split(' ')[4];
 	}
-
-	let open = false; // Boolean variable that determines if the stake is open (it's details are shown in the third column). Used for deciding whether to show the highligh border.
-
-	/**Function that is passed as an event property that closes this stake (hides the highlight border)*/
-	function closeStake() {
-		open = false;
-	}
-
-	/**Handler for clicking on the card that dispatches an event and shows the highlight border*/
-	function openStake() {
-		dispatch('click', { stake, closeStake });
-		open = true;
-	}
 </script>
 
-<div class="main {open && 'open'}" on:click={openStake}>
+<div
+	class="stake-card-item {selectedStake?.validator === stake.validator ? 'selected' : ''}"
+	on:click
+>
 	<div class="name">
-		{stake?.parentWallet || 'unknown wallet name'}
+		{stake?.validator
+			? stake?.validator.length === 66
+				? shortenAddress(stake?.validator)
+				: stake?.validator
+			: 'Unknown Validator'}
 	</div>
 	<div class="first-line">
-		<div class={progress * 100 > 0 ? 'text-highlight' : 'text-normal'}>
-			{stake?.stakeAmount || 0} CSPR Staked
+		<div
+			class="flex flex-col items-start justify-center {stake?.stakeAmount > 0
+				? 'text-highlight'
+				: 'text-normal'}"
+		>
+			<span>
+				{parseFloat(stake?.stakeAmount.toFixed(4)) || 0} CSPR
+			</span>
+			<span>Staked</span>
 		</div>
-		<div class="text-center {progress * 100 >= 50 ? 'text-highlight' : 'text-normal'}">
-			{stake?.unlocked || 0} CSPR Unlocked
+		<div
+			class="flex flex-col items-end justify-center text-center {stake?.reward >= 50
+				? 'text-light-green '
+				: 'text-normal'}"
+		>
+			<span>
+				{parseFloat(stake?.reward.toFixed(4)) || 0} CSPR
+			</span>
+			<span>Reward</span>
 		</div>
 	</div>
 	<div class="progress-bar">
-		<ProgressBar value={progress * 100 || 0} />
+		<ProgressBar
+			value={stake?.stakeAmount ?? 0}
+			secondaryBar={true}
+			secondaryBarClass={'bg-light-green'}
+			secondaryBarValue={stake?.reward ?? 0}
+		/>
 	</div>
 	<div class="third-line">
-		<div class={progress * 100 > 0 ? 'text-highlight' : 'text-normal'}>
-			Staked on {convertDate(stake?.initialStakeDate) || 0}
+		<div class="flex flex-col items-start justify-center text-normal">
+			<span>Staked on</span>
+			<span>
+				{convertDate(stake?.initialStakeDate) || 0}
+			</span>
 		</div>
-		<div class="text-center {progress * 100 >= 50 ? 'text-highlight' : 'text-normal'}">
-			Unlocked on {convertDate(stake?.reclamationDate) || 0}
-			<!-- TODO figure out the dates here -->
-		</div>
-		<div class="text-right {progress * 100 >= 100 ? 'text-highlight' : 'text-normal'}">
-			Reward on {convertDate(stake?.rewardDate) || 0}
+		<div class="flex flex-col items-end justify-center w-1/3 text-right text-normal">
+			<span>Most Recent Reward on</span>
+			<span>
+				{convertDate(stake?.latestRewardDate) || 0}
+			</span>
 		</div>
 	</div>
 	<div class="time-container">
@@ -78,7 +92,7 @@
 		</div>
 	</div>
 	<div class="footer">
-		<div class="footer-label">Total time until reward</div>
+		<div class="footer-label">Total Time Since Stake</div>
 		<div class="footer-time {fullSeconds - elapsedSeconds === 0 && 'text-highlight'}">
 			{formatTime(fullSeconds - elapsedSeconds || 0)}
 		</div>
@@ -86,20 +100,20 @@
 </div>
 
 <style lang="postcss" global>
-	:local(.main) {
+	:local(.stake-card-item) {
 		@apply w-full rounded-2xl shadow-md flex flex-col px-8 py-6 gap-2 max-w-2xl dark:bg-dark-grey dark:text-light-gray cursor-pointer transition-all hover:shadow-lg border border-transparent;
 	}
 
-	:local(.open) {
+	:local(.selected) {
 		@apply border-light-orange;
 	}
 
 	:local(.name) {
-		@apply font-bold dark:font-semibold dark:text-white;
+		@apply font-bold dark:font-semibold dark:text-white text-lg capitalize;
 	}
 
 	:local(.first-line) {
-		@apply grid grid-cols-3 w-full place-content-between text-sm;
+		@apply flex justify-between items-center w-full place-content-between text-sm mb-2;
 	}
 
 	:local(.progress-bar) {
@@ -107,7 +121,7 @@
 	}
 
 	:local(.third-line) {
-		@apply grid grid-cols-3 w-full place-content-between text-sm;
+		@apply flex items-center justify-between w-full text-xs;
 	}
 	:local(.text-highlight) {
 		@apply text-light-orange font-semibold;
