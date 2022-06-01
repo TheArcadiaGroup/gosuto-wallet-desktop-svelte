@@ -30,7 +30,7 @@
 
 		// No need to wait so we don't block anything from running while we are fetching this info
 		wallets.map((wallet) => {
-			getUserDelegatedAmount(wallet.walletAddress, $user?.network || 'testnet');
+			getUserDelegatedAmount(wallet.walletAddress, $user?.network || 'testnet', wallet.accountHash);
 		});
 	};
 </script>

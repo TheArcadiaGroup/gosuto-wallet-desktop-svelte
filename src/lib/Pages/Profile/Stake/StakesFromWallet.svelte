@@ -60,7 +60,7 @@
 	{/if}
 
 	<div class="stake-cards-container item">
-		{#each stakeArray as stake}
+		{#each stakeArray.sort((a, b) => new Date(b.initialStakeDate).getTime() - new Date(a.initialStakeDate).getTime()) as stake}
 			<StakeCard {stake} on:click={() => selectStake(stake)} {selectedStake} />
 		{/each}
 	</div>

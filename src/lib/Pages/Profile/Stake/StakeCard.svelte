@@ -10,29 +10,24 @@
 -->
 <script lang="ts">
 	import ProgressBar from '$lib/components/ProgressBar.svelte';
-	import { convertDate, shortenAddress } from '$utils';
+	import { user } from '$stores/user';
+	import { shortenAddress } from '$utils';
 
 	export let stake: IStake;
 	export let selectedStake: IStake | null = null;
 
-	let elapsedSeconds =
-		Math.abs(new Date().getTime() - new Date(stake?.initialStakeDate).getTime()) / 1000;
-	let fullSeconds =
-		Math.abs(
-			new Date(stake?.latestRewardDate).getTime() - new Date(stake?.initialStakeDate).getTime(),
-		) / 1000;
-
-	/**Function that formats time from seconds to specified displaying format*/
-	function formatTime(sec: number) {
-		return new Date((sec || 0) * 1000).toUTCString().split(' ')[4];
-	}
+	$: block_base_url = `https://${$user?.network === 'testnet' ? 'testnet.' : ''}cspr.live`;
 </script>
 
 <div
 	class="stake-card-item {selectedStake?.validator === stake.validator ? 'selected' : ''}"
 	on:click
 >
-	<div class="name">
+	<div
+		class="name cursor-pointer"
+		title="Block Explorer Validator Profile"
+		on:click={() => window.api.send('openUrl', `${block_base_url}/validator/${stake?.validator}`)}
+	>
 		{stake?.validator
 			? stake?.validator.length === 66
 				? shortenAddress(stake?.validator)
@@ -73,28 +68,28 @@
 		<div class="flex flex-col items-start justify-center text-normal">
 			<span>Staked on</span>
 			<span>
-				{convertDate(stake?.initialStakeDate) || 0}
+				{window.moment(stake?.initialStakeDate).format('DD MMM YYYY')}
 			</span>
 		</div>
 		<div class="flex flex-col items-end justify-center w-1/3 text-right text-normal">
 			<span>Most Recent Reward on</span>
 			<span>
-				{convertDate(stake?.latestRewardDate) || 0}
+				{window.moment(stake?.latestRewardDate).format('DD MMM YYYY')}
 			</span>
 		</div>
 	</div>
 	<div class="time-container">
-		<div class="elapsed {elapsedSeconds === 0 && 'text-highlight'}">
-			{formatTime(elapsedSeconds || 0)}
+		<div class="elapsed">
+			{window.moment(stake?.initialStakeDate).fromNow()}
 		</div>
-		<div class="full {fullSeconds === 0 && 'text-highlight'}">
-			{formatTime(fullSeconds || 0)}
+		<div class="full">
+			{window.moment(stake?.latestRewardDate).fromNow()}
 		</div>
 	</div>
 	<div class="footer">
 		<div class="footer-label">Total Time Since Stake</div>
-		<div class="footer-time {fullSeconds - elapsedSeconds === 0 && 'text-highlight'}">
-			{formatTime(fullSeconds - elapsedSeconds || 0)}
+		<div class="footer-time">
+			{window.moment(stake?.initialStakeDate).fromNow(true)}
 		</div>
 	</div>
 </div>

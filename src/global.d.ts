@@ -169,8 +169,6 @@ declare global {
 		stakeAmount: number;
 		initialStakeDate: Date;
 		latestRewardDate: Date;
-		// difference between rewardDate and initialStakeDate
-		rewardCountdown: number;
 		reward: number;
 		// unlocked: number;
 		personalStakeWeight: number; // percentage of user stake on validator

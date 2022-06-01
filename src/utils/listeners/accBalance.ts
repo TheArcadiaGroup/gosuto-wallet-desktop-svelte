@@ -13,7 +13,11 @@ export default function () {
 
 		// Only show results or parse them if the user is still on the same network, otherwise we'll have inaccurate balances
 		if (data.network === get(user)?.network) {
-			const stakingData = await getUserDelegatedAmount(data.walletAddress, data.network);
+			const stakingData = await getUserDelegatedAmount(
+				data.walletAddress,
+				data.network,
+				data.accountHash,
+			);
 			const _wallets = get(wallets).map((wallet) => {
 				if (wallet.walletAddress === data.walletAddress) {
 					wallet.availableBalanceUSD =

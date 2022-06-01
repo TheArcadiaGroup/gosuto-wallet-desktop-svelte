@@ -56,24 +56,24 @@ export const getWalletBalancesSum = async (
 	} catch (error) {}
 };
 
-export const getTotalStakedSum = async (
-	publicKeys: string[],
-	network: 'testnet' | 'mainnet' = 'testnet',
-) => {
-	try {
-		let sum = 0;
-		for (let index = 0; index < publicKeys.length; index++) {
-			try {
-				const element = publicKeys[index];
-				const response = await getUserDelegatedAmount(element);
-				if (response) {
-					sum += response.stakedAmount;
-				}
-			} catch (error) {}
-		}
-		return sum;
-	} catch (error) {}
-};
+// export const getTotalStakedSum = async (
+// 	publicKeys: string[],
+// 	network: 'testnet' | 'mainnet' = 'testnet',
+// ) => {
+// 	try {
+// 		let sum = 0;
+// 		for (let index = 0; index < publicKeys.length; index++) {
+// 			try {
+// 				const element = publicKeys[index];
+// 				const response = await getUserDelegatedAmount(element);
+// 				if (response) {
+// 					sum += response.stakedAmount;
+// 				}
+// 			} catch (error) {}
+// 		}
+// 		return sum;
+// 	} catch (error) {}
+// };
 
 export const getValidatorWeight = async (
 	publicKey: string,
@@ -185,9 +185,85 @@ export const getCasperMarketInformation = async () => {
 	}
 };
 
+export const fetchUserRewards = async (
+	publicKey: string,
+	network: 'testnet' | 'mainnet' = 'testnet',
+	page = 1,
+) => {
+	return fetch(
+		`https://event-store-api-clarity-${network}.make.services/delegators/${publicKey}/rewards?limit=100&page=${page}`,
+	)
+		.then((res) => res.json())
+		.then((response) => {
+			// If we have additional pages, fetch each recursively 100 per time adding to the result
+			return response as {
+				data: {
+					eraId: number;
+					publicKey: string;
+					validatorPublicKey: string;
+					amount: string;
+					timestamp: string;
+				}[];
+				pageCount: number;
+			};
+		})
+		.catch((err) => {
+			return null;
+		});
+};
+
+export const filterUserRewards = async (
+	publicKey: string,
+	network: 'testnet' | 'mainnet' = 'testnet',
+) => {
+	try {
+		let page = 1;
+		const response = await fetchUserRewards(publicKey, network);
+		let data = response?.data ?? [];
+
+		if (response) {
+			while (response.pageCount > page) {
+				if (page === response.pageCount) {
+					break;
+				}
+
+				const res2 = await fetchUserRewards(publicKey, network);
+				if (res2) {
+					data = [...data, ...res2.data];
+				} else {
+					break;
+				}
+				page += 1;
+			}
+		}
+
+		const resObject: { [key: string]: { amount: number; lastRewardDate: Date } } = {};
+
+		data.map((item) => {
+			if (resObject[item.validatorPublicKey]) {
+				resObject[item.validatorPublicKey] = {
+					amount: resObject[item.validatorPublicKey].amount + +item.amount,
+					lastRewardDate: resObject[item.validatorPublicKey].lastRewardDate,
+				};
+			} else {
+				resObject[item.validatorPublicKey] = {
+					amount: +item.amount,
+					lastRewardDate: new Date(item.timestamp),
+				};
+			}
+		});
+
+		return resObject;
+	} catch (error) {
+		console.log(error);
+		return null;
+	}
+};
+
 export const getUserDelegatedAmount = async (
 	publicKey: string,
 	network: 'testnet' | 'mainnet' = 'testnet',
+	accountHash: string,
 ) => {
 	// publicKey = '01b1126cfaf8f6df4209b5f4a88a5e3bb95f912c0307fa3e1d3e89a3946411b021'
 
@@ -199,11 +275,16 @@ export const getUserDelegatedAmount = async (
 			delegationRate: number;
 			selfStake: number;
 			stakedAmount: number;
+			reward: number;
+			latestRewardDate: Date;
+			recentStake: Date;
 			validatorWeight: number;
 		}[] = [];
 		const eraValidators = validatorsInfo.auction_state.era_validators[0];
 		const { bids } = validatorsInfo.auction_state;
 		let stakedAmount = 0;
+
+		const userRewardsBreakdown = await filterUserRewards(publicKey, network);
 
 		bids.forEach((bid) => {
 			const { delegators } = bid.bid;
@@ -216,11 +297,19 @@ export const getUserDelegatedAmount = async (
 							(validator) => validator.public_key === bid.public_key,
 						)[0].weight / 1e9;
 
+					const history: { [key: string]: HistoryResponse } = retrieveData('history');
+					const lastStakeTx = history[accountHash].data.find(
+						(item) => item.validator === bid.public_key,
+					);
+
 					stakingOperations.push({
 						validator: bid.public_key,
 						delegationRate: bid.bid.delegation_rate,
 						selfStake: +bid.bid.staked_amount / 1e9,
 						stakedAmount: +delegator.staked_amount / 1e9,
+						reward: userRewardsBreakdown?.[bid.public_key].amount! / 1e9 ?? 0,
+						latestRewardDate: userRewardsBreakdown?.[bid.public_key].lastRewardDate || new Date(),
+						recentStake: lastStakeTx?.transactionDate || new Date(),
 						validatorWeight,
 					});
 					stakedAmount += +delegator.staked_amount / 1e9;
@@ -239,12 +328,9 @@ export const getUserDelegatedAmount = async (
 					validator: item.validator, // validator public key
 					walletName: wallet.walletName,
 					stakeAmount: item.stakedAmount,
-					initialStakeDate: new Date(),
-					latestRewardDate: new Date(),
-					// difference between rewardDate and initialStakeDate
-					rewardCountdown: 100,
-					reward: 90,
-					// unlocked: number,
+					initialStakeDate: item.recentStake,
+					latestRewardDate: item.latestRewardDate,
+					reward: item.reward,
 					personalStakeWeight: item.stakedAmount / item.validatorWeight, // percentage of user stake on validator
 					publicKey: publicKey,
 				}));

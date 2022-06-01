@@ -51,27 +51,16 @@
 	/**Object of all possible components for the stake detail column (the last column)*/
 	const lastColumnContent: {
 		addStake: typeof StakeToken;
-		// claimReward: typeof ClaimReward;
-		// unlockInitialStake: typeof UnlockInitialStake;
 		unstake: typeof Unstake;
 	} = {
 		addStake: StakeToken,
-		// claimReward: ClaimReward,
-		// unlockInitialStake: UnlockInitialStake,
 		unstake: Unstake,
 	};
 
 	// stake bind StakesFromWallet
-	let selectedLastColumnContent:
-		| 'unstake'
-		// | 'claimReward'
-		// | 'unlockInitialStake'
-		| 'addStake'
-		| null = null;
+	let selectedLastColumnContent: 'unstake' | 'addStake' | null = null;
 	let selectedStake: IStake | null = null;
 	let popupAmount = 0;
-
-	let allowUnstake = false;
 
 	/**Handler for clicking back arrown in the last collumn and closing the stake detail*/
 	function closeStake() {
@@ -94,7 +83,6 @@
 	// Third column selector
 	function stakeSelect() {
 		selectedLastColumnContent = 'unstake';
-		allowUnstake = true;
 	}
 
 	function addStake(e: CustomEvent) {
