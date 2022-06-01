@@ -5,6 +5,6 @@
 	import { onMount } from 'svelte';
 
 	onMount(() => {
-		goto(`${$page.path}/history`);
+		goto(`${$page.url.pathname}/history`);
 	});
 </script>

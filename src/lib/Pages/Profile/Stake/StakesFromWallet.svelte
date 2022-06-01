@@ -22,7 +22,7 @@
 	export let stakeArray: IStake[] = [];
 	export let selectedStake: IStake | null = null;
 
-	let forRoute = $page.path.startsWith('/profile') ? 'profile' : 'all-stakes';
+	let forRoute = $page.url.pathname.startsWith('/profile') ? 'profile' : 'all-stakes';
 
 	/**Triggered when a stake card is clicked. Dispatches an event of stake selection*/
 	function selectStake(selectedItem: IStake) {

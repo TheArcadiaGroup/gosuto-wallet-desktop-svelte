@@ -25,7 +25,8 @@
 		icon: any;
 	}[];
 
-	$: currentSubroute = $page.path.split('/')[$page.path.split('/').length - 1] || '';
+	$: currentSubroute =
+		$page.url.pathname.split('/')[$page.url.pathname.split('/').length - 1] || '';
 </script>
 
 <div class="no-scrollbar main">

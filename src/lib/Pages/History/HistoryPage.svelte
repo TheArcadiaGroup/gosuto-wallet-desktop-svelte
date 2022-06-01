@@ -17,7 +17,7 @@
 	import HistoryComponent from './HistoryComponent/HistoryComponent.svelte';
 	import Loading from '$lib/components/Loading.svelte';
 
-	$: isInProfileRoute = $page.path.startsWith('/profile');
+	$: isInProfileRoute = $page.url.pathname.startsWith('/profile');
 	$: address = $page.params.address;
 	$: walletName = $selectedWallet?.walletName || "Unknown's Wallet";
 

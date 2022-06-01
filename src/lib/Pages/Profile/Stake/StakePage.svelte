@@ -140,7 +140,7 @@
 			{#if selectedLastColumnContent}
 				{#if selectedLastColumnContent !== 'addStake' && selectedStake}
 					<div
-						class="last-column-header {$page.path.includes('all-positions')
+						class="last-column-header {$page.url.pathname.includes('all-positions')
 							? 'higher-arrow'
 							: 'lower-arrow'}"
 					>

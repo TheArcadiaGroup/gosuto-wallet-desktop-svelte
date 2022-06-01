@@ -31,7 +31,7 @@
 	import { user } from '$stores/user';
 	import { saveData } from '$utils/dataStorage';
 
-	let forRoute = $page.path.startsWith('/profile') ? 'profile' : 'all-stakes';
+	let forRoute = $page.url.pathname.startsWith('/profile') ? 'profile' : 'all-stakes';
 	let walletAddress = $page.params.address;
 
 	/**Options for the content of the menu. Either 'profile' or 'all-stakes'.*/

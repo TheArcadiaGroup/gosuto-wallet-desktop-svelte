@@ -5,9 +5,7 @@ import path from 'path';
 /** @type {import("@sveltejs/kit").Config} */
 const config = {
 	kit: {
-		adapter: adapter({}),
-		target: '#svelte',
-		ssr: false,
+		adapter: adapter({ fallback: 'index.html' }),
 		vite: {
 			resolve: {
 				alias: {

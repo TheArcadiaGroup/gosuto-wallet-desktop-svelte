@@ -30,7 +30,7 @@
 		selectedWallet.set(wallet);
 
 		if ($page.params.address && $page.params.address !== wallet.walletAddress) {
-			const newUrl = $page.path.replace($page.params.address, wallet.walletAddress);
+			const newUrl = $page.url.pathname.replace($page.params.address, wallet.walletAddress);
 
 			// Only send load request when it is not currently loading
 			if (!$walletLoaders[wallet.walletAddress]) {
@@ -41,7 +41,7 @@
 			return;
 		}
 
-		if ($page.path === '/profile') {
+		if ($page.url.pathname === '/profile') {
 			goto(`/profile/${$selectedWallet?.walletAddress}/history`);
 		}
 
