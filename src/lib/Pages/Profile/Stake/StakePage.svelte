@@ -3,8 +3,8 @@
 	import ArrowInCircle from '$lib/components/ArrowInCircle.svelte';
 	import StakesFromWallet from '$lib/pages/Profile/Stake/StakesFromWallet.svelte';
 	import StakeToken from '$lib/Pages/Profile/Stake/detail/StakeToken.svelte';
-	import ClaimReward from '$lib/pages/Profile/Stake/detail/ClaimReward.svelte';
-	import UnlockInitialStake from '$lib/pages/Profile/Stake/detail/UnlockInitialStake.svelte';
+	// import ClaimReward from '$lib/pages/Profile/Stake/detail/ClaimReward.svelte';
+	// import UnlockInitialStake from '$lib/pages/Profile/Stake/detail/UnlockInitialStake.svelte';
 	import Unstake from '$lib/pages/Profile/Stake/detail/Unstake.svelte';
 	import TextSidebar from '../../../components/TextSidebar.svelte';
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
@@ -51,23 +51,23 @@
 
 	/**Object of all possible components for the stake detail column (the last column)*/
 	const lastColumnContent: {
-		confirm: typeof StakeToken;
-		claimReward: typeof ClaimReward;
-		unlockInitialStake: typeof UnlockInitialStake;
+		addStake: typeof StakeToken;
+		// claimReward: typeof ClaimReward;
+		// unlockInitialStake: typeof UnlockInitialStake;
 		unstake: typeof Unstake;
 	} = {
-		confirm: StakeToken,
-		claimReward: ClaimReward,
-		unlockInitialStake: UnlockInitialStake,
+		addStake: StakeToken,
+		// claimReward: ClaimReward,
+		// unlockInitialStake: UnlockInitialStake,
 		unstake: Unstake,
 	};
 
 	// stake bind StakesFromWallet
 	let selectedLastColumnContent:
 		| 'unstake'
-		| 'claimReward'
-		| 'unlockInitialStake'
-		| 'confirm'
+		// | 'claimReward'
+		// | 'unlockInitialStake'
+		| 'addStake'
 		| null = null;
 	let selectedStake: IStake | null = null;
 	let popupAmount = 0;
@@ -77,7 +77,6 @@
 	/**Handler for clicking back arrown in the last collumn and closing the stake detail*/
 	function closeStake() {
 		selectedLastColumnContent = null;
-		selectedStake = null;
 		selectedStake = null;
 	}
 
@@ -93,32 +92,31 @@
 		stakeAmount = 0;
 	}
 
-	/**Event handler for clicking a stake in StakesFromWallet component that shows the detail of that stake in the third column*/
-	function stakeSelect(e: CustomEvent) {
-		selectedStake && closeStake();
-		selectedStake = e.detail;
+	// Third column selector
+	function stakeSelect() {
+		// let unstakeSidebar: boolean = false;
+		// let unstakeProgressSidebar: boolean = false;
+		// let claimRewardSidebar: boolean = false;
+		// let unlockInitialStakeSidebar: boolean = false;
 
-		// TODO: add tests for the different sidebars
-		let unstakeSidebar: boolean = false;
-		let unstakeProgressSidebar: boolean = false;
-		let claimRewardSidebar: boolean = false;
-		let unlockInitialStakeSidebar: boolean = false;
-
-		if (unstakeSidebar) {
-			selectedLastColumnContent = 'unstake';
-			allowUnstake = true;
-		} else if (unstakeProgressSidebar) {
-			selectedLastColumnContent = 'unstake';
-			allowUnstake = false;
-		} else if (claimRewardSidebar) {
-			selectedLastColumnContent = 'claimReward';
-		} else if (unlockInitialStakeSidebar) {
-			selectedLastColumnContent = 'unlockInitialStake';
-		}
+		// if (unstakeSidebar) {
+		selectedLastColumnContent = 'unstake';
+		allowUnstake = true;
+		// }
+		// else if (unstakeProgressSidebar) {
+		// 	selectedLastColumnContent = 'unstake';
+		// 	allowUnstake = false;
+		// }
+		// else if (claimRewardSidebar) {
+		// 	selectedLastColumnContent = 'claimReward';
+		// }
+		// else if (unlockInitialStakeSidebar) {
+		// 	selectedLastColumnContent = 'unlockInitialStake';
+		// }
 	}
 
 	function addStake(e: CustomEvent) {
-		selectedLastColumnContent = 'confirm';
+		selectedLastColumnContent = 'addStake';
 	}
 
 	$: ((stakeCsprTxs) => {
@@ -145,7 +143,10 @@
 		}
 	})($stakeCsprTracker);
 
+	$: ((prevStake) => prevStake && stakeSelect())(selectedStake);
+
 	export let stakeArray: IStake[];
+	export let loading = false;
 </script>
 
 <div class="flex main">
@@ -159,11 +160,15 @@
 		{#if stakeArray}
 			<StakesFromWallet on:addStake={addStake} {stakeArray} bind:selectedStake />
 		{/if}
+
+		{#if loading}
+			<Loading />
+		{/if}
 	</div>
 	<div class="global-grid-right">
 		<div class="size-full last-column">
 			{#if selectedLastColumnContent}
-				{#if selectedLastColumnContent !== 'confirm'}
+				{#if selectedLastColumnContent !== 'addStake' && selectedStake}
 					<div class="last-column-header">
 						<div class="w-6 h-6">
 							<ArrowInCircle disabled={false} on:click={closeStake} />
@@ -173,7 +178,7 @@
 				<div class="flex-grow">
 					<svelte:component
 						this={lastColumnContent[selectedLastColumnContent]}
-						disabled={allowUnstake}
+						bind:stake={selectedStake}
 						on:cancelStake={() => (selectedLastColumnContent = null)}
 						on:showStakePopup={(e) => showConfirmStakePopup(e.detail)}
 					/>

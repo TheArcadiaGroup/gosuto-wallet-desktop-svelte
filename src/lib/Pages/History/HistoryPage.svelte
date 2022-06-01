@@ -76,9 +76,11 @@
 	}
 </script>
 
-<svelte:body on:click={historySelectionsListener} />
-
-<div class="history-cards-parent" class:centered={!isInProfileRoute}>
+<div
+	class="history-cards-parent"
+	class:centered={!isInProfileRoute}
+	on:click={historySelectionsListener}
+>
 	<div class="header">
 		{#if !isInProfileRoute}
 			<h3 class="history-title">{historyFilter} History</h3>

@@ -28,7 +28,7 @@
 </script>
 
 <div
-	class="{!disabled ? 'not-disabled' : ''} main {alwaysShowBorder && 'show-border'}"
+	class="{!disabled ? 'not-disabled' : ''} back-arrow-circle {alwaysShowBorder && 'show-border'}"
 	on:click={click}
 >
 	<div class="w-1/2 {direction == 'right' && 'rotate-180'}">
@@ -37,7 +37,7 @@
 </div>
 
 <style lang="postcss" global>
-	:local(.main) {
+	:local(.back-arrow-circle) {
 		@apply h-full aspect-square rounded-full border-transparent border-2 grid place-items-center dark:text-white transition-all;
 	}
 

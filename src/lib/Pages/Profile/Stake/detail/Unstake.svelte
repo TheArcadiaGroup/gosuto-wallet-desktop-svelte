@@ -9,44 +9,31 @@
 	import Button from '$lib/components/Button.svelte';
 	import { convertDate } from '$utils';
 
-	export let disabled = false;
-
-	export let stake: IStake = {
-		parentWallet: 'wallet-1',
-		stakeAmount: 420,
-		unstakeDatetime: new Date(2021, 11, 17),
-		unstakeCountdown: Math.abs(new Date(2020, 12, 17) - new Date(2019, 11, 17)),
-		reclamationDate: new Date(2020, 12, 17),
-		initialStakeDate: new Date(2019, 11, 17),
-		rewardDate: new Date(2022, 11, 17),
-		rewardCountdown: Math.abs(new Date(2022, 11, 17) - new Date(2019, 11, 17)),
-		reward: 420,
-		unlocked: 84,
-		stakePercent: 0.8,
-		parentWalletAddress: '0x8dgvc09vcg290gvg4v2f2vrvb23',
-	};
+	export let stake: IStake | null = null;
 
 	/**Handler for clicking the "Unstake" button. Unstakes the stake.*/
 	function unstake() {
-		if (disabled) return;
-
-		// confirm stake
+		console.log('Unstake Button Clicked');
 	}
 
 	/**Handler for clicking the "Cancel" button. Cancels the unstake and hides the component.*/
 	function cancel() {
 		// cancel stake
+		stake = null;
 	}
 </script>
 
-<div class="unstake">
-	<div class="title">Unstake CSPR</div>
-	<div class="text">Unstake: {stake.stakeAmount} CSPR</div>
-	<div class="text staking-length">
-		Unstaking will take until:
-		<div class="until-date">{convertDate(stake.unstakeDatetime)}</div>
-	</div>
-	{#if disabled}
+{#if stake}
+	<div class="unstake">
+		<div class="title">Unstake CSPR</div>
+		<div class="text">Unstake: {parseFloat(stake.stakeAmount.toFixed(2))} CSPR</div>
+		<div class="text staking-length">
+			Please note. You will need to undelegate in order to have them become liquid again. There is a
+			7 era delay to undelegate. Era duration is approximately 120 minutes. Unstaking could take
+			until:
+			<div class="until-date">{convertDate(new Date(Date.now() + 120 * 60 * 1000))}</div>
+		</div>
+		<!-- {#if disabled} -->
 		<div class="buttons">
 			<Button on:click={unstake}>
 				<div slot="text" class="button-text">Unstake</div>
@@ -55,8 +42,9 @@
 				<div slot="text" class="button-text">Cancel</div>
 			</Button>
 		</div>
-	{/if}
-</div>
+		<!-- {/if} -->
+	</div>
+{/if}
 
 <style lang="postcss" global>
 	:local(.unstake) {

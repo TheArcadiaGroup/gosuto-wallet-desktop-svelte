@@ -211,7 +211,6 @@ export const getUserDelegatedAmount = async (
 			for (let index = 0; index < delegators.length; index++) {
 				const delegator = delegators[index];
 				if (delegator.public_key == publicKey) {
-					console.log(delegator);
 					const validatorWeight =
 						+eraValidators.validator_weights.filter(
 							(validator) => validator.public_key === bid.public_key,
@@ -263,6 +262,7 @@ export const getUserDelegatedAmount = async (
 		});
 
 		saveData('wallets', JSON.stringify(dbWallets));
+		wallets.set(dbWallets);
 
 		return { stakedAmount, unclaimedRewards, stakingOperations };
 	} catch (error) {

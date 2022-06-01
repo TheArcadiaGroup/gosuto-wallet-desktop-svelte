@@ -10,9 +10,7 @@
 	- `selectStake` = Dispatched when a stake card is clicked. Passes the stake data via event details.
 -->
 <script lang="ts">
-	// import ArrowInCircle from '$lib/components/ArrowInCircle.svelte';
 	import Button from '$lib/components/Button.svelte';
-	// import Duplicate from '$icons/Duplicate.svelte';
 	import StakeCard from './StakeCard.svelte';
 	import ReturnHome from '$lib/components/ReturnHome.svelte';
 
@@ -33,7 +31,6 @@
 
 	function addStake() {
 		dispatch('addStake');
-		// selectedStake = null;
 	}
 
 	function deselectListener(event: any): void {
@@ -46,9 +43,7 @@
 	}
 </script>
 
-<svelte:body on:click={deselectListener} />
-
-<div class="wallet-stakes-container">
+<div class="wallet-stakes-container" on:click={deselectListener}>
 	{#if forRoute === 'profile'}
 		<div class="header">
 			<ReturnHome walletName={''} publicKey={$page.params.address} profileLocation="Stake CSPR" />
@@ -69,11 +64,6 @@
 			<StakeCard {stake} on:click={() => selectStake(stake)} {selectedStake} />
 		{/each}
 	</div>
-	<!-- <div class="show-more-container">
-		{#if stakeArray.length >= numberOfItemsShown}
-			<div class="show-more" on:click={showMoreItems}>Show more</div>
-		{/if}
-	</div> -->
 </div>
 
 <style lang="postcss" global>
