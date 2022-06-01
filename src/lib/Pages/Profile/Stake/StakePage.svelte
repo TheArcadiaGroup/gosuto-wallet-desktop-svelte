@@ -3,8 +3,6 @@
 	import ArrowInCircle from '$lib/components/ArrowInCircle.svelte';
 	import StakesFromWallet from '$lib/pages/Profile/Stake/StakesFromWallet.svelte';
 	import StakeToken from '$lib/Pages/Profile/Stake/detail/StakeToken.svelte';
-	// import ClaimReward from '$lib/pages/Profile/Stake/detail/ClaimReward.svelte';
-	// import UnlockInitialStake from '$lib/pages/Profile/Stake/detail/UnlockInitialStake.svelte';
 	import Unstake from '$lib/pages/Profile/Stake/detail/Unstake.svelte';
 	import TextSidebar from '../../../components/TextSidebar.svelte';
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
@@ -18,6 +16,7 @@
 	import { stakeCsprTracker } from '$stores/activityLoaders';
 	import FailedStake from '$lib/components/PopUps/StakePopups/FailedStake.svelte';
 	import SuccessStake from '$lib/components/PopUps/StakePopups/SuccessStake.svelte';
+	import { page } from '$app/stores';
 
 	// Popup
 	let popup: 'confirmStake' | 'failedStake' | 'successStake' | 'loadingStake' | null = null;
@@ -94,25 +93,8 @@
 
 	// Third column selector
 	function stakeSelect() {
-		// let unstakeSidebar: boolean = false;
-		// let unstakeProgressSidebar: boolean = false;
-		// let claimRewardSidebar: boolean = false;
-		// let unlockInitialStakeSidebar: boolean = false;
-
-		// if (unstakeSidebar) {
 		selectedLastColumnContent = 'unstake';
 		allowUnstake = true;
-		// }
-		// else if (unstakeProgressSidebar) {
-		// 	selectedLastColumnContent = 'unstake';
-		// 	allowUnstake = false;
-		// }
-		// else if (claimRewardSidebar) {
-		// 	selectedLastColumnContent = 'claimReward';
-		// }
-		// else if (unlockInitialStakeSidebar) {
-		// 	selectedLastColumnContent = 'unlockInitialStake';
-		// }
 	}
 
 	function addStake(e: CustomEvent) {
@@ -169,7 +151,11 @@
 		<div class="size-full last-column">
 			{#if selectedLastColumnContent}
 				{#if selectedLastColumnContent !== 'addStake' && selectedStake}
-					<div class="last-column-header">
+					<div
+						class="last-column-header {$page.path.includes('all-positions')
+							? 'higher-arrow'
+							: 'lower-arrow'}"
+					>
 						<div class="w-6 h-6">
 							<ArrowInCircle disabled={false} on:click={closeStake} />
 						</div>
@@ -228,5 +214,13 @@
 
 	:local(.last-column-header) {
 		@apply flex flex-row items-center gap-2 dark:text-white text-sm;
+	}
+
+	:local(.higher-arrow) {
+		@apply mt-2;
+	}
+
+	:local(.lower-arrow) {
+		@apply mt-12;
 	}
 </style>

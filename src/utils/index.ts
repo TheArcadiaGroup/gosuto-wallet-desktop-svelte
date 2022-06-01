@@ -83,7 +83,7 @@ export const decimalToPercentage = (decimal: number): number => {
 	return decimal * 100;
 };
 
-export const shortenAddress = (address: string): string => {
+export const shortenAddress = (address: string = ''): string => {
 	if (address) {
 		return `${address.slice(0, 5)}...${address.slice(-5)}`;
 	} else {

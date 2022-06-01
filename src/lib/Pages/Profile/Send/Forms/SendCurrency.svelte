@@ -93,7 +93,7 @@
 							sendTokensTxs[item]?.error ||
 							`<p>Failed to send <span class='amount'>${sendTokensTxs[item]?.amount}</span> ${
 								sendTokensTxs[item]?.token
-							} to ${shortenAddress(sendTokensTxs[item]?.recipientWallet)}</p>`;
+							} to ${shortenAddress(sendTokensTxs[item]?.recipientWallet ?? '')}</p>`;
 					} else if (sendTokensTxs[item]?.fulfilled) {
 						// Clear loader and show respective popup with tx details
 
@@ -101,7 +101,7 @@
 						popupContent = `<p>Succcessfully sent <span class='amount'>${
 							sendTokensTxs[item]?.amount
 						}</span> ${sendTokensTxs[item]?.token} to ${shortenAddress(
-							sendTokensTxs[item]?.recipientWallet,
+							sendTokensTxs[item]?.recipientWallet ?? '',
 						)}.</p>`;
 					}
 
