@@ -31,7 +31,7 @@
 				: 'text-light-green'
 			: 'text-white'}"
 	>
-		{(amount * $csprPrice[$user?.currency ?? 'usd']).toFixed(2)}&nbsp;{$user?.currency}
+		{parseFloat((amount * $csprPrice[$user?.currency ?? 'usd']).toFixed(2))}&nbsp;{$user?.currency}
 	</span>
 </div>
 

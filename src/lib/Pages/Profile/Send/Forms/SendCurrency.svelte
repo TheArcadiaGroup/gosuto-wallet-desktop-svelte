@@ -85,29 +85,31 @@
 			// Called everytime there's an update so we have time to only get rid of one popup or show a success popup
 			// First check if new transactions came in
 			Object.keys(sendTokensTxs).map((item) => {
-				if (sendTokensTxs[item]?.error) {
-					// Show error
-					popup = 'Send Failed!';
-					popupContent =
-						sendTokensTxs[item]?.error ||
-						`<p>Failed to send <span class='amount'>${sendTokensTxs[item]?.amount}</span> ${
-							sendTokensTxs[item]?.token
-						} to ${shortenAddress(sendTokensTxs[item]?.recipientWallet)}</p>`;
-				} else if (sendTokensTxs[item]?.fulfilled) {
-					// Clear loader and show respective popup with tx details
+				if (sendTokensTxs[item]) {
+					if (sendTokensTxs[item]?.error) {
+						// Show error
+						popup = 'Send Failed!';
+						popupContent =
+							sendTokensTxs[item]?.error ||
+							`<p>Failed to send <span class='amount'>${sendTokensTxs[item]?.amount}</span> ${
+								sendTokensTxs[item]?.token
+							} to ${shortenAddress(sendTokensTxs[item]?.recipientWallet)}</p>`;
+					} else if (sendTokensTxs[item]?.fulfilled) {
+						// Clear loader and show respective popup with tx details
 
-					popup = 'Success';
-					popupContent = `<p>Succcessfully sent <span class='amount'>${
-						sendTokensTxs[item]?.amount
-					}</span> ${sendTokensTxs[item]?.token} to ${shortenAddress(
-						sendTokensTxs[item]?.recipientWallet,
-					)}.</p>`;
-				}
+						popup = 'Success';
+						popupContent = `<p>Succcessfully sent <span class='amount'>${
+							sendTokensTxs[item]?.amount
+						}</span> ${sendTokensTxs[item]?.token} to ${shortenAddress(
+							sendTokensTxs[item]?.recipientWallet,
+						)}.</p>`;
+					}
 
-				if (sendTokensTxs[item]?.fulfilled) {
-					// remove the item from the sendTokenTrackers list
-					delete sendTokensTxs[item];
-					sendTokenTracker.set(sendTokensTxs);
+					if (sendTokensTxs[item]?.fulfilled) {
+						// remove the item from the sendTokenTrackers list
+						delete sendTokensTxs[item];
+						sendTokenTracker.set(sendTokensTxs);
+					}
 				}
 			});
 		}
@@ -137,7 +139,7 @@
 		</div>
 		<div class="currency-money-amount">
 			<p>
-				${(selectedToken.tokenPriceUSD * tokenMinusFee).toFixed(2)}
+				${parseFloat((selectedToken.tokenPriceUSD * tokenMinusFee).toFixed(2))}
 				{$user?.currency.toUpperCase() || 'USD'}
 			</p>
 			<p class="money-right">{import.meta.env.VITE_SEND_TX_FEE_PERCENTAGE || 2.5}% Fee</p>

@@ -44,8 +44,8 @@
 		</div>
 	{/if}
 	<div class="w-full text-sm px-2 dark:text-white">
-		{(amount * $csprPrice[$user?.currency || 'usd']).toFixed(
-			2,
+		{parseFloat(
+			(amount * $csprPrice[$user?.currency || 'usd']).toFixed(2),
 		)}&nbsp;{$user?.currency.toUpperCase()}
 	</div>
 	{#if $user?.network === 'mainnet'}

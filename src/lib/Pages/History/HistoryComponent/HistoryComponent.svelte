@@ -7,7 +7,6 @@
 	@see historyPage
 -->
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
 	import { slide } from 'svelte/transition';
 	import { page } from '$app/stores';
 	import Amount from './Amount.svelte';
@@ -15,42 +14,25 @@
 	import SuccessIcon from '$icons/SuccessIcon.svelte';
 	import ErrorIcon from '$icons/ErrorIcon.svelte';
 
-	export let wallet = '';
-
-	export let txType: TxType = 'send';
-	export let error: null | string = null;
-	export let date: Date;
-
-	export let swapData: SwapData | null = null;
-
-	export let amount = 0.0;
-	export let cryptoUnit = 'CSPR';
-
-	export let index: number = 0;
-	export let clicked: boolean = false;
-
-	const dispatch = createEventDispatcher();
-
-	function select(): void {
-		dispatch('select', {
-			id: index,
-		});
-	}
+	export let historyObject: IHistory;
+	export let selectedHistoryItem: IHistory | null = null;
 </script>
 
-<div class="history-card {$$props.class}" transition:slide|local>
+<div class="history-card-item {$$props.class}" transition:slide|local on:click>
 	<div
-		class="container {clicked ? 'clicked' : ' '} hover:cursor-pointer"
-		class:clicked
-		on:click={select}
+		class="container hover:cursor-pointer"
+		class:selected={selectedHistoryItem?.deployHash === historyObject.deployHash}
 	>
 		<div class="left">
 			<div class="leftcontent">
 				<div>
 					<span class="tx-type">
-						{txType}
-						<span class="tx-status block ml-2" title={error ? error : ''}>
-							{#if error}
+						{historyObject.transactionType}
+						<span
+							class="tx-status block ml-2"
+							title={historyObject.error ? historyObject.error : ''}
+						>
+							{#if historyObject.error}
 								<ErrorIcon fill="rgb(230, 51, 42)" />
 							{:else}
 								<SuccessIcon fill="rgb(49, 222, 145)" />
@@ -58,26 +40,38 @@
 						</span>
 					</span>
 					{#if !$page.params.address}
-						<span class="wallet {clicked ? 'text-white' : 'text-light-grey'}">{wallet}</span>
+						<span
+							class="wallet {selectedHistoryItem?.deployHash === historyObject.deployHash
+								? 'text-white'
+								: 'text-light-grey'}"
+						>
+							{historyObject.walletName}
+						</span>
 					{/if}
 				</div>
 				<div>
 					<span class="dateAndime">
-						{window.moment(date).format('MMMM DD, YYYY h:mm:ss a')}
+						{window.moment(historyObject.transactionDate).format('MMMM DD, YYYY h:mm:ss a')}
 					</span>
 				</div>
 			</div>
 		</div>
 		<div class="right">
 			<div class="text-right">
-				{#if txType == 'swap' && swapData}
-					<Swap {swapData} {clicked} />
+				{#if historyObject.transactionType == 'swap' && historyObject.swap}
+					<Swap
+						swapData={historyObject.swap}
+						clicked={selectedHistoryItem?.deployHash === historyObject.deployHash}
+					/>
 				{:else}
 					<Amount
-						type={txType === 'stake' || txType === 'send' ? 'negative' : 'positive'}
-						{amount}
-						{cryptoUnit}
-						{clicked}
+						type={historyObject.transactionType === 'stake' ||
+						historyObject.transactionType === 'send'
+							? 'negative'
+							: 'positive'}
+						amount={historyObject.amount}
+						cryptoUnit={'CSPR'}
+						clicked={selectedHistoryItem?.deployHash === historyObject.deployHash}
 					/>
 				{/if}
 			</div>
@@ -86,7 +80,7 @@
 </div>
 
 <style lang="postcss" global>
-	:local(.history-card) {
+	:local(.history-card-item) {
 		@apply py-2;
 	}
 	:local(.container) {
@@ -114,7 +108,7 @@
 	:local(.top-border) {
 		@apply border-t border-black border-opacity-10 dark:border-opacity-10;
 	}
-	:local(.clicked) {
+	:local(.selected) {
 		@apply bg-light-purple dark:bg-light-purple text-white transition duration-300;
 	}
 </style>

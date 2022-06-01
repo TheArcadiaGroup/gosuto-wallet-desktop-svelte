@@ -58,27 +58,27 @@
 			break;
 	}
 
-	export let selectedHistoryItemIndex = -1;
-
-	function selectHistoryCard(e: { detail: { id: number } }): void {
-		selectedHistoryItemIndex = e.detail.id;
-		sidebarContent.set(filteredArray[selectedHistoryItemIndex]);
-	}
+	let selectedHistoryItem: IHistory | null = null;
 
 	function showMoreItems() {
 		dispatch('showMoreClicked');
 	}
 
-	function deselectListener(event: any): void {
+	function historySelectionsListener(event: any): void {
 		if (!event.target) return;
-		const isInToken = Boolean(event.target.closest('.history-card'));
+
+		const isInToken = Boolean(event.target.closest('.history-card-item'));
+
 		if (!isInToken) {
-			selectedHistoryItemIndex = -1;
+			selectedHistoryItem = null;
+			sidebarContent.set(null);
 		}
 	}
 </script>
 
-<div class="history-cards-parent" class:centered={!isInProfileRoute} on:click={deselectListener}>
+<svelte:body on:click={historySelectionsListener} />
+
+<div class="history-cards-parent" class:centered={!isInProfileRoute}>
 	<div class="header">
 		{#if !isInProfileRoute}
 			<h3 class="history-title">{historyFilter} History</h3>
@@ -93,15 +93,12 @@
 		{#each filteredArray as historyObject, i}
 			<HistoryComponent
 				class={i > 0 ? 'top-border' : ''}
-				on:select={selectHistoryCard}
-				index={i}
-				clicked={selectedHistoryItemIndex === i}
-				wallet={historyObject?.walletName}
-				txType={historyObject.transactionType}
-				date={historyObject.transactionDate}
-				swapData={historyObject.swap}
-				amount={historyObject.amount}
-				error={historyObject.error}
+				on:click={() => {
+					selectedHistoryItem = historyObject;
+					sidebarContent.set(historyObject);
+				}}
+				{historyObject}
+				bind:selectedHistoryItem
 			/>
 		{/each}
 		{#if loading}
