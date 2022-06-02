@@ -13,11 +13,13 @@ export default function () {
 
 		// Only show results or parse them if the user is still on the same network, otherwise we'll have inaccurate balances
 		if (data.network === get(user)?.network) {
+			// TODO make this asynchronous and not to wait for the wallet info to load
 			const stakingData = await getUserDelegatedAmount(
 				data.walletAddress,
 				data.network,
 				data.accountHash,
 			);
+
 			const _wallets = get(wallets).map((wallet) => {
 				if (wallet.walletAddress === data.walletAddress) {
 					wallet.availableBalanceUSD =
@@ -35,7 +37,7 @@ export default function () {
 				thisWallet.availableBalanceUSD =
 					+data.balance * csprPrice.price[get(user)?.currency || 'usd'];
 				thisWallet.availableBalance = +data.balance ?? 0; // returned as string
-				console.log(stakingData);
+
 				thisWallet.unclaimedRewards = stakingData.unclaimedRewards;
 				thisWallet.stakedBalance = stakingData.stakedAmount;
 				selectedWallet.set(thisWallet);

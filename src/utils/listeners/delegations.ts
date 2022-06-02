@@ -78,7 +78,7 @@ export default function () {
 
 	// Delegate Response
 	window.api.receive('undelegateResponse', (response: any) => {
-		console.log(JSON.parse(response));
+		// TODO: This approach has not been confirmed to work as it was just implemented directly with typescript and not on the electron side of things
 		parseDelegationResponse(response, 'unstake');
 	});
 }
