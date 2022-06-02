@@ -1,3 +1,4 @@
+import { historyLoading, userHistory } from '$stores/user/history';
 import axios from 'axios';
 import { CasperClient } from 'casper-js-sdk';
 import { ethers } from 'ethers';
@@ -6,7 +7,24 @@ import { retrieveData, saveData } from './dataStorage';
 import { getCSPRUsdPrice } from './tokens';
 
 const consumeHistoryData = async (
-	historyResponse: TransferHistory,
+	historyResponse: {
+		data: {
+			account: string;
+			cost: string;
+			errorMessage: string | null;
+			status: string;
+			deployHash: string;
+			blockHash: string;
+			timestamp: string;
+		}[];
+		pageCount: number;
+		total: number;
+		page: number;
+		lastFetch: {
+			transfersCount: number;
+			deploysCount: number;
+		};
+	},
 	publicKey: string,
 	accountHash: string,
 	page = 1,
@@ -25,7 +43,7 @@ const consumeHistoryData = async (
 		},
 	};
 
-	returnedHistory.total = historyResponse.itemCount;
+	returnedHistory.total = historyResponse.total;
 	returnedHistory.page = page;
 	returnedHistory.pageCount = historyResponse.pageCount;
 
@@ -130,123 +148,201 @@ export const getSingleAccountHistory = async (
 	accountHash: string,
 	publicKey: string,
 	network: 'mainnet' | 'testnet' = 'testnet',
-	page = 1,
-	limit = 20,
 	walletName = '',
 ) => {
+	const limit = 100;
 	let cachedHistory: {
 		mainnet: { [key: string]: HistoryResponse };
 		testnet: { [key: string]: HistoryResponse };
 	} = retrieveData('history');
 
-	const deployRes = (await axios.get(
-		`https://event-store-api-clarity-${network}.make.services/accounts/${publicKey}/deploys?page=${page}&limit=${limit}`,
-	)) as { data: TransferHistory };
-	const transferRes = (await axios.get(
-		`https://event-store-api-clarity-${network}.make.services/accounts/${accountHash}/transfers?page=${page}&limit=${limit}`,
-	)) as { data: TransferHistory };
-
-	getCSPRUsdPrice();
-
-	const combinedArr = [
-		...deployRes.data.data,
-		...transferRes.data.data.filter(
-			(item) => !deployRes.data.data.find((dItem) => dItem.deployHash === item.deployHash),
-		),
-	];
-	const dataToParse = {
-		...deployRes.data,
-		data: combinedArr,
-		pageCount: Math.max(deployRes.data.pageCount, transferRes.data.pageCount),
-		total: Math.max(deployRes.data.itemCount, transferRes.data.itemCount),
-		page,
-		lastFetch: {
-			transfersCount: transferRes.data.itemCount,
-			deploysCount: deployRes.data.itemCount,
-		},
-	};
-
-	// If the page counts are similar, the user has not done any new transactions, otherwise, we only fetch the new ones - that is, since the transactions and deploys are sorted from new ones first, we find the difference and fetch those then merge them with what we have on cache/local storage.
+	// Return cached history first if any is present, then continue loading up the rest
+	// We are returning the entire history for all accounts just in case we are on the all history page
+	//  This also ensures accessing the history items is the same for the store and return value, that is historyItems[accountPublicKey]
 	if (cachedHistory && cachedHistory[network]) {
-		if (cachedHistory[network][accountHash]) {
+		if (cachedHistory[network][publicKey]) {
 			// If data hasn't changed since the last time it was added
-			if (
-				cachedHistory[network][accountHash].lastFetch.transfersCount >=
-					dataToParse.lastFetch.transfersCount &&
-				cachedHistory[network][accountHash].lastFetch.deploysCount >=
-					dataToParse.lastFetch.deploysCount &&
-				cachedHistory[network][accountHash].page >= page
-			) {
-				return cachedHistory[network][accountHash];
-			}
+			userHistory.set(cachedHistory[network]);
 		}
 	}
 
-	// Initialize the cached history for the account
-	if (!cachedHistory || !cachedHistory[network] || !cachedHistory[network][accountHash]) {
-		if (!cachedHistory) {
-			cachedHistory = {
-				mainnet: {},
-				testnet: {},
-			};
-		}
+	// Initialize Cache when its not present
+	if (!cachedHistory) {
+		cachedHistory = {
+			mainnet: {},
+			testnet: {},
+		};
+	}
 
-		if (!cachedHistory[network]) {
-			cachedHistory[network] = {};
-		}
+	if (!cachedHistory[network]) {
+		cachedHistory = {
+			...cachedHistory,
+			[network]: {},
+		};
+	}
 
-		cachedHistory[network][accountHash] = {
-			pageCount: Math.max(deployRes.data.pageCount, transferRes.data.pageCount),
-			total: Math.max(deployRes.data.itemCount, transferRes.data.itemCount),
-			page,
+	if (!cachedHistory[network][publicKey]) {
+		// values are initialized to -1 to prevent clashes in checks below
+		cachedHistory[network][publicKey] = {
 			data: [],
+			total: -1,
+			page: -1,
+			pageCount: -1,
 			lastFetch: {
-				transfersCount: transferRes.data.itemCount,
-				deploysCount: deployRes.data.itemCount,
+				transfersCount: -1,
+				deploysCount: -1,
 			},
 		};
 	}
 
+	/*
+		Master Loop Starts Here
+		- This loop calls the api's several times until it reaches a point whereby the first item is no longer the most recent item
+		- the most recent item in the history will always be the first item in the cached history
+		- if cached history is null, then we do need to fetch everything
+	*/
+	let fetchedTxItems: TransferHistory['data'] = [];
+	let fetchedDeployItems: TransferHistory['data'] = [];
+
+	// We have to do two initial calls to the apis to find out how many pages there are
+
+	const trialDeployRes = (await axios.get(
+		`https://event-store-api-clarity-${network}.make.services/accounts/${publicKey}/deploys?page=1&limit=${limit}`,
+	)) as { data: TransferHistory };
+	const trialTransferRes = (await axios.get(
+		`https://event-store-api-clarity-${network}.make.services/accounts/${accountHash}/transfers?page=1&limit=${limit}`,
+	)) as { data: TransferHistory };
+
+	const txPages = trialTransferRes.data.pageCount;
+	const txTotal = trialTransferRes.data.itemCount;
+	const deployPages = trialDeployRes.data.pageCount;
+	const deployTotal = trialDeployRes.data.itemCount;
+
+	// Fetch all items for both
+	for (let i = 0; i < txPages; i++) {
+		let page = i;
+
+		// Number of items should be at least the minimum items on either transfers or deploys
+
+		if (
+			cachedHistory[network][publicKey].lastFetch.transfersCount === txTotal &&
+			cachedHistory[network][publicKey].data.length >= Math.min(txTotal, deployTotal)
+		) {
+			break;
+		}
+
+		// Also called when the history has not been fetched the first time
+		if (
+			cachedHistory[network][publicKey].data.length < Math.min(txTotal, deployTotal) ||
+			!cachedHistory[network][publicKey] ||
+			cachedHistory[network][publicKey]?.lastFetch.transfersCount !== txTotal
+		) {
+			historyLoading.set(true);
+
+			const transferRes = (await axios.get(
+				`https://event-store-api-clarity-${network}.make.services/accounts/${accountHash}/transfers?page=${page}&limit=${limit}`,
+			)) as { data: TransferHistory };
+			fetchedTxItems = [...fetchedTxItems, ...transferRes.data.data];
+			if (txPages === 1 || page === txPages) {
+				cachedHistory[network][publicKey].lastFetch.transfersCount = txTotal;
+			}
+		} else {
+			break;
+		}
+	}
+
+	for (let i = 0; i < deployPages; i++) {
+		let page = i;
+
+		if (
+			cachedHistory[network][publicKey].lastFetch.deploysCount === deployTotal &&
+			cachedHistory[network][publicKey].data.length >= Math.min(txTotal, deployTotal)
+		) {
+			break;
+		}
+
+		// Also called when the history has not been fetched the first time
+		if (
+			cachedHistory[network][publicKey].data.length < Math.min(txTotal, deployTotal) ||
+			cachedHistory[network][publicKey]?.lastFetch.deploysCount !== deployTotal ||
+			!cachedHistory[network][publicKey]
+		) {
+			historyLoading.set(true);
+
+			const deployRes = (await axios.get(
+				`https://event-store-api-clarity-${network}.make.services/accounts/${publicKey}/deploys?page=${page}&limit=${limit}`,
+			)) as { data: TransferHistory };
+
+			fetchedDeployItems = [...fetchedDeployItems, ...deployRes.data.data];
+
+			if (deployPages === 1 || page === deployPages) {
+				cachedHistory[network][publicKey].lastFetch.deploysCount = deployTotal;
+			}
+		} else {
+			break;
+		}
+	}
+
+	getCSPRUsdPrice();
+
+	// Combine the two arrays
+	// when there is no deploy matching the transfer, then its added to the array
+	const combinedArr = [
+		...fetchedDeployItems,
+		...fetchedTxItems.filter(
+			(item) => !fetchedDeployItems.some((dItem) => dItem.deployHash === item.deployHash),
+		),
+	];
+
+	const dataToParse = {
+		data: combinedArr,
+		pageCount: Math.ceil(combinedArr.length / 100),
+		total: combinedArr.length,
+		page: 1,
+		lastFetch: {
+			transfersCount: cachedHistory[network][publicKey].lastFetch.transfersCount,
+			deploysCount: cachedHistory[network][publicKey].lastFetch.deploysCount,
+		},
+	};
+
 	// Remove items that are already cached
 	dataToParse.data.filter(
 		(item) =>
-			!cachedHistory[network][accountHash].data.some(
+			!cachedHistory[network][publicKey].data.some(
 				({ deployHash }) => item.deployHash === deployHash,
 			),
 	);
-	// Code only runs when data does not match up - we need to prevent this function from being called if not necessary, so we only need to call it when necessary or for the items that need it
-	const response = await consumeHistoryData(
-		dataToParse,
-		publicKey,
-		accountHash,
-		page,
-		network,
-		walletName,
-	);
 
-	// Add the items that have just been filtered and added in
-	cachedHistory[network][accountHash] = {
-		pageCount: Math.max(deployRes.data.pageCount, transferRes.data.pageCount),
-		total: Math.max(deployRes.data.itemCount, transferRes.data.itemCount),
-		page,
-		lastFetch: {
-			transfersCount: transferRes.data.itemCount,
-			deploysCount: deployRes.data.itemCount,
-		},
-		data: [...cachedHistory[network][accountHash].data, ...response.data],
-	};
+	if (dataToParse.data.length > 0) {
+		// Code only runs when data does not match up - we need to prevent this function from being called if not necessary, so we only need to call it when necessary or for the items that need it
+		const response = await consumeHistoryData(
+			dataToParse,
+			publicKey,
+			accountHash,
+			dataToParse.page,
+			network,
+			walletName,
+		);
 
-	cachedHistory[network][accountHash].data = cachedHistory[network][accountHash].data.sort(
-		(a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime(),
-	);
+		// Add the items that have just been filtered and added in
+		cachedHistory[network][publicKey] = {
+			pageCount: Math.ceil(combinedArr.length / 100),
+			total: combinedArr.length,
+			page: dataToParse.page,
+			lastFetch: {
+				transfersCount: cachedHistory[network][publicKey].lastFetch.transfersCount,
+				deploysCount: cachedHistory[network][publicKey].lastFetch.deploysCount,
+			},
+			data: response.data, // this is all history so it can be safely returned here
+		};
 
-	cachedHistory[network][accountHash].total = Math.max(
-		cachedHistory[network][accountHash].total,
-		cachedHistory[network][accountHash].data.length,
-	);
+		cachedHistory[network][publicKey].data = cachedHistory[network][publicKey].data.sort(
+			(a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime(),
+		);
+	}
 
 	// Update the history cache
 	saveData('history', JSON.stringify(cachedHistory));
-
-	return cachedHistory[network][accountHash];
+	userHistory.set(cachedHistory[network]);
+	historyLoading.set(false);
 };

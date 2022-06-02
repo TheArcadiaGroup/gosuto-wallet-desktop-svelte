@@ -7,8 +7,6 @@
 	@see history
 -->
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-
 	import RoundedSelect from '$lib/components/RoundedSelect.svelte';
 	import ReturnHome from '$lib/components/ReturnHome.svelte';
 	import { sidebarContent } from '$stores/HistoryStore';
@@ -16,19 +14,16 @@
 	import { selectedWallet } from '$stores/user/wallets';
 	import HistoryComponent from './HistoryComponent/HistoryComponent.svelte';
 	import Loading from '$lib/components/Loading.svelte';
+	import { historyLoading } from '$stores/user/history';
 
 	$: isInProfileRoute = $page.url.pathname.startsWith('/profile');
 	$: address = $page.params.address;
 	$: walletName = $selectedWallet?.walletName || "Unknown's Wallet";
 
-	const dispatch = createEventDispatcher();
-
 	sidebarContent.set(null);
 
 	// Get history data from data
 	export let historyArray: IHistory[] = [];
-	export let loading = false;
-	export let totalItems = 0;
 
 	let filteredArray: IHistory[];
 
@@ -59,10 +54,6 @@
 	}
 
 	let selectedHistoryItem: IHistory | null = null;
-
-	function showMoreItems() {
-		dispatch('showMoreClicked');
-	}
 
 	function historySelectionsListener(event: any): void {
 		if (!event.target) return;
@@ -103,13 +94,8 @@
 				bind:selectedHistoryItem
 			/>
 		{/each}
-		{#if loading}
+		{#if $historyLoading}
 			<Loading class="h-1/3 w-1/3" />
-		{/if}
-		{#if historyArray.length !== totalItems && totalItems !== -1}
-			<div class="show-more-btn">
-				<button on:click={showMoreItems}>Show more</button>
-			</div>
 		{/if}
 	</div>
 </div>
@@ -124,10 +110,10 @@
 	:local(.centered) {
 		@apply max-w-[60vw] mr-[5vw];
 	}
-
+	/* 
 	:local(.spacing) {
 		@apply px-[5vw];
-	}
+	} */
 
 	:local(h3) {
 		@apply font-bold md:text-2xl ml-4 md:ml-0 mb-8 dark:text-white;
@@ -136,17 +122,13 @@
 	:local(.history-holder) {
 		@apply w-full md:min-w-max md:overflow-y-auto md:h-[80%] md:pr-6 md:mt-16;
 	}
-
+	/* 
 	:local(button) {
 		@apply border-2 border-light-lineColor rounded-[90px];
 		@apply text-sm font-bold dark:text-white;
 		@apply my-6 py-2 px-4 self-center;
 		@apply hover:bg-light-purple hover:text-white hover:border-light-purple transition duration-500;
-	}
-
-	:local(.show-more-btn) {
-		@apply flex items-center justify-center w-full h-12 my-4;
-	}
+	} */
 
 	:local(.header) {
 		@apply relative items-center justify-between md:flex-col md:items-start md:justify-start;

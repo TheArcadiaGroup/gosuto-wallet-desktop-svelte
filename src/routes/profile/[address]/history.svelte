@@ -12,15 +12,10 @@
 	import { saveData } from '$utils/dataStorage';
 	import { user } from '$stores/user';
 	import { onMount } from 'svelte';
+	import { userHistory } from '$stores/user/history';
 
-	let historyData: HistoryResponse | null = null;
 	let wallet: IWallet | null = $selectedWallet;
 	$: walletAddress = $page.params.address;
-
-	$: currentPage = 1;
-	$: itemsPerPage = 20;
-	$: totalItems = -1;
-	$: loading = false;
 
 	const populateData = () => {
 		pollyFillUser();
@@ -46,64 +41,32 @@
 	};
 
 	const getData = async () => {
-		if (!loading) {
-			loading = true;
-			wallet =
-				$selectedWallet || $wallets?.filter((wallet) => wallet.walletAddress === walletAddress)[0];
+		wallet =
+			$selectedWallet || $wallets?.filter((wallet) => wallet.walletAddress === walletAddress)[0];
 
-			if (wallet) {
-				getSingleAccountHistory(
-					wallet.accountHash,
-					wallet.walletAddress,
-					$user?.network,
-					currentPage,
-					itemsPerPage,
-					wallet.walletName,
-				)
-					.then((historyResponseObj) => {
-						// If wallet has changed since this call was made, do not assign the values
-						if (wallet?.accountHash.toLowerCase() === $selectedWallet?.accountHash.toLowerCase()) {
-							historyData = historyResponseObj;
-							currentPage = historyResponseObj.page;
-							totalItems = historyResponseObj.total;
-						}
-						loading = false;
-					})
-					.catch((err) => {
-						console.log('Encountered Error Loading Page', err);
-						loading = false;
-					});
-			} else {
-				// Better UI Based Error Needed
-				loading = false;
-				throw Error('Wallet Not Loaded');
-			}
+		if (wallet) {
+			getSingleAccountHistory(
+				wallet.accountHash,
+				wallet.walletAddress,
+				$user?.network,
+				wallet.walletName,
+			);
+		} else {
+			throw Error('Wallet Not Loaded');
 		}
 	};
 
-	function showMoreItems() {
-		if (historyData?.data.length !== totalItems) {
-			currentPage++;
-			getData();
-		}
-	}
-
 	function creditCardClicked() {
-		historyData = null;
 		getData();
 	}
 
 	onMount(() => {
-		historyData = null;
 		populateData();
 		getData();
 	});
 
 	selectedWallet.subscribe((_wallet) => {
 		if (_wallet?.walletAddress !== $previousSelectedWallet?.walletAddress) {
-			historyData = null;
-			currentPage = 1;
-			totalItems = 0;
 			getData();
 		}
 	});
@@ -117,12 +80,7 @@
 		<ProfileNavigation on:cardClicked={creditCardClicked} />
 	</div>
 	<div class="global-grid-mid">
-		<HistoryPage
-			{loading}
-			{totalItems}
-			historyArray={historyData?.data || []}
-			on:showMoreClicked={showMoreItems}
-		/>
+		<HistoryPage historyArray={$userHistory?.[walletAddress]?.data || []} />
 	</div>
 	<div class="global-grid-right">
 		<Sidebar historyObject={$sidebarContent} />

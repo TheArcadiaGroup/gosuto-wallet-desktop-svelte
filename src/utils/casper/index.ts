@@ -325,7 +325,6 @@ export const getNetworkValidators = async (network: 'testnet' | 'mainnet' = 'tes
 export const getUserDelegatedAmount = async (
 	publicKey: string,
 	network: 'testnet' | 'mainnet' = 'testnet',
-	accountHash: string,
 ) => {
 	// publicKey = '01b1126cfaf8f6df4209b5f4a88a5e3bb95f912c0307fa3e1d3e89a3946411b021'
 
@@ -365,7 +364,7 @@ export const getUserDelegatedAmount = async (
 					} = retrieveData('history');
 
 					const lastStakeTx =
-						history[network]?.[accountHash]?.data?.find(
+						history?.[network]?.[publicKey]?.data?.find(
 							(item) => item.validator === bid.public_key,
 						) ?? null;
 
