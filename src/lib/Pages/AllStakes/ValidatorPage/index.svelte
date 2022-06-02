@@ -34,7 +34,7 @@
 	}
 
 	:local(.validator-holder) {
-		@apply w-full min-w-max overflow-y-auto h-[85%] pr-6;
+		@apply w-full overflow-y-scroll pr-6;
 	}
 	/* 
 	:local(button) {

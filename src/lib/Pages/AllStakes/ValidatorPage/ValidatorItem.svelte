@@ -6,21 +6,30 @@
 	@see validatorPage
 -->
 <script lang="ts">
+	import { user } from '$stores/user';
+
 	import { decimalToPercentage } from '$utils';
 
 	export let validator: IValidator;
+
+	$: block_base_url = `https://${$user?.network === 'testnet' ? 'testnet.' : ''}cspr.live`;
 </script>
 
 <div class="validator-item {$$props.class}">
 	<div class="header">
-		<h4>
+		<h4
+			class="cursor-pointer tooltip-bottom"
+			title="View Validator Profile"
+			on:click={() =>
+				window.api.send('openUrl', `${block_base_url}/validator/${validator.publicKey}`)}
+		>
 			{validator.profile?.name ??
 				`${validator.publicKey.substring(0, 4)}...${validator.publicKey.substring(
 					validator.publicKey.length - 5,
 					validator.publicKey.length,
 				)}`}
 		</h4>
-		<p class="delegate">Delegate</p>
+		<button class="delegate">Delegate</button>
 	</div>
 	<div class="details-holder">
 		<div class="detail left">
