@@ -10438,13 +10438,18 @@
 		],
 		44: [
 			function (require, module, exports) {
-				// const CasperSDK = require('casper-js-sdk');
-				const CoinGecko = require('coingecko-api');
+				(function (Buffer) {
+					(function () {
+						// const CasperSDK = require('casper-js-sdk');
+						const CoinGecko = require('coingecko-api');
 
-				// window.CasperSDK = CasperSDK;
-				window.CoinGecko = CoinGecko;
+						// window.CasperSDK = CasperSDK;
+						window.CoinGecko = CoinGecko;
+						window.Buffer = Buffer;
+					}.call(this));
+				}.call(this, require('buffer').Buffer));
 			},
-			{ 'coingecko-api': 5 },
+			{ buffer: 3, 'coingecko-api': 5 },
 		],
 	},
 	{},

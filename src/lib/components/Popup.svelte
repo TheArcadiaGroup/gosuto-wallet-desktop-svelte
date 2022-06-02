@@ -59,6 +59,7 @@
 	:local(.popup) {
 		@apply rounded-[34px] text-center px-4;
 		@apply w-full md:w-auto md:max-w-sm;
+		@apply text-dark-gray dark:text-white;
 	}
 
 	:local(.pcontainer) {

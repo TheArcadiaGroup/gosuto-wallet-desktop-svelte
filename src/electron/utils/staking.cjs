@@ -14,46 +14,63 @@ module.exports = {
 
 	// Delegate stake
 	delegate: async ({ privateKey, accountHash, publicKey, validatorPublicKey, amount, network }) => {
-		console.log(privateKey, accountHash, publicKey, validatorPublicKey, amount, network);
-		network = network ?? 'testnet';
+		try {
+			console.log(
+				'private key',
+				privateKey,
+				'account hash',
+				accountHash,
+				'public key',
+				publicKey,
+				'validator',
+				validatorPublicKey,
+				'amount',
+				amount,
+				'network',
+				network,
+			);
+			network = network ?? 'testnet';
 
-		const { casperService, casperClient } = getCasperClientAndService(network);
-		const networkName = network === 'mainnet' ? 'casper' : 'casper-test';
-		const client = casperClient;
-		// Read keys from the structure created in #Generating keys
-		if (privateKey.length !== 128) {
-			privateKey = Keys.Ed25519.parsePrivateKey(privateKey);
+			const { casperService, casperClient } = getCasperClientAndService(network);
+			const networkName = network === 'mainnet' ? 'casper' : 'casper-test';
+			const client = casperClient;
+			// Read keys from the structure created in #Generating keys
+			if (privateKey.length !== 128) {
+				privateKey = Keys.Ed25519.parsePrivateKey(privateKey);
+			}
+			// const publicKey = Keys.Ed25519.privateToPublicKey(privateKey);
+			const keyPair = Keys.Ed25519.parseKeyPair(
+				Buffer.from(publicKey, 'hex'),
+				Buffer.from(privateKey, 'hex'),
+			);
+			const deployParams = new DeployUtil.DeployParams(keyPair.publicKey, networkName);
+
+			amount = ethers.utils.parseUnits(amount.toString(), 9);
+
+			const payment = DeployUtil.standardPayment(5000000000);
+			const args = RuntimeArgs.fromMap({
+				delegator: keyPair.publicKey,
+				validator: CLPublicKey.fromHex(validatorPublicKey),
+				amount: CLValueBuilder.u512(amount),
+			});
+			let contractHash = 'ccb576d6ce6dec84a551e48f0d0b7af89ddba44c7390b690036257a04a3ae9ea';
+			if (network === 'testnet') {
+				contractHash = '93d923e336b20a4c4ca14d592b60e5bd3fe330775618290104f9beb326db7ae2';
+			}
+			const session = DeployUtil.ExecutableDeployItem.newStoredContractByHash(
+				Uint8Array.from(Buffer.from(contractHash, 'hex')),
+				'delegate',
+				args,
+			);
+			const deploy = DeployUtil.makeDeploy(deployParams, session, payment);
+			const signedDeploy = DeployUtil.signDeploy(deploy, keyPair);
+			const executionResultHash = await client.putDeploy(signedDeploy);
+
+			// Return the deploy info using the deployHash
+			return await casperClient.getDeploy(executionResultHash);
+		} catch (error) {
+			throw error;
 		}
-		// const publicKey = Keys.Ed25519.privateToPublicKey(privateKey);
-		const keyPair = Keys.Ed25519.parseKeyPair(
-			Buffer.from(publicKey, 'hex'),
-			Buffer.from(privateKey, 'hex'),
-		);
-		const deployParams = new DeployUtil.DeployParams(keyPair.publicKey, networkName);
-
-		amount = ethers.utils.parseUnits(amount.toString(), 9);
-
-		const payment = DeployUtil.standardPayment(5000000000);
-		const args = RuntimeArgs.fromMap({
-			delegator: keyPair.publicKey,
-			validator: CLPublicKey.fromHex(validatorPublicKey),
-			amount: CLValueBuilder.u512(amount),
-		});
-		let contractHash = 'ccb576d6ce6dec84a551e48f0d0b7af89ddba44c7390b690036257a04a3ae9ea';
-		if (network === 'testnet') {
-			contractHash = '93d923e336b20a4c4ca14d592b60e5bd3fe330775618290104f9beb326db7ae2';
-		}
-		const session = DeployUtil.ExecutableDeployItem.newStoredContractByHash(
-			Uint8Array.from(Buffer.from(contractHash, 'hex')),
-			'delegate',
-			args,
-		);
-		const deploy = DeployUtil.makeDeploy(deployParams, session, payment);
-		const signedDeploy = DeployUtil.signDeploy(deploy, keyPair);
-		const executionResultHash = await client.putDeploy(signedDeploy);
-
-		// Return the deploy info using the deployHash
-		return await casperClient.getDeploy(executionResultHash);
 	},
 
 	// Undelegate

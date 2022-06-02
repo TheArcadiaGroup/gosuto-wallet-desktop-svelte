@@ -34,3 +34,4 @@ export type UnknownStakeCSPRObjectMap = {
 
 export const sendTokenTracker = writable<UnknownSendTokenObjectMap>({});
 export const stakeCsprTracker = writable<UnknownStakeCSPRObjectMap>({});
+export const unStakeCsprTracker = writable<UnknownStakeCSPRObjectMap>({});

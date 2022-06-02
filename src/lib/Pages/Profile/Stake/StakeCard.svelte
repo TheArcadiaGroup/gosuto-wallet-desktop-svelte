@@ -11,11 +11,13 @@
 <script lang="ts">
 	import ProgressBar from '$lib/components/ProgressBar.svelte';
 	import { user } from '$stores/user';
+	import { validators } from '$stores/user/stake';
 	import { shortenAddress } from '$utils';
 
 	export let stake: IStake;
 	export let selectedStake: IStake | null = null;
 
+	$: validator = $validators.find((item) => item.publicKey === stake?.validator);
 	$: block_base_url = `https://${$user?.network === 'testnet' ? 'testnet.' : ''}cspr.live`;
 </script>
 
@@ -23,16 +25,20 @@
 	class="stake-card-item {selectedStake?.validator === stake.validator ? 'selected' : ''}"
 	on:click
 >
-	<div
-		class="name cursor-pointer"
-		title="Block Explorer Validator Profile"
-		on:click={() => window.api.send('openUrl', `${block_base_url}/validator/${stake?.validator}`)}
-	>
-		{stake?.validator
-			? stake?.validator.length === 66
-				? shortenAddress(stake?.validator)
-				: stake?.validator
-			: 'Unknown Validator'}
+	<div class="name">
+		<span
+			class="cursor-pointer"
+			title="Block Explorer Validator Profile"
+			on:click={() => window.api.send('openUrl', `${block_base_url}/validator/${stake?.validator}`)}
+		>
+			{stake?.validator
+				? validator?.profile
+					? validator.profile.name
+					: stake?.validator.length === 66
+					? shortenAddress(stake?.validator)
+					: stake?.validator
+				: 'Unknown Validator'}
+		</span>
 	</div>
 	<div class="first-line">
 		<div

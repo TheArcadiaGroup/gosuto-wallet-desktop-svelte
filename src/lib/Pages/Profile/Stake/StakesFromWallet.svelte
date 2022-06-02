@@ -30,6 +30,7 @@
 	}
 
 	function addStake() {
+		selectedStake = null;
 		dispatch('addStake');
 	}
 

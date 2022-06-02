@@ -364,17 +364,18 @@ export const getUserDelegatedAmount = async (
 						testnet: { [key: string]: HistoryResponse };
 					} = retrieveData('history');
 
-					const lastStakeTx = history[network][accountHash]?.data.find(
-						(item) => item.validator === bid.public_key,
-					);
+					const lastStakeTx =
+						history[network]?.[accountHash]?.data?.find(
+							(item) => item.validator === bid.public_key,
+						) ?? null;
 
 					stakingOperations.push({
 						validator: bid.public_key,
 						delegationRate: bid.bid.delegation_rate,
 						selfStake: +bid.bid.staked_amount / 1e9,
 						stakedAmount: +delegator.staked_amount / 1e9,
-						reward: userRewardsBreakdown?.[bid.public_key].amount! / 1e9 ?? 0,
-						latestRewardDate: userRewardsBreakdown?.[bid.public_key].lastRewardDate || new Date(),
+						reward: (userRewardsBreakdown?.[bid.public_key]?.amount ?? 0) / 1e9 ?? 0,
+						latestRewardDate: userRewardsBreakdown?.[bid.public_key]?.lastRewardDate ?? new Date(),
 						recentStake: lastStakeTx?.transactionDate || new Date(),
 						validatorWeight,
 					});

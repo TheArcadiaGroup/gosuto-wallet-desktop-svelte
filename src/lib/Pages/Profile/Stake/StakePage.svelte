@@ -9,39 +9,80 @@
 	import ConfirmStake from '$components/PopUps/StakePopups/ConfirmStake.svelte';
 
 	import { selectedWallet } from '$stores/user/wallets';
-	import { delegate } from '$utils/staking';
+	import { delegate, undelegate } from '$utils/staking';
 	import { user } from '$stores/user';
 	import Popup from '$lib/components/Popup.svelte';
 	import Loading from '$lib/components/Loading.svelte';
-	import { stakeCsprTracker } from '$stores/activityLoaders';
+	import { stakeCsprTracker, unStakeCsprTracker } from '$stores/activityLoaders';
 	import FailedStake from '$lib/components/PopUps/StakePopups/FailedStake.svelte';
 	import SuccessStake from '$lib/components/PopUps/StakePopups/SuccessStake.svelte';
 	import { page } from '$app/stores';
+	import ConfirmUnStake from '$lib/components/PopUps/StakePopups/ConfirmUnStake.svelte';
 
 	// Popup
-	let popup: 'confirmStake' | 'failedStake' | 'successStake' | 'loadingStake' | null = null;
+	let popup:
+		| 'confirmStake'
+		| 'failedStake'
+		| 'successStake'
+		| 'loadingStake'
+		| 'confirmUnStake'
+		| null = null;
 
-	let selectedValidatorHash = '';
+	let selectedValidatorPublicKey = '';
 	let stakeAmount = 0;
+	let isUnstaking = false;
+	let error = '';
 
 	/**Handler for clicking the "Confirm" button. Confirms the stake.*/
 	function confirmStake() {
 		// confirm stake
 		popup = 'loadingStake';
+		isUnstaking = false;
 
 		const result = delegate(
 			$selectedWallet!.walletAddress,
 			$selectedWallet!.accountHash,
 			$selectedWallet!.privateKey,
-			selectedValidatorHash,
+			selectedValidatorPublicKey,
 			stakeAmount,
 			$user!.network,
 		);
 
 		if (result) {
 			if (result.error) {
+				isUnstaking = false;
 				popup = 'failedStake';
+				error = result.error;
 			} else {
+				popup = 'loadingStake';
+				isUnstaking = false;
+				popupAmount = stakeAmount;
+			}
+		}
+	}
+
+	/**Handler for clicking the "Confirm" button. Confirms the unstake.*/
+	function confirmUnStake() {
+		// confirm stake
+		popup = 'loadingStake';
+		isUnstaking = true;
+
+		const result = undelegate(
+			$selectedWallet!.walletAddress,
+			$selectedWallet!.accountHash,
+			$selectedWallet!.privateKey,
+			selectedValidatorPublicKey,
+			stakeAmount,
+			$user!.network,
+		);
+
+		if (result) {
+			if (result.error) {
+				isUnstaking = true;
+				popup = 'failedStake';
+				error = result.error;
+			} else {
+				isUnstaking = true;
 				popup = 'loadingStake';
 				popupAmount = stakeAmount;
 			}
@@ -68,15 +109,23 @@
 		selectedStake = null;
 	}
 
-	function showConfirmStakePopup(stakeDetails: { validatorHash: string; amount: number }) {
+	function showConfirmStakePopup(stakeDetails: { validatorPublicKey: string; amount: number }) {
 		popup = 'confirmStake';
-		selectedValidatorHash = stakeDetails.validatorHash;
+		isUnstaking = false;
+		selectedValidatorPublicKey = stakeDetails.validatorPublicKey;
+		stakeAmount = stakeDetails.amount;
+	}
+
+	function showConfirmUnStakePopup(stakeDetails: { validatorPublicKey: string; amount: number }) {
+		popup = 'confirmUnStake';
+		isUnstaking = true;
+		selectedValidatorPublicKey = stakeDetails.validatorPublicKey;
 		stakeAmount = stakeDetails.amount;
 	}
 
 	function closePopup() {
 		popup = null;
-		selectedValidatorHash = '';
+		selectedValidatorPublicKey = '';
 		stakeAmount = 0;
 	}
 
@@ -96,16 +145,20 @@
 			Object.keys(stakeCsprTxs).map((item) => {
 				if (stakeCsprTxs[item]?.error) {
 					// Show error
+					isUnstaking = false;
 					popup = 'failedStake';
 					popupAmount = stakeCsprTxs[item]?.amount!;
+					error = stakeCsprTxs[item]?.error ?? '';
 				} else if (stakeCsprTxs[item]?.fulfilled) {
 					// Clear loader and show respective popup with tx details
+					isUnstaking = false;
 					popup = 'successStake';
 					popupAmount = stakeCsprTxs[item]?.amount!;
 				}
 
 				if (stakeCsprTxs[item]?.fulfilled) {
 					// remove the item from the sendTokenTrackers list
+					isUnstaking = false;
 					delete stakeCsprTxs[item];
 					stakeCsprTracker.set(stakeCsprTxs);
 				}
@@ -113,13 +166,41 @@
 		}
 	})($stakeCsprTracker);
 
+	$: ((unStakeCsprTxs) => {
+		if (unStakeCsprTxs) {
+			// Called everytime there's an update so we have time to only get rid of one popup or show a success popup
+			// First check if new transactions came in
+			Object.keys(unStakeCsprTxs).map((item) => {
+				if (unStakeCsprTxs[item]?.error) {
+					// Show error
+					isUnstaking = true;
+					popup = 'failedStake';
+					popupAmount = unStakeCsprTxs[item]?.amount!;
+					error = unStakeCsprTxs[item]?.error ?? '';
+				} else if (unStakeCsprTxs[item]?.fulfilled) {
+					// Clear loader and show respective popup with tx details
+					isUnstaking = true;
+					popup = 'successStake';
+					popupAmount = unStakeCsprTxs[item]?.amount!;
+				}
+
+				if (unStakeCsprTxs[item]?.fulfilled) {
+					// remove the item from the sendTokenTrackers list
+					isUnstaking = true;
+					delete unStakeCsprTxs[item];
+					unStakeCsprTracker.set(unStakeCsprTxs);
+				}
+			});
+		}
+	})($unStakeCsprTracker);
+
 	$: ((prevStake) => prevStake && stakeSelect())(selectedStake);
 
 	export let stakeArray: IStake[];
 	export let loading = false;
 </script>
 
-<div class="flex main">
+<div class="flex stake-page">
 	<div class="global-grid-nav">
 		<Navbar />
 	</div>
@@ -155,6 +236,7 @@
 						bind:stake={selectedStake}
 						on:cancelStake={() => (selectedLastColumnContent = null)}
 						on:showStakePopup={(e) => showConfirmStakePopup(e.detail)}
+						on:unstake={(e) => showConfirmUnStakePopup(e.detail)}
 					/>
 				</div>
 			{:else}
@@ -166,6 +248,8 @@
 
 {#if popup === 'confirmStake'}
 	<ConfirmStake amount={stakeAmount} on:confirm={() => confirmStake()} on:cancel={closePopup} />
+{:else if popup === 'confirmUnStake'}
+	<ConfirmUnStake amount={stakeAmount} on:confirm={() => confirmUnStake()} on:cancel={closePopup} />
 {:else if popup === 'loadingStake'}
 	<Popup
 		title="Currently Staking Your {stakeAmount} CSPR"
@@ -175,9 +259,9 @@
 		<Loading useFirework={false} size={60} />
 	</Popup>
 {:else if popup === 'failedStake'}
-	<FailedStake amount={popupAmount} on:confirm={() => (popup = null)} />
+	<FailedStake {error} {isUnstaking} amount={popupAmount} on:confirm={() => (popup = null)} />
 {:else if popup === 'successStake'}
-	<SuccessStake amount={popupAmount} on:confirm={() => (popup = null)} />
+	<SuccessStake {isUnstaking} amount={popupAmount} on:confirm={() => (popup = null)} />
 {/if}
 
 <style lang="postcss" global>
@@ -187,7 +271,7 @@
 		@apply text-light-grey text-xs;
 	}
 
-	:local(.main) {
+	:local(.stake-page) {
 		@apply dark:bg-dark-grey;
 	}
 

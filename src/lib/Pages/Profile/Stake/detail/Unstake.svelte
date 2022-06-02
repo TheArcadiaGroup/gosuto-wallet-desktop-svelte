@@ -9,13 +9,16 @@
 	import Button from '$lib/components/Button.svelte';
 	import TextInput from '$lib/components/TextInput.svelte';
 	import { convertDate } from '$utils';
+	import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher();
 
 	export let stake: IStake | null = null;
 	let tokenAmount: number;
 
 	/**Handler for clicking the "Unstake" button. Unstakes the stake.*/
 	function unstake() {
-		console.log('Unstake Button Clicked');
+		dispatch('unstake', { validatorPublicKey: stake?.validator, amount: tokenAmount });
 	}
 
 	/**Handler for clicking the "Cancel" button. Cancels the unstake and hides the component.*/

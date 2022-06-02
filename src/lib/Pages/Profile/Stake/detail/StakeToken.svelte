@@ -13,13 +13,14 @@
 	import { csprPrice } from '$stores/tokens';
 	import { user } from '$stores/user';
 	import { validators } from '$stores/user/stake';
+	import { selectedWallet } from '$stores/user/wallets';
 	import { getCSPRUsdPrice } from '$utils/tokens';
 	import { createEventDispatcher, onMount } from 'svelte';
 
 	const dispatch = createEventDispatcher();
 
 	let amount = 0;
-	let selectedValidatorHash: string = '';
+	let selectedValidatorPublicKey: string = '';
 
 	onMount(async () => {
 		await getCSPRUsdPrice();
@@ -48,16 +49,16 @@
 			(amount * $csprPrice[$user?.currency || 'usd']).toFixed(2),
 		)}&nbsp;{$user?.currency.toUpperCase()}
 	</div>
-	<!-- {#if $user?.network === 'mainnet'} -->
 	<div class="select-container">
-		<SelectInput label={'Recipient Address'} bind:value={selectedValidatorHash}>
+		<SelectInput label={'Recipient Address'} bind:value={selectedValidatorPublicKey}>
 			{#each $validators as validator}
-				<option value={validator.accountHash}>
+				<option value={validator.publicKey}>
 					{validator.profile?.name ?? validator.publicKey}
 				</option>
 			{/each}
 		</SelectInput>
-		{#if $validators.find((validator) => validator.accountHash === selectedValidatorHash && validator.currentDelegators > 952)}
+		<!-- If user is already a delegator on that validator, just let them continue -->
+		{#if $validators.find((validator) => validator.publicKey === selectedValidatorPublicKey && validator.currentDelegators > 952) && $selectedWallet?.walletStakes.find((item) => item.validator !== selectedValidatorPublicKey)}
 			<div class="input-error-warning">
 				This validator has reached the network limit for total delegators and therefore cannot be
 				delegated to by new accounts. Please select another validator with fewer than 952 total
@@ -65,20 +66,10 @@
 			</div>
 		{/if}
 	</div>
-	<!-- {:else}
-		<div class="input-container">
-			<TextInput
-				class="stake-amount-input"
-				type="text"
-				label={'Validator Public Key'}
-				bind:value={selectedValidatorHash}
-				addTextBg={true}
-			/>
-		</div>
-	{/if} -->
 	<div class="buttons">
 		<Button
-			on:click={() => dispatch('showStakePopup', { validatorHash: selectedValidatorHash, amount })}
+			on:click={() =>
+				dispatch('showStakePopup', { validatorPublicKey: selectedValidatorPublicKey, amount })}
 		>
 			<div slot="text" class="button-text">Stake</div>
 		</Button>

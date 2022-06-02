@@ -193,14 +193,14 @@ module.exports = () => {
 					id: data.id,
 					data: null,
 					error: error,
-					message: 'Encountered Message While Executing Staking Request',
+					message: 'Encountered Error While Executing Staking Request',
 				}),
 			);
 			event.returnValue = JSON.stringify({
 				id: data.id,
 				data: null,
 				error: error,
-				message: 'Encountered Message While Executing Staking Request',
+				message: 'Encountered Error While Executing Staking Request',
 			});
 		}
 	});

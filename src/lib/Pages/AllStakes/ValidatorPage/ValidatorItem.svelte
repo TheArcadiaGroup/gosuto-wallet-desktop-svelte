@@ -18,7 +18,7 @@
 <div class="validator-item {$$props.class}">
 	<div class="header">
 		<h4
-			class="cursor-pointer tooltip-bottom"
+			class="cursor-pointer"
 			title="View Validator Profile"
 			on:click={() =>
 				window.api.send('openUrl', `${block_base_url}/validator/${validator.publicKey}`)}

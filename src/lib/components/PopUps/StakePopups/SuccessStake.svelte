@@ -2,11 +2,13 @@
 	import Popup from '$lib/components/Popup.svelte';
 
 	export let amount = 0;
+	export let isUnstaking = false;
 </script>
 
 <Popup title="Success!" on:confirm on:cancel>
 	<p>
-		Successfully staked <span class="amount">
+		Successfully {isUnstaking ? 'Unstaked' : 'Staked'}
+		<span class="amount">
 			{amount}
 		</span>
 		CSPR.
@@ -15,7 +17,7 @@
 
 <style lang="postcss" global>
 	:local(p) {
-		@apply text-xs mb-1 dark:text-white;
+		@apply text-sm mb-1 dark:text-white;
 	}
 
 	:local(.amount) {
