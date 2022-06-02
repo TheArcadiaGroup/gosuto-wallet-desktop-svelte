@@ -134,7 +134,10 @@ export const getSingleAccountHistory = async (
 	limit = 20,
 	walletName = '',
 ) => {
-	let cachedHistory: { [key: string]: HistoryResponse } = retrieveData('history');
+	let cachedHistory: {
+		mainnet: { [key: string]: HistoryResponse };
+		testnet: { [key: string]: HistoryResponse };
+	} = retrieveData('history');
 
 	const deployRes = (await axios.get(
 		`https://event-store-api-clarity-${network}.make.services/accounts/${publicKey}/deploys?page=${page}&limit=${limit}`,
@@ -164,27 +167,35 @@ export const getSingleAccountHistory = async (
 	};
 
 	// If the page counts are similar, the user has not done any new transactions, otherwise, we only fetch the new ones - that is, since the transactions and deploys are sorted from new ones first, we find the difference and fetch those then merge them with what we have on cache/local storage.
-	if (cachedHistory) {
-		if (cachedHistory[accountHash]) {
+	if (cachedHistory && cachedHistory[network]) {
+		if (cachedHistory[network][accountHash]) {
 			// If data hasn't changed since the last time it was added
 			if (
-				cachedHistory[accountHash].lastFetch.transfersCount >=
+				cachedHistory[network][accountHash].lastFetch.transfersCount >=
 					dataToParse.lastFetch.transfersCount &&
-				cachedHistory[accountHash].lastFetch.deploysCount >= dataToParse.lastFetch.deploysCount &&
-				cachedHistory[accountHash].page >= page
+				cachedHistory[network][accountHash].lastFetch.deploysCount >=
+					dataToParse.lastFetch.deploysCount &&
+				cachedHistory[network][accountHash].page >= page
 			) {
-				return cachedHistory[accountHash];
+				return cachedHistory[network][accountHash];
 			}
 		}
 	}
 
 	// Initialize the cached history for the account
-	if (!cachedHistory || !cachedHistory[accountHash]) {
+	if (!cachedHistory || !cachedHistory[network] || !cachedHistory[network][accountHash]) {
 		if (!cachedHistory) {
-			cachedHistory = {};
+			cachedHistory = {
+				mainnet: {},
+				testnet: {},
+			};
 		}
 
-		cachedHistory[accountHash] = {
+		if (!cachedHistory[network]) {
+			cachedHistory[network] = {};
+		}
+
+		cachedHistory[network][accountHash] = {
 			pageCount: Math.max(deployRes.data.pageCount, transferRes.data.pageCount),
 			total: Math.max(deployRes.data.itemCount, transferRes.data.itemCount),
 			page,
@@ -199,7 +210,9 @@ export const getSingleAccountHistory = async (
 	// Remove items that are already cached
 	dataToParse.data.filter(
 		(item) =>
-			!cachedHistory[accountHash].data.some(({ deployHash }) => item.deployHash === deployHash),
+			!cachedHistory[network][accountHash].data.some(
+				({ deployHash }) => item.deployHash === deployHash,
+			),
 	);
 	// Code only runs when data does not match up - we need to prevent this function from being called if not necessary, so we only need to call it when necessary or for the items that need it
 	const response = await consumeHistoryData(
@@ -212,7 +225,7 @@ export const getSingleAccountHistory = async (
 	);
 
 	// Add the items that have just been filtered and added in
-	cachedHistory[accountHash] = {
+	cachedHistory[network][accountHash] = {
 		pageCount: Math.max(deployRes.data.pageCount, transferRes.data.pageCount),
 		total: Math.max(deployRes.data.itemCount, transferRes.data.itemCount),
 		page,
@@ -220,20 +233,20 @@ export const getSingleAccountHistory = async (
 			transfersCount: transferRes.data.itemCount,
 			deploysCount: deployRes.data.itemCount,
 		},
-		data: [...cachedHistory[accountHash].data, ...response.data],
+		data: [...cachedHistory[network][accountHash].data, ...response.data],
 	};
 
-	cachedHistory[accountHash].data = cachedHistory[accountHash].data.sort(
+	cachedHistory[network][accountHash].data = cachedHistory[network][accountHash].data.sort(
 		(a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime(),
 	);
 
-	cachedHistory[accountHash].total = Math.max(
-		cachedHistory[accountHash].total,
-		cachedHistory[accountHash].data.length,
+	cachedHistory[network][accountHash].total = Math.max(
+		cachedHistory[network][accountHash].total,
+		cachedHistory[network][accountHash].data.length,
 	);
 
 	// Update the history cache
 	saveData('history', JSON.stringify(cachedHistory));
 
-	return cachedHistory[accountHash];
+	return cachedHistory[network][accountHash];
 };

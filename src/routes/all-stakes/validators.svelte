@@ -6,10 +6,11 @@
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 	import getValidators from '$utils/getValidators';
 	import { validators } from '$stores/user/stake';
+	import { user } from '$stores/user';
 
-	onMount(async () => {
+	onMount(() => {
 		if ($validators.length <= 0) {
-			await getValidators();
+			getValidators($user?.network ?? 'testnet');
 		}
 	});
 </script>
@@ -23,7 +24,7 @@
 			<ProfileNavigation />
 		</div>
 	</div>
-	<div class="global-grid-mid size-full">
+	<div class="global-grid-mid size-full overflow-hidden">
 		<div class="validator-holder">
 			<ValidatorPage />
 		</div>

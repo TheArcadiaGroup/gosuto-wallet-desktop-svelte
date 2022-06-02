@@ -11,23 +11,31 @@
 	export let validator: IValidator;
 </script>
 
-<div class="{$$props.class} main">
+<div class="validator-item {$$props.class}">
 	<div class="header">
-		<h4>{validator.validatorName}</h4>
+		<h4>
+			{validator.profile?.name ??
+				`${validator.publicKey.substring(0, 4)}...${validator.publicKey.substring(
+					validator.publicKey.length - 5,
+					validator.publicKey.length,
+				)}`}
+		</h4>
 		<p class="delegate">Delegate</p>
 	</div>
 	<div class="details-holder">
 		<div class="detail left">
-			<p class="detail-title">Validator Position</p>
-			<p class="detail-value">{validator.validatorPosition}</p>
+			<p class="detail-title">Validator Performance</p>
+			<p class="detail-value">{parseFloat(validator.performance.toFixed(2))} %</p>
 		</div>
 		<div class="detail mid">
 			<p class="detail-title">Validator Commission</p>
-			<p class="detail-value">{decimalToPercentage(validator.validatorCommission)} %</p>
+			<p class="detail-value">{decimalToPercentage(validator.delegationRate)} %</p>
 		</div>
 		<div class="detail right">
-			<p class="detail-title">Delegation Return</p>
-			<p class="detail-value">{decimalToPercentage(validator.delegationReturn)} %</p>
+			<p class="detail-title">Self Stake</p>
+			<p class="detail-value">
+				{parseFloat(((validator.selfStakeAmount / validator.totalStaked) * 100).toFixed(2))} %
+			</p>
 		</div>
 		<div class="detail left">
 			<p class="detail-title">Current Delegators</p>
@@ -35,14 +43,14 @@
 		</div>
 		<div class="detail mid">
 			<p class="detail-title">Current Staked</p>
-			<p class="detail-value">{validator.currentStaked} CSPR</p>
+			<p class="detail-value">{parseFloat(validator.totalStaked.toFixed(5))} CSPR</p>
 		</div>
 	</div>
 </div>
 
 <style lang="postcss" global>
-	:local(.main) {
-		@apply w-[90vw] md:w-full pt-7 pb-8 pl-5;
+	:local(.validator-item) {
+		@apply w-full pt-7 pb-8 pl-5;
 	}
 
 	:local(h4) {

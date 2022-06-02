@@ -4,6 +4,7 @@ import CoinGecko from 'coingecko-api';
 import { retrieveData, saveData } from '$utils/dataStorage';
 import { selectedWallet, wallets } from '$stores/user/wallets';
 import { get } from 'svelte/store';
+import { getValidatorPerformances, getValidatorProfiles } from './validatorData';
 
 export const getEndpointByNetwork = (network: 'testnet' | 'mainnet' = 'testnet') => {
 	if (network === 'mainnet') {
@@ -260,6 +261,67 @@ export const filterUserRewards = async (
 	}
 };
 
+export const getNetworkValidators = async (network: 'testnet' | 'mainnet' = 'testnet') => {
+	try {
+		const casperService = new CasperServiceByJsonRPC(getEndpointByNetwork(network));
+		const validatorsInfo = await casperService.getValidatorsInfo();
+		// const eraValidators = validatorsInfo.auction_state.era_validators[0];
+
+		// Data appears to be always two blocks behind
+		const era = ((await casperService.getLatestBlockInfo()).block?.header.era_id ?? 2) - 2;
+		const { bids } = validatorsInfo.auction_state;
+
+		const validators: IValidator[] = [];
+
+		bids.forEach((bid) => {
+			// Only show active validators
+			if (!(bid.bid as any).inactive) {
+				let totalStaked = 0;
+				bid.bid.delegators.forEach((item) => {
+					totalStaked += +item.staked_amount;
+				});
+
+				validators.push({
+					delegationRate: bid.bid.delegation_rate / 100 ?? 0, // in percentage
+					selfStakeAmount: +bid.bid.staked_amount / 1e9 ?? 0,
+					totalStaked: (totalStaked + +bid.bid.staked_amount) / 1e9,
+					currentDelegators: bid.bid.delegators.length,
+					publicKey: bid.public_key,
+					accountHash: CLPublicKey.fromHex(bid.public_key)
+						.toAccountHashStr()
+						.replace('account-hash-', ''),
+					performance: 0,
+					profile: null,
+				});
+			}
+		});
+
+		const performances = await getValidatorPerformances(
+			validators.map((item) => item.publicKey),
+			era,
+			network,
+		);
+
+		const profiles = await getValidatorProfiles(
+			validators.map((item) => item.accountHash),
+			network,
+		);
+
+		return validators.map((val) => {
+			val = {
+				...val,
+				performance: performances[val.publicKey] ?? 0,
+				profile: profiles[val.accountHash] ?? null,
+			};
+
+			return val;
+		});
+	} catch (error) {
+		console.log(error);
+		return [];
+	}
+};
+
 export const getUserDelegatedAmount = async (
 	publicKey: string,
 	network: 'testnet' | 'mainnet' = 'testnet',
@@ -297,8 +359,12 @@ export const getUserDelegatedAmount = async (
 							(validator) => validator.public_key === bid.public_key,
 						)[0].weight / 1e9;
 
-					const history: { [key: string]: HistoryResponse } = retrieveData('history');
-					const lastStakeTx = history[accountHash].data.find(
+					const history: {
+						mainnet: { [key: string]: HistoryResponse };
+						testnet: { [key: string]: HistoryResponse };
+					} = retrieveData('history');
+
+					const lastStakeTx = history[network][accountHash]?.data.find(
 						(item) => item.validator === bid.public_key,
 					);
 

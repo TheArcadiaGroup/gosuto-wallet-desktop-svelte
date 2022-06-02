@@ -52,10 +52,16 @@
 		<div class="select-container">
 			<SelectInput label={'Recipient Address'} bind:value={selectedValidatorHash}>
 				{#each $validators as validator}
-					<option value={validator.validatorHash}>{validator.validatorName}</option>
+					<option value={validator.accountHash}>
+						{validator.profile?.name ??
+							`${validator.publicKey.substring(0, 4)}...${validator.publicKey.substring(
+								validator.publicKey.length - 5,
+								validator.publicKey.length,
+							)}`}
+					</option>
 				{/each}
 			</SelectInput>
-			{#if $validators.find((validator) => validator.validatorHash === selectedValidatorHash && validator.currentDelegators > 952)}
+			{#if $validators.find((validator) => validator.accountHash === selectedValidatorHash && validator.currentDelegators > 952)}
 				<div class="input-error-warning">
 					This validator has reached the network limit for total delegators and therefore cannot be
 					delegated to by new accounts. Please select another validator with fewer than 952 total
