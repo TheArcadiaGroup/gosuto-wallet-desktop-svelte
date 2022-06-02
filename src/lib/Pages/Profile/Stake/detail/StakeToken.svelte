@@ -48,28 +48,24 @@
 			(amount * $csprPrice[$user?.currency || 'usd']).toFixed(2),
 		)}&nbsp;{$user?.currency.toUpperCase()}
 	</div>
-	{#if $user?.network === 'mainnet'}
-		<div class="select-container">
-			<SelectInput label={'Recipient Address'} bind:value={selectedValidatorHash}>
-				{#each $validators as validator}
-					<option value={validator.accountHash}>
-						{validator.profile?.name ??
-							`${validator.publicKey.substring(0, 4)}...${validator.publicKey.substring(
-								validator.publicKey.length - 5,
-								validator.publicKey.length,
-							)}`}
-					</option>
-				{/each}
-			</SelectInput>
-			{#if $validators.find((validator) => validator.accountHash === selectedValidatorHash && validator.currentDelegators > 952)}
-				<div class="input-error-warning">
-					This validator has reached the network limit for total delegators and therefore cannot be
-					delegated to by new accounts. Please select another validator with fewer than 952 total
-					delegators
-				</div>
-			{/if}
-		</div>
-	{:else}
+	<!-- {#if $user?.network === 'mainnet'} -->
+	<div class="select-container">
+		<SelectInput label={'Recipient Address'} bind:value={selectedValidatorHash}>
+			{#each $validators as validator}
+				<option value={validator.accountHash}>
+					{validator.profile?.name ?? validator.publicKey}
+				</option>
+			{/each}
+		</SelectInput>
+		{#if $validators.find((validator) => validator.accountHash === selectedValidatorHash && validator.currentDelegators > 952)}
+			<div class="input-error-warning">
+				This validator has reached the network limit for total delegators and therefore cannot be
+				delegated to by new accounts. Please select another validator with fewer than 952 total
+				delegators
+			</div>
+		{/if}
+	</div>
+	<!-- {:else}
 		<div class="input-container">
 			<TextInput
 				class="stake-amount-input"
@@ -79,7 +75,7 @@
 				addTextBg={true}
 			/>
 		</div>
-	{/if}
+	{/if} -->
 	<div class="buttons">
 		<Button
 			on:click={() => dispatch('showStakePopup', { validatorHash: selectedValidatorHash, amount })}
