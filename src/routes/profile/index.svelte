@@ -9,7 +9,6 @@
 	import { wallets } from '$stores/user/wallets';
 	import { user } from '$stores/user';
 	import pollyfillData from '$utils/pollyfillData';
-	import { page } from '$app/stores';
 
 	onMount(() => {
 		if ($wallets.length <= 0) {

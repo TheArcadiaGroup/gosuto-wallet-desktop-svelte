@@ -64,6 +64,7 @@
 			// clear form state
 			newPassword = '';
 			confirmPassword = '';
+			currentPassword = '';
 
 			const storedWallets: IWallet[] = retrieveData('wallets');
 			saveData(
