@@ -14,9 +14,11 @@
 	import pollyfillData, { pollyfillSelectedProfile } from '$utils/pollyfillData';
 
 	import { goto } from '$app/navigation';
-	import { saveData } from '$utils/dataStorage';
+	import { retrieveData, saveData } from '$utils/dataStorage';
 	import { page } from '$app/stores';
 	import { passwordsAreSimilar, validatePassword } from '$utils/validators/passwordValidation';
+	import { userHistory } from '$stores/user/history';
+	import { user } from '$stores/user';
 
 	let walletName = '';
 	let privateKey = '';
@@ -62,10 +64,12 @@
 			// clear form state
 			newPassword = '';
 			confirmPassword = '';
+
+			const storedWallets: IWallet[] = retrieveData('wallets');
 			saveData(
 				'wallets',
 				JSON.stringify(
-					$wallets.map((_wallet) => {
+					storedWallets.map((_wallet) => {
 						if (_wallet.walletAddress === wallet.walletAddress) {
 							_wallet = wallet;
 						}
@@ -86,12 +90,30 @@
 			const _wallets = $wallets.map((_wallet) => {
 				if (_wallet.walletAddress === wallet.walletAddress) {
 					_wallet = wallet;
+
+					// Update the item everywhere
+					const history = retrieveData('history') ?? {};
+					if (history?.['mainnet']?.[wallet.walletAddress]?.data) {
+						history['mainnet'][wallet.walletAddress]?.data.map((item: any) => {
+							item.walletName = walletName;
+
+							return item;
+						});
+					}
+					if (history?.['testnet']?.[wallet.walletAddress]?.data) {
+						history['testnet'][wallet.walletAddress]?.data.map((item: any) => {
+							item.walletName = walletName;
+
+							return item;
+						});
+					}
+
+					saveData('history', JSON.stringify(history));
+					userHistory.set(history[$user?.network ?? 'testnet']);
 				}
 
 				return _wallet;
 			});
-
-			console.log(_wallets, wallet);
 
 			// TODO: CHANGE WALLET NAME EVERYWHERE
 

@@ -47,7 +47,7 @@
 
 		if (info[info.indexOf(infoType)].name === 'Email') {
 			// Check Length
-			ifError = !emailValidation(inputValue);
+			ifError = !!inputValue && !emailValidation(inputValue);
 
 			if (ifError) {
 				emailError = 'Invalid Email';
