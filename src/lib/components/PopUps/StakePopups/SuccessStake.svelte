@@ -22,9 +22,9 @@
 				: 'Staked'}!
 		</div>
 		<div>
-			After the transaction has been included in a block. Your will appear in your history {isUnstaking
+			After the transaction has been included in a block, it will appear in your history {isUnstaking
 				? ''
-				: 'and on the stakes list.'}
+				: 'and the stake on the stakes list.'}
 		</div>
 	</div>
 </Popup>

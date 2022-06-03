@@ -11,6 +11,15 @@
 	import { convertDate } from '$utils';
 	import { createEventDispatcher } from 'svelte';
 
+	/*
+		Validation
+		- user cannot unstake more than they staked
+		- user should be warned when they don't have balance to cover the tx cost 
+	*/
+	// const standardPayment = 0.00001;
+	// const transactionFee = 0.00001;
+	// const totalFees = standardPayment + transactionFee;
+
 	const dispatch = createEventDispatcher();
 
 	export let stake: IStake | null = null;
@@ -26,6 +35,8 @@
 		// cancel stake
 		stake = null;
 	}
+
+	$: amountInvalid = tokenAmount && stake?.stakeAmount && tokenAmount > stake?.stakeAmount;
 </script>
 
 {#if stake}
@@ -48,6 +59,12 @@
 				addTextBg={true}
 			/>
 		</div>
+		{#if amountInvalid}
+			<div class="input-error">
+				You can unstake a maximum of
+				{stake.stakeAmount}
+			</div>
+		{/if}
 		<div class="buttons">
 			<Button on:click={unstake}>
 				<div slot="text" class="button-text">Unstake</div>
@@ -60,7 +77,7 @@
 			Please note. You will need to undelegate in order to have them become liquid again. There is a
 			7 era delay to undelegate. Era duration is approximately 120 minutes. Unstaking could take
 			until:
-			<div class="until-date">{convertDate(new Date(Date.now() + 120 * 60 * 1000))}</div>
+			<span class="until-date">{convertDate(new Date(Date.now() + 120 * 60 * 1000))}</span>
 		</div>
 	</div>
 {/if}
@@ -98,6 +115,14 @@
 		@apply w-full;
 		@apply flex flex-row items-center justify-center;
 		@apply gap-4;
+	}
+
+	:local(.input-error) {
+		@apply text-error-red text-xs p-2;
+	}
+
+	:local(.input-warning) {
+		@apply text-warning-orange text-xs p-2;
 	}
 
 	/* hide number input arrows */
