@@ -59,7 +59,7 @@
 				unclaimedRewards: 0.0,
 				walletTokens: [],
 				walletStakes: [],
-				walletHistory: [],
+				// walletHistory: [],
 				walletAddress: accountHex.trim(),
 				accountHash: accountHash.trim(),
 				privateKey: privateKey.trim(),

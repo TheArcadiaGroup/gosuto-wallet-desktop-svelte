@@ -100,7 +100,7 @@ declare global {
 		unclaimedRewards: number;
 		walletTokens: IToken[];
 		walletStakes: IStake[];
-		walletHistory: IHistory[];
+		// walletHistory: IHistory[];
 		walletAddress: string;
 		accountHash: string;
 		privateKey: string;
