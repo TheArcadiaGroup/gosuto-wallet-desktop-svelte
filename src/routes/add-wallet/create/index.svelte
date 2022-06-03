@@ -11,7 +11,7 @@
 
 	import { goto } from '$app/navigation';
 	import { walletNameIsValid } from '$utils/profiles';
-	import { passwordsAreSimilar, validatePassword } from '$utils/passwordValidation';
+	import { passwordsAreSimilar, validatePassword } from '$utils/validators/passwordValidation';
 
 	let walletNameValue: string;
 	let passwordValue: string;

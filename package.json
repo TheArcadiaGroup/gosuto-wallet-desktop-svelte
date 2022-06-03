@@ -53,12 +53,14 @@
 		"svelte-previous": "^2.1.1",
 		"swiper": "^8.2.2",
 		"tweetnacl": "^1.0.3",
+		"validator": "^13.7.0",
 		"ws": "^8.7.0"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-static": "1.0.0-next.34",
 		"@sveltejs/kit": "1.0.0-next.347",
 		"@types/coingecko-api": "^1.0.10",
+		"@types/validator": "^13.7.2",
 		"@typescript-eslint/eslint-plugin": "^5.27.0",
 		"@typescript-eslint/parser": "^5.27.0",
 		"autoprefixer": "^10.4.7",

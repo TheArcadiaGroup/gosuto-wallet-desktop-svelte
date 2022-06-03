@@ -11,12 +11,15 @@
 	import { pollyFillUser } from '$utils/pollyfillData';
 	import { saveData } from '$utils/dataStorage';
 	import { user } from '$stores/user';
+	import emailValidation from '$utils/validators/emailValidation';
 
 	const networkOptionsArr: ('testnet' | 'mainnet')[] = ['testnet', 'mainnet'];
 	$: networkOptionValue = networkOptionsArr.indexOf($user?.network!) || 0;
 	let droppedDown = false;
 
 	let settingsData: IUser | null = $user;
+	let nameError = '';
+	let emailError = '';
 
 	let initialized = false;
 
@@ -29,7 +32,35 @@
 		info[info.indexOf(infoType)].placeholder = inputValue;
 		info = info;
 
-		if (settingsData && Object.keys(settingsData).includes(infoType.name.toLowerCase())) {
+		let ifError = false;
+
+		if (info[info.indexOf(infoType)].name === 'Name') {
+			// Check Length
+			ifError = inputValue.length > 20;
+
+			if (ifError) {
+				nameError = 'Maximum 20 Characters Allowed';
+			} else {
+				nameError = '';
+			}
+		}
+
+		if (info[info.indexOf(infoType)].name === 'Email') {
+			// Check Length
+			ifError = !emailValidation(inputValue);
+
+			if (ifError) {
+				emailError = 'Invalid Email';
+			} else {
+				emailError = '';
+			}
+		}
+
+		if (
+			!ifError &&
+			settingsData &&
+			Object.keys(settingsData).includes(infoType.name.toLowerCase())
+		) {
 			// @ts-ignore
 			settingsData[infoType.name.toLowerCase()] = inputValue.trim();
 			saveData('user', JSON.stringify(settingsData));
@@ -84,7 +115,15 @@
 				</div>
 				<div class="settings-right-side">
 					{#each info as infoType}
-						<InfoInput {infoType} {handleSave} />
+						<InfoInput
+							{infoType}
+							{handleSave}
+							error={infoType.name === 'Name'
+								? nameError
+								: infoType.name === 'Email'
+								? emailError
+								: ''}
+						/>
 					{/each}
 					<div class="settings-theme-bar-wrapper">
 						<ChangeThemeBar />

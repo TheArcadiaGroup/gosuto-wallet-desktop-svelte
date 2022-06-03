@@ -4,8 +4,11 @@
 	An input field generated with an each loop in parent component from where it gets placeholder and name values
  -->
 <script lang="ts">
+	import emailValidation from '$utils/validators/emailValidation';
+
 	export let infoType: infoCategory;
 	export let handleSave: (inputValue: string, infoType: infoCategory) => void;
+	export let error = '';
 
 	/** A variable representing this input field's text */
 	let textInput: string = '';
@@ -23,6 +26,27 @@
 		handleSave(textInput, infoType);
 		textInput = '';
 	};
+
+	$: ((textValue) => {
+		if (infoType.name === 'Name') {
+			// Check Length
+			if (textValue.length > 20) {
+				error = 'Maximum 20 Characters Allowed';
+			} else {
+				error = '';
+			}
+		}
+
+		if (infoType.name === 'Email') {
+			// Check Length
+
+			if (textValue && !emailValidation(textValue)) {
+				error = 'Invalid Email';
+			} else {
+				error = '';
+			}
+		}
+	})(textInput);
 </script>
 
 <div class="infoInput">
@@ -37,13 +61,19 @@
 		readonly
 	/>
 	{#if textInput}
-		<button on:click={saveChange}>Save change</button>
+		<button disabled={!!error} on:click={saveChange}>Save change</button>
 	{:else}
 		<button on:click={focusInput}>
 			Change {infoType.name}
 		</button>
 	{/if}
 </div>
+
+{#if error}
+	<div class="error-div">
+		{error}
+	</div>
+{/if}
 
 <style type="postcss" global>
 	.infoInput {
@@ -68,5 +98,13 @@
 	.infoInput button {
 		@apply float-right mr-4 mt-1 4xl:mt-4;
 		@apply font-semibold font-display text-light-orange text-sm 3xl:text-xl 4xl:text-5xl;
+	}
+
+	.infoInput button:disabled {
+		@apply opacity-50;
+	}
+
+	:local(.error-div) {
+		@apply text-left text-xs text-red-300 flex w-full px-2 -mt-10;
 	}
 </style>

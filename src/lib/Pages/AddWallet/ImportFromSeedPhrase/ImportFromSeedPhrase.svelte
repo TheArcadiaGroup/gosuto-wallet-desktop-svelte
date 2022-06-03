@@ -8,7 +8,7 @@
 	import { goto } from '$app/navigation';
 	import { retrieveData, saveData } from '$utils/dataStorage';
 	import { walletNameIsValid } from '$utils/profiles';
-	import { passwordsAreSimilar, validatePassword } from '$utils/passwordValidation';
+	import { passwordsAreSimilar, validatePassword } from '$utils/validators/passwordValidation';
 
 	let seedPhrase: string;
 	let walletName: string;

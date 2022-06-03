@@ -16,7 +16,7 @@
 	import { goto } from '$app/navigation';
 	import { saveData } from '$utils/dataStorage';
 	import { page } from '$app/stores';
-	import { passwordsAreSimilar, validatePassword } from '$utils/passwordValidation';
+	import { passwordsAreSimilar, validatePassword } from '$utils/validators/passwordValidation';
 
 	let walletName = '';
 	let privateKey = '';
@@ -92,6 +92,8 @@
 			});
 
 			console.log(_wallets, wallet);
+
+			// TODO: CHANGE WALLET NAME EVERYWHERE
 
 			saveData('wallets', JSON.stringify(_wallets));
 			saveData('selectedProfile', JSON.stringify(wallet));

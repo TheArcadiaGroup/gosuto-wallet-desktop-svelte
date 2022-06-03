@@ -15,8 +15,8 @@
 
 <button
 	class={($$slots.icon
-		? 'main has-icon'
-		: `main no-icon ${!isTransparent ? 'not-transparent' : 'transparent'}`) +
+		? 'main-btn has-icon'
+		: `main-btn no-icon ${!isTransparent ? 'not-transparent' : 'transparent'}`) +
 		' ' +
 		$$props.class}
 	class:selected={isSelected}
@@ -37,7 +37,7 @@
 </button>
 
 <style lang="postcss" global>
-	:local(.main) {
+	:local(.main-btn) {
 		@apply flex flex-col md:flex-row h-full w-full items-center justify-center;
 		@apply font-semibold text-xs md:text-lg;
 		@apply text-light-buttonText dark:text-white;
