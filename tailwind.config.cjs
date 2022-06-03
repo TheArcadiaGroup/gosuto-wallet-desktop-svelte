@@ -56,6 +56,9 @@ module.exports = {
 					checkBox: '#C4C4C4',
 					urlColor: '#6DB9FF',
 				},
+				'error-red': '#e6332a',
+				'warning-orange': '#f1bf0b',
+				'success-green': '#31de90',
 			},
 			fill: {
 				grey: '#4F4F4F',

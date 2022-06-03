@@ -19,8 +19,26 @@
 
 	const dispatch = createEventDispatcher();
 
+	const stakingPayment = 2.5;
+	const stakingFee = 2.5;
+	const totalFees = stakingPayment + stakingFee;
+
 	let amount = 0;
 	let selectedValidatorPublicKey: string = '';
+	let walletBalance = $selectedWallet!.availableBalance;
+
+	$: userIsDelegatorOnSelectedValidator = $selectedWallet?.walletStakes.some(
+		(item) => item.validator === selectedValidatorPublicKey,
+	);
+	$: validatorInvalid =
+		$validators.some(
+			(validator) =>
+				validator.publicKey === selectedValidatorPublicKey && validator.currentDelegators > 952,
+		) && !userIsDelegatorOnSelectedValidator;
+	$: amountInvalid =
+		Boolean(amount) && amount < 500 && amount !== 0 && !userIsDelegatorOnSelectedValidator;
+	$: amountPastMax = amount > walletBalance;
+	$: cannotPayFee = amount > walletBalance - totalFees;
 
 	onMount(async () => {
 		await getCSPRUsdPrice();
@@ -39,12 +57,41 @@
 			addTextBg={true}
 		/>
 	</div>
-	{#if amount < 500 && amount !== 0}
-		<div class="input-error-warning">
+	{#if amountInvalid}
+		<div class="input-error">
 			Total delegation amount to one validator cannot be less than 500 CSPR
 		</div>
 	{/if}
-	<div class="w-full text-sm px-2 dark:text-white">
+	{#if cannotPayFee}
+		<div class="input-warning">
+			<div class="font-bold mb-1">PLEASE NOTE!</div>
+			<div class="text-light-gray">
+				Transaction might fail since it uses up your all your available balance without paying for
+				fees. Recommended maximum is
+				<div class="font-bold text-light-lighterOrange">
+					{walletBalance - totalFees} CSPR
+				</div>
+			</div>
+		</div>
+	{/if}
+	{#if walletBalance && amount > walletBalance - 2.5}
+		<div class="input-warning">
+			<div class="font-bold mb-1">PLEASE NOTE!</div>
+			<div class="text-light-gray">
+				Delegating max will zero your liquid balance. As such, you won't be able to undelegate as
+				undelegation requires a minimum of 2.5 CSPR liquid balance. To cater for this, the
+				recommended maximum is
+				<div class="font-bold text-light-lighterOrange">
+					{walletBalance - 2.5 - totalFees} CSPR
+				</div>
+			</div>
+		</div>
+	{/if}
+	<div
+		class="w-full text-sm px-2 {amount > 0
+			? 'text-light-lighterOrange dark:text-light-lighterOrange'
+			: ' dark:text-white'}"
+	>
 		{parseFloat(
 			(amount * $csprPrice[$user?.currency || 'usd']).toFixed(2),
 		)}&nbsp;{$user?.currency.toUpperCase()}
@@ -58,8 +105,8 @@
 			{/each}
 		</SelectInput>
 		<!-- If user is already a delegator on that validator, just let them continue -->
-		{#if $validators.find((validator) => validator.publicKey === selectedValidatorPublicKey && validator.currentDelegators > 952) && $selectedWallet?.walletStakes.find((item) => item.validator !== selectedValidatorPublicKey)}
-			<div class="input-error-warning">
+		{#if validatorInvalid}
+			<div class="input-error">
 				This validator has reached the network limit for total delegators and therefore cannot be
 				delegated to by new accounts. Please select another validator with fewer than 952 total
 				delegators
@@ -68,6 +115,11 @@
 	</div>
 	<div class="buttons">
 		<Button
+			isDisabled={amount <= 0 ||
+				!selectedValidatorPublicKey ||
+				validatorInvalid ||
+				amountInvalid ||
+				amountPastMax}
 			on:click={() =>
 				dispatch('showStakePopup', { validatorPublicKey: selectedValidatorPublicKey, amount })}
 		>
@@ -112,7 +164,11 @@
 		@apply capitalize;
 	}
 
-	:local(.input-error-warning) {
-		@apply text-red-400 text-xs p-2;
+	:local(.input-error) {
+		@apply text-error-red text-xs p-2;
+	}
+
+	:local(.input-warning) {
+		@apply text-warning-orange text-xs p-2;
 	}
 </style>
