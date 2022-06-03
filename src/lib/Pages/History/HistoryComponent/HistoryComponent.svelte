@@ -33,9 +33,9 @@
 							title={historyObject.error ? historyObject.error : ''}
 						>
 							{#if historyObject.error}
-								<ErrorIcon fill="rgb(230, 51, 42)" />
+								<ErrorIcon fill="#e6332a" />
 							{:else}
-								<SuccessIcon fill="rgb(49, 222, 145)" />
+								<SuccessIcon fill="#31de90" />
 							{/if}
 						</span>
 					</span>

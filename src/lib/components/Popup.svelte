@@ -9,7 +9,7 @@
 	@author MikeBrandon
 -->
 <script lang="ts">
-	import { scale, fade } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 	import { createEventDispatcher } from 'svelte';
 
 	const dispatch = createEventDispatcher();
@@ -20,8 +20,8 @@
 	export let confirmText = 'Confirm';
 </script>
 
-<div transition:fade|local class="darker" />
-<div class="popup-holder" transition:scale|local>
+<!-- <div transition:fade|local class="darker" /> -->
+<div class="popup-holder" transition:fade|local>
 	<div class="popup bg-white dark:bg-dark-blue">
 		<div class="pcontainer">
 			<div class="popuptitle">{title}</div>
@@ -94,8 +94,9 @@
 		@apply justify-center items-center flex;
 	}
 
-	:local(.darker) {
-		@apply fixed top-0 bottom-0 left-0 right-0 z-30 bg-[#00000077];
+	:local(.popup-holder::after) {
+		content: '';
+		@apply fixed top-0 bottom-0 left-0 right-0 z-[-1] bg-[#00000077];
 	}
 
 	.popup-content p {

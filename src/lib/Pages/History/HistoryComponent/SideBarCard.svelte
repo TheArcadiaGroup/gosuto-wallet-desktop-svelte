@@ -127,7 +127,7 @@
 			<p class="to-from">Transaction Status</p>
 			<p
 				class="address text-2xs break-words {sidebarData?.error ? '' : 'flex items-center'}"
-				style="color: {sidebarData?.error ? 'rgb(230, 51, 42)' : 'rgb(49, 222, 145)'}"
+				style="color: {sidebarData?.error ? '#e6332a' : 'rgb(49, 222, 145)'}"
 			>
 				{sidebarData?.error || 'Success'}
 			</p>

@@ -13,6 +13,7 @@
 	import { sendTokenTracker } from '$stores/activityLoaders';
 	import ErrorIcon from '$icons/ErrorIcon.svelte';
 	import isValidPublicKey from '$utils/validators/isValidPublicKey';
+	import SuccessIcon from '$icons/SuccessIcon.svelte';
 
 	/*
 	Validation Requirements
@@ -162,31 +163,31 @@
 		<!-- Amount Validation -->
 		{#if tokenAmount <= 0 || tokenAmount < 2.5}
 			<div class="error-div">
-				<ErrorIcon class="mr-1" fill={'rgb(230, 51, 42)'} />
+				<ErrorIcon class="mr-1" fill={'#e6332a'} />
 				Amount must be at least 2.5 CSPR.
 			</div>
 		{/if}
 		{#if tokenAmount > selectedToken.tokenAmountHeld * appUsageFee - totalCost}
 			<div class="error-div">
-				<ErrorIcon class="mr-1" fill={'rgb(230, 51, 42)'} />
+				<ErrorIcon class="mr-1" fill={'#e6332a'} />
 				You can send a maximum of {selectedToken.tokenAmountHeld * appUsageFee - totalCost}
 			</div>
 		{/if}
 
 		<div class="currency-money-amount">
-			<p class={selectedToken.tokenPriceUSD * tokenMinusFee > 0 ? 'text-light-lighterOrange' : ''}>
-				${parseFloat((selectedToken.tokenPriceUSD * tokenMinusFee).toFixed(2))}
+			<p class={selectedToken.tokenPriceUSD * tokenAmount > 0 ? 'text-light-lighterOrange' : ''}>
+				${parseFloat((selectedToken.tokenPriceUSD * tokenAmount).toFixed(2))}
 				{$user?.currency.toUpperCase() || 'USD'}
 			</p>
 			<p class="money-right">{import.meta.env.VITE_SEND_TX_FEE_PERCENTAGE || 2.5}% Fee</p>
 		</div>
 		<p class="currency-money-amount send-recipient-details">
 			Recipient Receives:
-			<span class={tokenMinusFee > 0 ? 'text-light-lighterOrange 2xl:ml-2' : ''}>
+			<span class={tokenAmount > 0 ? 'text-light-lighterOrange 2xl:ml-2' : ''}>
 				<br class="2xl:hidden" />
-				{parseFloat(tokenMinusFee.toFixed(5)) ?? 0}
+				{parseFloat(tokenAmount.toFixed(5)) ?? 0}
 				{selectedToken.tokenTicker}
-				({parseFloat((selectedToken.tokenPriceUSD * tokenMinusFee).toFixed(2))}
+				({parseFloat((selectedToken.tokenPriceUSD * tokenAmount).toFixed(2))}
 				{$user?.currency.toUpperCase() || 'USD'})
 			</span>
 		</p>
@@ -200,13 +201,13 @@
 		</div>
 		{#if Boolean(recipientAddress) && !publicKeyValid}
 			<div class="error-div">
-				<ErrorIcon class="mr-1" fill={'rgb(230, 51, 42)'} />
+				<ErrorIcon class="mr-1" fill={'#e6332a'} />
 				Please enter a valid public key
 			</div>
 		{/if}
 		{#if Boolean(recipientAddress) && recipientAddress === $selectedWallet?.walletAddress}
 			<div class="error-div">
-				<ErrorIcon class="mr-1" fill={'rgb(230, 51, 42)'} />
+				<ErrorIcon class="mr-1" fill={'#e6332a'} />
 				You cannot send tokens to yourself
 			</div>
 		{/if}
@@ -256,6 +257,27 @@
 				{@html popupContent}
 			{/if}
 		</p>
+		{#if confirmPopup}
+			<div class="popup-text opacity-50 text-2xs my-3">
+				<div class="flex flex-row items-center justify-center bold">
+					<ErrorIcon class="mr-1" fill={'#f1bf0b'} /> WARNING!
+				</div>
+				<div>
+					Please double check the accuracy of the recipient public key. Funds sent to an incorrect
+					public key cannot be recovered.
+				</div>
+			</div>
+		{/if}
+		{#if popup === 'Success'}
+			<div class="popup-text opacity-50 text-2xs my-3">
+				<div class="flex flex-row items-center justify-center bold">
+					<SuccessIcon class="mr-1" fill={'#31de90'} /> Successfully Sent!
+				</div>
+				<div>
+					After the transaction has been included in a block. It will appear in your history.
+				</div>
+			</div>
+		{/if}
 	</Popup>
 {/if}
 
