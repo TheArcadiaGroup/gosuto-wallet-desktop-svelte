@@ -52,9 +52,12 @@
 		<p class="token-card-title">{tokenName} ({tokenTicker})</p>
 		<p class="token-card-text-sm {positive ? 'text-light-green' : 'text-light-red'}">
 			{#if !$tokenLoaders[tokenTicker]}
-				{tokenTicker.toLowerCase() === 'cspr'
-					? $selectedWallet?.availableBalance ?? tokenAmountHeld
-					: tokenAmountHeld}
+				{parseFloat(
+					(tokenTicker.toLowerCase() === 'cspr'
+						? $selectedWallet?.availableBalance ?? tokenAmountHeld
+						: tokenAmountHeld
+					).toFixed(4),
+				)}
 			{:else}
 				<span class="skeleton-loader" />
 			{/if}
@@ -67,7 +70,7 @@
 						(tokenTicker.toLowerCase() === 'cspr'
 							? $selectedWallet?.availableBalance ?? tokenAmountHeld
 							: tokenAmountHeld) * tokenPriceInUsd
-					).toFixed(4),
+					).toFixed(2),
 				)}
 			{:else}
 				<span class="skeleton-loader" />
@@ -86,10 +89,10 @@
 			{:else}
 				<ProfitDownIcon />
 			{/if}
-			{percentageChange}%
+			{parseFloat(percentageChange.toFixed(2))}%
 		</p>
 		<p class="token-card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">
-			{tokenPriceInUsd}
+			{parseFloat(tokenPriceInUsd.toFixed(3))}
 			{currencyUnit}
 		</p>
 		<p class="token-card-text-xs text-light-gray">(24h)</p>
