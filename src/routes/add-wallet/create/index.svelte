@@ -71,6 +71,10 @@
 			{#if !walletValid}
 				Wallet Name Already Exists
 			{/if}
+			{#if walletNameValue && walletNameValue?.length > 20}
+				<br />
+				Maximum of 20 Characters Allowed
+			{/if}
 		</div>
 
 		<div class="createWallet-password-input-wrapper createWallet-password-new">

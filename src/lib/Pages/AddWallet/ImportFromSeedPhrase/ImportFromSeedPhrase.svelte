@@ -155,6 +155,10 @@
 						{#if !walletValid}
 							Wallet Name Already Exists
 						{/if}
+						{#if walletName && walletName?.length > 20}
+							<br />
+							Maximum of 20 Characters Allowed
+						{/if}
 					</div>
 
 					<div class="flex h-16 seedImport-input-wrapper">

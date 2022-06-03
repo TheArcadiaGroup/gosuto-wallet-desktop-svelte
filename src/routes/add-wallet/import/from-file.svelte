@@ -121,6 +121,10 @@
 		<div class="error-div">
 			{#if !walletValid}
 				Wallet Name Already Exists
+				{#if walletName && walletName?.length > 20}
+					<br />
+					Maximum of 20 Characters Allowed
+				{/if}
 			{/if}
 		</div>
 
