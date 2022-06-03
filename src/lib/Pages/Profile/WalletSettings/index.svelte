@@ -115,8 +115,6 @@
 				return _wallet;
 			});
 
-			// TODO: CHANGE WALLET NAME EVERYWHERE
-
 			saveData('wallets', JSON.stringify(_wallets));
 			saveData('selectedProfile', JSON.stringify(wallet));
 			pollyfillData();
