@@ -2,7 +2,7 @@
 	import ProfileNavigation from '$lib/pages/Profile/ProfileNavigation.svelte';
 	import ArrowInCircle from '$lib/components/ArrowInCircle.svelte';
 	import StakesFromWallet from '$lib/pages/Profile/Stake/StakesFromWallet.svelte';
-	import StakeToken from '$lib/Pages/Profile/Stake/detail/StakeToken.svelte';
+	import StakeToken from '$lib/pages/Profile/Stake/detail/StakeToken.svelte';
 	import Unstake from '$lib/pages/Profile/Stake/detail/Unstake.svelte';
 	import TextSidebar from '../../../components/TextSidebar.svelte';
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
