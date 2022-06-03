@@ -13,7 +13,12 @@
 	],
 	"mac": {
 		"icon": "./static/images/logo.icns",
-		"target": ["default"],
+		"target": [
+			{
+				"target": "default",
+				"arch": ["x64", "arm64"]
+			}
+		],
 		"type": "distribution",
 		"hardenedRuntime": true,
 		"entitlements": "build_assets/entitlements.mac.plist",
@@ -35,11 +40,16 @@
 		]
 	},
 	"win": {
-		"target": ["nsis"],
+		"target": [
+			{
+				"target": "nsis",
+				"arch": ["x64", "ia32", "arm64"]
+			}
+		],
 		"icon": "./static/images/png/logo.png"
 	},
 	"linux": {
-		"target": ["AppImage"],
+		"target": [{ "target": "AppImage", "arch": ["x64", "arm64"] }],
 		"category": "Development",
 		"icon": "./static/images/png/logo.png"
 	},
