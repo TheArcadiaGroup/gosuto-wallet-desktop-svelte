@@ -7,8 +7,8 @@
 
 	import { goto } from '$app/navigation';
 	import { retrieveData, saveData } from '$utils/dataStorage';
-	import { onMount } from 'svelte';
 	import { walletNameIsValid } from '$utils/profiles';
+	import { passwordsAreSimilar, validatePassword } from '$utils/passwordValidation';
 
 	let seedPhrase: string;
 	let walletName: string;
@@ -20,6 +20,7 @@
 	let accountHex: string;
 	let privateKey: string;
 	let walletValid = true;
+	let walletExists = false;
 
 	/**
 	 * @function
@@ -78,40 +79,30 @@
 		try {
 			if (data?.accountHex && data?.accountHash && data?.privateKey) {
 				const walletCreationResult = data;
-				accountHex = walletCreationResult['accountHex'];
-				accountHash = walletCreationResult['accountHash'];
-				privateKey = walletCreationResult['privateKey'];
 
-				console.log(walletCreationResult);
+				const wallets: IWallet[] = retrieveData('wallets') ?? [];
 
-				postData();
+				if (wallets?.find((item) => item.accountHash === walletCreationResult['accountHash'])) {
+					walletExists = true;
+				} else {
+					console.log(walletCreationResult);
+					accountHex = walletCreationResult['accountHex'];
+					accountHash = walletCreationResult['accountHash'];
+					privateKey = walletCreationResult['privateKey'];
+					walletExists = false;
+					postData();
+				}
 			}
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
-	onMount(() => {
-		// window.api.receive(
-		// 	'createWalletFromMnemonicsResponse',
-		// 	(data: { accountHex: string; accountHash: string; privateKey: string }) => {
-		// 		try {
-		// 			if (data?.accountHex && data?.accountHash && data?.privateKey) {
-		// 				const walletCreationResult = data;
-		// 				accountHex = walletCreationResult['accountHex'];
-		// 				accountHash = walletCreationResult['accountHash'];
-		// 				privateKey = walletCreationResult['privateKey'];
-		// 				console.log(walletCreationResult);
-		// 				postData();
-		// 			}
-		// 		} catch (error) {
-		// 			console.log(error);
-		// 		}
-		// 	},
-		// );
-	});
-
-	//TODO: input restrictions
+	$: passwordErrors = password
+		? validatePassword(password).length > 0
+			? validatePassword(password).join('<br />')
+			: false
+		: false;
 </script>
 
 <div class="seedImport-wrapper">
@@ -188,6 +179,11 @@
 							</button>
 						</div>
 					</div>
+					<div class="error-div">
+						{#if passwordErrors}
+							{@html passwordErrors}
+						{/if}
+					</div>
 
 					<div class="flex h-16 seedImport-input-wrapper">
 						<label class="seedImport-label" for="name">Confirm Password</label>
@@ -212,8 +208,13 @@
 						</div>
 					</div>
 					<div class="error-div">
-						{#if confirmPassword !== password && password && confirmPassword}
-							Passwords do not match.
+						{#if password && confirmPassword && !passwordsAreSimilar(password, confirmPassword)}
+							Passwords do no match
+						{/if}
+					</div>
+					<div class="error-div">
+						{#if walletExists}
+							Wallet already exists, please import a different seed phrase
 						{/if}
 					</div>
 				</div>
@@ -223,7 +224,8 @@
 					isDisabled={!walletValid ||
 						!confirmPassword ||
 						!password ||
-						confirmPassword !== password ||
+						!passwordsAreSimilar(password, confirmPassword) ||
+						Boolean(passwordErrors) ||
 						!seedPhrase ||
 						!walletName ||
 						seedPhrase.split(' ').length < 12}

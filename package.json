@@ -47,6 +47,7 @@
 		"ethers": "^5.6.8",
 		"moment": "^2.29.3",
 		"node-jose": "^2.1.1",
+		"password-validator": "^5.3.0",
 		"svelte-gestures": "^1.4.1",
 		"svelte-loading-spinners": "^0.1.7",
 		"svelte-previous": "^2.1.1",

@@ -10,6 +10,7 @@
 	import { goto } from '$app/navigation';
 	import { retrieveData, saveData } from '$utils/dataStorage';
 	import { walletNameIsValid } from '$utils/profiles';
+	import { passwordsAreSimilar, validatePassword } from '$utils/passwordValidation';
 
 	let walletName: string;
 	let password: string;
@@ -19,6 +20,7 @@
 	let privateKey: string;
 	let walletValid = true;
 	let certificateIsInvalid = false;
+	let walletExists = false;
 
 	let passwordInput: HTMLInputElement;
 	let confirmPasswordInput: HTMLInputElement;
@@ -44,9 +46,16 @@
 				const walletCreationResult = data;
 
 				certificateIsInvalid = false;
-				accountHex = walletCreationResult['accountHex'];
-				accountHash = walletCreationResult['accountHash'];
-				privateKey = walletCreationResult['privateKey'];
+				const wallets: IWallet[] = retrieveData('wallets') ?? [];
+
+				if (wallets?.find((item) => item.accountHash === walletCreationResult['accountHash'])) {
+					walletExists = true;
+				} else {
+					accountHex = walletCreationResult['accountHex'];
+					accountHash = walletCreationResult['accountHash'];
+					privateKey = walletCreationResult['privateKey'];
+					walletExists = false;
+				}
 
 				console.log(walletCreationResult);
 			} else {
@@ -81,6 +90,12 @@
 		saveData('wallets', JSON.stringify(wallets));
 		goto(`/profile/${accountHex.trim()}`);
 	};
+
+	$: passwordErrors = password
+		? validatePassword(password).length > 0
+			? validatePassword(password).join('<br />')
+			: false
+		: false;
 </script>
 
 <div class="fileImport-wrapper">
@@ -131,6 +146,11 @@
 				</button>
 			</div>
 		</div>
+		<div class="error-div">
+			{#if passwordErrors}
+				{@html passwordErrors}
+			{/if}
+		</div>
 
 		<div class="fileImport-input-wrapper">
 			<label class="fileImport-label" for="name">Confirm Password</label>
@@ -155,8 +175,8 @@
 			</div>
 		</div>
 		<div class="error-div">
-			{#if confirmPassword !== password && password && confirmPassword}
-				Passwords do not match.
+			{#if password && confirmPassword && !passwordsAreSimilar(password, confirmPassword)}
+				Passwords do no match
 			{/if}
 		</div>
 
@@ -164,6 +184,9 @@
 		<div class="error-div pt-6 text-center leading-5">
 			{#if certificateIsInvalid}
 				Error, the app only supports private keys encrypted using the ED25519 Algorithm
+			{/if}
+			{#if walletExists}
+				Wallet already exists, please import a different private key
 			{/if}
 		</div>
 	</div>
@@ -173,11 +196,13 @@
 				isDisabled={!walletValid ||
 					!confirmPassword ||
 					!password ||
-					confirmPassword !== password ||
+					!passwordsAreSimilar(password, confirmPassword) ||
+					Boolean(passwordErrors) ||
 					!walletName ||
 					!accountHash ||
 					!accountHex ||
-					!privateKey}
+					!privateKey ||
+					walletExists}
 				on:click={() => postData()}
 			>
 				<span slot="text" class="fileImport-bt-text">Import</span>

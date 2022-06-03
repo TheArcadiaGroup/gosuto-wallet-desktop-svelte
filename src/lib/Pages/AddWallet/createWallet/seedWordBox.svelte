@@ -6,6 +6,7 @@
 <script lang="ts">
 	import CopyIcon from '$icons/CopyIcon.svelte';
 	import { onMount } from 'svelte';
+	import CopiedPopup from '$components/PopUps/CopiedPopup/index.svelte';
 
 	export let seedWord: SeedWord;
 	export let secondPage: boolean;
@@ -15,6 +16,7 @@
 	let initialWidth: number;
 	let turned: boolean = false;
 	let savedWord: string = '';
+	let copiedToClipboard = false;
 
 	let onPaste = () => {
 		setTimeout(() => {
@@ -32,6 +34,7 @@
 
 	let copyToClipboard = () => {
 		navigator.clipboard.writeText(seedWord.word);
+		copiedToClipboard = true;
 	};
 
 	$: if (secondPage) turned = false;
@@ -97,6 +100,14 @@
 		</span>
 	</div>
 </div>
+
+{#if copiedToClipboard}
+	<CopiedPopup
+		copyMessage={'Seed phrase Copied To Clipboard'}
+		on:cancel={() => (copiedToClipboard = false)}
+		on:confirm={() => (copiedToClipboard = false)}
+	/>
+{/if}
 
 <style type="postcss" global>
 	.wordbox-id-circle {

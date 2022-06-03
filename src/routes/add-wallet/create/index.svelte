@@ -11,6 +11,7 @@
 
 	import { goto } from '$app/navigation';
 	import { walletNameIsValid } from '$utils/profiles';
+	import { passwordsAreSimilar, validatePassword } from '$utils/passwordValidation';
 
 	let walletNameValue: string;
 	let passwordValue: string;
@@ -39,6 +40,11 @@
 	};
 
 	//TODO: input restrictions
+	$: passwordErrors = passwordValue
+		? validatePassword(passwordValue).length > 0
+			? validatePassword(passwordValue).join('<br />')
+			: false
+		: false;
 </script>
 
 <div class="createWallet-wrapper">
@@ -87,6 +93,11 @@
 				<EyeIcon class="createWallet-eye-icon" />
 			</button>
 		</div>
+		<div class="error-div wallet-name-error-div">
+			{#if passwordErrors}
+				{@html passwordErrors}
+			{/if}
+		</div>
 		<div class="createWallet-password-input-wrapper createWallet-password-confirm">
 			<p class="createWallet-password-label">Confirm Password</p>
 			<LockIcon class="createWallet-lock-icon" />
@@ -107,8 +118,8 @@
 			</button>
 		</div>
 		<div class="error-div">
-			{#if confirmPassword !== passwordValue && passwordValue && confirmPassword}
-				Passwords do not match.
+			{#if passwordValue && confirmPassword && !passwordsAreSimilar(passwordValue, confirmPassword)}
+				Passwords do no match
 			{/if}
 		</div>
 		<div class="createWallet-use-terms">
@@ -124,7 +135,8 @@
 					!walletNameValue ||
 					!passwordValue ||
 					!confirmPassword ||
-					passwordValue !== confirmPassword}
+					!passwordsAreSimilar(passwordValue, confirmPassword) ||
+					Boolean(passwordErrors)}
 				on:click={() => {
 					setValues();
 					goto('/add-wallet/create/wallet-seed');

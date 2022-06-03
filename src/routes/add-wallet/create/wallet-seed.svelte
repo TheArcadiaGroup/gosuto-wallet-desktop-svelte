@@ -6,6 +6,7 @@
 
 	import SeedWordBox from '$lib/pages/AddWallet/CreateWallet/SeedWordBox.svelte';
 	import FailedPopup from '$lib/components/PopUps/NewToGosuto/FailedPopup.svelte';
+	import CopiedPopup from '$components/PopUps/CopiedPopup/index.svelte';
 
 	import { walletName } from '$stores/WalletCreation';
 	import { password } from '$stores/WalletCreation';
@@ -16,6 +17,7 @@
 
 	/** True if user copied seed phrase*/
 	let copied: boolean = false;
+	let copiedToClipboard = false;
 
 	/** Used for showing warning popup when user doesn't copy seed phrase*/
 	let showPopup: boolean = false;
@@ -51,6 +53,7 @@
 		words.forEach((w) => seedPhrase.push(w.word));
 		navigator.clipboard.writeText(seedPhrase.join(' '));
 		copied = true;
+		copiedToClipboard = true;
 	};
 
 	/**
@@ -153,6 +156,13 @@
 <div class="createSeed-wrapper">
 	{#if showPopup}
 		<FailedPopup on:confirm={() => (showPopup = false)} />
+	{/if}
+	{#if copiedToClipboard}
+		<CopiedPopup
+			copyMessage={'Seed phrase Copied To Clipboard'}
+			on:cancel={() => (copiedToClipboard = false)}
+			on:confirm={() => (copiedToClipboard = false)}
+		/>
 	{/if}
 	{#if words}
 		<div class="createSeed-content">
