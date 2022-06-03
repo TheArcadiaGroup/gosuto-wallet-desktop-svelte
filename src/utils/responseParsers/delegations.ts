@@ -72,13 +72,12 @@ export const parseDelegationResponse = (response: any, type: 'unstake' | 'stake'
 
 export default function () {
 	// Delegate Response
-	window.api.receive('delegateResponse', (response: any) => {
-		parseDelegationResponse(response);
-	});
-
-	// Delegate Response
-	window.api.receive('undelegateResponse', (response: any) => {
-		// TODO: This approach has not been confirmed to work as it was just implemented directly with typescript and not on the electron side of things
-		parseDelegationResponse(response, 'unstake');
-	});
+	// window.api.receive('delegateResponse', (response: any) => {
+	// 	parseDelegationResponse(response);
+	// });
+	// // Delegate Response
+	// window.api.receive('undelegateResponse', (response: any) => {
+	// 	// TODO: This approach has not been confirmed to work as it was just implemented directly with typescript and not on the electron side of things
+	// 	parseDelegationResponse(response, 'unstake');
+	// });
 }

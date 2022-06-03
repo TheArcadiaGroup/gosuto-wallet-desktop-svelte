@@ -2,7 +2,9 @@ import { sendTokenTracker } from '$stores/activityLoaders';
 import { user } from '$stores/user';
 import { get } from 'svelte/store';
 import { retrieveData, saveData } from './dataStorage';
+import { parseTransferData } from './responseParsers/transfers';
 import { getTokenUsdPrice } from './tokens';
+import sendCspr from './tokens/sendCspr';
 
 export function getAllTokens(): IToken[] {
 	// @ts-ignore
@@ -80,7 +82,28 @@ export async function sendToken(
 			return transactions;
 		});
 
-		window.api.send('sendCSPRTokens', JSON.stringify(requestObj));
+		// window.api.send('sendCSPRTokens', JSON.stringify(requestObj));
+		sendCspr(walletAddress, privateKey, recipientAddress, tokenAmount, network)
+			.then((response) => {
+				parseTransferData(
+					JSON.stringify({
+						id: requestObj.id,
+						data: response,
+						error: null,
+						message: 'Successfully Executed Transaction',
+					}),
+				);
+			})
+			.catch((err) => {
+				parseTransferData(
+					JSON.stringify({
+						id: requestObj.id,
+						data: null,
+						error: err,
+						message: 'Encountered Message While Transferring CSPR Tokens',
+					}),
+				);
+			});
 
 		return { ...requestObj, error: null, fulfilled: false };
 	}

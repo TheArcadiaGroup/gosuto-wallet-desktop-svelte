@@ -1,6 +1,6 @@
-import accBalance from './listeners/accBalance';
-import delegations from './listeners/delegations';
-import transfers from './listeners/transfers';
+import accBalance from './responseParsers/accBalance';
+import delegations from './responseParsers/delegations';
+import transfers from './responseParsers/transfers';
 
 export default () => {
 	accBalance();

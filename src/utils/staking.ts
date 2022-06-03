@@ -9,7 +9,7 @@ import {
 } from 'casper-js-sdk';
 import { ethers } from 'ethers';
 import { getEndpointByNetwork } from './casper';
-import { parseDelegationResponse } from './listeners/delegations';
+import { parseDelegationResponse } from './responseParsers/delegations';
 
 export const delegate = (
 	walletAddress: string,
