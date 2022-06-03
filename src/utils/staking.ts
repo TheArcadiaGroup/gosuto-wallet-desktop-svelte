@@ -58,7 +58,7 @@ export const delegate = (
 
 		const amountAsBigNumber = ethers.utils.parseUnits(amount.toString(), 9);
 
-		const payment = DeployUtil.standardPayment(5000000000);
+		const payment = DeployUtil.standardPayment(2500000000); // previously 5000000000
 		const args = RuntimeArgs.fromMap({
 			delegator: keyPair.publicKey,
 			validator: CLPublicKey.fromHex(validatorPublicKey),

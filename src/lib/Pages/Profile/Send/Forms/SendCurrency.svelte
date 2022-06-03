@@ -11,6 +11,20 @@
 	import { user } from '$stores/user';
 	import Loading from '$lib/components/Loading.svelte';
 	import { sendTokenTracker } from '$stores/activityLoaders';
+	import ErrorIcon from '$icons/ErrorIcon.svelte';
+	import isValidPublicKey from '$utils/validators/isValidPublicKey';
+
+	/*
+	Validation Requirements
+		- amount to be greater than 100
+		- recipient address needs to be a public key
+		- note should be a maximum of 100 characters
+	*/
+
+	// Defaults
+	const paymentCost = 0.1; // Default payment amount
+	const transactionCost = 0.1; // Default transaction cost
+	const totalCost = paymentCost + transactionCost;
 
 	export let selectedToken: IToken;
 
@@ -18,17 +32,17 @@
 	let popupContent = '';
 	let confirmPopup = false;
 
-	let tokenAmount = 0;
+	let tokenAmount = 2.5;
 	let recipientAddress = '';
 	let note = '';
 	let network: 'mainnet' | 'testnet' = $user?.network || 'mainnet';
-	$: tokenMinusFee =
-		tokenAmount *
-		(1 -
-			(import.meta.env.VITE_SEND_TX_FEE_PERCENTAGE
-				? +import.meta.env.VITE_SEND_TX_FEE_PERCENTAGE
-				: 2.5) /
-				100);
+	let appUsageFee =
+		1 -
+		(import.meta.env.VITE_SEND_TX_FEE_PERCENTAGE
+			? +import.meta.env.VITE_SEND_TX_FEE_PERCENTAGE
+			: 2.5) /
+			100;
+	$: tokenMinusFee = tokenAmount * appUsageFee;
 
 	function sendCurrency(): void {
 		popup = 'Send CSPR';
@@ -120,6 +134,14 @@
 		popupContent = '';
 		popup = '';
 	}
+
+	$: hasError =
+		tokenAmount <= 0 ||
+		tokenAmount < 2.5 ||
+		tokenAmount > selectedToken.tokenAmountHeld * appUsageFee - totalCost ||
+		(Boolean(recipientAddress) && recipientAddress === $selectedWallet!.walletAddress) ||
+		(Boolean(recipientAddress) && !publicKeyValid);
+	$: publicKeyValid = isValidPublicKey(recipientAddress);
 </script>
 
 <div class="currency">
@@ -137,21 +159,36 @@
 				addTextBg={true}
 			/>
 		</div>
+		<!-- Amount Validation -->
+		{#if tokenAmount <= 0 || tokenAmount < 2.5}
+			<div class="error-div">
+				<ErrorIcon class="mr-1" fill={'rgb(230, 51, 42)'} />
+				Amount must be at least 2.5 CSPR.
+			</div>
+		{/if}
+		{#if tokenAmount > selectedToken.tokenAmountHeld * appUsageFee - totalCost}
+			<div class="error-div">
+				<ErrorIcon class="mr-1" fill={'rgb(230, 51, 42)'} />
+				You can send a maximum of {selectedToken.tokenAmountHeld * appUsageFee - totalCost}
+			</div>
+		{/if}
+
 		<div class="currency-money-amount">
-			<p>
+			<p class={selectedToken.tokenPriceUSD * tokenMinusFee > 0 ? 'text-light-lighterOrange' : ''}>
 				${parseFloat((selectedToken.tokenPriceUSD * tokenMinusFee).toFixed(2))}
 				{$user?.currency.toUpperCase() || 'USD'}
 			</p>
 			<p class="money-right">{import.meta.env.VITE_SEND_TX_FEE_PERCENTAGE || 2.5}% Fee</p>
 		</div>
-		<p class="currency-money-amount">
-			Recipient receives: {tokenMinusFee ?? 0}
-			{selectedToken.tokenTicker} ({parseFloat(
-				selectedToken.tokenPriceUSD * tokenMinusFee > 99999999
-					? (selectedToken.tokenPriceUSD * tokenMinusFee).toFixed(2)
-					: (selectedToken.tokenPriceUSD * tokenMinusFee).toFixed(3),
-			)}
-			{$user?.currency.toUpperCase() || 'USD'})
+		<p class="currency-money-amount send-recipient-details">
+			Recipient Receives:
+			<span class={tokenMinusFee > 0 ? 'text-light-lighterOrange 2xl:ml-2' : ''}>
+				<br class="2xl:hidden" />
+				{parseFloat(tokenMinusFee.toFixed(5)) ?? 0}
+				{selectedToken.tokenTicker}
+				({parseFloat((selectedToken.tokenPriceUSD * tokenMinusFee).toFixed(2))}
+				{$user?.currency.toUpperCase() || 'USD'})
+			</span>
 		</p>
 		<div class="currency-form-row">
 			<TextInput
@@ -161,14 +198,26 @@
 				addTextBg={true}
 			/>
 		</div>
-		<div class="currency-form-row">
+		{#if Boolean(recipientAddress) && !publicKeyValid}
+			<div class="error-div">
+				<ErrorIcon class="mr-1" fill={'rgb(230, 51, 42)'} />
+				Please enter a valid public key
+			</div>
+		{/if}
+		{#if Boolean(recipientAddress) && recipientAddress === $selectedWallet?.walletAddress}
+			<div class="error-div">
+				<ErrorIcon class="mr-1" fill={'rgb(230, 51, 42)'} />
+				You cannot send tokens to yourself
+			</div>
+		{/if}
+		<!-- <div class="currency-form-row">
 			<TextInput
 				bind:value={note}
 				class="send-currency-dark-sidebar-input"
 				label="Note (optional)"
 				addTextBg={true}
 			/>
-		</div>
+		</div> -->
 		<div class="currency-form-row">
 			<SelectInput
 				selectCustomClass="text-sm"
@@ -181,7 +230,7 @@
 			</SelectInput>
 		</div>
 		<div class="currency-buttons">
-			<Button isDisabled={!$selectedWallet || !recipientAddress || tokenAmount <= 0}>
+			<Button isDisabled={!$selectedWallet || !recipientAddress || hasError}>
 				<div slot="text" class="leading-7 my-2">Send</div>
 			</Button>
 			<Button class="send-currency-cancel-send-button" type="button">
@@ -189,25 +238,26 @@
 			</Button>
 		</div>
 	</form>
-	{#if popup}
-		<Popup
-			title={popup}
-			hasCancel={confirmPopup}
-			on:confirm={() => {
-				confirmPopup ? confirmSend() : closePopup();
-			}}
-			on:cancel={closePopup}
-		>
-			<p class="popup-text">
-				{#if popup === 'Sending'}
-					<Loading useFirework={false} size={60} />
-				{:else}
-					{@html popupContent}
-				{/if}
-			</p>
-		</Popup>
-	{/if}
 </div>
+
+{#if popup}
+	<Popup
+		title={popup}
+		hasCancel={confirmPopup}
+		on:confirm={() => {
+			confirmPopup ? confirmSend() : closePopup();
+		}}
+		on:cancel={closePopup}
+	>
+		<p class="popup-text">
+			{#if popup === 'Sending'}
+				<Loading useFirework={false} size={60} />
+			{:else}
+				{@html popupContent}
+			{/if}
+		</p>
+	</Popup>
+{/if}
 
 <style lang="postcss" global>
 	:local(.currency) {
@@ -217,28 +267,27 @@
 	}
 
 	:local(.currency-form) {
-		@apply h-full w-full;
+		@apply h-full w-full pb-5;
 		@apply flex flex-col;
-		@apply px-16 gap-8;
-		@apply lg:px-7;
+		@apply px-8 gap-5;
+		@apply lg:px-4 2xl:px-7;
 	}
 
 	:local(.currency-form-title) {
-		@apply mt-16 mb-7;
+		@apply mt-16 mb-0;
 		@apply text-xl font-bold text-center;
-		@apply lg:mt-20 lg:mb-14;
+		@apply lg:mt-20;
 		@apply dark:text-white;
 	}
 
 	:local(.currency-form-row) {
 		@apply w-full;
 		@apply flex flex-row items-center justify-center;
-		@apply gap-4;
+		/* @apply gap-4; */
 	}
 
 	:local(.currency-money-amount) {
 		@apply flex;
-		@apply ml-4;
 		@apply font-medium text-sm text-light-grey;
 		@apply dark:text-white;
 	}
@@ -284,5 +333,13 @@
 
 	.send-currency-dark-sidebar-input[type='number'] {
 		-moz-appearance: textfield;
+	}
+
+	:local(.send-recipient-details) {
+		@apply block -mt-2;
+	}
+
+	:local(.error-div) {
+		@apply text-left text-xs text-[#e6332a] -mt-2 mb-1 flex items-center w-full px-2;
 	}
 </style>
