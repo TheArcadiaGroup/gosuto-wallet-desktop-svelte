@@ -39,7 +39,6 @@
 		password.set(passwordValue);
 	};
 
-	//TODO: input restrictions
 	$: passwordErrors = passwordValue
 		? validatePassword(passwordValue).length > 0
 			? validatePassword(passwordValue).join('<br />')

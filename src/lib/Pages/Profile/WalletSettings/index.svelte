@@ -1,6 +1,4 @@
 <script lang="ts">
-	import BackIcon from '$icons/BackIcon.svelte';
-	import CopyIcon from '$icons/CopyIcon.svelte';
 	import CopyOrange from '$icons/CopyOrange.svelte';
 
 	import PasswordToCopyPopup from '$lib/components/PopUps/WalletSettings/PasswordToCopyPopup.svelte';
@@ -18,7 +16,7 @@
 	import { goto } from '$app/navigation';
 	import { saveData } from '$utils/dataStorage';
 	import { page } from '$app/stores';
-	import { shortenAddress } from '$utils';
+	import { passwordsAreSimilar, validatePassword } from '$utils/passwordValidation';
 
 	let walletName = '';
 	let privateKey = '';
@@ -26,6 +24,7 @@
 	let confirmPassword = '';
 	let canSave = false;
 	let canChangePassword = false;
+	let currentPassword = '';
 
 	let showCopyWalletPasswordPopup: boolean = false;
 	let showExportWalletFilePopup: boolean = false;
@@ -120,6 +119,12 @@
 			canChangePassword = false;
 		}
 	})(newPassword, confirmPassword);
+
+	$: passwordErrors = newPassword
+		? validatePassword(newPassword).length > 0
+			? validatePassword(newPassword).join('<br />')
+			: false
+		: false;
 </script>
 
 {#if wallet}
@@ -178,13 +183,23 @@
 					</Button>
 				</div>
 			</div>
-			<TextInput bind:value={walletName} label="Wallet Name" type="text" />
+			<TextInput bind:value={walletName} label="Wallet Name" type="text" addTextBg={true} />
+			<div class="error-div">
+				{#if $wallets?.filter((item) => item.walletName === walletName).length > 0 && wallet.walletName !== walletName}
+					Wallet Name Already Exists
+				{/if}
+				{#if walletName && walletName?.length > 20}
+					<br />
+					Maximum of 20 Characters Allowed
+				{/if}
+			</div>
 			<br />
 			<TextInput
 				isDisabled={true}
 				bind:value={wallet.walletAddress}
 				label="Public Key"
 				type="text"
+				addTextBg={true}
 			/>
 			<br />
 			<div class="private-container">
@@ -196,32 +211,68 @@
 				>
 					<CopyOrange />
 				</div>
-				<TextInput isDisabled={true} bind:value={privateKey} label="Private Key" type="password" />
+				<TextInput
+					isDisabled={true}
+					bind:value={privateKey}
+					label="Private Key"
+					type="password"
+					addTextBg={true}
+				/>
 			</div>
 			<br />
 			<h2>Change Password</h2>
 			<br />
 			<TextInput
-				isDisabled={true}
-				bind:value={wallet.walletPassword}
+				bind:value={currentPassword}
 				label="Current Password"
 				type="password"
+				addTextBg={true}
 			/>
+			<div class="error-div">
+				{#if currentPassword && wallet.walletPassword && !passwordsAreSimilar(currentPassword, wallet.walletPassword)}
+					Enter correct wallet password
+				{/if}
+			</div>
 			<br />
-			<TextInput bind:value={newPassword} label="New Password" type="password" />
+			<TextInput bind:value={newPassword} label="New Password" type="password" addTextBg={true} />
+			<div class="error-div">
+				{#if passwordErrors}
+					{@html passwordErrors}
+				{/if}
+			</div>
 			<br />
-			<TextInput bind:value={confirmPassword} label="Re-Enter New Password" type="password" />
+			<TextInput
+				bind:value={confirmPassword}
+				label="Re-Enter New Password"
+				type="password"
+				addTextBg={true}
+			/>
+			<div class="error-div">
+				{#if newPassword && confirmPassword && !passwordsAreSimilar(newPassword, confirmPassword)}
+					Passwords do no match
+				{/if}
+			</div>
 			<br />
 			<div class="button-holder">
 				<div class="settings-btn">
-					<Button hasGlow={true} isDisabled={!canChangePassword} on:click={changePassword}>
+					<Button
+						hasGlow={true}
+						isDisabled={!canChangePassword ||
+							(currentPassword &&
+								wallet.walletPassword &&
+								!passwordsAreSimilar(currentPassword, wallet.walletPassword)) ||
+							($wallets?.filter((item) => item.walletName === walletName) &&
+								wallet.walletName !== walletName) ||
+							!passwordsAreSimilar(newPassword, confirmPassword)}
+						on:click={changePassword}
+					>
 						<p slot="text" class="settings-btn-text">Change Password</p>
 					</Button>
 				</div>
 			</div>
 			<div class="ok-cancel">
 				<div class="save-bt" on:click={updateWalletDetails}>
-					<Button isDisabled={!canSave}>
+					<Button isDisabled={!canSave || walletName?.length > 20}>
 						<p slot="text" class="btn-text">Save</p>
 					</Button>
 				</div>
@@ -334,5 +385,13 @@
 
 	:local(.button-holder) {
 		@apply max-w-[45%] md:max-w-[25%];
+	}
+
+	:local(.error-div) {
+		@apply text-left text-xs text-red-300 mb-1 flex w-full px-2 mt-2;
+	}
+
+	:local(.wallet-name-error-div) {
+		@apply -mt-8 mb-6;
 	}
 </style>
