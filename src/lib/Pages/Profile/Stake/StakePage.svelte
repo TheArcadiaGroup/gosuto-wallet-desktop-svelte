@@ -154,6 +154,7 @@
 					isUnstaking = false;
 					popup = 'successStake';
 					popupAmount = stakeCsprTxs[item]?.amount!;
+					selectedLastColumnContent = null;
 				}
 
 				if (stakeCsprTxs[item]?.fulfilled) {
@@ -182,6 +183,7 @@
 					isUnstaking = true;
 					popup = 'successStake';
 					popupAmount = unStakeCsprTxs[item]?.amount!;
+					selectedLastColumnContent = null;
 				}
 
 				if (unStakeCsprTxs[item]?.fulfilled) {
