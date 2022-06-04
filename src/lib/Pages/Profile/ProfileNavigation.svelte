@@ -31,13 +31,20 @@
 	import { user } from '$stores/user';
 	import { saveData } from '$utils/dataStorage';
 
-	let forRoute = $page.url.pathname.startsWith('/profile') ? 'profile' : 'all-stakes';
+	let forRoute: 'profile' | 'all-stakes';
+	$: forRoute = $page.url.pathname.startsWith('/profile') ? 'profile' : 'all-stakes';
 	let walletAddress = $page.params.address;
+
+	type MenuItems = {
+		name: string;
+		label: string;
+		icon: any;
+	}[];
 
 	/**Options for the content of the menu. Either 'profile' or 'all-stakes'.*/
 	const menuItemsOptions: {
-		profile: typeof menuItems;
-		'all-stakes': typeof menuItems;
+		profile: MenuItems;
+		'all-stakes': MenuItems;
 	} = {
 		profile: [
 			{ name: 'history', label: 'History', icon: Bookmark },
@@ -53,11 +60,7 @@
 	};
 
 	/**Array of objects that are displayed as menu items.*/
-	let menuItems: {
-		name: string;
-		label: string;
-		icon: any;
-	}[];
+	let menuItems: MenuItems;
 	$: menuItems = menuItemsOptions[forRoute];
 
 	onMount(() => {

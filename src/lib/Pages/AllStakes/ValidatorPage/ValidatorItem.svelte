@@ -6,11 +6,17 @@
 	@see validatorPage
 -->
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { user } from '$stores/user';
+	import { selectedWallet } from '$stores/user/wallets';
 
 	import { decimalToPercentage } from '$utils';
 
 	export let validator: IValidator;
+
+	const navigateAndSelectValidator = (validatorPublicKey: string) => {
+		goto(`/profile/${$selectedWallet?.walletAddress}/stake?validator=${validatorPublicKey}`);
+	};
 
 	$: block_base_url = `https://${$user?.network === 'testnet' ? 'testnet.' : ''}cspr.live`;
 </script>
@@ -29,7 +35,9 @@
 					validator.publicKey.length,
 				)}`}
 		</h4>
-		<button class="delegate">Delegate</button>
+		<button class="delegate" on:click={() => navigateAndSelectValidator(validator.publicKey)}>
+			Delegate
+		</button>
 	</div>
 	<div class="details-holder">
 		<div class="detail left">

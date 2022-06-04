@@ -99,7 +99,11 @@
 	};
 
 	// stake bind StakesFromWallet
-	let selectedLastColumnContent: 'unstake' | 'addStake' | null = null;
+	let selectedLastColumnContent: 'unstake' | 'addStake' | null = $page.url.searchParams.get(
+		'validator',
+	)
+		? 'addStake'
+		: null;
 	let selectedStake: IStake | null = null;
 	let popupAmount = 0;
 
@@ -107,6 +111,7 @@
 	function closeStake() {
 		selectedLastColumnContent = null;
 		selectedStake = null;
+		$page.url.searchParams.delete('validator');
 	}
 
 	function showConfirmStakePopup(stakeDetails: { validatorPublicKey: string; amount: number }) {
@@ -132,6 +137,7 @@
 	// Third column selector
 	function stakeSelect() {
 		selectedLastColumnContent = 'unstake';
+		$page.url.searchParams.delete('validator');
 	}
 
 	function addStake(e: CustomEvent) {
@@ -155,6 +161,7 @@
 					popup = 'successStake';
 					popupAmount = stakeCsprTxs[item]?.amount!;
 					selectedLastColumnContent = null;
+					$page.url.searchParams.delete('validator');
 				}
 
 				if (stakeCsprTxs[item]?.fulfilled) {
@@ -184,6 +191,7 @@
 					popup = 'successStake';
 					popupAmount = unStakeCsprTxs[item]?.amount!;
 					selectedLastColumnContent = null;
+					$page.url.searchParams.delete('validator');
 				}
 
 				if (unStakeCsprTxs[item]?.fulfilled) {

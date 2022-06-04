@@ -4,13 +4,19 @@
 	A component encasing every navbar item to ease styling
  -->
 <script lang="ts">
-	/** A variable representing a NavIcon object to help with setting a navbar icon as active */
-	export let navItem: NavIcon;
+	import { page } from '$app/stores';
+	export let baseUrl = '';
 	/** A variable representing a boolean value to indicate reverse colouring for dark and light themes */
 	export let reverse = false;
 </script>
 
-<div class="nav-item" class:reverse class:active={navItem.active} on:click>
+<!-- svelte-ignore missing-declaration -->
+<div
+	class="nav-item"
+	class:reverse
+	class:active={baseUrl && `/${$page.url.pathname.split('/')[1]}` === baseUrl}
+	on:click
+>
 	<slot />
 </div>
 

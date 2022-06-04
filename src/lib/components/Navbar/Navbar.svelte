@@ -10,28 +10,10 @@
 	import NavItem from './NavItem.svelte';
 
 	import { goto } from '$app/navigation';
-	import { navItems } from '$stores/NavbarActive';
 	import { selectedWallet } from '$stores/user/wallets';
 	import { user } from '$stores/user';
 	import { saveData } from '$utils/dataStorage';
 	import { loadWalletData } from '$utils/dataLoaders';
-
-	/** An array representing the values of navItems */
-	let navItemsValues: NavIcon[];
-
-	navItems.subscribe((value) => {
-		navItemsValues = value;
-	});
-
-	/** A function for updating the navItems array*/
-	let activateItem = (navItem: NavIcon, route: string) => {
-		navItems.update((n) => {
-			n.forEach((e) => (e.active = false));
-			return n;
-		});
-		navItem.active = true;
-		if (route) goto(route);
-	};
 
 	const updateUniversalToken = (e: any) => {
 		if ($user) {
@@ -50,39 +32,31 @@
 
 <div class="navbar">
 	<div class="navbar-top">
-		<NavItem navItem={navItemsValues[0]}><GosutoNavLogo class="large-nav-icon" /></NavItem>
-		<NavItem reverse={true} navItem={navItemsValues[1]}
-			><NavFlameIcon class="large-nav-icon" /></NavItem
-		>
+		<NavItem><GosutoNavLogo class="large-nav-icon" /></NavItem>
+		<NavItem reverse={true}>
+			<NavFlameIcon class="large-nav-icon" />
+		</NavItem>
 		<NavItem
-			navItem={navItemsValues[2]}
-			on:click={() =>
-				activateItem(navItemsValues[2], `/profile/${$selectedWallet?.walletAddress}/history`)}
-			><div class="navbar-avatar-img" /></NavItem
+			baseUrl={'/profile'}
+			on:click={() => goto(`/profile/${$selectedWallet?.walletAddress}/history`)}
 		>
-		<NavItem
-			navItem={navItemsValues[3]}
-			on:click={() => activateItem(navItemsValues[3], '/history')}
-			><NavBookmarkIcon class="nav-icon" /></NavItem
-		>
-		<NavItem
-			navItem={navItemsValues[4]}
-			on:click={() => activateItem(navItemsValues[4], '/all-stakes')}
-			><NavStackIcon class="nav-icon" /></NavItem
-		>
-		<NavItem
-			navItem={navItemsValues[5]}
-			on:click={() => activateItem(navItemsValues[5], '/performance')}
-			><NavActivityIcon class="nav-icon" /></NavItem
-		>
+			<div class="navbar-avatar-img" />
+		</NavItem>
+		<NavItem baseUrl={'/history'} on:click={() => goto('/history')}>
+			<NavBookmarkIcon class="nav-icon" />
+		</NavItem>
+		<NavItem baseUrl={'/all-stakes'} on:click={() => goto('/all-stakes')}>
+			<NavStackIcon class="nav-icon" />
+		</NavItem>
+		<NavItem baseUrl={'/performance'} on:click={() => goto('/performance')}>
+			<NavActivityIcon class="nav-icon" />
+		</NavItem>
 	</div>
 
 	<div class="navbar-bottom">
-		<NavItem
-			navItem={navItemsValues[6]}
-			on:click={() => activateItem(navItemsValues[6], '/settings')}
-			><NavSettingsIcon class="nav-icon" /></NavItem
-		>
+		<NavItem baseUrl={'/settings'} on:click={() => goto('/settings')}>
+			<NavSettingsIcon class="nav-icon" />
+		</NavItem>
 		<SelectItems
 			on:change={updateUniversalToken}
 			selectedItem={selectedCurrency}

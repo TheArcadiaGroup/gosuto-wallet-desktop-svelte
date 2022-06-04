@@ -7,6 +7,8 @@
 	- `recipient` = Value form the recipient selection.
 -->
 <script lang="ts">
+	import { page } from '$app/stores';
+
 	import Button from '$lib/components/Button.svelte';
 	import SelectInput from '$lib/components/SelectInput.svelte';
 	import TextInput from '$lib/components/TextInput.svelte';
@@ -42,6 +44,7 @@
 
 	onMount(async () => {
 		await getCSPRUsdPrice();
+		selectedValidatorPublicKey = $page.url.searchParams.get('validator') ?? '';
 	});
 </script>
 
