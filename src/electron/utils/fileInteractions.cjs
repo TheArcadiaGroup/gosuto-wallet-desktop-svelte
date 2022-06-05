@@ -47,16 +47,19 @@ module.exports = {
 					console.log('ERROR: ', err);
 					return null;
 				});
-		} else if ('walletFile') {
+		} else if ('importWalletFile') {
 			const options = {
-				title: `Import From Secret Key File`,
-				defaultPath: app.getPath('documents'),
+				title: 'Select your private key',
+				defaultPath: app.getPath('downloads'),
+				buttonLabel: 'Upload',
+				// Restricting the user to only Text Files.
 				filters: [
 					{
-						name: 'pem*',
-						extentions: ['cert', 'cer', 'crt', 'pem'],
+						name: 'Private Key File',
+						extensions: ['pem', 'cer'],
 					},
 				],
+				// Specifying the File Selector Property
 				properties: ['openFile', 'dontAddToRecent'],
 			};
 
@@ -77,5 +80,29 @@ module.exports = {
 		}
 	},
 
-	writeFile: () => {},
+	writeFile: (writeType, walletName, fileContents) => {
+		if (writeType === 'exportWalletCertificate') {
+			const options = {
+				title: 'Save file',
+				defaultPath: path.join(app.getPath('documents'), walletName),
+				buttonLabel: 'Save',
+
+				filters: [
+					{ name: 'pem', extensions: ['pem'] },
+					{ name: 'cer', extensions: ['cer'] },
+					{ name: 'All Files', extensions: ['*'] },
+				],
+			};
+
+			return dialog
+				.showSaveDialog(browserWindow, options)
+				.then(({ filePath }) => {
+					fs.writeFileSync(filePath, fileContents, 'utf-8');
+					return true;
+				})
+				.catch((err) => {
+					throw err;
+				});
+		}
+	},
 };

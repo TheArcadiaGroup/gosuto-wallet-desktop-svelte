@@ -5,7 +5,7 @@ const profileHistory = require('../utils/profileHistory.cjs');
 const { importWalletFromFile } = require('../utils/walletImportExports.cjs');
 const sendMessage = require('./sendMessage.cjs');
 const { getBalance, getTokenBalance } = require('../utils/account.cjs');
-const { readFileUsingDialog } = require('../utils/fileInteractions.cjs');
+const { readFileUsingDialog, writeFile } = require('../utils/fileInteractions.cjs');
 const { getAllValidators, delegate, undelegate } = require('../utils/staking.cjs');
 
 /**
@@ -284,6 +284,19 @@ module.exports = () => {
 		const res = await readFileUsingDialog('profileImage');
 
 		event.returnValue = res;
+	});
+
+	ipcMain.on('exportWalletCertificate', async (event, data) => {
+		try {
+			data = JSON.parse(data);
+			event.returnValue = await writeFile(
+				'exportWalletCertificate',
+				data.walletName,
+				data.privateKeyContent,
+			);
+		} catch (error) {
+			event.returnValue = error;
+		}
 	});
 
 	ipcMain.on('appInfo', (event, _data) => {

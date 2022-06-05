@@ -17,6 +17,7 @@ contextBridge.exposeInMainWorld('api', {
 			'delegate',
 			'undelegate',
 			'openUrl',
+			'exportWalletCertificate',
 		];
 		if (validChannels.includes(channel)) {
 			ipcRenderer.send(channel, data);
@@ -37,6 +38,7 @@ contextBridge.exposeInMainWorld('api', {
 			'openUrl',
 			'delegate',
 			'undelegate',
+			'exportWalletCertificate',
 		];
 		if (validChannels.includes(channel)) {
 			return ipcRenderer.sendSync(channel, data);

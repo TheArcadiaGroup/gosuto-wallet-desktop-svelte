@@ -32,7 +32,9 @@
 	let showCopyWalletPasswordPopup: boolean = false;
 	let showExportWalletFilePopup: boolean = false;
 	let showWalletCopiedPopup: boolean = false;
-	let passwordIsCorrect: boolean = true;
+
+	let exportWalletPassword = '';
+	let copyPrivateKeyPassword = '';
 
 	let wallet: IWallet = $selectedWallet!;
 
@@ -156,27 +158,37 @@
 		<!-- Popups -->
 		{#if showCopyWalletPasswordPopup}
 			<PasswordToCopyPopup
+				bind:password={copyPrivateKeyPassword}
+				okDisabled={copyPrivateKeyPassword !== wallet.walletPassword}
 				on:confirm={() => {
 					showCopyWalletPasswordPopup = false;
-					if (passwordIsCorrect) {
+					if (copyPrivateKeyPassword === wallet.walletPassword) {
 						copyToClipboard(wallet.privateKey);
 						showWalletCopiedPopup = true;
+						copyPrivateKeyPassword = '';
 					}
 				}}
 				on:cancel={() => {
 					showCopyWalletPasswordPopup = false;
+					copyPrivateKeyPassword = '';
 				}}
 			/>
 		{/if}
 		{#if showExportWalletFilePopup}
 			<PasswordToExportPopup
+				bind:password={exportWalletPassword}
+				okDisabled={exportWalletPassword !== wallet.walletPassword}
 				on:confirm={() => {
 					showExportWalletFilePopup = false;
 					// TODO: Validate password then export file
-					walletAsPem(wallet.privateKey);
+					if (exportWalletPassword === wallet.walletPassword) {
+						walletAsPem(wallet.walletName, wallet.privateKey, wallet.algorithm);
+						exportWalletPassword = '';
+					}
 				}}
 				on:cancel={() => {
 					showExportWalletFilePopup = false;
+					exportWalletPassword = '';
 				}}
 			/>
 		{/if}

@@ -18,6 +18,7 @@
 	export let hasCancel: boolean = false;
 	export let goBack: boolean = false;
 	export let confirmText = 'Confirm';
+	export let okDisabled = false;
 </script>
 
 <!-- <div transition:fade|local class="darker" /> -->
@@ -30,6 +31,7 @@
 			</div>
 			<div class="button-container">
 				<button
+					disabled={okDisabled}
 					class="confirm-button"
 					class:w-full={hasCancel}
 					class:mr-3={hasCancel}
@@ -97,6 +99,10 @@
 	:local(.popup-holder::after) {
 		content: '';
 		@apply fixed top-0 bottom-0 left-0 right-0 z-[-1] bg-[#00000077];
+	}
+
+	:local(button:disabled) {
+		@apply opacity-50;
 	}
 
 	.popup-content p {

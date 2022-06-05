@@ -5,7 +5,7 @@ module.exports = {
 	// Only Supports ED25519 for now
 	importWalletFromFile: async () => {
 		try {
-			const fileContents = await readFileUsingDialog('walletFile');
+			const fileContents = await readFileUsingDialog('importWalletFile');
 			let res;
 
 			if (fileContents) {

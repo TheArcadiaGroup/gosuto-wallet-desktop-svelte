@@ -280,7 +280,8 @@ declare global {
 		| 'getValidators'
 		| 'delegate'
 		| 'undelegate'
-		| 'openUrl';
+		| 'openUrl'
+		| 'exportWalletCertificate';
 	type MainReceiveChannels =
 		| 'createWalletFromFileResponse'
 		| 'createWalletFromMnemonicsResponse'

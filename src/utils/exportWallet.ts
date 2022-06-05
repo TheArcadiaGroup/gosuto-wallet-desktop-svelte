@@ -1,18 +1,36 @@
 import { Keys } from 'casper-js-sdk';
 
-export const walletAsPem = (privateKey: string) => {
-	// const ll = JSON.stringify(privateKey).replace('{', '').replace('}', '').split(',');
-	// const newll = ll.map((val) => {
-	// 	return parseInt(val.substr(val.indexOf(':') + 1, val.length));
-	// });
-	// const privateKeyArr = Uint8Array.from(newll);
+export const walletAsPem = (
+	walletName: string,
+	privateKey: string,
+	algorithm: 'secp256k1' | 'ed25519',
+) => {
+	try {
+		let keyPair: Keys.AsymmetricKey;
+		let publicKey: Uint8Array;
 
-	const publicKey = Keys.Ed25519.privateToPublicKey(Buffer.from(privateKey, 'hex'));
-	const keyPair = Keys.Ed25519.parseKeyPair(publicKey, Buffer.from(privateKey as string, 'hex'));
+		if (algorithm === 'secp256k1') {
+			publicKey = Keys.Secp256K1.privateToPublicKey(Buffer.from(privateKey, 'hex'));
+			keyPair = Keys.Secp256K1.parseKeyPair(publicKey, Buffer.from(privateKey, 'hex'), 'raw');
+		} else {
+			publicKey = Keys.Ed25519.privateToPublicKey(Buffer.from(privateKey, 'hex'));
+			keyPair = Keys.Ed25519.parseKeyPair(publicKey, Buffer.from(privateKey, 'hex'));
+		}
 
-	const pem = keyPair.exportPrivateKeyInPem();
+		const res = window.api.sendSync(
+			'exportWalletCertificate',
+			JSON.stringify({
+				walletName,
+				privateKeyContent: keyPair.exportPrivateKeyInPem(),
+			}),
+		);
 
-	console.log(pem);
-
-	return pem;
+		if (res === true) {
+			return res;
+		} else {
+			throw res;
+		}
+	} catch (error) {
+		throw error;
+	}
 };
