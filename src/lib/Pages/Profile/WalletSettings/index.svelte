@@ -19,6 +19,7 @@
 	import { passwordsAreSimilar, validatePassword } from '$utils/validators/passwordValidation';
 	import { userHistory } from '$stores/user/history';
 	import { user } from '$stores/user';
+	import { walletAsPem } from '$utils/exportWallet';
 
 	let walletName = '';
 	let privateKey = '';
@@ -171,6 +172,8 @@
 			<PasswordToExportPopup
 				on:confirm={() => {
 					showExportWalletFilePopup = false;
+					// TODO: Validate password then export file
+					walletAsPem(wallet.privateKey);
 				}}
 				on:cancel={() => {
 					showExportWalletFilePopup = false;

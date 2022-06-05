@@ -46,6 +46,7 @@
 			selectedValidatorPublicKey,
 			stakeAmount,
 			$user!.network,
+			$selectedWallet!.algorithm,
 		);
 
 		if (result) {
@@ -74,6 +75,7 @@
 			selectedValidatorPublicKey,
 			stakeAmount,
 			$user!.network,
+			$selectedWallet!.algorithm,
 		);
 
 		if (result) {

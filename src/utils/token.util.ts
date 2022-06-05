@@ -44,6 +44,7 @@ export async function sendToken(
 	network: 'testnet' | 'mainnet' = 'testnet',
 	note: string = '',
 	tokenTicker: string = 'CSPR',
+	algorithm: 'secp256k1' | 'ed25519' = 'ed25519',
 ): Promise<void | {
 	id: string;
 	senderWallet: any;
@@ -83,7 +84,7 @@ export async function sendToken(
 		});
 
 		// window.api.send('sendCSPRTokens', JSON.stringify(requestObj));
-		sendCspr(walletAddress, privateKey, recipientAddress, tokenAmount, network)
+		sendCspr(walletAddress, privateKey, recipientAddress, tokenAmount, network, algorithm)
 			.then((response) => {
 				parseTransferData(
 					JSON.stringify({
@@ -95,12 +96,13 @@ export async function sendToken(
 				);
 			})
 			.catch((err) => {
+				console.log(err);
 				parseTransferData(
 					JSON.stringify({
 						id: requestObj.id,
 						data: null,
 						error: err,
-						message: 'Encountered Message While Transferring CSPR Tokens',
+						message: 'Encountered Error While Transferring CSPR Tokens',
 					}),
 				);
 			});

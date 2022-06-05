@@ -4,27 +4,33 @@ const { generateFromFile } = require('./createWallet.cjs');
 module.exports = {
 	// Only Supports ED25519 for now
 	importWalletFromFile: async () => {
-		const fileContents = await readFileUsingDialog('walletFile');
-		let res;
+		try {
+			const fileContents = await readFileUsingDialog('walletFile');
+			let res;
 
-		if (fileContents) {
-			try {
-				const wallet = await generateFromFile(fileContents);
-				if (wallet.privateKey) {
-					res = wallet;
-				} else {
-					// error
+			if (fileContents) {
+				try {
+					const wallet = await generateFromFile(fileContents);
+
+					if (wallet.privateKey) {
+						res = wallet;
+					} else {
+						// error
+						res = null;
+					}
+				} catch (err) {
 					res = null;
 				}
-			} catch (err) {
+			} else {
+				// return error;
 				res = null;
 			}
-		} else {
-			// return error;
-			res = null;
-		}
 
-		return res;
+			return res;
+		} catch (error) {
+			console.log(error);
+			return null;
+		}
 	},
 
 	exportWalletToFile: () => {},

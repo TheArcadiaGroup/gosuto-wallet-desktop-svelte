@@ -21,6 +21,7 @@
 	let walletValid = true;
 	let certificateIsInvalid = false;
 	let walletExists = false;
+	let algorithm: 'secp256k1' | 'ed25519' = 'ed25519';
 
 	let passwordInput: HTMLInputElement;
 	let confirmPasswordInput: HTMLInputElement;
@@ -39,8 +40,12 @@
 
 	/** function for opening the file and getting data private key or json data */
 	const selectFile = () => {
-		const data: { accountHex: string; accountHash: string; privateKey: string } | null =
-			window.api.sendSync('importWalletFromFile', '');
+		const data: {
+			accountHex: string;
+			accountHash: string;
+			privateKey: string;
+			algorithm: 'secp256k1' | 'ed25519';
+		} | null = window.api.sendSync('importWalletFromFile', '');
 		try {
 			if (data?.accountHex && data?.accountHash && data?.privateKey) {
 				const walletCreationResult = data;
@@ -54,6 +59,7 @@
 					accountHex = walletCreationResult['accountHex'];
 					accountHash = walletCreationResult['accountHash'];
 					privateKey = walletCreationResult['privateKey'];
+					algorithm = walletCreationResult['algorithm'];
 					walletExists = false;
 				}
 
@@ -68,27 +74,30 @@
 
 	/** Sends wallet creation data to api route to create a wallet */
 	const postData = async () => {
-		let wallets: IWallet[] = retrieveData('wallets') || [];
+		if (walletName && password && accountHex && accountHash && privateKey) {
+			let wallets: IWallet[] = retrieveData('wallets') || [];
 
-		wallets.push({
-			walletName: walletName.trim(),
-			walletPassword: password.trim(),
-			walletImage: '',
-			seedPhrase: [],
-			availableBalance: 0.0,
-			availableBalanceUSD: 0.0,
-			stakedBalance: 0.0,
-			unclaimedRewards: 0.0,
-			walletTokens: [],
-			walletStakes: [],
-			// walletHistory: [],
-			walletAddress: accountHex.trim(),
-			accountHash: accountHash.trim(),
-			privateKey: privateKey.trim(),
-		});
+			wallets.push({
+				walletName: walletName.trim(),
+				walletPassword: password.trim(),
+				walletImage: '',
+				seedPhrase: [],
+				availableBalance: 0.0,
+				availableBalanceUSD: 0.0,
+				stakedBalance: 0.0,
+				unclaimedRewards: 0.0,
+				walletTokens: [],
+				walletStakes: [],
+				// walletHistory: [],
+				algorithm: algorithm,
+				walletAddress: accountHex.trim(),
+				accountHash: accountHash.trim(),
+				privateKey: privateKey.trim(),
+			});
 
-		saveData('wallets', JSON.stringify(wallets));
-		goto(`/profile/${accountHex.trim()}`);
+			saveData('wallets', JSON.stringify(wallets));
+			goto(`/profile/${accountHex.trim()}`);
+		}
 	};
 
 	$: passwordErrors = password

@@ -37,13 +37,6 @@
 	let recipientAddress = '';
 	let note = '';
 	let network: 'mainnet' | 'testnet' = $user?.network || 'mainnet';
-	let appUsageFee =
-		1 -
-		(import.meta.env.VITE_SEND_TX_FEE_PERCENTAGE
-			? +import.meta.env.VITE_SEND_TX_FEE_PERCENTAGE
-			: 2.5) /
-			100;
-	$: tokenMinusFee = tokenAmount * appUsageFee;
 
 	function sendCurrency(): void {
 		popup = 'Send CSPR';
@@ -67,6 +60,7 @@
 				network,
 				note,
 				selectedToken.tokenTicker,
+				$selectedWallet.algorithm,
 			);
 
 			// The result in this case matches the ID of the transaction that has just been sent out, or will be undefined until non-cspr token sending is enabled
@@ -139,7 +133,7 @@
 	$: hasError =
 		tokenAmount <= 0 ||
 		tokenAmount < 2.5 ||
-		tokenAmount > selectedToken.tokenAmountHeld * appUsageFee - totalCost ||
+		tokenAmount > selectedToken.tokenAmountHeld - totalCost ||
 		(Boolean(recipientAddress) && recipientAddress === $selectedWallet!.walletAddress) ||
 		(Boolean(recipientAddress) && !publicKeyValid);
 	$: publicKeyValid = isValidPublicKey(recipientAddress);
@@ -167,27 +161,27 @@
 				Amount must be at least 2.5 CSPR.
 			</div>
 		{/if}
-		{#if tokenAmount > selectedToken.tokenAmountHeld * appUsageFee - totalCost}
+		{#if tokenAmount > selectedToken.tokenAmountHeld - totalCost}
 			<div class="error-div">
 				<ErrorIcon class="mr-1" fill={'#e6332a'} />
-				You can send a maximum of {selectedToken.tokenAmountHeld * appUsageFee - totalCost}
+				You can send a maximum of {selectedToken.tokenAmountHeld - totalCost}
 			</div>
 		{/if}
 
 		<div class="currency-money-amount">
 			<p class={selectedToken.tokenPriceUSD * tokenAmount > 0 ? 'text-light-lighterOrange' : ''}>
-				${parseFloat((selectedToken.tokenPriceUSD * tokenAmount).toFixed(2))}
+				${parseFloat((selectedToken.tokenPriceUSD * totalCost)?.toFixed(2))}
 				{$user?.currency.toUpperCase() || 'USD'}
 			</p>
-			<p class="money-right">{import.meta.env.VITE_SEND_TX_FEE_PERCENTAGE || 2.5}% Fee</p>
+			<p class="money-right">Approx. Fee</p>
 		</div>
 		<p class="currency-money-amount send-recipient-details">
 			Recipient Receives:
 			<span class={tokenAmount > 0 ? 'text-light-lighterOrange 2xl:ml-2' : ''}>
 				<br class="2xl:hidden" />
-				{parseFloat(tokenAmount.toFixed(5)) ?? 0}
+				{parseFloat(tokenAmount?.toFixed(5)) ?? 0}
 				{selectedToken.tokenTicker}
-				({parseFloat((selectedToken.tokenPriceUSD * tokenAmount).toFixed(2))}
+				({parseFloat((selectedToken.tokenPriceUSD * tokenAmount)?.toFixed(2))}
 				{$user?.currency.toUpperCase() || 'USD'})
 			</span>
 		</p>

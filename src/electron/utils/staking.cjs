@@ -13,7 +13,15 @@ module.exports = {
 	},
 
 	// Delegate stake
-	delegate: async ({ privateKey, accountHash, publicKey, validatorPublicKey, amount, network }) => {
+	delegate: async ({
+		privateKey,
+		accountHash,
+		publicKey,
+		validatorPublicKey,
+		amount,
+		network,
+		algorithm,
+	}) => {
 		try {
 			console.log(
 				'private key',
@@ -35,14 +43,19 @@ module.exports = {
 			const networkName = network === 'mainnet' ? 'casper' : 'casper-test';
 			const client = casperClient;
 			// Read keys from the structure created in #Generating keys
-			if (privateKey.length !== 128) {
-				privateKey = Keys.Ed25519.parsePrivateKey(privateKey);
-			}
+			// if (privateKey.length !== 128) {
+			// 	privateKey = Keys.Ed25519.parsePrivateKey(privateKey);
+			// }
 			// const publicKey = Keys.Ed25519.privateToPublicKey(privateKey);
-			const keyPair = Keys.Ed25519.parseKeyPair(
-				Buffer.from(publicKey, 'hex'),
-				Buffer.from(privateKey, 'hex'),
-			);
+			const keyPair =
+				algorithm === 'ed25519'
+					? Keys.Ed25519.parseKeyPair(Buffer.from(publicKey, 'hex'), Buffer.from(privateKey, 'hex'))
+					: Keys.Secp256K1.parseKeyPair(
+							Buffer.from(publicKey, 'hex'),
+							Buffer.from(privateKey, 'hex'),
+							'raw',
+					  );
+
 			const deployParams = new DeployUtil.DeployParams(keyPair.publicKey, networkName);
 
 			amount = ethers.utils.parseUnits(amount.toString(), 9);
@@ -74,7 +87,13 @@ module.exports = {
 	},
 
 	// Undelegate
-	undelegate: async ({ privateKey, validatorPublicKey, amount, network = 'testnet' }) => {
+	undelegate: async ({
+		privateKey,
+		validatorPublicKey,
+		amount,
+		network = 'testnet',
+		algorithm,
+	}) => {
 		const { casperService, casperClient } = getCasperClientAndService(network);
 		const networkName = network === 'mainnet' ? 'casper' : 'casper-test';
 
@@ -85,10 +104,14 @@ module.exports = {
 
 		const publicKey = Keys.Ed25519.privateToPublicKey(privateKey);
 
-		const keyPair = Keys.Ed25519.parseKeyPair(
-			Buffer.from(publicKey, 'hex'),
-			Buffer.from(privateKey, 'hex'),
-		);
+		const keyPair =
+			algorithm === 'ed25519'
+				? Keys.Ed25519.parseKeyPair(Buffer.from(publicKey, 'hex'), Buffer.from(privateKey, 'hex'))
+				: Keys.Secp256K1.parseKeyPair(
+						Buffer.from(publicKey, 'hex'),
+						Buffer.from(privateKey, 'hex'),
+						'raw',
+				  );
 
 		const deployParams = new DeployUtil.DeployParams(keyPair.publicKey, networkName);
 		const payment = DeployUtil.standardPayment(5000000000);

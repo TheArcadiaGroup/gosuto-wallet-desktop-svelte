@@ -18,6 +18,7 @@ export const delegate = (
 	validatorPublicKey: string,
 	amount: number,
 	network: 'testnet' | 'mainnet' = 'testnet',
+	algorithm: 'secp256k1' | 'ed25519' = 'ed25519',
 ) => {
 	const txId = Math.random().toString(16).slice(2);
 
@@ -48,12 +49,19 @@ export const delegate = (
 		// 	privateKey = Keys.Ed25519.parsePrivateKey(privateKey);
 		// }
 		// const publicKey = Keys.Ed25519.privateToPublicKey(privateKey);
-		const keyPair = Keys.Ed25519.parseKeyPair(
-			Buffer.from(publicKey, 'hex'),
-			privateKey.length !== 128 && Array.isArray(privateKey)
-				? Keys.Ed25519.parsePrivateKey(privateKey as Uint8Array)
-				: Buffer.from(privateKey as string, 'hex'),
-		);
+
+		const keyPair =
+			algorithm === 'ed25519'
+				? Keys.Ed25519.parseKeyPair(
+						Buffer.from(publicKey, 'hex'),
+						Buffer.from(privateKey as string, 'hex'),
+				  )
+				: Keys.Secp256K1.parseKeyPair(
+						Buffer.from(publicKey, 'hex'),
+						Buffer.from(privateKey as string, 'hex'),
+						'raw',
+				  );
+
 		const deployParams = new DeployUtil.DeployParams(keyPair.publicKey, networkName);
 
 		const amountAsBigNumber = ethers.utils.parseUnits(amount.toString(), 9);
@@ -122,6 +130,7 @@ export const undelegate = (
 	validatorPublicKey: string,
 	amount: number,
 	network: 'testnet' | 'mainnet' = 'testnet',
+	algorithm: 'secp256k1' | 'ed25519' = 'ed25519',
 ) => {
 	const txId = Math.random().toString(16).slice(2);
 
@@ -153,12 +162,17 @@ export const undelegate = (
 
 		// const publicKey = Keys.Ed25519.privateToPublicKey(privateKey);
 
-		const keyPair = Keys.Ed25519.parseKeyPair(
-			Buffer.from(publicKey, 'hex'),
-			privateKey.length !== 128 && Array.isArray(privateKey)
-				? Keys.Ed25519.parsePrivateKey(privateKey as Uint8Array)
-				: Buffer.from(privateKey as string, 'hex'),
-		);
+		const keyPair =
+			algorithm === 'ed25519'
+				? Keys.Ed25519.parseKeyPair(
+						Buffer.from(publicKey, 'hex'),
+						Buffer.from(privateKey as string, 'hex'),
+				  )
+				: Keys.Secp256K1.parseKeyPair(
+						Buffer.from(publicKey, 'hex'),
+						Buffer.from(privateKey as string, 'hex'),
+						'raw',
+				  );
 
 		const deployParams = new DeployUtil.DeployParams(keyPair.publicKey, networkName);
 		const payment = DeployUtil.standardPayment(10000); // 5000000000

@@ -46,21 +46,35 @@ module.exports = {
 				});
 		}
 	},
-	sendTransaction: async ({ fromPublicKey, fromPrivateKey, toPublicKey, amount, network }) => {
+	sendTransaction: async ({
+		fromPublicKey,
+		fromPrivateKey,
+		toPublicKey,
+		amount,
+		network,
+		algorithm,
+	}) => {
 		// Todo: Convert Amount to Ethers 1e9
 		try {
 			const { casperService, casperClient } = getCasperClientAndService(network);
 			// Read keys from the structure created in #Generating keys
-			if (fromPrivateKey.length !== 128) {
-				fromPrivateKey = Keys.Ed25519.parsePrivateKey(fromPrivateKey);
-			}
+			// if (fromPrivateKey.length !== 128) {
+			// 	fromPrivateKey = Keys.Ed25519.parsePrivateKey(fromPrivateKey);
+			// }
 
 			amount = ethers.utils.parseUnits(amount.toString(), 9); // Convert the digit amount to BigNumber
 
-			const signKeyPair = Keys.Ed25519.parseKeyPair(
-				Buffer.from(fromPublicKey, 'hex'),
-				Buffer.from(fromPrivateKey, 'hex'),
-			);
+			const signKeyPair =
+				algorithm === 'ed25519'
+					? Keys.Ed25519.parseKeyPair(
+							Buffer.from(fromPublicKey, 'hex'),
+							Buffer.from(fromPrivateKey, 'hex'),
+					  )
+					: Keys.Secp256K1.parseKeyPair(
+							Buffer.from(fromPublicKey, 'hex'),
+							Buffer.from(fromPrivateKey, 'hex'),
+							'raw',
+					  );
 
 			let networkName = network === 'mainnet' ? 'casper' : 'casper-test';
 

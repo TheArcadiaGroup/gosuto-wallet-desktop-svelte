@@ -4,10 +4,11 @@ import { ethers } from 'ethers';
 
 export default async (
 	fromPublicKey: string,
-	fromPrivateKey: string | Uint8Array,
+	fromPrivateKey: string,
 	toPublicKey: string,
 	amount: number,
 	network: 'testnet' | 'mainnet' = 'testnet',
+	algorithm: 'secp256k1' | 'ed25519' = 'ed25519',
 ) => {
 	try {
 		const casperClient = new CasperClient(getEndpointByNetwork(network));
@@ -18,12 +19,18 @@ export default async (
 
 		const amountAsBigNumber = ethers.utils.parseUnits(amount.toString(), 9); // Convert the digit amount to BigNumber
 
-		const signKeyPair = Keys.Ed25519.parseKeyPair(
-			Buffer.from(fromPublicKey, 'hex'),
-			fromPrivateKey.length !== 128 && Array.isArray(fromPrivateKey)
-				? Keys.Ed25519.parsePrivateKey(fromPrivateKey as Uint8Array)
-				: Buffer.from(fromPrivateKey as string, 'hex'),
-		);
+		console.log(fromPublicKey, fromPrivateKey, algorithm);
+		const signKeyPair =
+			algorithm === 'ed25519'
+				? Keys.Ed25519.parseKeyPair(
+						Buffer.from(fromPublicKey, 'hex'),
+						Buffer.from(fromPrivateKey as string, 'hex'),
+				  )
+				: Keys.Secp256K1.parseKeyPair(
+						Buffer.from(fromPublicKey, 'hex'),
+						Buffer.from(fromPrivateKey as string, 'hex'),
+						'raw',
+				  );
 
 		let networkName = network === 'mainnet' ? 'casper' : 'casper-test';
 

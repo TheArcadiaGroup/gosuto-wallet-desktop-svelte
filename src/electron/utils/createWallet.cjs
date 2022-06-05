@@ -33,32 +33,41 @@ module.exports = {
 			accountHex,
 			accountHash,
 			privateKey,
+			algorithm: 'ed25519',
 		};
 	},
 
 	// Genereate it based on file
 	generateFromFile: async (fileContents) => {
-		const { algorithm, secretKeyBase64 } = parseAlgorithm(fileContents);
-		let privateKeyUint8 = '';
-		let publicKeyUint8;
-		let keyPair;
-		privateKeyUint8 = secretKeyBase64;
-		if (algorithm === 'ed25519') {
-			publicKeyUint8 = Keys.Ed25519.privateToPublicKey(
-				Keys.Ed25519.parsePrivateKey(privateKeyUint8),
-			);
-			keyPair = Keys.Ed25519.parseKeyPair(publicKeyUint8, privateKeyUint8);
-		} else {
-			publicKeyUint8 = Keys.Secp256K1.privateToPublicKey(
-				Keys.Secp256K1.parsePrivateKey(privateKeyUint8),
-			);
-			keyPair = Keys.Secp256K1.parseKeyPair(publicKeyUint8, privateKeyUint8);
-		}
+		try {
+			const { algorithm, secretKeyBase64 } = parseAlgorithm(fileContents);
+			let privateKeyUint8 = '';
+			let publicKeyUint8;
+			let keyPair;
+			privateKeyUint8 = secretKeyBase64;
 
-		return {
-			accountHash: Buffer.from(keyPair.accountHash()).toString('hex'),
-			accountHex: keyPair.accountHex(),
-			privateKey: Buffer.from(keyPair.privateKey, 'hex').toString('hex'),
-		};
+			if (algorithm === 'ed25519') {
+				publicKeyUint8 = Keys.Ed25519.privateToPublicKey(
+					Keys.Ed25519.parsePrivateKey(privateKeyUint8),
+				);
+				keyPair = Keys.Ed25519.parseKeyPair(publicKeyUint8, privateKeyUint8);
+			} else if (algorithm === 'secp256k1') {
+				publicKeyUint8 = Keys.Secp256K1.privateToPublicKey(
+					Keys.Secp256K1.parsePrivateKey(privateKeyUint8, 'raw'),
+				);
+				keyPair = Keys.Secp256K1.parseKeyPair(publicKeyUint8, privateKeyUint8, 'raw');
+			} else {
+				throw 'App Only Supports secp256K1 and ed25519 Algorithms';
+			}
+
+			return {
+				accountHash: Buffer.from(keyPair.accountHash()).toString('hex'),
+				accountHex: keyPair.accountHex(),
+				privateKey: Buffer.from(keyPair.privateKey).toString('hex'),
+				algorithm: algorithm,
+			};
+		} catch (error) {
+			throw error;
+		}
 	},
 };

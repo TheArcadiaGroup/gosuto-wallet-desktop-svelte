@@ -104,6 +104,7 @@ declare global {
 		walletAddress: string;
 		accountHash: string;
 		privateKey: string;
+		algorithm: 'ed25519' | 'secp256k1';
 	}
 
 	interface IToken {

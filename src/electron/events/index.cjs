@@ -65,6 +65,7 @@ module.exports = () => {
 		const toPublicKey = data.recipientWallet;
 		const amount = data.amount;
 		const network = data.network || 'testnet';
+		const algorithm = data.algorithm || 'ed25519';
 
 		try {
 			const res = await account.sendTransaction({
@@ -73,6 +74,7 @@ module.exports = () => {
 				toPublicKey: toPublicKey,
 				amount: amount,
 				network: network,
+				algorithm: algorithm,
 			});
 
 			sendMessage(
@@ -87,14 +89,14 @@ module.exports = () => {
 					id: data.id,
 					error: err,
 					data: null,
-					message: 'Encountered Message While Transferring CSPR Tokens',
+					message: 'Encountered Error While Transferring CSPR Tokens',
 				}),
 			);
 			event.returnValue = JSON.stringify({
 				id: data.id,
 				error: err,
 				data: null,
-				message: 'Encountered Message While Transferring CSPR Tokens',
+				message: 'Encountered Error While Transferring CSPR Tokens',
 			});
 		}
 	});
@@ -158,8 +160,16 @@ module.exports = () => {
 	ipcMain.on('delegate', async (event, data) => {
 		data = JSON.parse(data);
 
-		const { id, privateKey, accountHash, walletAddress, validatorPublicKey, amount, network } =
-			data;
+		const {
+			id,
+			privateKey,
+			accountHash,
+			walletAddress,
+			validatorPublicKey,
+			amount,
+			network,
+			algorithm,
+		} = data;
 
 		try {
 			const response = await delegate({
@@ -169,6 +179,7 @@ module.exports = () => {
 				validatorPublicKey,
 				amount,
 				network: network ?? 'testnet',
+				algorithm: algorithm ?? 'ed25519',
 			});
 			sendMessage(
 				'delegateResponse',
@@ -209,8 +220,16 @@ module.exports = () => {
 	ipcMain.on('undelegate', async (event, data) => {
 		data = JSON.parse(data);
 
-		const { id, privateKey, accountHash, walletAddress, validatorPublicKey, amount, network } =
-			data;
+		const {
+			id,
+			privateKey,
+			accountHash,
+			walletAddress,
+			validatorPublicKey,
+			amount,
+			network,
+			algorithm,
+		} = data;
 
 		try {
 			const response = await undelegate({
@@ -220,7 +239,8 @@ module.exports = () => {
 				publicKey: walletAddress,
 				validatorPublicKey,
 				amount,
-				network,
+				network: network ?? 'tesnet',
+				algorithm: algorithm ?? 'ed25519',
 			});
 			sendMessage(
 				'undelegateResponse',
@@ -241,13 +261,13 @@ module.exports = () => {
 				JSON.stringify({
 					id: data.id,
 					error: error,
-					message: 'Encountered Message While Executing Unstake Request',
+					message: 'Encountered Error While Executing Unstake Request',
 				}),
 			);
 			event.returnValue = JSON.stringify({
 				id: data.id,
 				error: error,
-				message: 'Encountered Message While Executing Unstake Request',
+				message: 'Encountered Error While Executing Unstake Request',
 			});
 		}
 	});

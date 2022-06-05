@@ -21,6 +21,7 @@
 	let privateKey: string;
 	let walletValid = true;
 	let walletExists = false;
+	let algorithm: 'secp256k1' | 'ed25519' = 'ed25519';
 
 	/**
 	 * @function
@@ -46,7 +47,7 @@
 
 	/** Sends wallet creation data to api route to create a wallet*/
 	const postData = async () => {
-		if (walletName && accountHash && accountHex && password && privateKey) {
+		if (walletName && accountHash && accountHex && password && privateKey && algorithm) {
 			let wallets: IWallet[] = retrieveData('wallets') || [];
 
 			wallets.push({
@@ -60,6 +61,7 @@
 				unclaimedRewards: 0.0,
 				walletTokens: [],
 				walletStakes: [],
+				algorithm,
 				// walletHistory: [],
 				walletAddress: accountHex.trim(),
 				accountHash: accountHash.trim(),
@@ -74,8 +76,12 @@
 	};
 
 	const confirmAndSendMnemonics = () => {
-		const data: { accountHex: string; accountHash: string; privateKey: string } =
-			window.api.sendSync('createWalletFromMnemonics', seedPhrase);
+		const data: {
+			accountHex: string;
+			accountHash: string;
+			privateKey: string;
+			algorithm: 'secp256k1' | 'ed25519';
+		} = window.api.sendSync('createWalletFromMnemonics', seedPhrase);
 		try {
 			if (data?.accountHex && data?.accountHash && data?.privateKey) {
 				const walletCreationResult = data;
@@ -89,6 +95,7 @@
 					accountHex = walletCreationResult['accountHex'];
 					accountHash = walletCreationResult['accountHash'];
 					privateKey = walletCreationResult['privateKey'];
+					algorithm = walletCreationResult['algorithm'];
 					walletExists = false;
 					postData();
 				}
