@@ -406,7 +406,7 @@ export const getUserDelegatedAmount = async (
 					if (selWallet) {
 						selWallet.walletStakes = wallet.walletStakes;
 						selectedWallet.update(() => selWallet);
-						saveData('selectedProfile', JSON.stringify(selWallet));
+						saveData('selectedWallet', JSON.stringify(selWallet));
 					}
 				}
 			}

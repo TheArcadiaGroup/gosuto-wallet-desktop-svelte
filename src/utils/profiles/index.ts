@@ -1,25 +1,25 @@
 import { selectedWallet } from '$stores/user/wallets';
 import { retrieveData, saveData } from '$utils/dataStorage';
 
-export const loadSelectedProfile = () => {
+export const loadSelectedWallet = () => {
 	try {
-		let selectedProfile: IWallet | null;
+		let selectedWallet: IWallet | null;
 		const wallets = retrieveData('wallets') || [];
 		const defaultWalletIndex = +retrieveData('defaultWalletIndex') || 0;
 		if (wallets?.length === 0) {
-			selectedProfile = null;
+			selectedWallet = null;
 		} else {
 			if (defaultWalletIndex > wallets?.length - 1) {
-				selectedProfile = wallets[0];
-				selectedWallet.set(selectedProfile);
+				selectedWallet = wallets[0];
+				selectedWallet.set(selectedWallet);
 				saveData('defaultWalletIndex', '0');
 			} else {
-				selectedProfile = wallets[defaultWalletIndex];
-				selectedWallet.set(selectedProfile);
+				selectedWallet = wallets[defaultWalletIndex];
+				selectedWallet.set(selectedWallet);
 				saveData('defaultWalletIndex', defaultWalletIndex.toString());
 			}
 		}
-		return selectedProfile;
+		return selectedWallet;
 	} catch (error) {
 		console.log(error);
 		return null;

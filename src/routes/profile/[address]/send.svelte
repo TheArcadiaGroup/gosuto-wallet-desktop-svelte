@@ -11,7 +11,7 @@
 	import { goto } from '$app/navigation';
 	import { previousSelectedWallet, selectedWallet, wallets } from '$stores/user/wallets';
 	import { tokens } from '$stores/user/tokens';
-	import { pollyfillSelectedProfile, pollyFillTokens } from '$utils/pollyfillData';
+	import { pollyfillSelectedWallet, pollyFillTokens } from '$utils/pollyfillData';
 	import { page } from '$app/stores';
 	import { loadTokenBalance, receiveTokenBalance } from '$utils/tokens';
 
@@ -34,7 +34,7 @@
 
 		// load profile first
 		if ($selectedWallet?.walletAddress.toLowerCase() !== $page.params['address'].toLowerCase()) {
-			pollyfillSelectedProfile();
+			pollyfillSelectedWallet();
 		}
 
 		// If no tokens are present, load them

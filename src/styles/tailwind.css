@@ -59,7 +59,7 @@
 }
 
 .swiper-button-disabled {
-	@apply cursor-pointer dark:hover:border-white hover:border-light-gray;
+	@apply cursor-pointer dark:hover:border-white hover:border-light-gray opacity-50;
 }
 
 /* hide number input arrows */

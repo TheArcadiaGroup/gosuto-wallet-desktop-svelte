@@ -19,7 +19,6 @@ export default async (
 
 		const amountAsBigNumber = ethers.utils.parseUnits(amount.toString(), 9); // Convert the digit amount to BigNumber
 
-		console.log(fromPublicKey, fromPrivateKey, algorithm);
 		const signKeyPair =
 			algorithm === 'ed25519'
 				? Keys.Ed25519.parseKeyPair(
@@ -27,7 +26,7 @@ export default async (
 						Buffer.from(fromPrivateKey as string, 'hex'),
 				  )
 				: Keys.Secp256K1.parseKeyPair(
-						Buffer.from(fromPublicKey, 'hex'),
+						Buffer.from(fromPublicKey.slice(2), 'hex'),
 						Buffer.from(fromPrivateKey as string, 'hex'),
 						'raw',
 				  );

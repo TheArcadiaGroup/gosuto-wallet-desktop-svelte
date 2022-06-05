@@ -12,7 +12,7 @@ import { getTokenValue } from './token.util';
 
 export const pollyFillTokens = async () => {
 	// Get current cspr token price in usd
-	const selectedWallet = pollyfillSelectedProfile();
+	const selectedWallet = pollyfillSelectedWallet();
 	let walletsInDB: DBTokens = retrieveData('tokens');
 
 	// Add global token to the global tokens array if not present (this is common when the app has been initialized and its data is not available any more)
@@ -96,33 +96,33 @@ export const pollyFillWallets = () => {
 	return dbWallets;
 };
 
-export const pollyfillSelectedProfile = () => {
+export const pollyfillSelectedWallet = () => {
 	// Wallets
-	let dbSelectedProfile: IWallet = retrieveData('selectedProfile');
+	let dbSelectedWallet: IWallet = retrieveData('selectedWallet');
 
-	if (!dbSelectedProfile) {
+	if (!dbSelectedWallet) {
 		// If its not present, get the first item from the wallets array, if it doesn't exist, a better option is to redirect to onboarding for the user to create wallet.
 		const dbWallets: IWallet[] = retrieveData('wallets');
-		dbSelectedProfile = dbWallets[0] || null;
+		dbSelectedWallet = dbWallets[0] || null;
 	}
 
-	if (dbSelectedProfile) {
-		saveData('selectedProfile', JSON.stringify(dbSelectedProfile));
+	if (dbSelectedWallet) {
+		saveData('selectedWallet', JSON.stringify(dbSelectedWallet));
 
-		selectedWallet.set(dbSelectedProfile);
+		selectedWallet.set(dbSelectedWallet);
 
-		if (!get(walletLoaders)[dbSelectedProfile.walletAddress]) {
+		if (!get(walletLoaders)[dbSelectedWallet.walletAddress]) {
 			console.log('Loading Wallet Info');
-			loadWalletData(dbSelectedProfile.walletAddress);
+			loadWalletData(dbSelectedWallet.walletAddress);
 		}
 	}
 
-	return dbSelectedProfile;
+	return dbSelectedWallet;
 };
 
 export default () => {
 	pollyFillUser();
 	pollyFillWallets();
-	pollyfillSelectedProfile();
+	pollyfillSelectedWallet();
 	pollyFillTokens();
 };

@@ -57,7 +57,7 @@ export const delegate = (
 						Buffer.from(privateKey as string, 'hex'),
 				  )
 				: Keys.Secp256K1.parseKeyPair(
-						Buffer.from(publicKey, 'hex'),
+						Buffer.from(publicKey.slice(2), 'hex'),
 						Buffer.from(privateKey as string, 'hex'),
 						'raw',
 				  );
@@ -169,7 +169,7 @@ export const undelegate = (
 						Buffer.from(privateKey as string, 'hex'),
 				  )
 				: Keys.Secp256K1.parseKeyPair(
-						Buffer.from(publicKey, 'hex'),
+						Buffer.from(publicKey.slice(2), 'hex'),
 						Buffer.from(privateKey as string, 'hex'),
 						'raw',
 				  );

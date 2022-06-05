@@ -11,7 +11,7 @@
 
 	import { onMount } from 'svelte';
 	import { selectedWallet, wallets } from '$stores/user/wallets';
-	import pollyfillData, { pollyfillSelectedProfile } from '$utils/pollyfillData';
+	import pollyfillData, { pollyfillSelectedWallet } from '$utils/pollyfillData';
 
 	import { goto } from '$app/navigation';
 	import { retrieveData, saveData } from '$utils/dataStorage';
@@ -43,7 +43,7 @@
 		}
 
 		if (!wallet) {
-			wallet = pollyfillSelectedProfile();
+			wallet = pollyfillSelectedWallet();
 			if (!wallet) {
 				goto('/profile');
 			}
@@ -81,7 +81,7 @@
 				),
 			);
 
-			saveData('selectedProfile', JSON.stringify(wallet));
+			saveData('selectedWallet', JSON.stringify(wallet));
 			pollyfillData();
 		}
 	};
@@ -118,7 +118,7 @@
 			});
 
 			saveData('wallets', JSON.stringify(_wallets));
-			saveData('selectedProfile', JSON.stringify(wallet));
+			saveData('selectedWallet', JSON.stringify(wallet));
 			pollyfillData();
 		}
 	};

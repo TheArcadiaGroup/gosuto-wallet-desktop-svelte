@@ -2,7 +2,7 @@
 - Data to store
 - user
 - wallets
-- selectedProfile or wallet
+- selectedWallet or wallet
 - history (mapped object)
 - stake information
 - tokens

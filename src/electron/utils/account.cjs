@@ -71,7 +71,7 @@ module.exports = {
 							Buffer.from(fromPrivateKey, 'hex'),
 					  )
 					: Keys.Secp256K1.parseKeyPair(
-							Buffer.from(fromPublicKey, 'hex'),
+							Buffer.from(fromPublicKey.slice(2), 'hex'),
 							Buffer.from(fromPrivateKey, 'hex'),
 							'raw',
 					  );

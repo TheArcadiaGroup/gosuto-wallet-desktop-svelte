@@ -26,30 +26,37 @@
 	export let wallet: IWallet;
 
 	function saveAddress() {
-		saveData('selectedProfile', JSON.stringify(wallet));
+		console.log(wallet.walletName);
 		selectedWallet.set(wallet);
+		saveData('selectedWallet', JSON.stringify(wallet));
 
-		if ($page.params.address && $page.params.address !== wallet.walletAddress) {
-			const newUrl = $page.url.pathname.replace($page.params.address, wallet.walletAddress);
-
-			// Only send load request when it is not currently loading
-			if (!$walletLoaders[wallet.walletAddress]) {
-				loadWalletData(wallet.walletAddress);
-			}
-
-			goto(newUrl);
-			return;
+		if (!$walletLoaders[wallet.walletAddress]) {
+			loadWalletData(wallet.walletAddress);
 		}
+		goto(`/profile/${$selectedWallet?.walletAddress}/history`);
 
-		if ($page.url.pathname === '/profile') {
-			goto(`/profile/${$selectedWallet?.walletAddress}/history`);
-		}
+		// There's a bug related to this and we don't want to break this until we find the culprit
+		// if ($page.params.address && $page.params.address !== wallet.walletAddress) {
+		// 	const newUrl = $page.url.pathname.replace($page.params.address, wallet.walletAddress);
+
+		// 	// Only send load request when it is not currently loading
+		// 	if (!$walletLoaders[wallet.walletAddress]) {
+		// 		loadWalletData(wallet.walletAddress);
+		// 	}
+
+		// 	goto(newUrl);
+		// 	return;
+		// }
+
+		// if ($page.url.pathname === '/profile') {
+		// 	goto(`/profile/${$selectedWallet?.walletAddress}/history`);
+		// }
 
 		return;
 	}
 </script>
 
-<div class="container" on:click={saveAddress}>
+<div class="credit-card-container" on:click={saveAddress}>
 	<div class="data-column">
 		<div class="pp-and-name">
 			<div class="pp">
@@ -130,9 +137,11 @@
 </div>
 
 <style lang="postcss" global>
-	:local(.container) {
-		@apply lg:aspect-[16/10] rounded-xl w-full overflow-hidden transition-all border hover:border-light-purple border-white text-xs box-border relative shadow-md hover:shadow-lg aspect-[16/10] md:aspect-auto bg-white;
+	:local(.credit-card-container) {
+		@apply lg:aspect-[16/10] rounded-xl w-full overflow-hidden transition-all;
+		@apply border hover:border-light-purple border-white text-xs box-border relative shadow-md hover:shadow-lg aspect-[16/10] md:aspect-auto bg-white;
 		@apply dark:border-dark-grey dark:bg-dark-grey dark:shadow-sm dark:hover:shadow-md  dark:shadow-light-purple dark:hover:shadow-light-purple max-w-xs;
+		@apply cursor-pointer;
 	}
 
 	:local(.data-column) {
@@ -170,10 +179,10 @@
 	:local(.wallet_name) {
 		@apply text-xs font-bold text-light-purple;
 	}
-
+	/* 
 	:local(.unclaimed) {
 		@apply flex flex-row items-center gap-1;
-	}
+	} */
 
 	:local(.purple-triangle) {
 		@apply w-full -mt-1 -mr-1 absolute right-0 top-0;

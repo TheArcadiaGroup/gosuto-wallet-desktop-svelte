@@ -51,7 +51,7 @@ module.exports = {
 				algorithm === 'ed25519'
 					? Keys.Ed25519.parseKeyPair(Buffer.from(publicKey, 'hex'), Buffer.from(privateKey, 'hex'))
 					: Keys.Secp256K1.parseKeyPair(
-							Buffer.from(publicKey, 'hex'),
+							Buffer.from(publicKey.slice(2), 'hex'),
 							Buffer.from(privateKey, 'hex'),
 							'raw',
 					  );
@@ -108,7 +108,7 @@ module.exports = {
 			algorithm === 'ed25519'
 				? Keys.Ed25519.parseKeyPair(Buffer.from(publicKey, 'hex'), Buffer.from(privateKey, 'hex'))
 				: Keys.Secp256K1.parseKeyPair(
-						Buffer.from(publicKey, 'hex'),
+						Buffer.from(publicKey.slice(2), 'hex'),
 						Buffer.from(privateKey, 'hex'),
 						'raw',
 				  );

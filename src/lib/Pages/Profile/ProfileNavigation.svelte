@@ -77,7 +77,7 @@
 				goto(`/${forRoute}/${walletAddress}/${selection}`);
 			} else if ($wallets.length > 0) {
 				saveData(
-					'selectedProfile',
+					'selectedWallet',
 					JSON.stringify($wallets.filter((wallet) => wallet.walletAddress === walletAddress)[0]),
 				);
 				goto(`/${forRoute}/${walletAddress}/${selection}`);

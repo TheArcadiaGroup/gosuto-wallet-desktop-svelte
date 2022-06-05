@@ -7,7 +7,7 @@
 	import { page } from '$app/stores';
 	import { getSingleAccountHistory } from '$utils/getHistory';
 	import { sidebarContent } from '$stores/HistoryStore';
-	import { pollyFillWallets, pollyFillUser, pollyfillSelectedProfile } from '$utils/pollyfillData';
+	import { pollyFillWallets, pollyFillUser, pollyfillSelectedWallet } from '$utils/pollyfillData';
 	import { previousSelectedWallet, selectedWallet, wallets } from '$stores/user/wallets';
 	import { saveData } from '$utils/dataStorage';
 	import { user } from '$stores/user';
@@ -35,7 +35,7 @@
 				selectedWallet.set(newlySelectedWallet);
 				saveData('selectedProfile', JSON.stringify(newlySelectedWallet));
 			} else {
-				pollyfillSelectedProfile();
+				pollyfillSelectedWallet();
 			}
 		}
 	};
@@ -66,7 +66,7 @@
 	});
 
 	selectedWallet.subscribe((_wallet) => {
-		if (_wallet?.walletAddress !== $previousSelectedWallet?.walletAddress) {
+		if (_wallet?.walletAddress) {
 			getData();
 		}
 	});

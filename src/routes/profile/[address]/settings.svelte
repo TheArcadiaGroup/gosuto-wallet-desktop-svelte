@@ -7,7 +7,7 @@
 	import ProfileNavigation from '$lib/pages/Profile/ProfileNavigation.svelte';
 	import Settings from '$lib/pages/Profile/WalletSettings/index.svelte';
 	import { selectedWallet, wallets } from '$stores/user/wallets';
-	import { pollyfillSelectedProfile, pollyFillUser } from '$utils/pollyfillData';
+	import { pollyfillSelectedWallet, pollyFillUser } from '$utils/pollyfillData';
 	import { onMount } from 'svelte';
 
 	onMount(() => {
@@ -18,7 +18,7 @@
 
 		// load profile first
 		if ($selectedWallet?.walletAddress.toLowerCase() !== $page.params['address'].toLowerCase()) {
-			pollyfillSelectedProfile();
+			pollyfillSelectedWallet();
 		}
 
 		// Retrieve the selected profile off the user
