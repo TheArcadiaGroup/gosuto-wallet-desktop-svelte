@@ -44,7 +44,10 @@ export const getCSPRUsdPrice = async () => {
 		const casperPriceChangePercentage24h = (casperInformation.data.market_data as any)
 			.price_change_percentage_24h;
 
-		csprPrice.set(price);
+		csprPrice.set({
+			price,
+			price_change: casperPriceChangePercentage24h,
+		});
 
 		return {
 			price,

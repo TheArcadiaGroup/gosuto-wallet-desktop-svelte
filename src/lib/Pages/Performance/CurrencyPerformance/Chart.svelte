@@ -71,6 +71,7 @@
 								lineHeight: '28px',
 								weight: 'bold',
 							},
+							precision: 6,
 						},
 						grid: {
 							borderDash: [4],
@@ -132,6 +133,12 @@
 			},
 		});
 	};
+
+	$: ((changed) => {
+		if (changed && chart) {
+			reRenderChart();
+		}
+	})(chartPrices);
 </script>
 
 <svelte:window on:resize={reRenderChart} />

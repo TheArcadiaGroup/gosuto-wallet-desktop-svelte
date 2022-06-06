@@ -2,8 +2,9 @@
 	import { onMount } from 'svelte';
 
 	import CurrencyPerfomance from '$lib/pages/Performance/CurrencyPerformance/CurrencyPerfomance.svelte';
-	import { getAllTokens } from '$utils/token.util';
+	// import { getAllTokens } from '$utils/token.util';
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
+	import { getCoinChart } from '$utils/charts';
 
 	/**
 	 * This is the array of tokens, that will be shown in this route. It is being populated by the onMount hook.
@@ -36,35 +37,19 @@
 	 * ]
 	 * }]
 	 */
-	let currencyPerfomance = [];
+	let currencyPerfomance: {
+		tokenName: string;
+		price: number;
+		percentageChange: number;
+		chartPrices: {
+			day: ChartPrice[];
+			week: ChartPrice[];
+			month: ChartPrice[];
+		};
+	}[] = [];
 
 	onMount(async () => {
-		const currencies = getAllTokens();
-
-		for (const currency of currencies) {
-			// @ts-ignore
-			const price = await (
-				await fetch('/api/tokens/value/' + encodeURIComponent(currency.contractAddress))
-			).json();
-			// @ts-ignore
-			const currencyHistory = await (
-				await fetch('/api/tokens/value/history/' + encodeURIComponent(currency.contractAddress))
-			).json();
-
-			const lastY = currencyHistory[0].y;
-			const startY = currencyHistory[currencyHistory.length - 1].y;
-
-			const percentage =
-				startY < lastY ? Math.floor((lastY / startY) * 100) : -Math.floor((startY / lastY) * 100);
-
-			currencyPerfomance[currencyPerfomance.length] = {
-				tokenName: currency.tokenName + ` (${currency.tokenTicker})`,
-				price: price.value,
-				percentageChange: percentage,
-				chartPrices: currencyHistory,
-			};
-		}
-
+		currencyPerfomance = [await getCoinChart('casper-network', 'Casper (CSPR)')];
 		console.log(currencyPerfomance);
 	});
 </script>

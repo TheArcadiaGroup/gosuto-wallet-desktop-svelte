@@ -96,7 +96,7 @@
 			: ' dark:text-white'}"
 	>
 		{parseFloat(
-			(amount * $csprPrice[$user?.currency || 'usd']).toFixed(2),
+			(amount * $csprPrice.price[$user?.currency || 'usd']).toFixed(2),
 		)}&nbsp;{$user?.currency.toUpperCase()}
 	</div>
 	<div class="select-container">

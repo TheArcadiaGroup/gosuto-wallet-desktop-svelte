@@ -84,7 +84,7 @@
 					{#if !$walletLoaders[wallet.walletAddress]}
 						<span class="block mr-1">
 							{parseFloat(
-								(wallet?.availableBalance * $csprPrice[$user?.currency || 'usd']).toFixed(2),
+								(wallet?.availableBalance * $csprPrice.price[$user?.currency || 'usd']).toFixed(2),
 							) || 0}
 						</span>
 					{:else}
@@ -101,7 +101,7 @@
 				{#if !$walletLoaders[wallet.walletAddress]}
 					<span class="block mr-1">
 						{parseFloat(
-							(wallet?.stakedBalance * $csprPrice[$user?.currency || 'usd']).toFixed(2),
+							(wallet?.stakedBalance * $csprPrice.price[$user?.currency || 'usd']).toFixed(2),
 						) || 0}
 					</span>
 				{:else}
@@ -116,7 +116,7 @@
 				{#if !$walletLoaders[wallet.walletAddress]}
 					<span class="block mr-1">
 						{parseFloat(
-							(wallet?.unclaimedRewards * $csprPrice[$user?.currency || 'usd']).toFixed(2),
+							(wallet?.unclaimedRewards * $csprPrice.price[$user?.currency || 'usd']).toFixed(2),
 						) || 0}
 					</span>
 				{:else}

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ChevronDownIcon from '$icons/ChevronDownIcon.svelte';
-	export let rangeOptions: string[] = ['1 Day', '1 Week', '1 Month'];
-	export let selectedRange: string = rangeOptions[0];
+	export let rangeOptions: string[] = ['day', 'week', 'month'];
+	export let selectedRange: string = 'day';
 	let dropDown: boolean = false;
 </script>
 
@@ -12,19 +12,16 @@
 			dropDown = !dropDown;
 		}}
 		type="button"
-		class="dropdown-button"
+		class="dropdown-button capitalize"
 		id="dropdown-button"
 		aria-expanded="true"
 		aria-haspopup="true"
 	>
-		{selectedRange}
+		1 {selectedRange}
 		<div class="dropdown-icon">
 			<ChevronDownIcon />
 		</div>
 	</button>
-	<!-- </div> -->
-	<!-- TODO uncomment the dropdown menu and when the menu design is available and use the necessary styles. -->
-
 	<div
 		class:hidden={!dropDown}
 		class="dropdown-menu"
@@ -40,11 +37,11 @@
 						selectedRange = rangeOption;
 						dropDown = false;
 					}}
-					class="dropdown-menu-item-button"
+					class="dropdown-menu-item-button capitalize"
 					role="menuitem"
 					tabindex="-1"
 				>
-					{rangeOption}
+					1 {rangeOption}
 				</button>
 			{/each}
 		</div>

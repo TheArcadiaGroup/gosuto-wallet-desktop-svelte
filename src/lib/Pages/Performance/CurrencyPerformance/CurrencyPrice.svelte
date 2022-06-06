@@ -6,7 +6,7 @@
 </script>
 
 <div class="price-wrapper">
-	<h3 class="price ">${price} ${$user?.currency.toUpperCase() || 'USD'}</h3>
+	<h3 class="price ">${price.toFixed(5)} ${$user?.currency.toUpperCase() || 'USD'}</h3>
 	<span
 		class="percentage-change {percentageChange > 0
 			? 'text-light-green'

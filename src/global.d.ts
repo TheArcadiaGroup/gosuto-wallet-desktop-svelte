@@ -201,9 +201,8 @@ declare global {
 	}
 
 	interface CSPRPrices {
-		usd: number;
-		jpy: number;
-		eur: number;
+		price_change: number;
+		price: { usd: number; jpy: number; eur: number };
 	}
 
 	interface ProfileSettings {

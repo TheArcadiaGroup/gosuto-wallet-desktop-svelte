@@ -7,7 +7,14 @@
 	export let price: number;
 	export let percentageChange: number;
 	export let tokenName: string;
-	export let chartPrices: ChartPrice[];
+	export let chartPrices: {
+		day: ChartPrice[];
+		week: ChartPrice[];
+		month: ChartPrice[];
+	};
+
+	let selectedRange: 'day' | 'week' | 'month';
+	$: selectedRange = 'day';
 </script>
 
 <div class="card">
@@ -16,10 +23,10 @@
 			<CurrencyName {tokenName} />
 			<CurrencyPrice {price} {percentageChange} />
 		</div>
-		<SelectMenu />
+		<SelectMenu bind:selectedRange />
 	</div>
 
-	<Chart {chartPrices} />
+	<Chart chartPrices={chartPrices[selectedRange]} />
 </div>
 
 <style lang="postcss" global>

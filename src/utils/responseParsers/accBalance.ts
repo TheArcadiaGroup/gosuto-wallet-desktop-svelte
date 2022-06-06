@@ -90,7 +90,10 @@ export const parseBalanceResponse = (response: any) => {
 		})
 		.catch((err) => {
 			console.log(err);
-			parseWalletDataGivenPrice(response, { price: get(csprPrice), price_change: 0 });
+			parseWalletDataGivenPrice(response, {
+				price: get(csprPrice).price,
+				price_change: get(csprPrice).price_change,
+			});
 		});
 };
 
