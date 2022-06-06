@@ -27,7 +27,10 @@
 			<div class="leftcontent">
 				<div>
 					<span class="tx-type">
-						{historyObject.transactionType}
+						{historyObject.transactionType.split('_')[0]}
+						<span class="contract-call">
+							{historyObject.contract_call ? ' - ' + historyObject.contract_call : ''}
+						</span>
 						<span
 							class="tx-status block ml-2"
 							title={historyObject.error ? historyObject.error : ''}
@@ -63,7 +66,7 @@
 						swapData={historyObject.swap}
 						clicked={selectedHistoryItem?.deployHash === historyObject.deployHash}
 					/>
-				{:else}
+				{:else if historyObject.transactionType !== 'contract_call'}
 					<Amount
 						type={historyObject.transactionType === 'stake' ||
 						historyObject.transactionType === 'send'
@@ -98,6 +101,9 @@
 	}
 	:local(.tx-type) {
 		@apply text-sm md:text-xl font-bold dark:text-white capitalize flex items-center;
+	}
+	:local(.contract-call) {
+		@apply text-xs dark:text-white flex ml-3 lowercase;
 	}
 	:local(.wallet) {
 		@apply text-xs md:font-bold dark:text-dark-textGray;

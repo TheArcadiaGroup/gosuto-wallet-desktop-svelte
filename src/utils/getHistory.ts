@@ -53,15 +53,25 @@ const consumeHistoryData = async (
 			const deployResult = await casperClient.getDeploy(item.deployHash);
 			const deploySession = deployResult[1].deploy.session;
 			const txFee = +ethers.utils.formatUnits(
-				deployResult[1].execution_results[0].result.Success?.cost.toString() ?? '1000000000',
+				deployResult[1].execution_results[0].result.Success?.cost ??
+					deployResult[1].execution_results[0].result.Failure?.cost ??
+					'0',
 				9,
 			);
 
+			const entry_point = (deploySession as any)['StoredContractByHash']?.entry_point;
+
 			// from txs
 			const amount =
-				(deploySession as any)['Transfer']?.args[0][1].parsed ||
-				(deploySession as any)['ModuleBytes']?.args[1][1].parsed ||
-				(deploySession as any)['StoredContractByHash']?.args[2][1].parsed;
+				(deploySession as any)['Transfer']?.args.filter(
+					(item: any) => item[0] === 'amount',
+				)?.[0]?.[1]?.parsed ??
+				(deploySession as any)['ModuleBytes']?.args.filter(
+					(item: any) => item[0] === 'amount',
+				)?.[0]?.[1]?.parsed ??
+				(entry_point === 'delegate' || entry_point === 'undelegate'
+					? (deploySession as any)['StoredContractByHash']?.args[2][1].parsed
+					: '0');
 
 			// TODO Improve checks here
 			let method: TxType = 'send';
@@ -104,19 +114,26 @@ const consumeHistoryData = async (
 				}
 			} else if ((deploySession as any)['StoredContractByHash']) {
 				// Check for delegate or undelegate
-				validator =
-					(deploySession as any)['StoredContractByHash']?.args[1][0] === 'validator'
-						? (deploySession as any)['StoredContractByHash']?.args[1][1].parsed
-						: null;
-				if ((deploySession as any)['StoredContractByHash']?.entry_point === 'delegate') {
+				if (entry_point === 'delegate') {
+					validator =
+						(deploySession as any)['StoredContractByHash']?.args[1][0] === 'validator'
+							? (deploySession as any)['StoredContractByHash']?.args[1][1].parsed
+							: null;
 					method = 'stake';
 					toAccount = validator!;
 					fromAccount = accountHash;
-				}
-				if ((deploySession as any)['StoredContractByHash']?.entry_point === 'undelegate') {
+				} else if (entry_point === 'undelegate') {
+					validator =
+						(deploySession as any)['StoredContractByHash']?.args[1][0] === 'validator'
+							? (deploySession as any)['StoredContractByHash']?.args[1][1].parsed
+							: null;
 					method = 'unstake';
 					toAccount = accountHash;
 					fromAccount = validator!;
+				} else {
+					method = 'contract_call';
+					toAccount = (deploySession as any)['StoredContractByHash'].hash;
+					fromAccount = accountHash;
 				}
 			}
 
@@ -125,7 +142,7 @@ const consumeHistoryData = async (
 				transactionType: method,
 				recipient: toAccount,
 				sender: fromAccount,
-				amount: +ethers.utils.formatUnits(amount, 9),
+				amount: +ethers.utils.formatUnits(amount ?? '0', 9),
 				deployHash: item.deployHash,
 				blockHash: item.blockHash,
 				transactionDate: new Date(item.timestamp),
@@ -134,6 +151,7 @@ const consumeHistoryData = async (
 				error: item.errorMessage ?? null,
 				swap: null,
 				stake: null,
+				contract_call: method === 'contract_call' ? entry_point : null,
 				walletName,
 			});
 

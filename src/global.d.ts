@@ -129,7 +129,8 @@ declare global {
 		| 'stake'
 		| 'initialStakeUnlock'
 		| 'unstake'
-		| 'claimReward';
+		| 'claimReward'
+		| 'contract_call';
 
 	// TODO: RETHINK THE HISTORY OBJECT GIVEN THE DATA WE ARE GETTING BACK
 	interface IHistory {
@@ -145,6 +146,7 @@ declare global {
 		validator: string | null; // only present in stake operations
 		error: string | null;
 		walletName: string;
+		contract_call: string | null;
 
 		// Swap History
 		swap: SwapData | null;

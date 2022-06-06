@@ -23,7 +23,8 @@
 		| 'Swap'
 		| 'Initial Stake Unlocked'
 		| 'Unstake'
-		| 'Claimed Reward' = 'Sent';
+		| 'Claimed Reward'
+		| 'Contract Call' = 'Sent';
 
 	let blockExplorerURLBase = `https://${$user?.network === 'testnet' ? 'testnet.' : ''}cspr.live`;
 </script>
@@ -31,7 +32,7 @@
 <div class="sidebar-card">
 	<div class="header">
 		<h4>
-			{status}
+			{sidebarData.contract_call ?? status}
 		</h4>
 		<h5>
 			{walletName}
@@ -44,7 +45,12 @@
 				<p
 					class="address clickable-address"
 					on:click={() =>
-						window.api.send('openUrl', `${blockExplorerURLBase}/account/${sidebarData?.recipient}`)}
+						window.api.send(
+							'openUrl',
+							sidebarData.transactionType === 'contract_call'
+								? `${blockExplorerURLBase}/contract/${sidebarData?.recipient}`
+								: `${blockExplorerURLBase}/account/${sidebarData?.recipient}`,
+						)}
 				>
 					{shortenAddress(sidebarData?.recipient)}
 				</p>
@@ -75,21 +81,23 @@
 			</p>
 		</div>
 	</div>
-	<div class="amount-holder">
-		<p class="to-from">Amount</p>
-		{#if status == 'Swap' && sidebarData.swap}
-			<Swap swapData={sidebarData.swap} smaller={true} />
-		{:else}
-			<div class="amount">
-				<Amount
-					type={status == 'Sent' || status == 'Stake' ? 'negative' : 'positive'}
-					amount={sidebarData?.amount}
-					clicked={false}
-					smaller={true}
-				/>
-			</div>
-		{/if}
-	</div>
+	{#if sidebarData.transactionType !== 'contract_call'}
+		<div class="amount-holder">
+			<p class="to-from">Amount</p>
+			{#if status == 'Swap' && sidebarData.swap}
+				<Swap swapData={sidebarData.swap} smaller={true} />
+			{:else}
+				<div class="amount">
+					<Amount
+						type={status == 'Sent' || status == 'Stake' ? 'negative' : 'positive'}
+						amount={parseFloat(sidebarData?.amount.toFixed(3))}
+						clicked={false}
+						smaller={true}
+					/>
+				</div>
+			{/if}
+		</div>
+	{/if}
 	<div class="bottom-holder">
 		<div class="address-holder">
 			<p class="to-from">Transaction Fee</p>
