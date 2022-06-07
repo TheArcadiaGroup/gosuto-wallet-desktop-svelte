@@ -30,7 +30,7 @@
 	let walletBalance = $selectedWallet!.availableBalance;
 
 	$: userIsDelegatorOnSelectedValidator = $selectedWallet?.walletStakes.some(
-		(item) => item.validator === selectedValidatorPublicKey,
+		(item) => item.validatorPublicKey === selectedValidatorPublicKey,
 	);
 	$: validatorInvalid =
 		$validators.some(

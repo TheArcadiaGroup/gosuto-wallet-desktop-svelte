@@ -17,26 +17,29 @@
 	export let stake: IStake;
 	export let selectedStake: IStake | null = null;
 
-	$: validator = $validators.find((item) => item.publicKey === stake?.validator);
+	$: validator = $validators.find((item) => item.publicKey === stake?.validatorPublicKey);
 	$: block_base_url = `https://${$user?.network === 'testnet' ? 'testnet.' : ''}cspr.live`;
 </script>
 
 <div
-	class="stake-card-item {selectedStake?.validator === stake.validator ? 'selected' : ''}"
+	class="stake-card-item {selectedStake?.validatorPublicKey === stake.validatorPublicKey
+		? 'selected'
+		: ''}"
 	on:click
 >
 	<div class="name">
 		<span
 			class="cursor-pointer"
 			title="Block Explorer Validator Profile"
-			on:click={() => window.api.send('openUrl', `${block_base_url}/validator/${stake?.validator}`)}
+			on:click={() =>
+				window.api.send('openUrl', `${block_base_url}/validator/${stake?.validatorPublicKey}`)}
 		>
-			{stake?.validator
+			{stake?.validatorPublicKey
 				? validator?.profile
 					? validator.profile.name
-					: stake?.validator.length === 66
-					? shortenAddress(stake?.validator)
-					: stake?.validator
+					: stake?.validatorPublicKey.length === 66
+					? shortenAddress(stake?.validatorPublicKey)
+					: stake?.validatorPublicKey
 				: 'Unknown Validator'}
 		</span>
 	</div>

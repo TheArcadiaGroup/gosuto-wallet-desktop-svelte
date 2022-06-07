@@ -27,7 +27,7 @@
 
 	/**Handler for clicking the "Unstake" button. Unstakes the stake.*/
 	function unstake() {
-		dispatch('unstake', { validatorPublicKey: stake?.validator, amount: tokenAmount });
+		dispatch('unstake', { validatorPublicKey: stake?.validatorPublicKey, amount: tokenAmount });
 	}
 
 	/**Handler for clicking the "Cancel" button. Cancels the unstake and hides the component.*/

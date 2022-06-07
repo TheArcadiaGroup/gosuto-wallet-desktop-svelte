@@ -14,7 +14,9 @@
 			...wallet.walletStakes.filter(
 				(item) =>
 					!stakeArray.some(
-						(stake) => stake.validator === item.validator && stake.walletName === item.walletName,
+						(stake) =>
+							stake.validatorPublicKey === item.validatorPublicKey &&
+							stake.walletName === item.walletName,
 					),
 			),
 		];

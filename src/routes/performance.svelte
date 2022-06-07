@@ -5,6 +5,7 @@
 	// import { getAllTokens } from '$utils/token.util';
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 	import { getCoinChart } from '$utils/charts';
+	import Loading from '$lib/components/Loading.svelte';
 
 	/**
 	 * This is the array of tokens, that will be shown in this route. It is being populated by the onMount hook.
@@ -47,10 +48,12 @@
 			month: ChartPrice[];
 		};
 	}[] = [];
+	$: loading = false;
 
 	onMount(async () => {
+		loading = true;
 		currencyPerfomance = [await getCoinChart('casper-network', 'Casper (CSPR)')];
-		console.log(currencyPerfomance);
+		loading = false;
 	});
 </script>
 
@@ -59,11 +62,15 @@
 		<Navbar />
 	</div>
 	<div class="global-grid-mid column-container">
-		<div class="card-container">
-			{#each currencyPerfomance as performance}
-				<CurrencyPerfomance {...performance} />
-			{/each}
-		</div>
+		{#if loading}
+			<Loading />
+		{:else}
+			<div class="card-container">
+				{#each currencyPerfomance as performance}
+					<CurrencyPerfomance {...performance} />
+				{/each}
+			</div>
+		{/if}
 	</div>
 </div>
 
