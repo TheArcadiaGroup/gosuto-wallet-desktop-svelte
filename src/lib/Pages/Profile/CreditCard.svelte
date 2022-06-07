@@ -26,7 +26,6 @@
 	export let wallet: IWallet;
 
 	function saveAddress() {
-		console.log(wallet.walletName);
 		selectedWallet.set(wallet);
 		saveData('selectedWallet', wallet);
 
