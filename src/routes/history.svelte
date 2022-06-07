@@ -16,19 +16,17 @@
 	$: allHistory;
 
 	$: $userHistory &&
-		Object.keys($userHistory).map((item) => {
-			if ($userHistory && $userHistory[item] && $userHistory[item]?.data) {
-				if ($userHistory?.[item]?.data) {
-					const filteredItem =
-						$userHistory[item]?.data?.filter(
-							(newItem) =>
-								!allHistory.some((previousItem) => previousItem.deployHash === newItem.deployHash),
-						) ?? [];
+		Object.keys($userHistory[$user?.network ?? 'testnet']).map((item) => {
+			if ($userHistory?.[$user?.network ?? 'testnet']?.[item]?.data) {
+				const filteredItem =
+					$userHistory?.[$user?.network ?? 'testnet'][item]?.data?.filter(
+						(newItem) =>
+							!allHistory.some((previousItem) => previousItem.deployHash === newItem.deployHash),
+					) ?? [];
 
-					allHistory = [...allHistory, ...filteredItem].sort(
-						(a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime(),
-					);
-				}
+				allHistory = [...allHistory, ...filteredItem].sort(
+					(a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime(),
+				);
 			}
 		});
 

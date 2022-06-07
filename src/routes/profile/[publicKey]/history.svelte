@@ -79,15 +79,11 @@
 		<ProfileNavigation on:cardClicked={creditCardClicked} />
 	</div>
 	<div class="global-grid-mid">
-		<HistoryPage historyArray={$userHistory?.[publicKey]?.data || []} />
+		<HistoryPage
+			historyArray={$userHistory?.[$user?.network ?? 'testnet'][publicKey]?.data || []}
+		/>
 	</div>
 	<div class="global-grid-right">
 		<Sidebar historyObject={$sidebarContent} />
 	</div>
 </div>
-
-<!-- <style lang="postcss" global>
-	/* :local(.size-full) {
-		@apply w-full h-full;
-	} */
-</style> -->

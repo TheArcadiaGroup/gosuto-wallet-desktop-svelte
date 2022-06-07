@@ -118,7 +118,7 @@
 					}
 
 					saveData('history', history);
-					userHistory.set(history[$user?.network ?? 'testnet']);
+					userHistory.set(history);
 				}
 
 				return _wallet;

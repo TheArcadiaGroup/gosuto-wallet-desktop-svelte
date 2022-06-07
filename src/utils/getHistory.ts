@@ -180,7 +180,7 @@ export const getSingleAccountHistory = async (
 	if (cachedHistory && cachedHistory[network]) {
 		if (cachedHistory[network][publicKey]) {
 			// If data hasn't changed since the last time it was added
-			userHistory.set(cachedHistory[network]);
+			userHistory.set(cachedHistory);
 		}
 	}
 
@@ -361,6 +361,6 @@ export const getSingleAccountHistory = async (
 
 	// Update the history cache
 	saveData('history', cachedHistory);
-	userHistory.set(cachedHistory[network]);
+	userHistory.set(cachedHistory);
 	historyLoading.set(false);
 };
