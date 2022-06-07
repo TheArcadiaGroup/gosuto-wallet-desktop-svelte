@@ -85,10 +85,18 @@ declare global {
 		walletPassword: string;
 		walletImage: string;
 		seedPhrase: string[];
-		availableBalanceUSD: number;
-		availableBalance: number;
-		stakedBalance: number;
-		unclaimedRewards: number;
+		availableBalanceUSD: { mainnet: number; testnet: number };
+		availableBalance: { mainnet: number; testnet: number };
+		stakedBalance: {
+			// using this approach since this tends to come in later after the balance
+			mainnet: number;
+			testnet: number;
+		};
+		unclaimedRewards: {
+			// using this approach since this tends to come in later after the balance
+			mainnet: number;
+			testnet: number;
+		};
 		walletTokens: IToken[];
 		walletStakes: {
 			mainnet: IStake[];

@@ -82,10 +82,22 @@
 				walletPassword: encryptPassword(password.trim()),
 				walletImage: '',
 				seedPhrase: [],
-				availableBalance: 0.0,
-				availableBalanceUSD: 0.0,
-				stakedBalance: 0.0,
-				unclaimedRewards: 0.0,
+				availableBalanceUSD: {
+					mainnet: 0.0,
+					testnet: 0.0,
+				},
+				availableBalance: {
+					mainnet: 0.0,
+					testnet: 0.0,
+				},
+				stakedBalance: {
+					mainnet: 0.0,
+					testnet: 0.0,
+				},
+				unclaimedRewards: {
+					mainnet: 0.0,
+					testnet: 0.0,
+				},
 				walletTokens: [],
 				walletStakes: {
 					mainnet: [],

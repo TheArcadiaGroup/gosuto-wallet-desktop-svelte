@@ -71,7 +71,7 @@
 				<div class="balance-item">
 					{#if !$walletLoaders[wallet.publicKey]}
 						<span class="block mr-1">
-							{parseFloat(wallet?.availableBalance.toFixed(4))}
+							{parseFloat(wallet?.availableBalance[$user?.network ?? 'testnet'].toFixed(4))}
 						</span>
 					{:else}
 						<span class="skeleton-loader block mr-1 sm:mb-[2px]" />
@@ -83,7 +83,10 @@
 					{#if !$walletLoaders[wallet.publicKey]}
 						<span class="block mr-1">
 							{parseFloat(
-								(wallet?.availableBalance * $csprPrice.price[$user?.currency || 'usd']).toFixed(2),
+								(
+									wallet?.availableBalance[$user?.network ?? 'testnet'] *
+									$csprPrice.price[$user?.currency || 'usd']
+								).toFixed(2),
 							) || 0}
 						</span>
 					{:else}
@@ -100,7 +103,10 @@
 				{#if !$walletLoaders[wallet.publicKey]}
 					<span class="block mr-1">
 						{parseFloat(
-							(wallet?.stakedBalance * $csprPrice.price[$user?.currency || 'usd']).toFixed(2),
+							(
+								wallet?.stakedBalance[$user?.network ?? 'testnet'] *
+								$csprPrice.price[$user?.currency || 'usd']
+							).toFixed(2),
 						) || 0}
 					</span>
 				{:else}
@@ -115,7 +121,10 @@
 				{#if !$walletLoaders[wallet.publicKey]}
 					<span class="block mr-1">
 						{parseFloat(
-							(wallet?.unclaimedRewards * $csprPrice.price[$user?.currency || 'usd']).toFixed(2),
+							(
+								wallet?.unclaimedRewards[$user?.network ?? 'testnet'] *
+								$csprPrice.price[$user?.currency || 'usd']
+							).toFixed(2),
 						) || 0}
 					</span>
 				{:else}

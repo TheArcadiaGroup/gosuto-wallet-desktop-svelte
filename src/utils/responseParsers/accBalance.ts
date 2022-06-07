@@ -12,8 +12,8 @@ const parseStakingData = (publicKey: string, network: 'testnet' | 'mainnet' = 't
 		.then((stakingData) => {
 			const _wallets = get(wallets).map((wallet) => {
 				if (wallet.publicKey === publicKey) {
-					wallet.unclaimedRewards = stakingData.unclaimedRewards;
-					wallet.stakedBalance = stakingData.stakedAmount;
+					wallet.unclaimedRewards[get(user)?.network ?? 'testnet'] = stakingData.unclaimedRewards;
+					wallet.stakedBalance[get(user)?.network ?? 'testnet'] = stakingData.stakedAmount;
 				}
 				return wallet;
 			});
@@ -21,8 +21,8 @@ const parseStakingData = (publicKey: string, network: 'testnet' | 'mainnet' = 't
 
 			const thisWallet = get(selectedWallet);
 			if (thisWallet && thisWallet.publicKey === publicKey) {
-				thisWallet.unclaimedRewards = stakingData.unclaimedRewards;
-				thisWallet.stakedBalance = stakingData.stakedAmount;
+				thisWallet.unclaimedRewards[get(user)?.network ?? 'testnet'] = stakingData.unclaimedRewards;
+				thisWallet.stakedBalance[get(user)?.network ?? 'testnet'] = stakingData.stakedAmount;
 				selectedWallet.set(thisWallet);
 				saveData('selectedWallet', thisWallet);
 			}
@@ -51,8 +51,9 @@ const parseWalletDataGivenPrice = (
 
 		const _wallets = get(wallets).map((wallet) => {
 			if (wallet.publicKey === data.publicKey) {
-				wallet.availableBalanceUSD = +data.balance * csprPrice.price[get(user)?.currency || 'usd'];
-				wallet.availableBalance = +data.balance ?? 0; // returned as string
+				wallet.availableBalanceUSD[get(user)?.network ?? 'testnet'] =
+					+data.balance * csprPrice.price[get(user)?.currency || 'usd'];
+				wallet.availableBalance[get(user)?.network ?? 'testnet'] = +data.balance ?? 0; // returned as string
 			}
 			return wallet;
 		});
@@ -62,9 +63,9 @@ const parseWalletDataGivenPrice = (
 
 		const thisWallet = get(selectedWallet);
 		if (thisWallet && thisWallet.publicKey === data.publicKey) {
-			thisWallet.availableBalanceUSD =
+			thisWallet.availableBalanceUSD[get(user)?.network ?? 'testnet'] =
 				+data.balance * csprPrice.price[get(user)?.currency || 'usd'];
-			thisWallet.availableBalance = +data.balance ?? 0; // returned as string
+			thisWallet.availableBalance[get(user)?.network ?? 'testnet'] = +data.balance ?? 0; // returned as string
 			selectedWallet.set(thisWallet);
 			saveData('selectedWallet', thisWallet);
 		}
