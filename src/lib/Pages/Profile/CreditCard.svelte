@@ -19,6 +19,7 @@
 	import { loadWalletData } from '$utils/dataLoaders';
 	import { user } from '$stores/user';
 	import { csprPrice } from '$stores/tokens';
+	import { page } from '$app/stores';
 
 	export let avatar = '/images/png/avatar.png';
 	export let name = 'Unknown Name';
@@ -29,27 +30,27 @@
 		selectedWallet.set(wallet);
 		saveData('selectedWallet', wallet);
 
-		if (!$walletLoaders[wallet.publicKey]) {
-			loadWalletData(wallet.publicKey);
-		}
-		goto(`/profile/${$selectedWallet?.publicKey}/history`);
+		// if (!$walletLoaders[wallet.publicKey]) {
+		// 	loadWalletData(wallet.publicKey);
+		// }
+		// goto(`/profile/${$selectedWallet?.publicKey}/history`);
 
 		// There's a bug related to this and we don't want to break this until we find the culprit
-		// if ($page.params.publicKey && $page.params.publicKey !== wallet.publicKey) {
-		// 	const newUrl = $page.url.pathname.replace($page.params.publicKey, wallet.publicKey);
+		if ($page.params.publicKey && $page.params.publicKey !== wallet.publicKey) {
+			const newUrl = $page.url.pathname.replace($page.params.publicKey, wallet.publicKey);
 
-		// 	// Only send load request when it is not currently loading
-		// 	if (!$walletLoaders[wallet.publicKey]) {
-		// 		loadWalletData(wallet.publicKey);
-		// 	}
+			// Only send load request when it is not currently loading
+			if (!$walletLoaders[wallet.publicKey]) {
+				loadWalletData(wallet.publicKey);
+			}
 
-		// 	goto(newUrl);
-		// 	return;
-		// }
+			goto(newUrl);
+			return;
+		}
 
-		// if ($page.url.pathname === '/profile') {
-		// 	goto(`/profile/${$selectedWallet?.publicKey}/history`);
-		// }
+		if ($page.url.pathname === '/profile') {
+			goto(`/profile/${$selectedWallet?.publicKey}/history`);
+		}
 
 		return;
 	}
