@@ -15,7 +15,7 @@
 	import { userHistory } from '$stores/user/history';
 
 	let wallet: IWallet | null = $selectedWallet;
-	$: walletAddress = $page.params.address;
+	$: walletAddress = $page.params.publicKey;
 
 	const populateData = () => {
 		pollyFillUser();

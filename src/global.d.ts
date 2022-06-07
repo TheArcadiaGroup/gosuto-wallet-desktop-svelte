@@ -156,14 +156,6 @@ declare global {
 	}
 
 	interface IValidator {
-		// validatorName: string;
-		// validatorPosition: number;
-		// validatorCommission: number;
-		// delegationReturn: number;
-		// currentDelegators: number;
-		// currentStaked: number;
-		// totalValidators: number;
-		// validatorHash: string;
 		delegationRate: number;
 		selfStakeAmount: number;
 		totalStaked: number;

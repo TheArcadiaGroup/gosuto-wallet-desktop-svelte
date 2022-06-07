@@ -60,7 +60,7 @@
 <div class="swap-wallet-swap" on:click={deselectListener}>
 	<ReturnHome
 		walletName={''}
-		publicKey={shortenAddress($page.params.address)}
+		publicKey={shortenAddress($page.params.publicKey)}
 		profileLocation="Swap"
 	/>
 	<div class="swap-container">

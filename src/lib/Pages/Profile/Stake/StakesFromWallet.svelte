@@ -47,7 +47,7 @@
 <div class="wallet-stakes-container" on:click={deselectListener}>
 	{#if forRoute === 'profile'}
 		<div class="header">
-			<ReturnHome walletName={''} publicKey={$page.params.address} profileLocation="Stake CSPR" />
+			<ReturnHome walletName={''} publicKey={$page.params.publicKey} profileLocation="Stake CSPR" />
 		</div>
 
 		<div class="title item">

@@ -33,7 +33,7 @@
 
 	let forRoute: 'profile' | 'all-stakes';
 	$: forRoute = $page.url.pathname.startsWith('/profile') ? 'profile' : 'all-stakes';
-	let walletAddress = $page.params.address;
+	let walletAddress = $page.params.publicKey;
 
 	type MenuItems = {
 		name: string;

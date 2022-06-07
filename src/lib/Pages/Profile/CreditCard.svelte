@@ -36,8 +36,8 @@
 		goto(`/profile/${$selectedWallet?.walletAddress}/history`);
 
 		// There's a bug related to this and we don't want to break this until we find the culprit
-		// if ($page.params.address && $page.params.address !== wallet.walletAddress) {
-		// 	const newUrl = $page.url.pathname.replace($page.params.address, wallet.walletAddress);
+		// if ($page.params.publicKey && $page.params.publicKey !== wallet.walletAddress) {
+		// 	const newUrl = $page.url.pathname.replace($page.params.publicKey, wallet.walletAddress);
 
 		// 	// Only send load request when it is not currently loading
 		// 	if (!$walletLoaders[wallet.walletAddress]) {

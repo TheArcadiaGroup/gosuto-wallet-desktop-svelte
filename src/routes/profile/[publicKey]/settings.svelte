@@ -17,7 +17,7 @@
 		}
 
 		// load profile first
-		if ($selectedWallet?.walletAddress.toLowerCase() !== $page.params['address'].toLowerCase()) {
+		if ($selectedWallet?.walletAddress.toLowerCase() !== $page.params['publicKey'].toLowerCase()) {
 			pollyfillSelectedWallet();
 		}
 

@@ -42,7 +42,7 @@
 							{/if}
 						</span>
 					</span>
-					{#if !$page.params.address}
+					{#if !$page.params.publicKey}
 						<span
 							class="wallet {selectedHistoryItem?.deployHash === historyObject.deployHash
 								? 'text-white'

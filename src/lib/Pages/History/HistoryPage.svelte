@@ -17,7 +17,7 @@
 	import { historyLoading } from '$stores/user/history';
 
 	$: isInProfileRoute = $page.url.pathname.startsWith('/profile');
-	$: address = $page.params.address;
+	$: address = $page.params.publicKey;
 	$: walletName = $selectedWallet?.walletName || "Unknown's Wallet";
 
 	sidebarContent.set(null);
