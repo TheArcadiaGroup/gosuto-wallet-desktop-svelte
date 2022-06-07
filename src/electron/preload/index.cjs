@@ -19,6 +19,7 @@ contextBridge.exposeInMainWorld('api', {
 			'openUrl',
 			'exportWalletCertificate',
 			'encryption',
+			'saveData',
 		];
 		if (validChannels.includes(channel)) {
 			ipcRenderer.send(channel, data);
@@ -41,6 +42,7 @@ contextBridge.exposeInMainWorld('api', {
 			'undelegate',
 			'exportWalletCertificate',
 			'encryption',
+			'retrieveData',
 		];
 		if (validChannels.includes(channel)) {
 			return ipcRenderer.sendSync(channel, data);

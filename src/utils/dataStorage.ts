@@ -96,13 +96,21 @@ export const decryptPassword = (encryptedPassword: string) => {
 };
 
 export const saveData = (key: string, data: any) => {
-	localStorage.setItem(key, JSON.stringify(data));
+	// localStorage.setItem(key, JSON.stringify(data));
+	window.api.send(
+		'saveData',
+		JSON.stringify({
+			key: key,
+			data: data,
+		}),
+	);
 	return true;
 };
 
 export const retrieveData = (key: string) => {
 	try {
-		const data = JSON.parse(localStorage.getItem(key)!);
+		// const data = JSON.parse(localStorage.getItem(key)!);
+		const data = window.api.sendSync('retrieveData', key);
 		return data;
 	} catch (_err) {
 		return null;

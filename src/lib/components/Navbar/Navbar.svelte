@@ -45,7 +45,7 @@
 		<NavItem baseUrl={'/history'} on:click={() => goto('/history')}>
 			<NavBookmarkIcon class="nav-icon" />
 		</NavItem>
-		<NavItem baseUrl={'/all-stakes'} on:click={() => goto('/all-stakes')}>
+		<NavItem baseUrl={'/all-stakes'} on:click={() => goto('/all-stakes/all-positions')}>
 			<NavStackIcon class="nav-icon" />
 		</NavItem>
 		<NavItem baseUrl={'/performance'} on:click={() => goto('/performance')}>

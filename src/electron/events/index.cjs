@@ -12,11 +12,23 @@ const {
 	encryptString,
 	decryptString,
 } = require('../utils/storage/index.cjs');
+const { saveData, retrieveData } = require('../data/index.cjs');
 
 /**
  * Receiving messages from Renderer
  */
 module.exports = () => {
+	// This can be asynchronous as the sveltestore is used as a backup during runtime
+	ipcMain.on('saveData', (event, data) => {
+		const parsedData = JSON.parse(data);
+		saveData(parsedData.key, parsedData.data);
+	});
+
+	// This needs to be synchronous to ensure data is saved and read quickly
+	ipcMain.on('retrieveData', (event, data) => {
+		event.returnValue = retrieveData(data);
+	});
+
 	ipcMain.on('getHistory', async (event, data) => {
 		try {
 			// 34b0394b11dc3ecb1bf6f26c9754aa2e9f38d7bec33003374b4b3fac8566c258 => accountHash

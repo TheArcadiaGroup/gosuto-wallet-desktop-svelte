@@ -252,7 +252,9 @@ declare global {
 		| 'undelegate'
 		| 'openUrl'
 		| 'exportWalletCertificate'
-		| 'encryption';
+		| 'encryption'
+		| 'saveData'
+		| 'retrieveData';
 	type MainReceiveChannels =
 		| 'createWalletFromFileResponse'
 		| 'createWalletFromMnemonicsResponse'
