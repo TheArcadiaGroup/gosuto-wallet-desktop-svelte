@@ -32,7 +32,7 @@ export const pollyFillTokens = async () => {
 			contractAddress: 'CSPR', // defaults to this to facilitate sending
 			tokenPriceUSD: (await getTokenValue('CSPR')).price[get(user)?.currency || 'usd'],
 			decimalsOfPrecision: 5,
-			walletAddress: selectedWallet?.walletAddress ?? '',
+			publicKey: selectedWallet?.publicKey ?? '',
 		});
 
 		saveData('tokens', JSON.stringify(walletsInDB));
@@ -53,8 +53,8 @@ export const pollyFillTokens = async () => {
 
 	let dbTokens = [...walletsInDB.global];
 
-	if (selectedWallet && walletsInDB[selectedWallet.walletAddress.toLowerCase()]) {
-		dbTokens = [...dbTokens, ...walletsInDB[selectedWallet.walletAddress.toLowerCase()]];
+	if (selectedWallet && walletsInDB[selectedWallet.publicKey.toLowerCase()]) {
+		dbTokens = [...dbTokens, ...walletsInDB[selectedWallet.publicKey.toLowerCase()]];
 	}
 
 	tokens.set(dbTokens);
@@ -111,9 +111,9 @@ export const pollyfillSelectedWallet = () => {
 
 		selectedWallet.set(dbSelectedWallet);
 
-		if (!get(walletLoaders)[dbSelectedWallet.walletAddress]) {
+		if (!get(walletLoaders)[dbSelectedWallet.publicKey]) {
 			console.log('Loading Wallet Info');
-			loadWalletData(dbSelectedWallet.walletAddress);
+			loadWalletData(dbSelectedWallet.publicKey);
 		}
 	}
 

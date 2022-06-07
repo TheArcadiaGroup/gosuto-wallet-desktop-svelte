@@ -15,7 +15,7 @@
 	export let validator: IValidator;
 
 	const navigateAndSelectValidator = (validatorPublicKey: string) => {
-		goto(`/profile/${$selectedWallet?.walletAddress}/stake?validator=${validatorPublicKey}`);
+		goto(`/profile/${$selectedWallet?.publicKey}/stake?validator=${validatorPublicKey}`);
 	};
 
 	$: block_base_url = `https://${$user?.network === 'testnet' ? 'testnet.' : ''}cspr.live`;

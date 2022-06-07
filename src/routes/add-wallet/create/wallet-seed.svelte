@@ -110,7 +110,7 @@
 				walletStakes: [],
 				algorithm,
 				// walletHistory: [],
-				walletAddress: accountHex.trim(),
+				publicKey: accountHex.trim(),
 				accountHash: accountHash.trim(),
 				privateKey: privateKey.trim(),
 			});

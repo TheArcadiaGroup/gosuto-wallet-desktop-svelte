@@ -52,7 +52,7 @@
 
 		if ($selectedWallet) {
 			const result = await sendToken(
-				$selectedWallet.walletAddress,
+				$selectedWallet.publicKey,
 				$selectedWallet.privateKey,
 				tokenAmount,
 				recipientAddress,
@@ -134,7 +134,7 @@
 		tokenAmount <= 0 ||
 		tokenAmount < 2.5 ||
 		tokenAmount > selectedToken.tokenAmountHeld - totalCost ||
-		(Boolean(recipientAddress) && recipientAddress === $selectedWallet!.walletAddress) ||
+		(Boolean(recipientAddress) && recipientAddress === $selectedWallet!.publicKey) ||
 		(Boolean(recipientAddress) && !publicKeyValid);
 	$: publicKeyValid = isValidPublicKey(recipientAddress);
 </script>
@@ -199,7 +199,7 @@
 				Please enter a valid public key
 			</div>
 		{/if}
-		{#if Boolean(recipientAddress) && recipientAddress === $selectedWallet?.walletAddress}
+		{#if Boolean(recipientAddress) && recipientAddress === $selectedWallet?.publicKey}
 			<div class="error-div">
 				<ErrorIcon class="mr-1" fill={'#e6332a'} />
 				You cannot send tokens to yourself

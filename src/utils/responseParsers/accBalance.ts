@@ -7,11 +7,11 @@ import { saveData } from '$utils/dataStorage';
 import { getCSPRUsdPrice } from '$utils/tokens';
 import { get } from 'svelte/store';
 
-const parseStakingData = (walletAddress: string, network: 'testnet' | 'mainnet' = 'testnet') => {
-	getUserDelegatedAmount(walletAddress, network)
+const parseStakingData = (publicKey: string, network: 'testnet' | 'mainnet' = 'testnet') => {
+	getUserDelegatedAmount(publicKey, network)
 		.then((stakingData) => {
 			const _wallets = get(wallets).map((wallet) => {
-				if (wallet.walletAddress === walletAddress) {
+				if (wallet.publicKey === publicKey) {
 					wallet.unclaimedRewards = stakingData.unclaimedRewards;
 					wallet.stakedBalance = stakingData.stakedAmount;
 				}
@@ -20,7 +20,7 @@ const parseStakingData = (walletAddress: string, network: 'testnet' | 'mainnet' 
 			wallets.set(_wallets);
 
 			const thisWallet = get(selectedWallet);
-			if (thisWallet && thisWallet.walletAddress === walletAddress) {
+			if (thisWallet && thisWallet.publicKey === publicKey) {
 				thisWallet.unclaimedRewards = stakingData.unclaimedRewards;
 				thisWallet.stakedBalance = stakingData.stakedAmount;
 				selectedWallet.set(thisWallet);
@@ -47,10 +47,10 @@ const parseWalletDataGivenPrice = (
 	if (data.network === get(user)?.network) {
 		// TODO make this asynchronous and not to wait for the wallet info to load
 		// This can be set individually to each wallet that its related to separately
-		parseStakingData(data.walletAddress, data.network);
+		parseStakingData(data.publicKey, data.network);
 
 		const _wallets = get(wallets).map((wallet) => {
-			if (wallet.walletAddress === data.walletAddress) {
+			if (wallet.publicKey === data.publicKey) {
 				wallet.availableBalanceUSD = +data.balance * csprPrice.price[get(user)?.currency || 'usd'];
 				wallet.availableBalance = +data.balance ?? 0; // returned as string
 			}
@@ -61,7 +61,7 @@ const parseWalletDataGivenPrice = (
 		saveData('wallets', JSON.stringify(_wallets));
 
 		const thisWallet = get(selectedWallet);
-		if (thisWallet && thisWallet.walletAddress === data.walletAddress) {
+		if (thisWallet && thisWallet.publicKey === data.publicKey) {
 			thisWallet.availableBalanceUSD =
 				+data.balance * csprPrice.price[get(user)?.currency || 'usd'];
 			thisWallet.availableBalance = +data.balance ?? 0; // returned as string
@@ -75,7 +75,7 @@ const parseWalletDataGivenPrice = (
 		});
 
 		walletLoaders.update((_loader) => {
-			_loader[data.walletAddress] = null;
+			_loader[data.publicKey] = null;
 			return _loader;
 		});
 	}

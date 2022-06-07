@@ -40,7 +40,7 @@
 	const getData = async (wallet: IWallet) => {
 		getSingleAccountHistory(
 			wallet.accountHash,
-			wallet.walletAddress,
+			wallet.publicKey,
 			$user?.network,
 			wallet.walletName,
 		);

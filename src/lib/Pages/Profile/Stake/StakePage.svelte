@@ -40,7 +40,7 @@
 		isUnstaking = false;
 
 		const result = delegate(
-			$selectedWallet!.walletAddress,
+			$selectedWallet!.publicKey,
 			$selectedWallet!.accountHash,
 			$selectedWallet!.privateKey,
 			selectedValidatorPublicKey,
@@ -69,7 +69,7 @@
 		isUnstaking = true;
 
 		const result = undelegate(
-			$selectedWallet!.walletAddress,
+			$selectedWallet!.publicKey,
 			$selectedWallet!.accountHash,
 			$selectedWallet!.privateKey,
 			selectedValidatorPublicKey,

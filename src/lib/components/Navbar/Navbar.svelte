@@ -22,7 +22,7 @@
 			user.set(prevUser);
 			saveData('user', JSON.stringify(prevUser));
 			if ($selectedWallet) {
-				loadWalletData($selectedWallet.walletAddress);
+				loadWalletData($selectedWallet.publicKey);
 			}
 		}
 	};
@@ -38,7 +38,7 @@
 		</NavItem>
 		<NavItem
 			baseUrl={'/profile'}
-			on:click={() => goto(`/profile/${$selectedWallet?.walletAddress}/history`)}
+			on:click={() => goto(`/profile/${$selectedWallet?.publicKey}/history`)}
 		>
 			<div class="navbar-avatar-img" />
 		</NavItem>

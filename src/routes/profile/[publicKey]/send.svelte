@@ -33,7 +33,7 @@
 		}
 
 		// load profile first
-		if ($selectedWallet?.walletAddress.toLowerCase() !== $page.params['publicKey'].toLowerCase()) {
+		if ($selectedWallet?.publicKey.toLowerCase() !== $page.params['publicKey'].toLowerCase()) {
 			pollyfillSelectedWallet();
 		}
 
@@ -48,12 +48,12 @@
 	$: ((userTokens) => {
 		// Load all token balances
 		if ($selectedWallet) {
-			userTokens.map((token) => loadTokenBalance(token, $selectedWallet!.walletAddress));
+			userTokens.map((token) => loadTokenBalance(token, $selectedWallet!.publicKey));
 		}
 	})($tokens);
 
 	selectedWallet.subscribe((wallet) => {
-		if (wallet?.walletAddress !== $previousSelectedWallet?.walletAddress) {
+		if (wallet?.publicKey !== $previousSelectedWallet?.publicKey) {
 			// If no tokens are present, load them
 			if ($tokens.length <= 0) {
 				pollyFillTokens();

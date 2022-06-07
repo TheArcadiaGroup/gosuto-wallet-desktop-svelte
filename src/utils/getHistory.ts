@@ -75,7 +75,7 @@ const consumeHistoryData = async (
 
 			// TODO Improve checks here
 			let method: TxType = 'send';
-			let validator: null | string = null;
+			let validatorPublicKey: null | string = null;
 
 			let fromAccount = deployResult[0].header.account
 				.toAccountHashStr()
@@ -115,21 +115,21 @@ const consumeHistoryData = async (
 			} else if ((deploySession as any)['StoredContractByHash']) {
 				// Check for delegate or undelegate
 				if (entry_point === 'delegate') {
-					validator =
+					validatorPublicKey =
 						(deploySession as any)['StoredContractByHash']?.args[1][0] === 'validator'
 							? (deploySession as any)['StoredContractByHash']?.args[1][1].parsed
 							: null;
 					method = 'stake';
-					toAccount = validator!;
+					toAccount = validatorPublicKey!;
 					fromAccount = accountHash;
 				} else if (entry_point === 'undelegate') {
-					validator =
+					validatorPublicKey =
 						(deploySession as any)['StoredContractByHash']?.args[1][0] === 'validator'
 							? (deploySession as any)['StoredContractByHash']?.args[1][1].parsed
 							: null;
 					method = 'unstake';
 					toAccount = accountHash;
-					fromAccount = validator!;
+					fromAccount = validatorPublicKey!;
 				} else {
 					method = 'contract_call';
 					toAccount = (deploySession as any)['StoredContractByHash'].hash;
@@ -147,7 +147,7 @@ const consumeHistoryData = async (
 				blockHash: item.blockHash,
 				transactionDate: new Date(item.timestamp),
 				transactionFee: txFee,
-				validator,
+				validatorPublicKey,
 				error: item.errorMessage ?? null,
 				swap: null,
 				stake: null,

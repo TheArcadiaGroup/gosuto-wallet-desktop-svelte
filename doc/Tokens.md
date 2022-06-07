@@ -4,7 +4,7 @@ At the moment, tokens will take this structure to ensure that they can be read q
 
 ```typescript
 {
-  [walletAddress]: IToken[];
+  [publicKey]: IToken[];
   global: IToken[];
 }
 ```

@@ -14,7 +14,7 @@ interface SendTokenDetails {
 
 interface StakeCSPRDetails {
 	id: string;
-	walletAddress: string;
+	publicKey: string;
 	accountHash: string;
 	privateKey: string;
 	validatorPublicKey: string;

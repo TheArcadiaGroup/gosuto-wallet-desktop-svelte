@@ -12,7 +12,7 @@
 
 		if ($selectedWallet) {
 			// by the time the function is in here, the selectedWallet will have a value
-			setTimeout(() => goto(`/profile/${$selectedWallet!.walletAddress}`), 1000);
+			setTimeout(() => goto(`/profile/${$selectedWallet!.publicKey}`), 1000);
 		} else {
 			if ($wallets?.length > 0) {
 				setTimeout(() => goto(`/profile`), 1000);

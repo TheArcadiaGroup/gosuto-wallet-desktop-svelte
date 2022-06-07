@@ -80,15 +80,6 @@ declare global {
 		};
 	}
 
-	interface WalletCreationData {
-		walletName: string;
-		walletAddress: string;
-		accountHash: string;
-		privateKey: string;
-		seedPhrase: string | null;
-		password: string;
-	}
-
 	interface IWallet {
 		walletName: string;
 		walletPassword: string;
@@ -101,7 +92,7 @@ declare global {
 		walletTokens: IToken[];
 		walletStakes: IStake[];
 		// walletHistory: IHistory[];
-		walletAddress: string;
+		publicKey: string;
 		accountHash: string;
 		privateKey: string;
 		algorithm: 'ed25519' | 'secp256k1';
@@ -119,7 +110,7 @@ declare global {
 		contractAddress: string;
 		tokenPriceUSD: number;
 		decimalsOfPrecision: number;
-		walletAddress: string;
+		publicKey: string;
 	}
 
 	type TxType =
@@ -143,7 +134,7 @@ declare global {
 		deployHash: string;
 		transactionDate: Date;
 		transactionFee: number;
-		validator: string | null; // only present in stake operations
+		validatorPublicKey: string | null; // only present in stake operations
 		error: string | null;
 		walletName: string;
 		contract_call: string | null;
@@ -172,7 +163,7 @@ declare global {
 	}
 
 	interface IStake {
-		validator: string; // validator public key
+		validatorPublicKey: string; // validator public key
 		walletName: string;
 		stakeAmount: number;
 		initialStakeDate: Date;
@@ -197,14 +188,6 @@ declare global {
 	interface CSPRPrices {
 		price_change: number;
 		price: { usd: number; jpy: number; eur: number };
-	}
-
-	interface ProfileSettings {
-		walletName: string;
-		walletAddress: string;
-		publicKey: string;
-		privateKey: string;
-		currentPassword: string;
 	}
 
 	interface GetHistoryResponse {
@@ -236,18 +219,9 @@ declare global {
 			cost: string; // tx fee in string format
 			errorMessage: string | null;
 			status: string; // mostly executed
-
-			// transferId: string; // Number in string format
 			deployHash: string;
 			blockHash: string;
-			// sourcePurse: string;
-			// targetPurse: string;
-			// amount: string; //Number in string format
-			// fromAccount: string; // Account Hash
-			// toAccount: string; // Account Hash
 			timestamp: string; // ISODate
-			// validator: string | null;
-			// method: 'stake' | 'receive' | 'send';
 		}[];
 	}
 

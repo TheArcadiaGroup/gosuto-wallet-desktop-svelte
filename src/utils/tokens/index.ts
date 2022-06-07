@@ -67,7 +67,7 @@ export const getCSPRUsdPrice = async () => {
 	}
 };
 
-export const loadTokenBalance = async (token: IToken, walletAddress: string) => {
+export const loadTokenBalance = async (token: IToken, publicKey: string) => {
 	// CSPR Is loaded from the wallet not as a token - its the main global token
 	if (token.tokenTicker !== 'CSPR') {
 		tokenLoaders.update((_loader) => {
@@ -80,7 +80,7 @@ export const loadTokenBalance = async (token: IToken, walletAddress: string) => 
 			'tokenBalance',
 			JSON.stringify({
 				token: token.tokenTicker,
-				walletAddress: walletAddress,
+				publicKey: publicKey,
 				network: get(user)?.network || 'testnet',
 			}),
 		);
@@ -90,9 +90,9 @@ export const loadTokenBalance = async (token: IToken, walletAddress: string) => 
 export const receiveTokenBalance = async () => {
 	window.api.receive('tokenBalanceResponse', async (data: any) => {
 		// If its not the current user's data, discard it
-		if (get(selectedWallet)?.walletAddress.toLowerCase() === data.walletAddress.toLowerCase()) {
+		if (get(selectedWallet)?.publicKey.toLowerCase() === data.publicKey.toLowerCase()) {
 			const dbTokens = retrieveData('tokens');
-			const userTokens: IToken[] = dbTokens[data.walletAddress.toLowerCase()];
+			const userTokens: IToken[] = dbTokens[data.publicKey.toLowerCase()];
 
 			userTokens.map((token) => {
 				if (token.tokenTicker === data.token) {
@@ -112,7 +112,7 @@ export const receiveTokenBalance = async () => {
 				return token;
 			});
 
-			dbTokens[data.walletAddress.toLowerCase()] = userTokens;
+			dbTokens[data.publicKey.toLowerCase()] = userTokens;
 			dbTokens.global = globalTokens;
 
 			saveData('tokens', dbTokens);

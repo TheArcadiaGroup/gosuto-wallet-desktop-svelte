@@ -16,13 +16,13 @@ export const parseTransferData = (response: any) => {
 		const valueSent = +ethers.utils.formatEther(
 			ethers.utils.parseUnits((amtSent - gasFees).toString(), 9),
 		);
-		const walletAddress = data[1].deploy.session.Transfer.args[1][1].parsed; // Wallet Address
+		const publicKey = data[1].deploy.session.Transfer.args[1][1].parsed; // Wallet Address
 
 		// TODO: TAKE THE 2.5% FEE INTO CONSIDERATION AS ITS CURRENTLY NOT BEING CONSIDERED
 
 		const returnObject = {
 			id: response.id,
-			wallet: walletAddress,
+			wallet: publicKey,
 			gasFees,
 			totalSent: amtSent,
 			receivedByRecipient: valueSent,

@@ -116,7 +116,7 @@
 				{shortenAddress(sidebarData?.deployHash)}
 			</p>
 		</div>
-		{#if status === 'Stake' && sidebarData?.validator}
+		{#if status === 'Stake' && sidebarData?.validatorPublicKey}
 			<div class="address-holder">
 				<p class="to-from">Validator</p>
 				<p
@@ -124,10 +124,10 @@
 					on:click={() =>
 						window.api.send(
 							'openUrl',
-							`${blockExplorerURLBase}/validator/${sidebarData?.validator}`,
+							`${blockExplorerURLBase}/validator/${sidebarData?.validatorPublicKey}`,
 						)}
 				>
-					{shortenAddress(sidebarData?.validator)}
+					{shortenAddress(sidebarData?.validatorPublicKey)}
 				</p>
 			</div>
 		{/if}

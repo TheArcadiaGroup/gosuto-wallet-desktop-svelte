@@ -30,18 +30,18 @@
 		selectedWallet.set(wallet);
 		saveData('selectedWallet', JSON.stringify(wallet));
 
-		if (!$walletLoaders[wallet.walletAddress]) {
-			loadWalletData(wallet.walletAddress);
+		if (!$walletLoaders[wallet.publicKey]) {
+			loadWalletData(wallet.publicKey);
 		}
-		goto(`/profile/${$selectedWallet?.walletAddress}/history`);
+		goto(`/profile/${$selectedWallet?.publicKey}/history`);
 
 		// There's a bug related to this and we don't want to break this until we find the culprit
-		// if ($page.params.publicKey && $page.params.publicKey !== wallet.walletAddress) {
-		// 	const newUrl = $page.url.pathname.replace($page.params.publicKey, wallet.walletAddress);
+		// if ($page.params.publicKey && $page.params.publicKey !== wallet.publicKey) {
+		// 	const newUrl = $page.url.pathname.replace($page.params.publicKey, wallet.publicKey);
 
 		// 	// Only send load request when it is not currently loading
-		// 	if (!$walletLoaders[wallet.walletAddress]) {
-		// 		loadWalletData(wallet.walletAddress);
+		// 	if (!$walletLoaders[wallet.publicKey]) {
+		// 		loadWalletData(wallet.publicKey);
 		// 	}
 
 		// 	goto(newUrl);
@@ -49,7 +49,7 @@
 		// }
 
 		// if ($page.url.pathname === '/profile') {
-		// 	goto(`/profile/${$selectedWallet?.walletAddress}/history`);
+		// 	goto(`/profile/${$selectedWallet?.publicKey}/history`);
 		// }
 
 		return;
@@ -70,7 +70,7 @@
 			<div class="field-title">Available</div>
 			<div class="acc-balance">
 				<div class="balance-item">
-					{#if !$walletLoaders[wallet.walletAddress]}
+					{#if !$walletLoaders[wallet.publicKey]}
 						<span class="block mr-1">
 							{parseFloat(wallet?.availableBalance.toFixed(4))}
 						</span>
@@ -81,7 +81,7 @@
 				</div>
 
 				<div class="balance-item">
-					{#if !$walletLoaders[wallet.walletAddress]}
+					{#if !$walletLoaders[wallet.publicKey]}
 						<span class="block mr-1">
 							{parseFloat(
 								(wallet?.availableBalance * $csprPrice.price[$user?.currency || 'usd']).toFixed(2),
@@ -98,7 +98,7 @@
 		<div class="grow-0">
 			<div class="field-title">Staked</div>
 			<div class="amount">
-				{#if !$walletLoaders[wallet.walletAddress]}
+				{#if !$walletLoaders[wallet.publicKey]}
 					<span class="block mr-1">
 						{parseFloat(
 							(wallet?.stakedBalance * $csprPrice.price[$user?.currency || 'usd']).toFixed(2),
@@ -113,7 +113,7 @@
 		<div class="grow-0">
 			<div class="field-title">unclaimed rewards</div>
 			<div class="amount">
-				{#if !$walletLoaders[wallet.walletAddress]}
+				{#if !$walletLoaders[wallet.publicKey]}
 					<span class="block mr-1">
 						{parseFloat(
 							(wallet?.unclaimedRewards * $csprPrice.price[$user?.currency || 'usd']).toFixed(2),

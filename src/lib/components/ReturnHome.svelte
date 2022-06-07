@@ -20,7 +20,7 @@
 		hasCopied = false;
 	}
 
-	function copyWalletAddress() {
+	function copyPublicKey() {
 		navigator.clipboard.writeText(publicKey);
 		hasCopied = true;
 		popupContent = `${publicKey}`;
@@ -48,7 +48,7 @@
 				publicKey.length,
 			)}`}
 		</p>
-		<div class="return-cursor-pointer" on:click={copyWalletAddress}>
+		<div class="return-cursor-pointer" on:click={copyPublicKey}>
 			<CopyIcon />
 		</div>
 	</div>

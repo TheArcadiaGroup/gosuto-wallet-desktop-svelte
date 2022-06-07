@@ -36,7 +36,7 @@ export function deleteToken(wallet: string, contractAddress: string): boolean {
 }
 
 export async function sendToken(
-	walletAddress: string,
+	publicKey: string,
 	privateKey: string,
 	tokenAmount: number,
 	recipientAddress: string,
@@ -62,7 +62,7 @@ export async function sendToken(
 			id: Math.random().toString(16).slice(2),
 			senderWallet:
 				// '01cfbe76f5e1b7fd042714d4583e578f47675414efd9c1f8105256cea243f0ab35' ||
-				walletAddress,
+				publicKey,
 			senderPrivateKey:
 				// 'MC4CAQAwBQYDK2VwBCIEIFvkdWUFtcpt2yOrbWk+v1fHf0y3Ca3+idJYXGkPKV+y' ||
 				privateKey,
@@ -84,7 +84,7 @@ export async function sendToken(
 		});
 
 		// window.api.send('sendCSPRTokens', JSON.stringify(requestObj));
-		sendCspr(walletAddress, privateKey, recipientAddress, tokenAmount, network, algorithm)
+		sendCspr(publicKey, privateKey, recipientAddress, tokenAmount, network, algorithm)
 			.then((response) => {
 				parseTransferData(
 					JSON.stringify({

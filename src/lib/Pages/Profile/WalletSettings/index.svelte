@@ -74,7 +74,7 @@
 				'wallets',
 				JSON.stringify(
 					storedWallets.map((_wallet) => {
-						if (_wallet.walletAddress === wallet.walletAddress) {
+						if (_wallet.publicKey === wallet.publicKey) {
 							_wallet = wallet;
 						}
 
@@ -92,20 +92,20 @@
 		if (canSave) {
 			wallet.walletName = walletName;
 			const _wallets = $wallets.map((_wallet) => {
-				if (_wallet.walletAddress === wallet.walletAddress) {
+				if (_wallet.publicKey === wallet.publicKey) {
 					_wallet = wallet;
 
 					// Update the item everywhere
 					const history = retrieveData('history') ?? {};
-					if (history?.['mainnet']?.[wallet.walletAddress]?.data) {
-						history['mainnet'][wallet.walletAddress]?.data.map((item: any) => {
+					if (history?.['mainnet']?.[wallet.publicKey]?.data) {
+						history['mainnet'][wallet.publicKey]?.data.map((item: any) => {
 							item.walletName = walletName;
 
 							return item;
 						});
 					}
-					if (history?.['testnet']?.[wallet.walletAddress]?.data) {
-						history['testnet'][wallet.walletAddress]?.data.map((item: any) => {
+					if (history?.['testnet']?.[wallet.publicKey]?.data) {
+						history['testnet'][wallet.publicKey]?.data.map((item: any) => {
 							item.walletName = walletName;
 
 							return item;
@@ -234,7 +234,7 @@
 			<br />
 			<TextInput
 				isDisabled={true}
-				bind:value={wallet.walletAddress}
+				bind:value={wallet.publicKey}
 				label="Public Key"
 				type="text"
 				addTextBg={true}

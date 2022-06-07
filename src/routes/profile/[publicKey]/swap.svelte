@@ -24,7 +24,7 @@
 	let selected = -1;
 	let user: IUser;
 
-	$: wallet = user?.wallets?.filter((wallet) => wallet.walletAddress === $page.params.publicKey)[0];
+	$: wallet = user?.wallets?.filter((wallet) => wallet.publicKey === $page.params.publicKey)[0];
 
 	function selectToken(e: { detail: { id: number } }): void {
 		selected = e.detail.id;

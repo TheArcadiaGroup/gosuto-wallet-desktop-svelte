@@ -332,7 +332,7 @@ export const getUserDelegatedAmount = async (
 		const casperService = new CasperServiceByJsonRPC(getEndpointByNetwork(network));
 		const validatorsInfo = await casperService.getValidatorsInfo();
 		const stakingOperations: {
-			validator: string;
+			validatorPublicKey: string;
 			delegationRate: number;
 			selfStake: number;
 			stakedAmount: number;
@@ -365,11 +365,11 @@ export const getUserDelegatedAmount = async (
 
 					const lastStakeTx =
 						history?.[network]?.[publicKey]?.data?.find(
-							(item) => item.validator === bid.public_key,
+							(item) => item.validatorPublicKey === bid.public_key,
 						) ?? null;
 
 					stakingOperations.push({
-						validator: bid.public_key,
+						validatorPublicKey: bid.public_key,
 						delegationRate: bid.bid.delegation_rate,
 						selfStake: +bid.bid.staked_amount / 1e9,
 						stakedAmount: +delegator.staked_amount / 1e9,
@@ -389,9 +389,9 @@ export const getUserDelegatedAmount = async (
 		const dbWallets: IWallet[] = retrieveData('wallets') || [];
 		// Filter through the wallets finding the wallet we need and add the data to it
 		dbWallets.map((wallet) => {
-			if (wallet.walletAddress === publicKey) {
+			if (wallet.publicKey === publicKey) {
 				wallet.walletStakes = stakingOperations.map((item) => ({
-					validator: item.validator, // validator public key
+					validatorPublicKey: item.validatorPublicKey, // validator public key
 					walletName: wallet.walletName,
 					stakeAmount: item.stakedAmount,
 					initialStakeDate: item.recentStake,
@@ -401,7 +401,7 @@ export const getUserDelegatedAmount = async (
 					publicKey: publicKey,
 				}));
 
-				if (publicKey === get(selectedWallet)?.walletAddress) {
+				if (publicKey === get(selectedWallet)?.publicKey) {
 					const selWallet = get(selectedWallet);
 					if (selWallet) {
 						selWallet.walletStakes = wallet.walletStakes;

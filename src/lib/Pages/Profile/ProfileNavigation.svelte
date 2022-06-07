@@ -33,7 +33,7 @@
 
 	let forRoute: 'profile' | 'all-stakes';
 	$: forRoute = $page.url.pathname.startsWith('/profile') ? 'profile' : 'all-stakes';
-	let walletAddress = $page.params.publicKey;
+	let publicKey = $page.params.publicKey;
 
 	type MenuItems = {
 		name: string;
@@ -73,14 +73,14 @@
 		if (menuItems == menuItemsOptions['all-stakes']) {
 			goto(`/${forRoute}/${selection}`);
 		} else {
-			if (walletAddress) {
-				goto(`/${forRoute}/${walletAddress}/${selection}`);
+			if (publicKey) {
+				goto(`/${forRoute}/${publicKey}/${selection}`);
 			} else if ($wallets.length > 0) {
 				saveData(
 					'selectedWallet',
-					JSON.stringify($wallets.filter((wallet) => wallet.walletAddress === walletAddress)[0]),
+					JSON.stringify($wallets.filter((wallet) => wallet.publicKey === publicKey)[0]),
 				);
-				goto(`/${forRoute}/${walletAddress}/${selection}`);
+				goto(`/${forRoute}/${publicKey}/${selection}`);
 			} else {
 				goto('/add-wallet');
 			}

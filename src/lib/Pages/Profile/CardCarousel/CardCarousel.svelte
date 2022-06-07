@@ -22,7 +22,7 @@
 	slidesPerView={1}
 	loop={false}
 	initialSlide={$wallets.indexOf(
-		$wallets.find((_wallet) => _wallet.walletAddress === $page.params.publicKey),
+		$wallets.find((_wallet) => _wallet.publicKey === $page.params.publicKey),
 	) || 0}
 	class="no-scrollbar carousel"
 	modules={[Navigation]}

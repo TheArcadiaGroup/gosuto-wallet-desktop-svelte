@@ -33,8 +33,6 @@ export const getBalance = async (
 
 			const actualBalance = ethers.utils.formatUnits(balanceBigNumber, 9);
 
-			console.log('Account Balance: ', actualBalance);
-
 			return actualBalance;
 		} else {
 			// This ensures we can jump to the casper client and use it to get the balance
@@ -48,25 +46,21 @@ export const getBalance = async (
 			.then((balanceBigNumber) => {
 				const actualBalance = ethers.utils.formatUnits(balanceBigNumber, 9);
 
-				console.log('Fallback Balance: ', actualBalance, '\n\n', error);
-
 				return actualBalance;
 			})
 			.catch((_err) => {
-				console.log('\n\nClient Balance ERROR: \n\n', accountHash, '\n\n', _err);
-
 				return '0';
 			});
 	}
 };
 
-export const getCsprBalance = (walletAddress: string) => {
-	// Due to issues when trying to load balances from the publicKey as opposed to the accountHash, we need to get the account hash instead. However, we have another issue which is code readability and trying to update everything to use the accountHash as opposed to the public key (walletAddress). However, we need it so we will use it.
+export const getCsprBalance = (publicKey: string) => {
+	// Due to issues when trying to load balances from the publicKey as opposed to the accountHash, we need to get the account hash instead. However, we have another issue which is code readability and trying to update everything to use the accountHash as opposed to the public key (publicKey). However, we need it so we will use it.
 
 	const wallets: IWallet[] = retrieveData('wallets');
 
 	const wallet = wallets.find(
-		(wallet) => wallet.walletAddress.toLowerCase() === walletAddress.toLowerCase(),
+		(wallet) => wallet.publicKey.toLowerCase() === publicKey.toLowerCase(),
 	);
 
 	if (wallet) {
@@ -75,17 +69,17 @@ export const getCsprBalance = (walletAddress: string) => {
 		// 	JSON.stringify({
 		// 		token: 'CSPR',
 		// 		accountHash: wallet.accountHash,
-		// 		walletAddress: walletAddress,
+		// 		publicKey: publicKey,
 		// 		network: get(user)?.network || 'testnet',
 		// 	}),
 		// );
 		const network = get(user)?.network || 'testnet';
-		getBalance(wallet.accountHash, walletAddress, network)
+		getBalance(wallet.accountHash, publicKey, network)
 			.then((balance) => {
 				parseBalanceResponse(
 					JSON.stringify({
 						token: 'CSPR',
-						walletAddress: walletAddress,
+						publicKey: publicKey,
 						accountHash: wallet.accountHash,
 						balance: balance,
 						network: network,

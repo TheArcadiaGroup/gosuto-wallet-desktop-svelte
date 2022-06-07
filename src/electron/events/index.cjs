@@ -104,15 +104,15 @@ module.exports = () => {
 	// token balance
 	ipcMain.on('accountCsprBalance', async (event, data) => {
 		// Testnet is the fallback network here
-		const parsedData = JSON.parse(data); // {walletAddress: publicKey; token: 'CSPR', contractAddress: 'STRING'}
+		const parsedData = JSON.parse(data);
 
 		const returnValue = {
 			token: 'CSPR',
-			walletAddress: parsedData.walletAddress,
+			publicKey: parsedData.publicKey,
 			accountHash: parsedData.accountHash,
 			balance: await getBalance(
 				parsedData.accountHash,
-				parsedData.walletAddress,
+				parsedData.publicKey,
 				parsedData.network || 'testnet',
 			),
 			network: parsedData.network || 'testnet',
@@ -126,10 +126,10 @@ module.exports = () => {
 	ipcMain.on('tokenBalance', async (event, data) => {
 		try {
 			// Testnet is the fallback network here
-			const parsedData = JSON.parse(data); // {walletAddress: publicKey; token: 'CSPR', contractAddress: 'STRING'}
+			const parsedData = JSON.parse(data); // {publicKey: publicKey; token: 'CSPR', contractAddress: 'STRING'}
 			const returnValue = {
 				token: parsedData.token,
-				walletAddress: parsedData.walletAddress,
+				publicKey: parsedData.publicKey,
 				balance: await getTokenBalance(),
 			};
 			event.returnValue = returnValue;
@@ -138,7 +138,7 @@ module.exports = () => {
 			const returnValue = {
 				balance: '0',
 				token: parsedData.token,
-				walletAddress: parsedData.walletAddress,
+				publicKey: parsedData.publicKey,
 			};
 			event.returnValue = returnValue;
 			sendMessage('tokenBalanceResponse', returnValue);
@@ -164,7 +164,7 @@ module.exports = () => {
 			id,
 			privateKey,
 			accountHash,
-			walletAddress,
+			publicKey,
 			validatorPublicKey,
 			amount,
 			network,
@@ -175,7 +175,7 @@ module.exports = () => {
 			const response = await delegate({
 				privateKey,
 				accountHash,
-				publicKey: walletAddress,
+				publicKey: publicKey,
 				validatorPublicKey,
 				amount,
 				network: network ?? 'testnet',
@@ -224,7 +224,7 @@ module.exports = () => {
 			id,
 			privateKey,
 			accountHash,
-			walletAddress,
+			publicKey,
 			validatorPublicKey,
 			amount,
 			network,
@@ -236,7 +236,7 @@ module.exports = () => {
 				id,
 				privateKey,
 				accountHash,
-				publicKey: walletAddress,
+				publicKey: publicKey,
 				validatorPublicKey,
 				amount,
 				network: network ?? 'tesnet',

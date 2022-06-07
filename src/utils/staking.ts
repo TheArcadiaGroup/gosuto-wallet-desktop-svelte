@@ -12,7 +12,7 @@ import { getEndpointByNetwork } from './casper';
 import { parseDelegationResponse } from './responseParsers/delegations';
 
 export const delegate = (
-	walletAddress: string,
+	publicKey: string,
 	accountHash: string,
 	privateKey: string | Uint8Array,
 	validatorPublicKey: string,
@@ -25,7 +25,7 @@ export const delegate = (
 	stakeCsprTracker.update((stakeTxs) => {
 		stakeTxs[txId] = {
 			id: txId,
-			walletAddress,
+			publicKey,
 			accountHash,
 			privateKey: privateKey as string,
 			validatorPublicKey,
@@ -38,7 +38,6 @@ export const delegate = (
 	});
 
 	try {
-		const publicKey = walletAddress;
 		network = network ?? 'testnet';
 
 		const casperClient = new CasperClient(getEndpointByNetwork(network));
@@ -112,7 +111,7 @@ export const delegate = (
 
 	return {
 		id: txId,
-		walletAddress,
+		publicKey,
 		accountHash,
 		privateKey,
 		validatorPublicKey,
@@ -124,7 +123,7 @@ export const delegate = (
 };
 
 export const undelegate = (
-	walletAddress: string,
+	publicKey: string,
 	accountHash: string,
 	privateKey: string | Uint8Array,
 	validatorPublicKey: string,
@@ -137,7 +136,7 @@ export const undelegate = (
 	unStakeCsprTracker.update((unStakeTxs) => {
 		unStakeTxs[txId] = {
 			id: txId,
-			walletAddress,
+			publicKey,
 			accountHash,
 			privateKey: privateKey as string,
 			validatorPublicKey,
@@ -150,7 +149,6 @@ export const undelegate = (
 	});
 
 	try {
-		const publicKey = walletAddress;
 		network = network ?? 'testnet';
 		const casperClient = new CasperClient(getEndpointByNetwork(network));
 		const networkName = network === 'mainnet' ? 'casper' : 'casper-test';
@@ -227,7 +225,7 @@ export const undelegate = (
 
 	return {
 		id: txId,
-		walletAddress,
+		publicKey,
 		accountHash,
 		privateKey,
 		validatorPublicKey,

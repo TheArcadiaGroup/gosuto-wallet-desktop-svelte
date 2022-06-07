@@ -15,7 +15,7 @@
 	import { userHistory } from '$stores/user/history';
 
 	let wallet: IWallet | null = $selectedWallet;
-	$: walletAddress = $page.params.publicKey;
+	$: publicKey = $page.params.publicKey;
 
 	const populateData = () => {
 		pollyFillUser();
@@ -26,9 +26,9 @@
 		}
 
 		// select wallet
-		if ($selectedWallet?.walletAddress !== walletAddress) {
+		if ($selectedWallet?.publicKey !== publicKey) {
 			const newlySelectedWallet = $wallets.find(
-				(_wallet) => _wallet.walletAddress.toLowerCase() === walletAddress.toLowerCase(),
+				(_wallet) => _wallet.publicKey.toLowerCase() === publicKey.toLowerCase(),
 			);
 
 			if (newlySelectedWallet) {
@@ -41,13 +41,12 @@
 	};
 
 	const getData = async () => {
-		wallet =
-			$selectedWallet || $wallets?.filter((wallet) => wallet.walletAddress === walletAddress)[0];
+		wallet = $selectedWallet || $wallets?.filter((wallet) => wallet.publicKey === publicKey)[0];
 
 		if (wallet) {
 			getSingleAccountHistory(
 				wallet.accountHash,
-				wallet.walletAddress,
+				wallet.publicKey,
 				$user?.network,
 				wallet.walletName,
 			);
@@ -66,7 +65,7 @@
 	});
 
 	selectedWallet.subscribe((_wallet) => {
-		if (_wallet?.walletAddress) {
+		if (_wallet?.publicKey) {
 			getData();
 		}
 	});
@@ -80,7 +79,7 @@
 		<ProfileNavigation on:cardClicked={creditCardClicked} />
 	</div>
 	<div class="global-grid-mid">
-		<HistoryPage historyArray={$userHistory?.[walletAddress]?.data || []} />
+		<HistoryPage historyArray={$userHistory?.[publicKey]?.data || []} />
 	</div>
 	<div class="global-grid-right">
 		<Sidebar historyObject={$sidebarContent} />
