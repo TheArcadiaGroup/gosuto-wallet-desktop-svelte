@@ -1,3 +1,4 @@
+import { user } from '$stores/user';
 import { saveData } from './dataStorage';
 import { pollyFillUser } from './pollyfillData';
 
@@ -29,17 +30,21 @@ export const toggleDarkMode = () => {
 
 /** A function to initialize page theming */
 export const initializeTheme = () => {
-	const user: IUser = pollyFillUser();
+	const proxyUser: IUser = pollyFillUser();
 
 	const isDarkModeEnabled =
-		user.theme === 'dark' ||
-		(!('theme' in user) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+		proxyUser.theme === 'dark' ||
+		(!('theme' in proxyUser) && window.matchMedia('(prefers-color-scheme: dark)').matches);
 
 	if (isDarkModeEnabled) {
 		document.documentElement.classList.add('dark');
-		user.theme = 'dark';
+		proxyUser.theme = 'dark';
 	} else {
 		document.documentElement.classList.remove('dark');
-		user.theme = 'light';
+		proxyUser.theme = 'light';
 	}
+
+	user.set(proxyUser);
+
+	return proxyUser.theme;
 };

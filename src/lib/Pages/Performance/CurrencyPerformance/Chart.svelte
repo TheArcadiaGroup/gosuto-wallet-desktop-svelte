@@ -2,12 +2,14 @@
 	import { onMount } from 'svelte';
 	import Chart from 'chart.js/auto/auto.esm';
 	import 'chartjs-adapter-date-fns';
+	import { user } from '$stores/user';
 
 	let ctx: HTMLCanvasElement;
 	export let chartPrices: ChartPrice[];
 
 	let chart: Chart;
 	let playAnimation = true;
+	$: theme = $user?.theme ?? 'dark';
 
 	onMount(async () => {
 		chartRender();
@@ -76,12 +78,7 @@
 						grid: {
 							borderDash: [4],
 							borderWidth: 0,
-							color:
-								localStorage.theme === 'dark' ||
-								(!('theme' in localStorage) &&
-									window.matchMedia('(prefers-color-scheme: dark)').matches)
-									? 'rgba(255, 255, 255, 0.3)'
-									: 'rgba(0, 0, 0, 0.1)',
+							color: theme === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.1)',
 						},
 					},
 					x: {
@@ -90,12 +87,7 @@
 						},
 						grid: {
 							display: false,
-							borderColor:
-								localStorage.theme === 'dark' ||
-								(!('theme' in localStorage) &&
-									window.matchMedia('(prefers-color-scheme: dark)').matches)
-									? 'rgba(255, 255, 255, 0.3)'
-									: 'rgba(0, 0, 0, 0.1)',
+							borderColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.1)',
 							borderWidth: 1,
 						},
 						ticks: {
