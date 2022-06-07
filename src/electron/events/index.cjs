@@ -7,6 +7,11 @@ const sendMessage = require('./sendMessage.cjs');
 const { getBalance, getTokenBalance } = require('../utils/account.cjs');
 const { readFileUsingDialog, writeFile } = require('../utils/fileInteractions.cjs');
 const { getAllValidators, delegate, undelegate } = require('../utils/staking.cjs');
+const {
+	isEncryptionAvailable,
+	encryptString,
+	decryptString,
+} = require('../utils/storage/index.cjs');
 
 /**
  * Receiving messages from Renderer
@@ -296,6 +301,53 @@ module.exports = () => {
 			);
 		} catch (error) {
 			event.returnValue = error;
+		}
+	});
+
+	ipcMain.on('encryption', async (event, data) => {
+		try {
+			const parsedData = JSON.parse(data);
+			let result = {
+				data: null,
+				error: null,
+				message: '',
+			};
+			if (parsedData?.method === 'encrypt') {
+				result = {
+					data: encryptString(parsedData.stringToEncrypt),
+					error: null,
+					message: '',
+				};
+			} else if (parsedData?.method === 'decrypt') {
+				result = {
+					data: decryptString(parsedData.stringToDecrypt),
+					error: null,
+					message: '',
+				};
+			} else if (parsedData?.method === 'check') {
+				const res = isEncryptionAvailable();
+				result = {
+					data: res,
+					error: null,
+					message: '',
+				};
+			} else {
+				result = {
+					data: res,
+					error: 'Inaccurate Encryption Method Provided',
+					message: 'Inaccurate Encryption Method Provided',
+				};
+			}
+
+			event.returnValue = JSON.stringify(result);
+			sendMessage('encryptionResponse', JSON.stringify(result));
+		} catch (error) {
+			event.returnValue = JSON.stringify({
+				data: null,
+				error: error,
+				message: '',
+			});
+			sendMessage('encryptionResponse', JSON.stringify({ data: null, error: error, message: '' }));
 		}
 	});
 

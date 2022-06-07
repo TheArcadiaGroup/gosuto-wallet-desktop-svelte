@@ -164,7 +164,7 @@
 		{#if tokenAmount > selectedToken.tokenAmountHeld - totalCost}
 			<div class="error-div">
 				<ErrorIcon class="mr-1" fill={'#e6332a'} />
-				You can send a maximum of {selectedToken.tokenAmountHeld - totalCost}
+				You can send a maximum of {Math.max(0, selectedToken.tokenAmountHeld - totalCost)}
 			</div>
 		{/if}
 

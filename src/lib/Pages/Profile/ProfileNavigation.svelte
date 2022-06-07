@@ -76,10 +76,7 @@
 			if (publicKey) {
 				goto(`/${forRoute}/${publicKey}/${selection}`);
 			} else if ($wallets.length > 0) {
-				saveData(
-					'selectedWallet',
-					JSON.stringify($wallets.filter((wallet) => wallet.publicKey === publicKey)[0]),
-				);
+				saveData('selectedWallet', $wallets.filter((wallet) => wallet.publicKey === publicKey)[0]);
 				goto(`/${forRoute}/${publicKey}/${selection}`);
 			} else {
 				goto('/add-wallet');
@@ -116,7 +113,7 @@
 				{#if $wallets.length > 0}
 					<CardCarousel>
 						{#each $wallets as wallet, i}
-							<CarouselItem {i}>
+							<CarouselItem>
 								<CreditCard
 									name={wallet.walletName || 'Unknown Name'}
 									avatar={$user?.avatar || ''}

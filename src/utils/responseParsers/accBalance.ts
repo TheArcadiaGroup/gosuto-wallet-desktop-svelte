@@ -24,7 +24,7 @@ const parseStakingData = (publicKey: string, network: 'testnet' | 'mainnet' = 't
 				thisWallet.unclaimedRewards = stakingData.unclaimedRewards;
 				thisWallet.stakedBalance = stakingData.stakedAmount;
 				selectedWallet.set(thisWallet);
-				saveData('selectedWallet', JSON.stringify(thisWallet));
+				saveData('selectedWallet', thisWallet);
 			}
 		})
 		.catch((error) => console.log(error));
@@ -58,7 +58,7 @@ const parseWalletDataGivenPrice = (
 		});
 
 		wallets.set(_wallets);
-		saveData('wallets', JSON.stringify(_wallets));
+		saveData('wallets', _wallets);
 
 		const thisWallet = get(selectedWallet);
 		if (thisWallet && thisWallet.publicKey === data.publicKey) {
@@ -66,7 +66,7 @@ const parseWalletDataGivenPrice = (
 				+data.balance * csprPrice.price[get(user)?.currency || 'usd'];
 			thisWallet.availableBalance = +data.balance ?? 0; // returned as string
 			selectedWallet.set(thisWallet);
-			saveData('selectedWallet', JSON.stringify(thisWallet));
+			saveData('selectedWallet', thisWallet);
 		}
 
 		tokenLoaders.update((_loader) => {

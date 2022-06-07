@@ -6,7 +6,7 @@
 	import LockIcon from '$icons/LockIcon.svelte';
 
 	import { goto } from '$app/navigation';
-	import { retrieveData, saveData } from '$utils/dataStorage';
+	import { encryptPassword, encryptPrvKey, retrieveData, saveData } from '$utils/dataStorage';
 	import { walletNameIsValid } from '$utils/profiles';
 	import { passwordsAreSimilar, validatePassword } from '$utils/validators/passwordValidation';
 
@@ -52,7 +52,7 @@
 
 			wallets.push({
 				walletName: walletName.trim(),
-				walletPassword: password.trim(),
+				walletPassword: encryptPassword(password.trim()),
 				walletImage: '',
 				seedPhrase: seedPhrase.trim().split(' '),
 				availableBalanceUSD: 0.0,
@@ -60,15 +60,18 @@
 				stakedBalance: 0.0,
 				unclaimedRewards: 0.0,
 				walletTokens: [],
-				walletStakes: [],
+				walletStakes: {
+					mainnet: [],
+					testnet: [],
+				},
 				algorithm,
 				// walletHistory: [],
 				publicKey: accountHex.trim(),
 				accountHash: accountHash.trim(),
-				privateKey: privateKey.trim(),
+				privateKey: encryptPrvKey(privateKey.trim()),
 			});
 
-			saveData('wallets', JSON.stringify(wallets));
+			saveData('wallets', wallets);
 			goto(`/profile/${accountHex.trim()}`);
 		} else {
 			goto('/add-wallet/import/from-seed-phrase');

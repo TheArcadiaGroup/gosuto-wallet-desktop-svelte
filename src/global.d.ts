@@ -90,7 +90,10 @@ declare global {
 		stakedBalance: number;
 		unclaimedRewards: number;
 		walletTokens: IToken[];
-		walletStakes: IStake[];
+		walletStakes: {
+			mainnet: IStake[];
+			testnet: IStake[];
+		};
 		// walletHistory: IHistory[];
 		publicKey: string;
 		accountHash: string;
@@ -248,7 +251,8 @@ declare global {
 		| 'delegate'
 		| 'undelegate'
 		| 'openUrl'
-		| 'exportWalletCertificate';
+		| 'exportWalletCertificate'
+		| 'encryption';
 	type MainReceiveChannels =
 		| 'createWalletFromFileResponse'
 		| 'createWalletFromMnemonicsResponse'
@@ -260,5 +264,6 @@ declare global {
 		| 'tokenBalanceResponse'
 		| 'getValidatorsResponse'
 		| 'delegateResponse'
-		| 'undelegateResponse';
+		| 'undelegateResponse'
+		| 'encryptionResponse';
 }

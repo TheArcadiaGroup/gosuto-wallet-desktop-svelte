@@ -390,7 +390,7 @@ export const getUserDelegatedAmount = async (
 		// Filter through the wallets finding the wallet we need and add the data to it
 		dbWallets.map((wallet) => {
 			if (wallet.publicKey === publicKey) {
-				wallet.walletStakes = stakingOperations.map((item) => ({
+				wallet.walletStakes[network] = stakingOperations.map((item) => ({
 					validatorPublicKey: item.validatorPublicKey, // validator public key
 					walletName: wallet.walletName,
 					stakeAmount: item.stakedAmount,
@@ -406,14 +406,14 @@ export const getUserDelegatedAmount = async (
 					if (selWallet) {
 						selWallet.walletStakes = wallet.walletStakes;
 						selectedWallet.update(() => selWallet);
-						saveData('selectedWallet', JSON.stringify(selWallet));
+						saveData('selectedWallet', selWallet);
 					}
 				}
 			}
 			return wallet;
 		});
 
-		saveData('wallets', JSON.stringify(dbWallets));
+		saveData('wallets', dbWallets);
 		wallets.set(dbWallets);
 
 		return { stakedAmount, unclaimedRewards, stakingOperations };

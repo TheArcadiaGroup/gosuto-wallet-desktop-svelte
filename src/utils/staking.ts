@@ -9,12 +9,13 @@ import {
 } from 'casper-js-sdk';
 import { ethers } from 'ethers';
 import { getEndpointByNetwork } from './casper';
+import { decryptPrvKey } from './dataStorage';
 import { parseDelegationResponse } from './responseParsers/delegations';
 
 export const delegate = (
 	publicKey: string,
 	accountHash: string,
-	privateKey: string | Uint8Array,
+	privateKey: string,
 	validatorPublicKey: string,
 	amount: number,
 	network: 'testnet' | 'mainnet' = 'testnet',
@@ -43,21 +44,17 @@ export const delegate = (
 		const casperClient = new CasperClient(getEndpointByNetwork(network));
 		const networkName = network === 'mainnet' ? 'casper' : 'casper-test';
 
-		// Read keys from the structure created in #Generating keys
-		// if (privateKey.length !== 128) {
-		// 	privateKey = Keys.Ed25519.parsePrivateKey(privateKey);
-		// }
-		// const publicKey = Keys.Ed25519.privateToPublicKey(privateKey);
+		const decryptedPrivateKey = decryptPrvKey(privateKey);
 
 		const keyPair =
 			algorithm === 'ed25519'
 				? Keys.Ed25519.parseKeyPair(
 						Buffer.from(publicKey, 'hex'),
-						Buffer.from(privateKey as string, 'hex'),
+						Buffer.from(decryptedPrivateKey, 'hex'),
 				  )
 				: Keys.Secp256K1.parseKeyPair(
 						Buffer.from(publicKey.slice(2), 'hex'),
-						Buffer.from(privateKey as string, 'hex'),
+						Buffer.from(decryptedPrivateKey, 'hex'),
 						'raw',
 				  );
 
@@ -125,7 +122,7 @@ export const delegate = (
 export const undelegate = (
 	publicKey: string,
 	accountHash: string,
-	privateKey: string | Uint8Array,
+	privateKey: string,
 	validatorPublicKey: string,
 	amount: number,
 	network: 'testnet' | 'mainnet' = 'testnet',
@@ -153,22 +150,17 @@ export const undelegate = (
 		const casperClient = new CasperClient(getEndpointByNetwork(network));
 		const networkName = network === 'mainnet' ? 'casper' : 'casper-test';
 
-		// Read keys from the structure created in #Generating keys
-		// if (privateKey.length !== 128) {
-		// 	privateKey = Keys.Ed25519.parsePrivateKey(privateKey);
-		// }
-
-		// const publicKey = Keys.Ed25519.privateToPublicKey(privateKey);
+		const decryptedPrivateKey = decryptPrvKey(privateKey);
 
 		const keyPair =
 			algorithm === 'ed25519'
 				? Keys.Ed25519.parseKeyPair(
 						Buffer.from(publicKey, 'hex'),
-						Buffer.from(privateKey as string, 'hex'),
+						Buffer.from(decryptedPrivateKey, 'hex'),
 				  )
 				: Keys.Secp256K1.parseKeyPair(
 						Buffer.from(publicKey.slice(2), 'hex'),
-						Buffer.from(privateKey as string, 'hex'),
+						Buffer.from(decryptedPrivateKey, 'hex'),
 						'raw',
 				  );
 

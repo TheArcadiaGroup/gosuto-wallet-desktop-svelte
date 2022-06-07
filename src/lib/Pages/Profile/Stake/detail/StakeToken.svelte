@@ -29,9 +29,9 @@
 	let selectedValidatorPublicKey: string = '';
 	let walletBalance = $selectedWallet!.availableBalance;
 
-	$: userIsDelegatorOnSelectedValidator = $selectedWallet?.walletStakes.some(
-		(item) => item.validatorPublicKey === selectedValidatorPublicKey,
-	);
+	$: userIsDelegatorOnSelectedValidator = $selectedWallet?.walletStakes[
+		$user?.network ?? 'testnet'
+	].some((item) => item.validatorPublicKey === selectedValidatorPublicKey);
 	$: validatorInvalid =
 		$validators.some(
 			(validator) =>
@@ -72,7 +72,7 @@
 				Transaction might fail since it uses up your all your available balance without paying for
 				fees. Recommended maximum is
 				<div class="font-bold text-light-lighterOrange">
-					{walletBalance - totalFees} CSPR
+					{Math.max(0, walletBalance - totalFees)} CSPR
 				</div>
 			</div>
 		</div>
@@ -85,7 +85,7 @@
 				undelegation requires a minimum of 2.5 CSPR liquid balance. To cater for this, the
 				recommended maximum is
 				<div class="font-bold text-light-lighterOrange">
-					{walletBalance - 2.5 - totalFees} CSPR
+					{Math.max(0, walletBalance - 2.5 - totalFees)} CSPR
 				</div>
 			</div>
 		</div>

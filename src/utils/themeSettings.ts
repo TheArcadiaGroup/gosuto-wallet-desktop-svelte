@@ -24,7 +24,7 @@ export const toggleDarkMode = () => {
 	}
 
 	// Update and pollyfill user store
-	saveData('user', JSON.stringify(user));
+	saveData('user', user);
 	pollyFillUser();
 };
 

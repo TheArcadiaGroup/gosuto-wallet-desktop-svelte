@@ -38,7 +38,7 @@
 					<div
 						class="single-card-wrap"
 						on:click={() => {
-							saveData('selectedWallet', JSON.stringify(wallet));
+							saveData('selectedWallet', wallet);
 						}}
 					>
 						<CreditCard name={wallet.walletName} {wallet} avatar={$user?.avatar} />

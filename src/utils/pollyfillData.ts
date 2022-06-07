@@ -35,7 +35,7 @@ export const pollyFillTokens = async () => {
 			publicKey: selectedWallet?.publicKey ?? '',
 		});
 
-		saveData('tokens', JSON.stringify(walletsInDB));
+		saveData('tokens', walletsInDB);
 	}
 
 	// Add all global tokens to the array
@@ -75,7 +75,7 @@ export const pollyFillUser = () => {
 		currency: 'usd',
 	};
 
-	saveData('user', JSON.stringify(dbUser));
+	saveData('user', dbUser);
 
 	user.set(dbUser);
 	return dbUser;
@@ -85,7 +85,7 @@ export const pollyFillWallets = () => {
 	// Wallets
 	const dbWallets: IWallet[] = retrieveData('wallets') || [];
 
-	saveData('wallets', JSON.stringify(dbWallets));
+	saveData('wallets', dbWallets);
 
 	wallets.set(dbWallets);
 
@@ -107,12 +107,11 @@ export const pollyfillSelectedWallet = () => {
 	}
 
 	if (dbSelectedWallet) {
-		saveData('selectedWallet', JSON.stringify(dbSelectedWallet));
+		saveData('selectedWallet', dbSelectedWallet);
 
 		selectedWallet.set(dbSelectedWallet);
 
 		if (!get(walletLoaders)[dbSelectedWallet.publicKey]) {
-			console.log('Loading Wallet Info');
 			loadWalletData(dbSelectedWallet.publicKey);
 		}
 	}

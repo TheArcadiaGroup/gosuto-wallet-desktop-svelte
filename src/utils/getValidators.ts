@@ -3,18 +3,23 @@ import { getNetworkValidators } from './casper';
 import { retrieveData, saveData } from './dataStorage';
 
 export default async (network: 'mainnet' | 'testnet') => {
-	const cachedValidators = retrieveData('validators')?.[network];
+	const cachedValidators = retrieveData('validators') ?? {
+		mainnet: [],
+		testnet: [],
+	};
 
 	//  return immediately if anything has been cached, otherwise show loader
-	if (cachedValidators) {
-		validators.set(cachedValidators);
+	if (cachedValidators[network].length > 0) {
+		validators.set(cachedValidators?.[network]);
 	} else {
 		loadingValidators.set(true);
 	}
+
 	getNetworkValidators(network)
 		.then((validatorsArr) => {
 			validators.set(validatorsArr.sort((a, b) => b.currentDelegators - a.currentDelegators));
-			saveData('validators', JSON.stringify({ [network]: validatorsArr }));
+			cachedValidators[network] = validatorsArr;
+			saveData('validators', cachedValidators);
 		})
 		.finally(() => loadingValidators.set(false));
 };

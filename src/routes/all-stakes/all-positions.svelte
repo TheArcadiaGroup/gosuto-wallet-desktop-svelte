@@ -11,7 +11,7 @@
 	$: $wallets.map((wallet) => {
 		stakeArray = [
 			...stakeArray,
-			...wallet.walletStakes.filter(
+			...wallet.walletStakes[$user?.network ?? 'testnet'].filter(
 				(item) =>
 					!stakeArray.some(
 						(stake) =>

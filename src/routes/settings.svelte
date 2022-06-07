@@ -63,7 +63,7 @@
 		) {
 			// @ts-ignore
 			settingsData[infoType.name.toLowerCase()] = inputValue.trim();
-			saveData('user', JSON.stringify(settingsData));
+			saveData('user', settingsData);
 		}
 	};
 
@@ -87,7 +87,7 @@
 	$: ((selectedNetwork) => {
 		if (initialized && settingsData) {
 			settingsData['network'] = networkOptionsArr[selectedNetwork];
-			saveData('user', JSON.stringify(settingsData));
+			saveData('user', settingsData);
 		}
 	})(networkOptionValue);
 </script>

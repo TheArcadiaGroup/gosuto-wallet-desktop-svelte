@@ -14,7 +14,13 @@
 	import pollyfillData, { pollyfillSelectedWallet } from '$utils/pollyfillData';
 
 	import { goto } from '$app/navigation';
-	import { retrieveData, saveData } from '$utils/dataStorage';
+	import {
+		decryptPassword,
+		decryptPrvKey,
+		encryptPassword,
+		retrieveData,
+		saveData,
+	} from '$utils/dataStorage';
 	import { page } from '$app/stores';
 	import { passwordsAreSimilar, validatePassword } from '$utils/validators/passwordValidation';
 	import { userHistory } from '$stores/user/history';
@@ -53,6 +59,7 @@
 
 		walletName = wallet.walletName;
 		privateKey = wallet.privateKey.substring(0, 30);
+		wallet.walletPassword = decryptPassword(wallet.walletPassword);
 	});
 
 	let copyToClipboard = (copyText: string) => {
@@ -61,7 +68,7 @@
 
 	let changePassword = () => {
 		if (newPassword && newPassword === confirmPassword) {
-			wallet.walletPassword = newPassword;
+			wallet.walletPassword = encryptPassword(newPassword);
 			canChangePassword = false;
 
 			// clear form state
@@ -72,18 +79,16 @@
 			const storedWallets: IWallet[] = retrieveData('wallets');
 			saveData(
 				'wallets',
-				JSON.stringify(
-					storedWallets.map((_wallet) => {
-						if (_wallet.publicKey === wallet.publicKey) {
-							_wallet = wallet;
-						}
+				storedWallets.map((_wallet) => {
+					if (_wallet.publicKey === wallet.publicKey) {
+						_wallet = wallet;
+					}
 
-						return _wallet;
-					}),
-				),
+					return _wallet;
+				}),
 			);
 
-			saveData('selectedWallet', JSON.stringify(wallet));
+			saveData('selectedWallet', wallet);
 			pollyfillData();
 		}
 	};
@@ -112,15 +117,15 @@
 						});
 					}
 
-					saveData('history', JSON.stringify(history));
+					saveData('history', history);
 					userHistory.set(history[$user?.network ?? 'testnet']);
 				}
 
 				return _wallet;
 			});
 
-			saveData('wallets', JSON.stringify(_wallets));
-			saveData('selectedWallet', JSON.stringify(wallet));
+			saveData('wallets', _wallets);
+			saveData('selectedWallet', wallet);
 			pollyfillData();
 		}
 	};
@@ -163,7 +168,7 @@
 				on:confirm={() => {
 					showCopyWalletPasswordPopup = false;
 					if (copyPrivateKeyPassword === wallet.walletPassword) {
-						copyToClipboard(wallet.privateKey);
+						copyToClipboard(decryptPrvKey(wallet.privateKey));
 						showWalletCopiedPopup = true;
 						copyPrivateKeyPassword = '';
 					}

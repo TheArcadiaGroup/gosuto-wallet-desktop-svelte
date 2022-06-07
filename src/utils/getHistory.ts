@@ -360,7 +360,7 @@ export const getSingleAccountHistory = async (
 	}
 
 	// Update the history cache
-	saveData('history', JSON.stringify(cachedHistory));
+	saveData('history', cachedHistory);
 	userHistory.set(cachedHistory[network]);
 	historyLoading.set(false);
 };

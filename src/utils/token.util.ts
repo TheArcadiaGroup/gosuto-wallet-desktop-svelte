@@ -18,7 +18,7 @@ export function addToken(wallet: string, token: IToken): boolean {
 	if (!tokens) tokens = {};
 	if (!tokens[wallet]) tokens[wallet] = {};
 	tokens[wallet][token.contractAddress] = token;
-	saveData('tokens', JSON.stringify(tokens));
+	saveData('tokens', tokens);
 
 	return true;
 }
@@ -28,7 +28,7 @@ export function deleteToken(wallet: string, contractAddress: string): boolean {
 	const tokens: any = JSON.parse(retrieveData('tokens'));
 	if (tokens && tokens[wallet] && tokens[wallet][contractAddress]) {
 		delete tokens[wallet];
-		saveData('tokens', JSON.stringify(tokens));
+		saveData('tokens', tokens);
 		return true;
 	}
 
@@ -146,7 +146,7 @@ export async function swapToken(
 	tokens[wallet][fromContractAddress] = tokenObject;
 	tokens[wallet][toContractAddress] = toTokenObject;
 
-	saveData('tokens', JSON.stringify(tokens));
+	saveData('tokens', tokens);
 
 	return true;
 }
@@ -194,7 +194,7 @@ export function createToken(
 	if (!tokens[wallet]) tokens[wallet] = {};
 	tokens[wallet][contractAddress] = token;
 
-	saveData('tokens', JSON.stringify(tokens));
+	saveData('tokens', tokens);
 
 	return true;
 }

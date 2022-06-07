@@ -20,7 +20,7 @@
 			const prevUser = $user;
 			prevUser.currency = e.target.value.toLowerCase() as SupportedCurrencies;
 			user.set(prevUser);
-			saveData('user', JSON.stringify(prevUser));
+			saveData('user', prevUser);
 			if ($selectedWallet) {
 				loadWalletData($selectedWallet.publicKey);
 			}

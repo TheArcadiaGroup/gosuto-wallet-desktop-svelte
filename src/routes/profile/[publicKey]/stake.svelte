@@ -14,4 +14,4 @@
 	});
 </script>
 
-<StakePage stakeArray={$selectedWallet?.walletStakes ?? []} />
+<StakePage stakeArray={$selectedWallet?.walletStakes[$user?.network ?? 'testnet'] ?? []} />

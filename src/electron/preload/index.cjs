@@ -18,6 +18,7 @@ contextBridge.exposeInMainWorld('api', {
 			'undelegate',
 			'openUrl',
 			'exportWalletCertificate',
+			'encryption',
 		];
 		if (validChannels.includes(channel)) {
 			ipcRenderer.send(channel, data);
@@ -39,6 +40,7 @@ contextBridge.exposeInMainWorld('api', {
 			'delegate',
 			'undelegate',
 			'exportWalletCertificate',
+			'encryption',
 		];
 		if (validChannels.includes(channel)) {
 			return ipcRenderer.sendSync(channel, data);
@@ -56,6 +58,7 @@ contextBridge.exposeInMainWorld('api', {
 			'accountCsprBalanceResponse',
 			'delegateResponse',
 			'undelegateResponse',
+			'encryptionResponse',
 		];
 		if (validChannels.includes(channel)) {
 			// Deliberately strip event as it includes `sender`

@@ -15,7 +15,6 @@
 	import ProfilePicture from '$lib/components/ProfilePicture.svelte';
 	import { saveData } from '$utils/dataStorage';
 	import { selectedWallet } from '$stores/user/wallets';
-	import { page } from '$app/stores';
 	import { walletLoaders } from '$stores/dataLoaders';
 	import { loadWalletData } from '$utils/dataLoaders';
 	import { user } from '$stores/user';
@@ -28,7 +27,7 @@
 	function saveAddress() {
 		console.log(wallet.walletName);
 		selectedWallet.set(wallet);
-		saveData('selectedWallet', JSON.stringify(wallet));
+		saveData('selectedWallet', wallet);
 
 		if (!$walletLoaders[wallet.publicKey]) {
 			loadWalletData(wallet.publicKey);

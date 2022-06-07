@@ -1,4 +1,5 @@
 import { getEndpointByNetwork } from '$utils/casper';
+import { decryptPrvKey } from '$utils/dataStorage';
 import { CasperClient, Keys, CLPublicKey, DeployUtil } from 'casper-js-sdk';
 import { ethers } from 'ethers';
 
@@ -12,10 +13,8 @@ export default async (
 ) => {
 	try {
 		const casperClient = new CasperClient(getEndpointByNetwork(network));
-		// Read keys from the structure created in #Generating keys
-		// if (fromPrivateKey.length !== 128) {
-		//     fromPrivateKey = Keys.Ed25519.parsePrivateKey(fromPrivateKey);
-		// }
+
+		const decryptedFromPrivateKey = decryptPrvKey(fromPrivateKey);
 
 		const amountAsBigNumber = ethers.utils.parseUnits(amount.toString(), 9); // Convert the digit amount to BigNumber
 
@@ -23,11 +22,11 @@ export default async (
 			algorithm === 'ed25519'
 				? Keys.Ed25519.parseKeyPair(
 						Buffer.from(fromPublicKey, 'hex'),
-						Buffer.from(fromPrivateKey as string, 'hex'),
+						Buffer.from(decryptedFromPrivateKey, 'hex'),
 				  )
 				: Keys.Secp256K1.parseKeyPair(
 						Buffer.from(fromPublicKey.slice(2), 'hex'),
-						Buffer.from(fromPrivateKey as string, 'hex'),
+						Buffer.from(decryptedFromPrivateKey, 'hex'),
 						'raw',
 				  );
 

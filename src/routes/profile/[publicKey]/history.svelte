@@ -8,7 +8,7 @@
 	import { getSingleAccountHistory } from '$utils/getHistory';
 	import { sidebarContent } from '$stores/HistoryStore';
 	import { pollyFillWallets, pollyFillUser, pollyfillSelectedWallet } from '$utils/pollyfillData';
-	import { previousSelectedWallet, selectedWallet, wallets } from '$stores/user/wallets';
+	import { selectedWallet, wallets } from '$stores/user/wallets';
 	import { saveData } from '$utils/dataStorage';
 	import { user } from '$stores/user';
 	import { onMount } from 'svelte';
@@ -33,7 +33,7 @@
 
 			if (newlySelectedWallet) {
 				selectedWallet.set(newlySelectedWallet);
-				saveData('selectedProfile', JSON.stringify(newlySelectedWallet));
+				saveData('selectedWallet', newlySelectedWallet);
 			} else {
 				pollyfillSelectedWallet();
 			}
