@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, screen } = require('electron');
 const path = require('path');
 const serve = require('electron-serve');
 const windowStateManager = require('electron-win-state').default;
@@ -24,9 +24,17 @@ const serveURL = serve({ directory: '.' });
 let mainWindow;
 
 const createWindow = () => {
+	const display = screen.getPrimaryDisplay();
+	const dimensions = display.workAreaSize;
+
+	const minWidth =
+		parseInt(dimensions.width * 0.8) > 1280 ? parseInt(dimensions.width * 0.8) : 1280;
+	const minHeight =
+		parseInt(dimensions.height * 0.8) > 750 ? parseInt(dimensions.height * 0.8) : 750;
+
 	let windowState = new windowStateManager({
-		defaultWidth: 1300,
-		defaultHeight: 850,
+		defaultWidth: minWidth,
+		defaultHeight: minHeight,
 	});
 
 	mainWindow = new BrowserWindow({
@@ -35,10 +43,14 @@ const createWindow = () => {
 			y: 32,
 		},
 		backgroundColor: 'whitesmoke',
-		minWidth: 1300,
-		minHeight: 850,
+		// minWidth: 1300,
+		// minHeight: 850,
 		width: windowState.width,
 		height: windowState.height,
+		minWidth: minWidth,
+		minHeight: minHeight,
+		maxWidth: dimensions.width,
+		maxHeight: dimensions.height,
 		x: windowState.x,
 		y: windowState.y,
 		frame: true, // remove this when creating custom app window
