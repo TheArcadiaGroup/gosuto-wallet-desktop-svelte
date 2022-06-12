@@ -23,8 +23,8 @@ export const pollyFillTokens = async () => {
 		walletsInDB['global'].push({
 			tokenName: 'CSPR',
 			tokenTicker: 'CSPR',
-			tokenAmountHeld: selectedWallet?.availableBalance ?? 0,
-			tokenAmountHeldUSD: selectedWallet?.availableBalanceUSD ?? 0,
+			tokenAmountHeld: selectedWallet?.availableBalance[get(user)?.network || 'testnet'] ?? 0,
+			tokenAmountHeldUSD: selectedWallet?.availableBalanceUSD[get(user)?.network || 'testnet'] ?? 0,
 			limitedSupply: false,
 			mintableSupply: false,
 			shareToken: true,
@@ -42,8 +42,9 @@ export const pollyFillTokens = async () => {
 	await Promise.all(
 		walletsInDB.global.map(async (token) => {
 			if (token.tokenTicker === 'CSPR' && selectedWallet) {
-				token.tokenAmountHeld = selectedWallet.availableBalance;
-				token.tokenAmountHeldUSD = selectedWallet.availableBalanceUSD;
+				token.tokenAmountHeld = selectedWallet.availableBalance[get(user)?.network || 'testnet'];
+				token.tokenAmountHeldUSD =
+					selectedWallet.availableBalanceUSD[get(user)?.network || 'testnet'];
 				token.tokenPriceUSD = (await getTokenValue('CSPR')).price[get(user)?.currency || 'usd'];
 			}
 

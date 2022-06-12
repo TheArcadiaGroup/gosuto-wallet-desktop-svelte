@@ -72,7 +72,7 @@
 	const selectProfileImage = () => {
 		const res = window.api.sendSync('selectProfileImage');
 		if (res && settingsData) {
-			settingsData.avatar = res;
+			settingsData.avatar = res ?? '/images/png/avatar.png';
 		}
 	};
 
