@@ -30,7 +30,7 @@ const createWindow = () => {
 	const minWidth =
 		parseInt(dimensions.width * 0.8) > 1280 ? parseInt(dimensions.width * 0.8) : 1280;
 	const minHeight =
-		parseInt(dimensions.height * 0.8) > 750 ? parseInt(dimensions.height * 0.8) : 750;
+		parseInt(dimensions.height * 0.8) > 700 ? parseInt(dimensions.height * 0.8) : 700;
 
 	let windowState = new windowStateManager({
 		defaultWidth: minWidth,
@@ -113,6 +113,13 @@ const createMainWindow = () => {
 	else serveURL(mainWindow);
 
 	if (dev) mainWindow.webContents.openDevTools();
+
+	if (
+		screen.getPrimaryDisplay().workAreaSize.width <= 1366 ||
+		screen.getPrimaryDisplay().workAreaSize.height <= 768
+	) {
+		mainWindow.webContents.setZoomFactor(0.75);
+	}
 
 	// mainWindow.on('focus', (event) => {
 	// 	electronLocalshortcut.register(
