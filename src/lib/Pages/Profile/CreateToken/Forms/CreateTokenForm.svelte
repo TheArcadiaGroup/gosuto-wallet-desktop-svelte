@@ -84,6 +84,15 @@
 						// Clear loader and show respective popup with tx details
 						popup = 'Success';
 						popupContent = `<p>Succcessfully Deployed Contract</p>`;
+
+						// Clear Create Token Form
+						tokenName = '';
+						tokenTicker = '';
+						authorizedMinterHash = '';
+						totalSupply = 0;
+						decimals = 18;
+						mintableSupply = true;
+						shareToken = true;
 					}
 
 					if (tokenMintTxes[key]?.result) {
