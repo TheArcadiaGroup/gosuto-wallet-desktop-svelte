@@ -63,40 +63,45 @@
 			{/if}
 			{tokenTicker}
 		</p>
-		<p class="token-card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">
-			{#if !$tokenLoaders[tokenTicker]}
-				{parseFloat(
-					(
-						(tokenTicker.toLowerCase() === 'cspr'
-							? $selectedWallet?.availableBalance[$user?.network ?? 'testnet'] ?? tokenAmountHeld
-							: tokenAmountHeld) * tokenPriceInUsd
-					).toFixed(2),
-				)}
-			{:else}
-				<span class="skeleton-loader" />
-			{/if}
-			{currencyUnit}
-		</p>
+
+		{#if tokenTicker.toLowerCase() === 'cspr'}
+			<p class="token-card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">
+				{#if !$tokenLoaders[tokenTicker]}
+					{parseFloat(
+						(
+							(tokenTicker.toLowerCase() === 'cspr'
+								? $selectedWallet?.availableBalance[$user?.network ?? 'testnet'] ?? tokenAmountHeld
+								: tokenAmountHeld) * tokenPriceInUsd
+						).toFixed(2),
+					)}
+				{:else}
+					<span class="skeleton-loader" />
+				{/if}
+				{currencyUnit}
+			</p>
+		{/if}
 	</div>
-	<div class="token-card-right-col">
-		<p
-			class="token-card-text-sm token-card-text-flex {positive
-				? 'text-light-green'
-				: 'text-light-red'}"
-		>
-			{#if positive}
-				<ProfitUpIcon />
-			{:else}
-				<ProfitDownIcon />
-			{/if}
-			{parseFloat(percentageChange.toFixed(2))}%
-		</p>
-		<p class="token-card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">
-			{parseFloat(tokenPriceInUsd.toFixed(3))}
-			{currencyUnit}
-		</p>
-		<p class="token-card-text-xs text-light-gray">(24h)</p>
-	</div>
+	{#if tokenTicker.toLowerCase() === 'cspr'}
+		<div class="token-card-right-col">
+			<p
+				class="token-card-text-sm token-card-text-flex {positive
+					? 'text-light-green'
+					: 'text-light-red'}"
+			>
+				{#if positive}
+					<ProfitUpIcon />
+				{:else}
+					<ProfitDownIcon />
+				{/if}
+				{parseFloat(percentageChange.toFixed(2))}%
+			</p>
+			<p class="token-card-text-xs {positive ? 'text-light-green' : 'text-light-red'}">
+				{parseFloat(tokenPriceInUsd.toFixed(3))}
+				{currencyUnit}
+			</p>
+			<p class="token-card-text-xs text-light-gray">(24h)</p>
+		</div>
+	{/if}
 </div>
 
 <style lang="postcss" global>
