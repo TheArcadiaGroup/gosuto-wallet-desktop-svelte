@@ -62,7 +62,11 @@ export const addTokenGivenContractHash = async (
 	preferContractDetails: boolean = true,
 ) => {
 	if (!(await checkIfTokenIsSupported(contractHash, network))) {
-		return 'Please make sure your token has at least one of the following keys: symbol, decimals, balances, allowances';
+		return {
+			data: null,
+			error:
+				'Please make sure your token has at least one of the following keys: symbol, decimals, balances, allowances',
+		};
 	}
 
 	// Add token to page and fetch details from Casper to Confirm the one's entered
@@ -101,8 +105,8 @@ export const addTokenGivenContractHash = async (
 		//     decimals: decimals as number
 		// })
 
-		return 'Successfully Added Token';
+		return { data: 'Successfully Added Token', error: null };
 	} else {
-		return 'Token Already Exists';
+		return { data: null, error: 'Token Already Exists' };
 	}
 };

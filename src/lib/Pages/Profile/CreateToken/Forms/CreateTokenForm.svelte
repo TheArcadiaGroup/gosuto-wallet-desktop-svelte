@@ -116,7 +116,7 @@
 			<span class="button-text" slot="text">Import Token</span>
 		</Button>
 	</div>
-	<form class="create-form" on:submit|preventDefault={submitCreateToken}>
+	<form class="create-form" on:submit|preventDefault={openConfirmPopup}>
 		<TextInput bind:value={tokenName} class="create-token-dark-sidebar-input" label="Token Name" />
 		<TextInput
 			bind:value={tokenTicker}

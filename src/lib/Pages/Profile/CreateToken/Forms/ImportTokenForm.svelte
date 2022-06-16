@@ -8,12 +8,20 @@
 	import { user } from '$stores/user';
 	import { selectedWallet } from '$stores/user/wallets';
 	import { pollyfillSelectedWallet } from '$utils/pollyfillData';
+	import Popup from '$lib/components/Popup.svelte';
+	import Loading from '$lib/components/Loading.svelte';
+	import ErrorIcon from '$icons/ErrorIcon.svelte';
+	import SuccessIcon from '$icons/SuccessIcon.svelte';
 
 	let contractHash = '';
 	let tokenTicker = '';
 	let decimals = 18;
 	let shareToken = true;
 	let preferContractDetails = true;
+
+	let popup = '';
+	let popupContent = '';
+	let confirmPopup = false;
 
 	async function submitImportToken() {
 		if (!$selectedWallet?.privateKey) {
@@ -30,7 +38,33 @@
 			preferContractDetails,
 		);
 
-		console.log(result);
+		if (result.error) {
+			// Show error
+			popup = 'Token Addition Failed!';
+			popupContent = `<p>${result.error}</p>`;
+		} else {
+			// Clear loader and show respective popup with tx details
+			popup = 'Success';
+			popupContent = `<p>Succcessfully Added Token</p>`;
+		}
+	}
+
+	function openConfirmPopup() {
+		popup = 'Add Token';
+		popupContent = `<p>You are about to add an ERC-20 Token Contract on the Casper ${
+			$user?.network ?? 'testnet'
+		} Network to your token list.</p>`;
+		confirmPopup = true;
+	}
+
+	function confirmAddToken() {
+		submitImportToken();
+	}
+
+	function closePopup(): void {
+		confirmPopup = false;
+		popupContent = '';
+		popup = '';
 	}
 
 	const dispatch = createEventDispatcher();
@@ -49,7 +83,7 @@
 			<span class="button-text" slot="text">Import Token</span>
 		</Button>
 	</div>
-	<form class="create-form" on:submit|preventDefault={submitImportToken}>
+	<form class="create-form" on:submit|preventDefault={openConfirmPopup}>
 		<TextInput
 			bind:value={contractHash}
 			class="create-token-dark-sidebar-input"
@@ -95,6 +129,40 @@
 		</div>
 	</form>
 </div>
+
+{#if popup}
+	<Popup
+		title={popup}
+		hasCancel={confirmPopup}
+		on:confirm={() => {
+			confirmPopup ? confirmAddToken() : closePopup();
+		}}
+		on:cancel={closePopup}
+	>
+		<p class="popup-text">
+			{#if popup === 'Deploying'}
+				<Loading useFirework={false} size={60} />
+			{:else}
+				{@html popupContent}
+			{/if}
+		</p>
+		{#if confirmPopup}
+			<div class="popup-text opacity-50 text-2xs my-3">
+				<div class="flex flex-row items-center justify-center bold">
+					<ErrorIcon class="mr-1" fill={'#f1bf0b'} /> WARNING!
+				</div>
+				<div>Please double check the accuracy of the contract hash before proceeding.</div>
+			</div>
+		{/if}
+		{#if popup === 'Success'}
+			<div class="popup-text opacity-50 text-2xs my-3">
+				<div class="flex flex-row items-center justify-center bold">
+					<SuccessIcon class="mr-1" fill={'#31de90'} /> Successfully Deployed!
+				</div>
+			</div>
+		{/if}
+	</Popup>
+{/if}
 
 <style lang="postcss" global>
 	:local(.create-token) {
