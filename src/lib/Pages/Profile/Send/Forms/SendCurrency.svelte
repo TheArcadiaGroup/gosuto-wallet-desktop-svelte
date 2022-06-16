@@ -56,7 +56,7 @@
 				$selectedWallet.privateKey,
 				tokenAmount,
 				recipientAddress,
-				selectedToken.contractAddress,
+				selectedToken.contractHash,
 				network,
 				note,
 				selectedToken.tokenTicker,
