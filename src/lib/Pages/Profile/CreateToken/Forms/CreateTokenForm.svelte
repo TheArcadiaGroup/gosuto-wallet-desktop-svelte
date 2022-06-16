@@ -10,6 +10,11 @@
 	import { pollyfillSelectedWallet } from '$utils/pollyfillData';
 	import isValidAccountHash from '$utils/validators/isValidAccountHash';
 	import { user } from '$stores/user';
+	import Popup from '$lib/components/Popup.svelte';
+	import Loading from '$lib/components/Loading.svelte';
+	import ErrorIcon from '$icons/ErrorIcon.svelte';
+	import SuccessIcon from '$icons/SuccessIcon.svelte';
+	import { mintingTokens } from '$stores/user/tokens';
 
 	let tokenName = '';
 	let tokenTicker = '';
@@ -21,12 +26,18 @@
 
 	$: isMinterValid = false;
 
+	let popup = '';
+	let popupContent = '';
+	let confirmPopup = false;
+
 	function submitCreateToken() {
+		popupContent = 'Deploying';
+
 		if (!$selectedWallet?.privateKey) {
 			pollyfillSelectedWallet();
 		}
 
-		const result = createToken(
+		createToken(
 			$selectedWallet!.privateKey,
 			$selectedWallet!.publicKey,
 			$selectedWallet!.algorithm,
@@ -38,11 +49,51 @@
 			authorizedMinterHash,
 			shareToken,
 		);
+	}
 
-		console.log('Send Tx: ', result);
+	function openConfirmPopup() {
+		popup = 'Deploy Contract';
+		popupContent = `<p>You are about to deploy an ERC-20 Token Contract on the Casper ${
+			$user?.network ?? 'testnet'
+		} Network.</p>`;
+		confirmPopup = true;
+	}
+
+	function confirmDeploy() {
+		submitCreateToken();
+	}
+
+	function closePopup(): void {
+		confirmPopup = false;
+		popupContent = '';
+		popup = '';
 	}
 
 	const dispatch = createEventDispatcher();
+
+	$: ((tokenMintTxes) => {
+		if (tokenMintTxes) {
+			Object.keys(tokenMintTxes).map((key) => {
+				if (tokenMintTxes[key]) {
+					if (tokenMintTxes[key]?.error) {
+						// Show error
+						popup = 'Deploy Failed!';
+						popupContent = tokenMintTxes[key]?.error || `<p>Failed to Deploy Contract</p>`;
+					} else if (tokenMintTxes[key]?.result) {
+						// Clear loader and show respective popup with tx details
+						popup = 'Success';
+						popupContent = `<p>Succcessfully Deployed Contract</p>`;
+					}
+
+					if (tokenMintTxes[key]?.result) {
+						// remove the key from the sendTokenTrackers list
+						delete tokenMintTxes[key];
+						mintingTokens.set(tokenMintTxes);
+					}
+				}
+			});
+		}
+	})($mintingTokens);
 
 	$: (async function (minterHash) {
 		isMinterValid = await isValidAccountHash(
@@ -127,6 +178,47 @@
 		</div>
 	</form>
 </div>
+
+{#if popup}
+	<Popup
+		title={popup}
+		hasCancel={confirmPopup}
+		on:confirm={() => {
+			confirmPopup ? confirmDeploy() : closePopup();
+		}}
+		on:cancel={closePopup}
+	>
+		<p class="popup-text">
+			{#if popup === 'Deploying'}
+				<Loading useFirework={false} size={60} />
+			{:else}
+				{@html popupContent}
+			{/if}
+		</p>
+		{#if confirmPopup && mintableSupply}
+			<div class="popup-text opacity-50 text-2xs my-3">
+				<div class="flex flex-row items-center justify-center bold">
+					<ErrorIcon class="mr-1" fill={'#f1bf0b'} /> WARNING!
+				</div>
+				<div>
+					Please double check the accuracy of the minter account hash. If you did not provide this
+					value, the connected wallet's account hash will be used.
+				</div>
+			</div>
+		{/if}
+		{#if popup === 'Success'}
+			<div class="popup-text opacity-50 text-2xs my-3">
+				<div class="flex flex-row items-center justify-center bold">
+					<SuccessIcon class="mr-1" fill={'#31de90'} /> Successfully Deployed!
+				</div>
+				<div>
+					After the transaction has been included in a block. It will appear in your history and the
+					token on your token list.
+				</div>
+			</div>
+		{/if}
+	</Popup>
+{/if}
 
 <style global>
 	:local(.create-token) {

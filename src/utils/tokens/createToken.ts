@@ -1,4 +1,5 @@
 import { user } from '$stores/user';
+import { parseTokenCreationHash } from '$utils/responseParsers/tokenCreation';
 import { get } from 'svelte/store';
 import { decryptPrvKey, retrieveData, saveData } from '../dataStorage';
 
@@ -32,6 +33,26 @@ export function addTokenTxToBeTracked(
 	saveData('token_mints', createdNotAddedTokens);
 }
 
+export function checkIfTokenDeploysDone() {
+	const createdNotAddedTokens = retrieveData('token_mints') ?? [];
+	createdNotAddedTokens.map(
+		(preToken: {
+			deployHash: string;
+			shareToken: boolean;
+			publicKey: string;
+			network: 'mainnet' | 'testnet';
+		}) => {
+			parseTokenCreationHash(
+				preToken.deployHash,
+				preToken.shareToken,
+				preToken.publicKey,
+				preToken.network,
+			);
+			return preToken;
+		},
+	);
+}
+
 export function createToken(
 	privateKey: string,
 	publicKey: string,
@@ -45,13 +66,12 @@ export function createToken(
 	shareToken: boolean,
 ): boolean {
 	// Send request to electron
-	// const txId = Math.random().toString(16).slice(2);
-
-	// addTokenTxToBeTracked(txId, '', publicKey, shareToken);
+	const txId = Math.random().toString(16).slice(2);
 
 	window.api.send(
 		'deployErc20Contract',
 		JSON.stringify({
+			id: txId,
 			share_token: shareToken,
 			public_key: publicKey,
 			private_key: decryptPrvKey(privateKey),

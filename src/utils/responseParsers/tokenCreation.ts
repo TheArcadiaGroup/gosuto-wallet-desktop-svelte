@@ -1,5 +1,7 @@
+import { mintingTokens } from '$stores/user/tokens';
 import { getEndpointByNetwork } from '$utils/casper';
 import { retrieveData, saveData } from '$utils/dataStorage';
+import { addTokenGivenContractHash } from '$utils/tokens/addToken';
 import { addTokenTxToBeTracked } from '$utils/tokens/createToken';
 import { CasperClient } from 'casper-js-sdk';
 
@@ -21,15 +23,24 @@ export const parseTokenCreationHash = async (
 				// }
 			} else if (deploy[1].execution_results[0].result.Success) {
 				// TX Suceeded
-				// if (get(mintingToken)) {
-				// 	mintingToken.set(false);
-				// }
 
 				// Add this contract hash to db - but confirm the contract is correct first
 				console.log(
 					(deploy[1].execution_results[0].result.Success as any)?.effect.transforms.find(
 						(item: any) => item.transform === 'WriteContract',
 					)?.key,
+				);
+
+				addTokenGivenContractHash(
+					(deploy[1].execution_results[0].result.Success as any)?.effect.transforms
+						.find((item: any) => item.transform === 'WriteContract')
+						?.key.replace('hash', ''),
+					0,
+					shareToken,
+					publicKey,
+					'',
+					network,
+					true,
 				);
 			}
 
@@ -54,9 +65,26 @@ export default () => {
 		try {
 			const res = JSON.parse(response);
 
+			//  Update the user here with complete response
+			if (res.id) {
+				mintingTokens.update((tokensMinting) => {
+					Object.keys(tokensMinting).map((key) => {
+						if (key === res.id) {
+							tokensMinting[key].result = true;
+							tokensMinting[key].error = res.error
+								? 'We Encountered an Error Performing That Request.'
+								: null;
+						}
+					});
+
+					return tokensMinting;
+				});
+			}
+
 			parseTokenCreationHash(res.data, res.share_token, res.public_key, res.network);
 		} catch (error) {
 			console.log(error);
+
 			return;
 		}
 	});

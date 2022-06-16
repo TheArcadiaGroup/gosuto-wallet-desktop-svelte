@@ -7,6 +7,7 @@ import { retrieveData, saveData } from '$utils/dataStorage';
 import { get } from 'svelte/store';
 import { loadWalletData } from './dataLoaders';
 import { getTokenValue } from './token.util';
+import { checkIfTokenDeploysDone } from './tokens/createToken';
 
 // IMPORTANT: If it becomes too expensive to fetch and save data, only save and fetch when the data has changed or was not previously present. (if statements)
 
@@ -66,6 +67,8 @@ export const pollyFillTokens = async () => {
 		tokens.set(tokensInDB[selectedWallet.publicKey]);
 
 		saveData('tokens', tokensInDB);
+
+		checkIfTokenDeploysDone();
 
 		return tokensInDB[selectedWallet.publicKey];
 	}

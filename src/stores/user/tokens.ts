@@ -5,5 +5,6 @@ export const tokens = writable<{ mainnet: IToken[]; testnet: IToken[] }>({
 	testnet: [],
 });
 export const sendTokenArr = writable<SendTokenArr[]>([]);
-export const mintingToken = writable<boolean>(false);
-export const mintingTokenError = writable<string>('');
+export const mintingTokens = writable<{ [id: string]: { result: boolean; error: string | null } }>(
+	{},
+);
