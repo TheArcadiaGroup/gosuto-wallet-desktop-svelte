@@ -310,6 +310,10 @@ module.exports = () => {
 			sendMessage(
 				'deployErc20ContractResponse',
 				JSON.stringify({
+					// id: data.id,
+					share_token: data.share_token,
+					public_key: data.public_key,
+					network: data.network ?? 'testnet',
 					data: response,
 					error: null,
 				}),
@@ -318,6 +322,7 @@ module.exports = () => {
 			sendMessage(
 				'deployErc20ContractResponse',
 				JSON.stringify({
+					id: data.id,
 					data: null,
 					error: error,
 				}),

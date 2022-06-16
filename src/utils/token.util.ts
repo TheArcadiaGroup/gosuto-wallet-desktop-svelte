@@ -1,7 +1,7 @@
 import { sendTokenTracker } from '$stores/activityLoaders';
 import { user } from '$stores/user';
 import { get } from 'svelte/store';
-import { decryptPrvKey, retrieveData, saveData } from './dataStorage';
+import { retrieveData, saveData } from './dataStorage';
 import { parseTransferData } from './responseParsers/transfers';
 import { getTokenUsdPrice } from './tokens';
 import sendCspr from './tokens/sendCspr';
@@ -160,71 +160,4 @@ export async function getTokenValue(contractAddress: string): Promise<{
 	price_change: number;
 }> {
 	return await getTokenUsdPrice(contractAddress);
-}
-
-export function createToken(
-	privateKey: string,
-	pvkAlgorithm: 'ed25519' | 'secp256k1',
-	tokenName: string,
-	tokenTicker: string,
-	decimals: number,
-	totalSupply: number,
-	mintableSupply: boolean,
-	authorizedMinterHash: string,
-	shareToken: boolean,
-): boolean {
-	// const tokens = JSON.parse(retrieveData('tokens')) ?? {};
-
-	// const token = {
-	// 	tokenName,
-	// 	tokenTicker,
-	// 	tokenAmountHeld: 0, // no need to store different sets of these as each token is limited to its network either testnet or mainnet
-	// 	tokenAmountHeldUSD: 0, // no need to store different sets of these as each token is limited to its network either testnet or mainnet
-	// 	shareToken, // share between wallets not networks
-	// 	contractHash: '', // must never start with hash
-	// 	tokenPriceUSD: 0,
-	// 	decimals,
-	// } as IToken;
-
-	console.log({
-		private_key: decryptPrvKey(privateKey),
-		pvk_algorithm: pvkAlgorithm,
-		token_name: tokenName,
-		token_symbol: tokenTicker,
-		token_decimals: decimals,
-		total_supply: totalSupply,
-		mintable: mintableSupply,
-		authorized_minter: authorizedMinterHash,
-		network: get(user)?.network ?? 'testnet',
-	});
-
-	// Send request to electron
-	window.api.send(
-		'deployErc20Contract',
-		JSON.stringify({
-			private_key: decryptPrvKey(privateKey),
-			pvk_algorithm: pvkAlgorithm,
-			token_name: tokenName,
-			token_symbol: tokenTicker,
-			token_decimals: decimals,
-			total_supply: totalSupply,
-			mintable: mintableSupply,
-			authorized_minter: authorizedMinterHash,
-			network: get(user)?.network ?? 'testnet',
-		}),
-	);
-
-	// saveData('tokens', tokens);
-
-	return true;
-}
-
-export function importToken(
-	wallet: string,
-	contractAddress: string,
-	tokenTicker: string,
-	decimals: number,
-	shareToken: boolean,
-): boolean {
-	return true;
 }

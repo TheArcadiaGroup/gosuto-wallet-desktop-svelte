@@ -111,8 +111,6 @@ module.exports = {
 		authorized_minter = null,
 	) => {
 		try {
-			const { casperClient } = getCasperClientAndService(network);
-
 			let deployHash = '';
 			if (mintable) {
 				deployHash = await deployMintableContract(
@@ -140,18 +138,6 @@ module.exports = {
 			if (!deployHash) {
 				throw 'Failed To Deploy. Please Try Again Later.';
 			}
-
-			// get the deploy and fetch WriteContract
-			// const deploy = await casperClient.getDeploy(deployHash);
-
-			// Get the contract hash
-			// console.log(
-			// 	deploy,
-			// 	// deploy[1].execution_results[0].result.Success?.effect.transforms.find(
-			// 	// 	(item) => item.transform === 'WriteContract',
-			// 	// ),
-			// );
-			// console.timeEnd('deploy_contract');
 
 			return deployHash;
 		} catch (err) {

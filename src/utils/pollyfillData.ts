@@ -47,8 +47,6 @@ export const pollyFillTokens = async () => {
 			if (tokensInDB[selectedWallet.publicKey]?.mainnet.length <= 0) {
 				await setToNetwork('mainnet');
 			}
-
-			saveData('tokens', tokensInDB);
 		}
 
 		// Add all global tokens to the array
@@ -66,6 +64,8 @@ export const pollyFillTokens = async () => {
 		);
 
 		tokens.set(tokensInDB[selectedWallet.publicKey]);
+
+		saveData('tokens', tokensInDB);
 
 		return tokensInDB[selectedWallet.publicKey];
 	}

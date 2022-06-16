@@ -1,19 +1,36 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 
-	import { importToken } from '$utils/token.util';
-
 	import Button from '$lib/components/Button.svelte';
 	import TextInput from '$lib/components/TextInput.svelte';
 	import ToggleSwitch from '$lib/components/ToggleSwitch.svelte';
+	import { addTokenGivenContractHash } from '$utils/tokens/addToken';
+	import { user } from '$stores/user';
+	import { selectedWallet } from '$stores/user/wallets';
+	import { pollyfillSelectedWallet } from '$utils/pollyfillData';
 
-	let contractAddress = '';
+	let contractHash = '';
 	let tokenTicker = '';
 	let decimals = 0;
 	let shareToken = true;
+	let preferContractDetails = true;
 
-	function submitImportToken() {
-		const result = importToken('1', contractAddress, tokenTicker, decimals, shareToken);
+	async function submitImportToken() {
+		if (!$selectedWallet?.privateKey) {
+			pollyfillSelectedWallet();
+		}
+
+		const result = await addTokenGivenContractHash(
+			contractHash,
+			decimals,
+			shareToken,
+			$selectedWallet!.publicKey,
+			tokenTicker,
+			$user?.network ?? 'testnet',
+			preferContractDetails,
+		);
+
+		console.log(result);
 	}
 
 	const dispatch = createEventDispatcher();
@@ -34,21 +51,30 @@
 	</div>
 	<form class="create-form" on:submit|preventDefault={submitImportToken}>
 		<TextInput
-			bind:value={contractAddress}
+			bind:value={contractHash}
 			class="create-token-dark-sidebar-input"
-			label="Contract Address"
+			label="Contract Hash"
 		/>
-		<TextInput
-			bind:value={tokenTicker}
-			class="create-token-dark-sidebar-input"
-			label="Token Ticker"
-		/>
-		<TextInput
-			bind:value={decimals}
-			class="create-token-dark-sidebar-input"
-			label="Decimals of Precision"
-			type="number"
-		/>
+
+		{#if !preferContractDetails}
+			<TextInput
+				bind:value={tokenTicker}
+				class="create-token-dark-sidebar-input"
+				label="Token Ticker"
+			/>
+			<TextInput
+				bind:value={decimals}
+				class="create-token-dark-sidebar-input"
+				label="Decimals"
+				type="number"
+			/>
+		{/if}
+		<div class="switch-row">
+			<p class="switch-text">Prefer Contract Details</p>
+			<div class="switch">
+				<ToggleSwitch bind:checked={preferContractDetails} />
+			</div>
+		</div>
 		<div class="switch-row">
 			<p class="switch-text">Share token between wallets</p>
 			<div class="switch">

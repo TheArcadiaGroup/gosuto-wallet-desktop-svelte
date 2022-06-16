@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 
-	import { createToken } from '$utils/token.util';
+	import { createToken } from '$utils/tokens/createToken';
 
 	import Button from '$lib/components/Button.svelte';
 	import TextInput from '$lib/components/TextInput.svelte';
@@ -24,6 +24,7 @@
 
 		const result = createToken(
 			$selectedWallet!.privateKey,
+			$selectedWallet!.publicKey,
 			$selectedWallet!.algorithm,
 			tokenName,
 			tokenTicker,
