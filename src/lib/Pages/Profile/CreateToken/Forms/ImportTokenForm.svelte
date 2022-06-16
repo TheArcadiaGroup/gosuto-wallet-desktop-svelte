@@ -11,7 +11,7 @@
 
 	let contractHash = '';
 	let tokenTicker = '';
-	let decimals = 0;
+	let decimals = 18;
 	let shareToken = true;
 	let preferContractDetails = true;
 
@@ -82,7 +82,7 @@
 			</div>
 		</div>
 		<div class="confirm-buttons">
-			<Button>
+			<Button isDisabled={!contractHash || (!preferContractDetails && (!tokenTicker || !decimals))}>
 				<div slot="text" class="my-2 leading-7">Import</div>
 			</Button>
 			<Button
