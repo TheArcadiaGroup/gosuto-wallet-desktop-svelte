@@ -71,7 +71,10 @@
 					mainnet: 0.0,
 					testnet: 0.0,
 				},
-				walletTokens: [],
+				walletTokens: {
+					mainnet: [],
+					testnet: [],
+				},
 				walletStakes: {
 					mainnet: [],
 					testnet: [],

@@ -96,16 +96,35 @@ export const addTokenGivenContractHash = async (
 			decimals: decimals as number,
 		});
 
-		dbTokens[publicKey][network].push({
-			tokenName: tokenName,
-			tokenTicker: tokenTicker as string,
-			tokenAmountHeld: 0,
-			tokenAmountHeldUSD: 0,
-			shareToken: shareToken,
-			contractHash: contractHash,
-			tokenPriceUSD: 0,
-			decimals: decimals as number,
-		});
+		if (shareToken) {
+			// Loop through every wallet addding this token
+			Object.keys(dbTokens).map((key) => {
+				if (!dbTokens[key][network].find((item) => item.contractHash === contractHash)) {
+					dbTokens[key][network].push({
+						tokenName: tokenName,
+						tokenTicker: tokenTicker as string,
+						tokenAmountHeld: 0,
+						tokenAmountHeldUSD: 0,
+						shareToken: shareToken,
+						contractHash: contractHash,
+						tokenPriceUSD: 0,
+						decimals: decimals as number,
+					});
+				}
+			});
+		} else {
+			// Add to the current wallet only
+			dbTokens[publicKey][network].push({
+				tokenName: tokenName,
+				tokenTicker: tokenTicker as string,
+				tokenAmountHeld: 0,
+				tokenAmountHeldUSD: 0,
+				shareToken: shareToken,
+				contractHash: contractHash,
+				tokenPriceUSD: 0,
+				decimals: decimals as number,
+			});
+		}
 
 		saveData('tokens', dbTokens);
 		pollyFillTokens();
