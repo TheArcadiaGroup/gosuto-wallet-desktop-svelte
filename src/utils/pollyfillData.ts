@@ -25,8 +25,12 @@ export const pollyFillTokens = async () => {
 				(token) => token.tokenTicker === 'CSPR',
 			)
 		) {
-			if (!tokensInDB || !tokensInDB[selectedWallet.publicKey]) {
+			if (!tokensInDB) {
 				tokensInDB = { [selectedWallet.publicKey]: { mainnet: [], testnet: [] } };
+			}
+
+			if (!tokensInDB[selectedWallet.publicKey]) {
+				tokensInDB = { [selectedWallet.publicKey]: { mainnet: [], testnet: [] }, ...tokensInDB };
 			}
 
 			const setToNetwork = async (network: 'testnet' | 'mainnet') => {
@@ -69,8 +73,6 @@ export const pollyFillTokens = async () => {
 		saveData('tokens', tokensInDB);
 
 		checkIfTokenDeploysDone();
-
-		return tokensInDB[selectedWallet.publicKey];
 	}
 };
 

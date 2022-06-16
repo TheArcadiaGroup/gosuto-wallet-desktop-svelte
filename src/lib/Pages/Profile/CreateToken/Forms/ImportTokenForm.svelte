@@ -49,6 +49,10 @@
 			// Clear loader and show respective popup with tx details
 			popup = 'Success';
 			popupContent = `<p>Succcessfully Added Token</p>`;
+
+			contractHash = '';
+			tokenTicker = '';
+			decimals = 18;
 		}
 	}
 
