@@ -8,14 +8,18 @@
 	import ToggleSwitch from '$lib/components/ToggleSwitch.svelte';
 	import { selectedWallet } from '$stores/user/wallets';
 	import { pollyfillSelectedWallet } from '$utils/pollyfillData';
+	import isValidAccountHash from '$utils/validators/isValidAccountHash';
+	import { user } from '$stores/user';
 
-	let tokenName = 'TEST1';
-	let tokenTicker = 'TST1';
-	let authorizedMinterHash = 'eb108759cf29b5d1ce6a311989890170d94bb98e06e4097e4ee20c18d6bf4f16'; //'7bdf9c55f7f24d60ddf8a5931145cb73409d97babb68c7017aba54a07e25f2a3';
-	let totalSupply = 1000000; //0;
-	let decimals = 9; //0;
+	let tokenName = '';
+	let tokenTicker = '';
+	let authorizedMinterHash = '';
+	let totalSupply = 0;
+	let decimals = 18;
 	let mintableSupply = true;
 	let shareToken = true;
+
+	$: isMinterValid = false;
 
 	function submitCreateToken() {
 		if (!$selectedWallet?.privateKey) {
@@ -39,6 +43,13 @@
 	}
 
 	const dispatch = createEventDispatcher();
+
+	$: (async function (minterHash) {
+		isMinterValid = await isValidAccountHash(
+			minterHash || $selectedWallet!.accountHash,
+			$user?.network ?? 'testnet',
+		);
+	})(authorizedMinterHash);
 </script>
 
 <div class="create-token">
@@ -71,7 +82,7 @@
 			bind:value={totalSupply}
 			type="number"
 			class="create-token-dark-sidebar-input"
-			label={`Total Supply ${tokenTicker}`}
+			label={`${mintableSupply ? 'Initial' : 'Total'} Supply`}
 		/>
 		{#if mintableSupply}
 			<TextInput
@@ -79,13 +90,10 @@
 				class="create-token-dark-sidebar-input"
 				label="Minter Account Hash"
 			/>
+			{#if !!authorizedMinterHash && !isMinterValid}
+				<div class="error-div">Please enter a valid account hash</div>
+			{/if}
 		{/if}
-		<!-- <div class="switch-row">
-			<p class="switch-text">Limited supply</p>
-			<div class="switch">
-				<ToggleSwitch bind:checked={limitedSupply} />
-			</div>
-		</div> -->
 		<div class="switch-row">
 			<p class="switch-text">Mintable Supply</p>
 			<div class="switch">
@@ -99,7 +107,14 @@
 			</div>
 		</div>
 		<div class="confirm-buttons">
-			<Button>
+			<Button
+				isDisabled={!$selectedWallet ||
+					!tokenName ||
+					!tokenTicker ||
+					!decimals ||
+					!totalSupply ||
+					(mintableSupply && !!authorizedMinterHash && !isMinterValid)}
+			>
 				<div slot="text" class="my-2 leading-7">Create</div>
 			</Button>
 			<Button
@@ -190,5 +205,9 @@
 
 	.create-token-dark-sidebar-input[type='number'] {
 		-moz-appearance: textfield;
+	}
+
+	.error-div {
+		@apply text-left text-xs text-red-300 -mt-4 mb-1 flex w-full px-2;
 	}
 </style>
