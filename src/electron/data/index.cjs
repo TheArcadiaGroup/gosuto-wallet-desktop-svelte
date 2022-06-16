@@ -5,7 +5,7 @@ const store = new Store({
 	accessPropertiesByDotNotation: false,
 	fileExtension: 'gosuto',
 	name: 'gosuto_data',
-	encryptionKey: '@o4EB%Fb&MGFyk^LXj$9Xt5uk94RaR',
+	encryptionKey: '', // @o4EB%Fb&MGFyk^LXj$9Xt5uk94RaR
 });
 
 // TODO: ADD MIGRATIONS FOR THE DATA ONCE A NEW VERSION HAS BEEN DEPLOYED

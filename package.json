@@ -32,6 +32,8 @@
 		"axios": "^0.27.2",
 		"bip39": "^3.0.4",
 		"browserify": "^17.0.0",
+		"casper-erc20-js-client": "^0.2.0",
+		"casper-js-client-helper": "^1.0.1",
 		"casper-js-sdk": "^2.9.1",
 		"chart.js": "^3.8.0",
 		"chartjs": "^0.3.24",

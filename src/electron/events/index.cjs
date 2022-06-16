@@ -13,6 +13,7 @@ const {
 	decryptString,
 } = require('../utils/storage/index.cjs');
 const { saveData, retrieveData } = require('../data/index.cjs');
+const { deployErc20Contract } = require('../utils/tokens/index.cjs');
 
 /**
  * Receiving messages from Renderer
@@ -286,6 +287,41 @@ module.exports = () => {
 				error: error,
 				message: 'Encountered Error While Executing Unstake Request',
 			});
+		}
+	});
+
+	// TOKEN MINTING, SENDING, ETC.
+	ipcMain.on('deployErc20Contract', async (event, data) => {
+		try {
+			data = JSON.parse(data);
+
+			const response = await deployErc20Contract(
+				data.token_name,
+				data.token_symbol,
+				data.token_decimals,
+				data.total_supply,
+				data.private_key,
+				data.pvk_algorithm,
+				data.network ?? 'testnet',
+				data.mintable ?? true,
+				data.authorized_minter,
+			);
+
+			sendMessage(
+				'deployErc20ContractResponse',
+				JSON.stringify({
+					data: response,
+					error: null,
+				}),
+			);
+		} catch (error) {
+			sendMessage(
+				'deployErc20ContractResponse',
+				JSON.stringify({
+					data: null,
+					error: error,
+				}),
+			);
 		}
 	});
 

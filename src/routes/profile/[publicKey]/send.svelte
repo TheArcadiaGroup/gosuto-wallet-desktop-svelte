@@ -14,6 +14,7 @@
 	import { pollyfillSelectedWallet, pollyFillTokens } from '$utils/pollyfillData';
 	import { page } from '$app/stores';
 	import { loadTokenBalance, receiveTokenBalance } from '$utils/tokens';
+	import { user } from '$stores/user';
 
 	/**
 	 * This is the currently selected index of TokenCards.
@@ -38,7 +39,7 @@
 		}
 
 		// If no tokens are present, load them
-		if ($tokens.length <= 0) {
+		if ($tokens[$user?.network ?? 'testnet'].length <= 0) {
 			pollyFillTokens();
 		}
 
@@ -48,14 +49,16 @@
 	$: ((userTokens) => {
 		// Load all token balances
 		if ($selectedWallet) {
-			userTokens.map((token) => loadTokenBalance(token, $selectedWallet!.publicKey));
+			userTokens[$user?.network ?? 'testnet'].map((token) =>
+				loadTokenBalance(token, $selectedWallet!.publicKey),
+			);
 		}
 	})($tokens);
 
 	selectedWallet.subscribe((wallet) => {
 		if (wallet?.publicKey !== $previousSelectedWallet?.publicKey) {
 			// If no tokens are present, load them
-			if ($tokens.length <= 0) {
+			if ($tokens[$user?.network ?? 'testnet'].length <= 0) {
 				pollyFillTokens();
 			}
 
@@ -72,7 +75,11 @@
 		<ProfileNavigation />
 	</div>
 	<div class="global-grid-mid">
-		<Send on:selectToken={selectToken} bind:tokens={$tokens} bind:selectedToken />
+		<Send
+			on:selectToken={selectToken}
+			bind:tokens={$tokens[$user?.network ?? 'testnet']}
+			bind:selectedToken
+		/>
 	</div>
 	<!-- TODO DISPATCH VALUE IS NOT RESET BUG -->
 	<div class="global-grid-right sidebar">

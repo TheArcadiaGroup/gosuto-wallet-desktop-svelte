@@ -97,7 +97,10 @@ declare global {
 			mainnet: number;
 			testnet: number;
 		};
-		walletTokens: IToken[];
+		walletTokens: {
+			mainnet: IToken[];
+			testnet: IToken[];
+		};
 		walletStakes: {
 			mainnet: IStake[];
 			testnet: IStake[];
@@ -112,16 +115,12 @@ declare global {
 	interface IToken {
 		tokenName: string;
 		tokenTicker: string;
-		tokenAmountHeld: number;
-		tokenAmountHeldUSD: number;
-		limitedSupply: boolean;
-		mintableSupply: boolean;
-		shareToken: boolean;
-		contractString: string;
-		contractAddress: string;
+		tokenAmountHeld: number; // no need to store different sets of these as each token is limited to its network either testnet or mainnet
+		tokenAmountHeldUSD: number; // no need to store different sets of these as each token is limited to its network either testnet or mainnet
+		shareToken: boolean; // share between wallets not networks
+		contractHash: string; // must never start with hash
 		tokenPriceUSD: number;
-		decimalsOfPrecision: number;
-		publicKey: string;
+		decimals: number;
 	}
 
 	type TxType =
@@ -237,8 +236,11 @@ declare global {
 	}
 
 	interface DBTokens {
-		[key: string]: IToken[];
-		global: IToken[];
+		[publicKey: string]: {
+			mainnet: IToken[];
+			testnet: IToken[];
+		};
+		// global: IToken[];
 	}
 
 	interface SendTokenArr {
@@ -262,7 +264,8 @@ declare global {
 		| 'exportWalletCertificate'
 		| 'encryption'
 		| 'saveData'
-		| 'retrieveData';
+		| 'retrieveData'
+		| 'deployErc20Contract';
 	type MainReceiveChannels =
 		| 'createWalletFromFileResponse'
 		| 'createWalletFromMnemonicsResponse'
@@ -275,5 +278,6 @@ declare global {
 		| 'getValidatorsResponse'
 		| 'delegateResponse'
 		| 'undelegateResponse'
-		| 'encryptionResponse';
+		| 'encryptionResponse'
+		| 'deployErc20ContractResponse';
 }

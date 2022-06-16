@@ -1,7 +1,7 @@
 import { sendTokenTracker } from '$stores/activityLoaders';
 import { user } from '$stores/user';
 import { get } from 'svelte/store';
-import { retrieveData, saveData } from './dataStorage';
+import { decryptPrvKey, retrieveData, saveData } from './dataStorage';
 import { parseTransferData } from './responseParsers/transfers';
 import { getTokenUsdPrice } from './tokens';
 import sendCspr from './tokens/sendCspr';
@@ -17,7 +17,7 @@ export function addToken(wallet: string, token: IToken): boolean {
 	let tokens: any = retrieveData('tokens');
 	if (!tokens) tokens = {};
 	if (!tokens[wallet]) tokens[wallet] = {};
-	tokens[wallet][token.contractAddress] = token;
+	tokens[wallet][token.contractHash] = token;
 	saveData('tokens', tokens);
 
 	return true;
@@ -163,38 +163,58 @@ export async function getTokenValue(contractAddress: string): Promise<{
 }
 
 export function createToken(
-	wallet: string,
+	privateKey: string,
+	pvkAlgorithm: 'ed25519' | 'secp256k1',
 	tokenName: string,
 	tokenTicker: string,
-	contractString: string,
-	USDPrice: number,
-	limitedSupply: boolean,
+	decimals: number,
+	totalSupply: number,
 	mintableSupply: boolean,
+	authorizedMinterHash: string,
 	shareToken: boolean,
 ): boolean {
-	const contractAddress = 'abc';
+	// const tokens = JSON.parse(retrieveData('tokens')) ?? {};
 
-	// @ts-ignore
-	const tokens = JSON.parse(retrieveData('tokens')) ?? {};
+	// const token = {
+	// 	tokenName,
+	// 	tokenTicker,
+	// 	tokenAmountHeld: 0, // no need to store different sets of these as each token is limited to its network either testnet or mainnet
+	// 	tokenAmountHeldUSD: 0, // no need to store different sets of these as each token is limited to its network either testnet or mainnet
+	// 	shareToken, // share between wallets not networks
+	// 	contractHash: '', // must never start with hash
+	// 	tokenPriceUSD: 0,
+	// 	decimals,
+	// } as IToken;
 
-	const token = {
-		tokenName,
-		tokenTicker,
-		tokenAmountHeld: 0,
-		tokenAmountHeldUSD: 0,
-		limitedSupply,
-		mintableSupply,
-		shareToken,
-		contractString,
-		tokenPriceUSD: USDPrice,
-		decimalsOfPrecision: 16,
-		contractAddress: contractAddress,
-	} as IToken;
+	console.log({
+		private_key: decryptPrvKey(privateKey),
+		pvk_algorithm: pvkAlgorithm,
+		token_name: tokenName,
+		token_symbol: tokenTicker,
+		token_decimals: decimals,
+		total_supply: totalSupply,
+		mintable: mintableSupply,
+		authorized_minter: authorizedMinterHash,
+		network: get(user)?.network ?? 'testnet',
+	});
 
-	if (!tokens[wallet]) tokens[wallet] = {};
-	tokens[wallet][contractAddress] = token;
+	// Send request to electron
+	window.api.send(
+		'deployErc20Contract',
+		JSON.stringify({
+			private_key: decryptPrvKey(privateKey),
+			pvk_algorithm: pvkAlgorithm,
+			token_name: tokenName,
+			token_symbol: tokenTicker,
+			token_decimals: decimals,
+			total_supply: totalSupply,
+			mintable: mintableSupply,
+			authorized_minter: authorizedMinterHash,
+			network: get(user)?.network ?? 'testnet',
+		}),
+	);
 
-	saveData('tokens', tokens);
+	// saveData('tokens', tokens);
 
 	return true;
 }

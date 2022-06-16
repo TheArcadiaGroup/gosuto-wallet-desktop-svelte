@@ -13,54 +13,62 @@ import { getTokenValue } from './token.util';
 export const pollyFillTokens = async () => {
 	// Get current cspr token price in usd
 	const selectedWallet = pollyfillSelectedWallet();
-	let walletsInDB: DBTokens = retrieveData('tokens');
 
-	// Add global token to the global tokens array if not present (this is common when the app has been initialized and its data is not available any more)
-	if (!walletsInDB || !walletsInDB.global?.find((token) => token.tokenTicker === 'CSPR')) {
-		if (!walletsInDB) {
-			walletsInDB = { global: [] };
-		}
-		walletsInDB['global'].push({
-			tokenName: 'CSPR',
-			tokenTicker: 'CSPR',
-			tokenAmountHeld: selectedWallet?.availableBalance[get(user)?.network || 'testnet'] ?? 0,
-			tokenAmountHeldUSD: selectedWallet?.availableBalanceUSD[get(user)?.network || 'testnet'] ?? 0,
-			limitedSupply: false,
-			mintableSupply: false,
-			shareToken: true,
-			contractString: 'CSPR',
-			contractAddress: 'CSPR', // defaults to this to facilitate sending
-			tokenPriceUSD: (await getTokenValue('CSPR')).price[get(user)?.currency || 'usd'],
-			decimalsOfPrecision: 5,
-			publicKey: selectedWallet?.publicKey ?? '',
-		});
+	if (selectedWallet) {
+		let tokensInDB: DBTokens = retrieveData('tokens');
 
-		saveData('tokens', walletsInDB);
-	}
-
-	// Add all global tokens to the array
-	await Promise.all(
-		walletsInDB.global.map(async (token) => {
-			if (token.tokenTicker === 'CSPR' && selectedWallet) {
-				token.tokenAmountHeld = selectedWallet.availableBalance[get(user)?.network || 'testnet'];
-				token.tokenAmountHeldUSD =
-					selectedWallet.availableBalanceUSD[get(user)?.network || 'testnet'];
-				token.tokenPriceUSD = (await getTokenValue('CSPR')).price[get(user)?.currency || 'usd'];
+		// Add CSPR to user tokens list if not present
+		if (
+			!tokensInDB ||
+			!tokensInDB[selectedWallet.publicKey]?.[get(user)?.network ?? 'testnet']?.find(
+				(token) => token.tokenTicker === 'CSPR',
+			)
+		) {
+			if (!tokensInDB || !tokensInDB[selectedWallet.publicKey]) {
+				tokensInDB = { [selectedWallet.publicKey]: { mainnet: [], testnet: [] } };
 			}
 
-			return token;
-		}),
-	);
+			const setToNetwork = async (network: 'testnet' | 'mainnet') => {
+				tokensInDB[selectedWallet.publicKey][network].push({
+					tokenName: 'CSPR',
+					tokenTicker: 'CSPR',
+					tokenAmountHeld: selectedWallet?.availableBalance[network] ?? 0,
+					tokenAmountHeldUSD: selectedWallet?.availableBalanceUSD[network] ?? 0,
+					shareToken: true,
+					contractHash: 'CSPR', // defaults to this to facilitate sending
+					tokenPriceUSD: (await getTokenValue('CSPR')).price[get(user)?.currency || 'usd'],
+					decimals: 5,
+				});
+			};
 
-	let dbTokens = [...walletsInDB.global];
+			if (tokensInDB[selectedWallet.publicKey]?.testnet.length <= 0) {
+				await setToNetwork('testnet');
+			}
+			if (tokensInDB[selectedWallet.publicKey]?.mainnet.length <= 0) {
+				await setToNetwork('mainnet');
+			}
 
-	if (selectedWallet && walletsInDB[selectedWallet.publicKey.toLowerCase()]) {
-		dbTokens = [...dbTokens, ...walletsInDB[selectedWallet.publicKey.toLowerCase()]];
+			saveData('tokens', tokensInDB);
+		}
+
+		// Add all global tokens to the array
+		await Promise.all(
+			tokensInDB[selectedWallet.publicKey][get(user)?.network ?? 'testnet'].map(async (token) => {
+				if (token.tokenTicker === 'CSPR' && selectedWallet) {
+					token.tokenAmountHeld = selectedWallet.availableBalance[get(user)?.network || 'testnet'];
+					token.tokenAmountHeldUSD =
+						selectedWallet.availableBalanceUSD[get(user)?.network || 'testnet'];
+					token.tokenPriceUSD = (await getTokenValue('CSPR')).price[get(user)?.currency || 'usd'];
+				}
+
+				return token;
+			}),
+		);
+
+		tokens.set(tokensInDB[selectedWallet.publicKey]);
+
+		return tokensInDB[selectedWallet.publicKey];
 	}
-
-	tokens.set(dbTokens);
-
-	return dbTokens;
 };
 
 export const pollyFillUser = () => {

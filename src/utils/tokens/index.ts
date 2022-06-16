@@ -80,6 +80,7 @@ export const loadTokenBalance = async (token: IToken, publicKey: string) => {
 			'tokenBalance',
 			JSON.stringify({
 				token: token.tokenTicker,
+				contractHash: token.contractHash,
 				publicKey: publicKey,
 				network: get(user)?.network || 'testnet',
 			}),
@@ -92,7 +93,7 @@ export const receiveTokenBalance = async () => {
 		// If its not the current user's data, discard it
 		if (get(selectedWallet)?.publicKey.toLowerCase() === data.publicKey.toLowerCase()) {
 			const dbTokens = retrieveData('tokens');
-			const userTokens: IToken[] = dbTokens[data.publicKey.toLowerCase()];
+			const userTokens: IToken[] = dbTokens[data.publicKey][get(user)?.network ?? 'testnet'];
 
 			userTokens.map((token) => {
 				if (token.tokenTicker === data.token) {
@@ -102,31 +103,18 @@ export const receiveTokenBalance = async () => {
 				return token;
 			});
 
-			const globalTokens: IToken[] = dbTokens.global;
-
-			globalTokens.map((token) => {
-				if (token.tokenTicker === data.token) {
-					token.tokenAmountHeld = +data.balance;
-					// TODO: SET TOKEN USD BALANCE
-				}
-				return token;
-			});
-
-			dbTokens[data.publicKey.toLowerCase()] = userTokens;
-			dbTokens.global = globalTokens;
-
 			saveData('tokens', dbTokens);
 
 			// Only Update the token balances we wish as opposed to resetting everything
-			tokens.update((tokens) => {
-				tokens.map((token) => {
-					if (token.tokenTicker === data.token) {
+			tokens.update((_tokens) => {
+				_tokens[get(user)?.network ?? 'testnet'].map((token) => {
+					if (token.contractHash === data.contractHash) {
 						token.tokenAmountHeld = +data.balance;
 						// TODO: SET TOKEN USD BALANCE
 					}
 					return token;
 				});
-				return tokens;
+				return _tokens;
 			});
 		}
 

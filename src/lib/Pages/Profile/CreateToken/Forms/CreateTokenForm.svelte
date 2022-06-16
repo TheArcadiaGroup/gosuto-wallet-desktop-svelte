@@ -6,26 +6,35 @@
 	import Button from '$lib/components/Button.svelte';
 	import TextInput from '$lib/components/TextInput.svelte';
 	import ToggleSwitch from '$lib/components/ToggleSwitch.svelte';
+	import { selectedWallet } from '$stores/user/wallets';
+	import { pollyfillSelectedWallet } from '$utils/pollyfillData';
 
-	let tokenName = '';
-	let tokenTicker = '';
-	let contractString = '';
-	let tokenUSDPrice = 0;
-	let limitedSupply = true;
+	let tokenName = 'TEST1';
+	let tokenTicker = 'TST1';
+	let authorizedMinterHash = 'eb108759cf29b5d1ce6a311989890170d94bb98e06e4097e4ee20c18d6bf4f16'; //'7bdf9c55f7f24d60ddf8a5931145cb73409d97babb68c7017aba54a07e25f2a3';
+	let totalSupply = 1000000; //0;
+	let decimals = 9; //0;
 	let mintableSupply = true;
 	let shareToken = true;
 
 	function submitCreateToken() {
+		if (!$selectedWallet?.privateKey) {
+			pollyfillSelectedWallet();
+		}
+
 		const result = createToken(
-			'1',
+			$selectedWallet!.privateKey,
+			$selectedWallet!.algorithm,
 			tokenName,
 			tokenTicker,
-			contractString,
-			tokenUSDPrice,
-			limitedSupply,
+			decimals,
+			totalSupply,
 			mintableSupply,
+			authorizedMinterHash,
 			shareToken,
 		);
+
+		console.log('Send Tx: ', result);
 	}
 
 	const dispatch = createEventDispatcher();
@@ -52,21 +61,30 @@
 			label="Token Ticker"
 		/>
 		<TextInput
-			bind:value={contractString}
+			bind:value={decimals}
+			type="number"
 			class="create-token-dark-sidebar-input"
-			label="Contract String"
+			label="Decimals"
 		/>
 		<TextInput
-			bind:value={tokenUSDPrice}
+			bind:value={totalSupply}
+			type="number"
 			class="create-token-dark-sidebar-input"
-			label="Price (USD)"
+			label={`Total Supply ${tokenTicker}`}
 		/>
-		<div class="switch-row">
+		{#if mintableSupply}
+			<TextInput
+				bind:value={authorizedMinterHash}
+				class="create-token-dark-sidebar-input"
+				label="Minter Account Hash"
+			/>
+		{/if}
+		<!-- <div class="switch-row">
 			<p class="switch-text">Limited supply</p>
 			<div class="switch">
 				<ToggleSwitch bind:checked={limitedSupply} />
 			</div>
-		</div>
+		</div> -->
 		<div class="switch-row">
 			<p class="switch-text">Mintable Supply</p>
 			<div class="switch">

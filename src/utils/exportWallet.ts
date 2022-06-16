@@ -1,4 +1,5 @@
 import { Keys } from 'casper-js-sdk';
+import { decryptPrvKey } from './dataStorage';
 
 export const walletAsPem = (
 	walletName: string,
@@ -8,6 +9,7 @@ export const walletAsPem = (
 	try {
 		let keyPair: Keys.AsymmetricKey;
 		let publicKey: Uint8Array;
+		privateKey = decryptPrvKey(privateKey);
 
 		if (algorithm === 'secp256k1') {
 			publicKey = Keys.Secp256K1.privateToPublicKey(Buffer.from(privateKey, 'hex'));

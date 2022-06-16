@@ -356,7 +356,7 @@ export const getUserDelegatedAmount = async (
 					const validatorWeight =
 						+eraValidators.validator_weights.filter(
 							(validator) => validator.public_key === bid.public_key,
-						)[0].weight / 1e9;
+						)[0]?.weight / 1e9 ?? 0;
 
 					const history: {
 						mainnet: { [key: string]: HistoryResponse };

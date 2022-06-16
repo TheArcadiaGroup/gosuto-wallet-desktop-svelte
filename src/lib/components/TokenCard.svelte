@@ -54,7 +54,7 @@
 			{#if !$tokenLoaders[tokenTicker]}
 				{parseFloat(
 					(tokenTicker.toLowerCase() === 'cspr'
-						? $selectedWallet?.availableBalance ?? tokenAmountHeld
+						? $selectedWallet?.availableBalance[$user?.network ?? 'testnet'] ?? tokenAmountHeld
 						: tokenAmountHeld
 					).toFixed(4),
 				)}
@@ -68,7 +68,7 @@
 				{parseFloat(
 					(
 						(tokenTicker.toLowerCase() === 'cspr'
-							? $selectedWallet?.availableBalance ?? tokenAmountHeld
+							? $selectedWallet?.availableBalance[$user?.network ?? 'testnet'] ?? tokenAmountHeld
 							: tokenAmountHeld) * tokenPriceInUsd
 					).toFixed(2),
 				)}
