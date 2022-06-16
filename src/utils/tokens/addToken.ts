@@ -1,8 +1,9 @@
 import { getEndpointByNetwork } from '$utils/casper';
-import { retrieveData } from '$utils/dataStorage';
+import { retrieveData, saveData } from '$utils/dataStorage';
 import { CasperClient } from 'casper-js-sdk';
 import { contractSimpleGetter } from 'casper-js-client-helper/dist/helpers/lib';
 import { ethers } from 'ethers';
+import { pollyFillTokens } from '$utils/pollyfillData';
 
 export const checkIfTokenIsSupported = async (
 	contractHash: string,
@@ -94,16 +95,20 @@ export const addTokenGivenContractHash = async (
 			tokenPriceUSD: 0,
 			decimals: decimals as number,
 		});
-		// dbTokens[publicKey][network].push({
-		//     tokenName: tokenName,
-		//     tokenTicker: tokenTicker as string,
-		//     tokenAmountHeld: 0,
-		//     tokenAmountHeldUSD: 0,
-		//     shareToken: shareToken,
-		//     contractHash: contractHash,
-		//     tokenPriceUSD: 0,
-		//     decimals: decimals as number
-		// })
+
+		dbTokens[publicKey][network].push({
+			tokenName: tokenName,
+			tokenTicker: tokenTicker as string,
+			tokenAmountHeld: 0,
+			tokenAmountHeldUSD: 0,
+			shareToken: shareToken,
+			contractHash: contractHash,
+			tokenPriceUSD: 0,
+			decimals: decimals as number,
+		});
+
+		saveData('tokens', dbTokens);
+		pollyFillTokens();
 
 		return { data: 'Successfully Added Token', error: null };
 	} else {

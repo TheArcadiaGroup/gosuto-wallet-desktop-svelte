@@ -24,6 +24,9 @@
 	let confirmPopup = false;
 
 	async function submitImportToken() {
+		popup = 'Adding Token';
+		confirmPopup = false;
+
 		if (!$selectedWallet?.privateKey) {
 			pollyfillSelectedWallet();
 		}
@@ -140,7 +143,7 @@
 		on:cancel={closePopup}
 	>
 		<p class="popup-text">
-			{#if popup === 'Deploying'}
+			{#if popup === 'Adding Token'}
 				<Loading useFirework={false} size={60} />
 			{:else}
 				{@html popupContent}
@@ -157,7 +160,7 @@
 		{#if popup === 'Success'}
 			<div class="popup-text opacity-50 text-2xs my-3">
 				<div class="flex flex-row items-center justify-center bold">
-					<SuccessIcon class="mr-1" fill={'#31de90'} /> Successfully Deployed!
+					<SuccessIcon class="mr-1" fill={'#31de90'} /> Successfully Added!
 				</div>
 			</div>
 		{/if}

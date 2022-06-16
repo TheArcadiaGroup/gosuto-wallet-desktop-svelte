@@ -31,7 +31,8 @@
 	let confirmPopup = false;
 
 	function submitCreateToken() {
-		popupContent = 'Deploying';
+		popupContent = 'Deploying Token';
+		confirmPopup = false;
 
 		if (!$selectedWallet?.privateKey) {
 			pollyfillSelectedWallet();
@@ -189,7 +190,7 @@
 		on:cancel={closePopup}
 	>
 		<p class="popup-text">
-			{#if popup === 'Deploying'}
+			{#if popup === 'Deploying Token'}
 				<Loading useFirework={false} size={60} />
 			{:else}
 				{@html popupContent}
