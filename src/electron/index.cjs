@@ -95,15 +95,6 @@ contextMenu({
 	showCopyImage: false,
 	prepend: (defaultActions, params, browserWindow) =>
 		process.platform === 'darwin' ? buildDarwinMenu() : buildDefaultMenu(),
-	// [
-	// {
-	// 	label: 'Make App 💻',
-	// },
-	// {
-	// 	label: 'Open Dev Tools 😉',
-	// 	click: () => mainWindow.webContents.openDevTools({ mode: 'detach' }),
-	// },
-	// ],
 });
 
 const createMainWindow = () => {
