@@ -106,6 +106,8 @@ const consumeHistoryData = async (
 							) {
 								method = 'receive';
 							}
+						} else {
+							method = 'WASM deploy';
 						}
 					}
 				} else {

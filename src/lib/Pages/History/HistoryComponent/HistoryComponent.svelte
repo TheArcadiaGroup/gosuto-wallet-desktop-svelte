@@ -66,7 +66,7 @@
 						swapData={historyObject.swap}
 						clicked={selectedHistoryItem?.deployHash === historyObject.deployHash}
 					/>
-				{:else if historyObject.transactionType !== 'contract_call'}
+				{:else if historyObject.transactionType !== 'contract_call' && historyObject.transactionType !== 'WASM deploy'}
 					<Amount
 						type={historyObject.transactionType === 'stake' ||
 						historyObject.transactionType === 'send'

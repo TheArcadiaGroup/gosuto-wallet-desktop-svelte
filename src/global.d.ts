@@ -131,7 +131,8 @@ declare global {
 		| 'initialStakeUnlock'
 		| 'unstake'
 		| 'claimReward'
-		| 'contract_call';
+		| 'contract_call'
+		| 'WASM deploy';
 
 	// TODO: RETHINK THE HISTORY OBJECT GIVEN THE DATA WE ARE GETTING BACK
 	interface IHistory {
