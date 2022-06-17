@@ -65,6 +65,6 @@
 		"token": "GITHUB_TOKEN_HERE",
 		"vPrefixedTagName": true,
 		"publishAutoUpdate": true,
-		"releaseType": "draft"
+		"releaseType": "prerelease"
 	}
 }

@@ -50,8 +50,6 @@ const createWindow = () => {
 		height: windowState.height,
 		minWidth: minWidth,
 		minHeight: minHeight,
-		maxWidth: dimensions.width,
-		maxHeight: dimensions.height,
 		x: windowState.x,
 		y: windowState.y,
 		frame: true, // remove this when creating custom app window
@@ -89,14 +87,6 @@ const loadVite = (port) => {
 	});
 };
 
-contextMenu({
-	showLookUpSelection: false,
-	showSearchWithGoogle: false,
-	showCopyImage: false,
-	prepend: (defaultActions, params, browserWindow) =>
-		process.platform === 'darwin' ? buildDarwinMenu() : buildDefaultMenu(),
-});
-
 const createMainWindow = () => {
 	mainWindow = createWindow();
 	mainWindow.once('close', () => {
@@ -109,11 +99,21 @@ const createMainWindow = () => {
 	if (dev) mainWindow.webContents.openDevTools();
 
 	if (
-		screen.getPrimaryDisplay().workAreaSize.width <= 1366 ||
-		screen.getPrimaryDisplay().workAreaSize.height <= 768
+		screen.getPrimaryDisplay().workAreaSize.width <= 1500 ||
+		screen.getPrimaryDisplay().workAreaSize.height <= 800
 	) {
 		mainWindow.webContents.setZoomFactor(0.75);
 	}
+
+	contextMenu({
+		showLookUpSelection: false,
+		showSearchWithGoogle: false,
+		showCopyImage: false,
+		prepend: (defaultActions, params, browserWindow) =>
+			process.platform === 'darwin'
+				? buildDarwinMenu(app, shell, mainWindow)
+				: buildDefaultMenu(app, shell, mainWindow),
+	});
 };
 
 // This method will be called when Electron has finished

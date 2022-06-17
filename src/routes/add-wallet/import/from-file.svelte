@@ -213,7 +213,7 @@
 		<ImportPrivateKey on:click={selectFile} />
 		<div class="error-div pt-6 text-center leading-5">
 			{#if certificateIsInvalid}
-				Error, the app only supports private keys encrypted using the ED25519 Algorithm
+				Error, the app only supports private keys encrypted using the ED25519 or SECP256K1 Algorithm
 			{/if}
 			{#if walletExists}
 				Wallet already exists, please import a different private key

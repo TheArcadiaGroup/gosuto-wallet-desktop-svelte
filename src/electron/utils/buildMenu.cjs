@@ -8,7 +8,7 @@ module.exports = {
 					selector: 'orderFrontStandardAboutPanel:',
 				},
 				{ type: 'separator' },
-				{ label: 'Services', submenu: [] },
+				// { label: 'Services', submenu: [] },
 				{ type: 'separator' },
 				{
 					label: 'Hide Gosuto',
@@ -105,6 +105,8 @@ module.exports = {
 					label: 'Learn More',
 					click() {
 						shell.openExternal('https://www.gosutowallet.com/');
+						// ipcRenderer.send('openUrl', 'https://www.gosutowallet.com/');
+						//  require('electron').shell.openExternal('https://www.gosutowallet.com/');
 					},
 				},
 			],
@@ -179,7 +181,9 @@ module.exports = {
 					{
 						label: 'Learn More',
 						click() {
-							shell.openExternal('https://www.gosutowallet.com');
+							shell.openExternal('https://www.gosutowallet.com/');
+
+							// require('electron').shell.openExternal('https://www.gosutowallet.com/');
 						},
 					},
 				],
