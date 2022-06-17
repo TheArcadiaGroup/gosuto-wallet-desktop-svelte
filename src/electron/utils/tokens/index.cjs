@@ -9,6 +9,7 @@ const {
 	CLU8,
 	CLU256,
 	CLPublicKey,
+	CasperClient,
 } = require('casper-js-sdk');
 const fs = require('fs');
 const path = require('path');
@@ -152,7 +153,42 @@ module.exports = {
 			throw err;
 		}
 	},
-	sendErc20Tokens: async () => {},
+	sendErc20Tokens: async (
+		contractHash,
+		reciepientPublicKey,
+		amount,
+		privateKey,
+		pvk_algorithm,
+		network,
+	) => {
+		try {
+			const rpc = network === 'mainnet' ? mainnetApiUrl : testnetApiUrl;
+			const casperClient = new CasperClient(rpc);
+			const erc20 = erc20ClassInstance(rpc, network === 'mainnet' ? 'casper' : 'casper-test');
+
+			await erc20.setContractHash(contractHash);
+
+			const publicKey =
+				pvk_algorithm === 'ed25519'
+					? Keys.Ed25519.privateToPublicKey(Buffer.from(privateKey, 'hex'))
+					: Keys.Secp256K1.privateToPublicKey(Buffer.from(privateKey, 'hex'));
+			const keyPair =
+				pvk_algorithm === 'ed25519'
+					? Keys.Ed25519.parseKeyPair(publicKey, Buffer.from(privateKey, 'hex'))
+					: Keys.Secp256K1.parseKeyPair(publicKey, Buffer.from(privateKey, 'hex'));
+
+			const deployHash = await erc20.transfer(
+				keyPair, // Key pair used for signing
+				CLPublicKey.fromHex(reciepientPublicKey), // Receiver public key
+				amount.toString(), // Amount to transfer
+				'1000000000', // Payment amount
+			);
+
+			return await casperClient.getDeploy(deployHash);
+		} catch (error) {
+			throw error;
+		}
+	},
 	getErc20TokenBalance: async (contractHash, publicKey, network) => {
 		const rpc = network === 'mainnet' ? mainnetApiUrl : testnetApiUrl;
 

@@ -58,4 +58,32 @@ export default function () {
 	// window.api.receive('sendCSPRTokensResponse', (response: any) => {
 	// 	parseTransferData(response);
 	// });
+	window.api.receive('sendErc20TokensResponse', (response: any) => {
+		// The response in this case can be a simple string which is the deploy hash that can be used to track the transaction
+		response = JSON.parse(response) as { id: string; data: any };
+		const data = response.data;
+
+		if (Array.isArray(data)) {
+			sendTokenTracker.update((transactions) => {
+				if (response.id && transactions[response.id]) {
+					transactions[response.id] = transactions[response.id];
+					transactions[response.id]!.error = null;
+					transactions[response.id]!.fulfilled = true;
+				}
+				return transactions;
+			});
+		} else {
+			// Definitely an error occurred
+			sendTokenTracker.update((transactions) => {
+				if (response.id && transactions[response.id]) {
+					transactions[response.id] = transactions[response.id];
+					transactions[response.id]!.error =
+						response.message || 'Sorry, we encountered an error while trying to send your tokens';
+					transactions[response.id]!.fulfilled = true;
+				}
+				return transactions;
+			});
+			return response.message || 'Sorry, we encountered an error while trying to send your tokens';
+		}
+	});
 }

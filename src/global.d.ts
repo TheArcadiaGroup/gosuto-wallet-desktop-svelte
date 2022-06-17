@@ -265,7 +265,8 @@ declare global {
 		| 'saveData'
 		| 'retrieveData'
 		| 'deployErc20Contract'
-		| 'erc20TokenBalance';
+		| 'erc20TokenBalance'
+		| 'sendErc20Tokens';
 	type MainReceiveChannels =
 		| 'createWalletFromFileResponse'
 		| 'createWalletFromMnemonicsResponse'
@@ -280,5 +281,6 @@ declare global {
 		| 'undelegateResponse'
 		| 'encryptionResponse'
 		| 'deployErc20ContractResponse'
-		| 'erc20TokenBalanceResponse';
+		| 'erc20TokenBalanceResponse'
+		| 'sendErc20TokensResponse';
 }

@@ -22,6 +22,7 @@ contextBridge.exposeInMainWorld('api', {
 			'saveData',
 			'deployErc20Contract',
 			'erc20TokenBalance',
+			'sendErc20Tokens',
 		];
 		if (validChannels.includes(channel)) {
 			ipcRenderer.send(channel, data);
@@ -45,6 +46,7 @@ contextBridge.exposeInMainWorld('api', {
 			'exportWalletCertificate',
 			'encryption',
 			'retrieveData',
+			'sendErc20Tokens',
 		];
 		if (validChannels.includes(channel)) {
 			return ipcRenderer.sendSync(channel, data);
@@ -65,6 +67,7 @@ contextBridge.exposeInMainWorld('api', {
 			'encryptionResponse',
 			'deployErc20ContractResponse',
 			'erc20TokenBalanceResponse',
+			'sendErc20TokensResponse',
 		];
 		if (validChannels.includes(channel)) {
 			// Deliberately strip event as it includes `sender`

@@ -4,7 +4,7 @@ interface SendTokenDetails {
 	id: string;
 	senderWallet: string;
 	senderPrivateKey: string;
-	recipientWallet: string;
+	recipientPublicKey: string;
 	amount: number;
 	network: 'testnet' | 'mainnet';
 	error: string | null;

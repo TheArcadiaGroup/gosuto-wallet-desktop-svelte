@@ -13,7 +13,11 @@ const {
 	decryptString,
 } = require('../utils/storage/index.cjs');
 const { saveData, retrieveData } = require('../data/index.cjs');
-const { deployErc20Contract, getErc20TokenBalance } = require('../utils/tokens/index.cjs');
+const {
+	deployErc20Contract,
+	getErc20TokenBalance,
+	sendErc20Tokens,
+} = require('../utils/tokens/index.cjs');
 
 /**
  * Receiving messages from Renderer
@@ -80,7 +84,7 @@ module.exports = () => {
 		data = JSON.parse(data);
 		const fromPublicKey = data.senderWallet;
 		const fromPrivateKey = data.senderPrivateKey;
-		const toPublicKey = data.recipientWallet;
+		const toPublicKey = data.recipientPublicKey;
 		const amount = data.amount;
 		const network = data.network || 'testnet';
 		const algorithm = data.algorithm || 'ed25519';
@@ -167,6 +171,39 @@ module.exports = () => {
 			};
 			event.returnValue = returnValue;
 			sendMessage('erc20TokenBalanceResponse', returnValue);
+		}
+	});
+
+	ipcMain.on('sendErc20Tokens', async (event, data) => {
+		const parsedData = JSON.parse(data);
+		try {
+			const response = await sendErc20Tokens(
+				parsedData.contractHash,
+				parsedData.recipientPublicKey,
+				parsedData.amount,
+				parsedData.senderPrivateKey,
+				parsedData.algorithm,
+				parsedData.network,
+			);
+
+			sendMessage(
+				'sendErc20TokensResponse',
+				JSON.stringify({
+					data: response,
+					id: parsedData.id,
+					error: null,
+				}),
+			);
+		} catch (error) {
+			console.log(error);
+			sendMessage(
+				'sendErc20TokensResponse',
+				JSON.stringify({
+					data: null,
+					id: parsedData.id,
+					error: error,
+				}),
+			);
 		}
 	});
 

@@ -1,7 +1,7 @@
 import { sendTokenTracker } from '$stores/activityLoaders';
 import { user } from '$stores/user';
 import { get } from 'svelte/store';
-import { retrieveData, saveData } from './dataStorage';
+import { decryptPrvKey, retrieveData, saveData } from './dataStorage';
 import { parseTransferData } from './responseParsers/transfers';
 import { getTokenUsdPrice } from './tokens';
 import sendCspr from './tokens/sendCspr';
@@ -39,8 +39,8 @@ export async function sendToken(
 	publicKey: string,
 	privateKey: string,
 	tokenAmount: number,
-	recipientAddress: string,
-	contractAddress: string = 'CSPR',
+	recipientPublicKey: string,
+	contractHash: string = 'CSPR',
 	network: 'testnet' | 'mainnet' = 'testnet',
 	note: string = '',
 	tokenTicker: string = 'CSPR',
@@ -49,42 +49,37 @@ export async function sendToken(
 	id: string;
 	senderWallet: any;
 	senderPrivateKey: any;
-	recipientWallet: any;
+	recipientPublicKey: any;
 	amount: any;
 	network: 'mainnet' | 'testnet';
 	error: null;
 	fulfilled: boolean;
 }> {
-	if (contractAddress === 'CSPR') {
+	const requestObj = {
 		// Create unique tx ID to track it once its returned
+		id: Math.random().toString(16).slice(2),
+		senderWallet: publicKey,
+		senderPrivateKey: privateKey,
+		recipientPublicKey: recipientPublicKey,
+		amount: tokenAmount,
+		network: network, // use testnet just in case the user makes a mistake
+		contractHash: contractHash,
+		algorithm: algorithm,
+	};
 
-		const requestObj = {
-			id: Math.random().toString(16).slice(2),
-			senderWallet:
-				// '01cfbe76f5e1b7fd042714d4583e578f47675414efd9c1f8105256cea243f0ab35' ||
-				publicKey,
-			senderPrivateKey:
-				// 'MC4CAQAwBQYDK2VwBCIEIFvkdWUFtcpt2yOrbWk+v1fHf0y3Ca3+idJYXGkPKV+y' ||
-				privateKey,
-			recipientWallet:
-				// '01cfbe76f5e1b7fd042714d4583e578f47675414efd9c1f8105256cea243f0ab35' ||
-				recipientAddress,
-			amount: tokenAmount,
-			network: network, // use testnet just in case the user makes a mistake
+	sendTokenTracker.update((transactions) => {
+		transactions[requestObj.id] = {
+			...requestObj,
+			error: null,
+			fulfilled: false,
+			token: tokenTicker,
 		};
+		return transactions;
+	});
 
-		sendTokenTracker.update((transactions) => {
-			transactions[requestObj.id] = {
-				...requestObj,
-				error: null,
-				fulfilled: false,
-				token: tokenTicker,
-			};
-			return transactions;
-		});
-
+	if (contractHash === 'CSPR') {
 		// window.api.send('sendCSPRTokens', JSON.stringify(requestObj));
-		sendCspr(publicKey, privateKey, recipientAddress, tokenAmount, network, algorithm)
+		sendCspr(publicKey, privateKey, recipientPublicKey, tokenAmount, network, algorithm)
 			.then((response) => {
 				parseTransferData(
 					JSON.stringify({
@@ -108,6 +103,9 @@ export async function sendToken(
 			});
 
 		return { ...requestObj, error: null, fulfilled: false };
+	} else {
+		requestObj.senderPrivateKey = decryptPrvKey(requestObj.senderPrivateKey);
+		window.api.send('sendErc20Tokens', JSON.stringify(requestObj));
 	}
 }
 
