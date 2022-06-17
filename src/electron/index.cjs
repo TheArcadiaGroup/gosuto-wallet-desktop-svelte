@@ -1,10 +1,11 @@
-const { app, BrowserWindow, screen } = require('electron');
+const { app, BrowserWindow, screen, shell } = require('electron');
 const path = require('path');
 const serve = require('electron-serve');
 const windowStateManager = require('electron-win-state').default;
 // const electronLocalshortcut = require('electron-localshortcut');
 const contextMenu = require('electron-context-menu');
 const loadEvents = require('./events/index.cjs');
+const { buildDarwinMenu, buildDefaultMenu } = require('./utils/buildMenu.cjs');
 
 const dev = process.env.NODE_ENV === 'development' || !app.isPackaged;
 const port = process.env.PORT || 3000;
@@ -92,15 +93,17 @@ contextMenu({
 	showLookUpSelection: false,
 	showSearchWithGoogle: false,
 	showCopyImage: false,
-	prepend: (defaultActions, params, browserWindow) => [
-		{
-			label: 'Make App 💻',
-		},
-		{
-			label: 'Open Dev Tools 😉',
-			click: () => mainWindow.webContents.openDevTools({ mode: 'detach' }),
-		},
-	],
+	prepend: (defaultActions, params, browserWindow) =>
+		process.platform === 'darwin' ? buildDarwinMenu() : buildDefaultMenu(),
+	// [
+	// {
+	// 	label: 'Make App 💻',
+	// },
+	// {
+	// 	label: 'Open Dev Tools 😉',
+	// 	click: () => mainWindow.webContents.openDevTools({ mode: 'detach' }),
+	// },
+	// ],
 });
 
 const createMainWindow = () => {
@@ -120,20 +123,6 @@ const createMainWindow = () => {
 	) {
 		mainWindow.webContents.setZoomFactor(0.75);
 	}
-
-	// mainWindow.on('focus', (event) => {
-	// 	electronLocalshortcut.register(
-	// 		mainWindow,
-	// 		['CommandOrControl+R', 'CommandOrControl+Shift+R', 'F5'],
-	// 		() => {
-	// 			console.log('Tried to reload');
-	// 		},
-	// 	);
-	// });
-
-	// mainWindow.on('blur', (event) => {
-	// 	electronLocalshortcut.unregisterAll(mainWindow);
-	// });
 };
 
 // This method will be called when Electron has finished
