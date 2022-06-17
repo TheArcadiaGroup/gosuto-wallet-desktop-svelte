@@ -18,7 +18,7 @@
 				setTimeout(() => goto(`/profile`), 1000);
 			} else {
 				// If the user has no wallets/profile, redirect them to the onboarding screen
-				setTimeout(() => goto('/onboarding'), 1000);
+				setTimeout(() => goto('/add-wallet'), 1000);
 			}
 		}
 	});

@@ -104,7 +104,7 @@ export const pollyFillWallets = () => {
 	wallets.set(dbWallets);
 
 	if (dbWallets.length === 0) {
-		goto('/onboarding');
+		goto('/add-wallet');
 	}
 
 	return dbWallets;
