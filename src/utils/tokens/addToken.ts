@@ -1,8 +1,4 @@
-import { getEndpointByNetwork } from '$utils/casper';
-import { retrieveData, saveData } from '$utils/dataStorage';
-import { CasperClient } from 'casper-js-sdk';
-import { pollyFillTokens } from '$utils/pollyfillData';
-import { contractSimpleGetter } from 'casper-js-client-helper/dist/helpers/lib';
+import { retrieveData } from '$utils/dataStorage';
 import { addingTokens } from '$stores/user/tokens';
 
 export const addTokenGivenContractHash = async (
