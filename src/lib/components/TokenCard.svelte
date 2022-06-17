@@ -5,7 +5,7 @@
 
 	import ProfitUpIcon from '$icons/ProfitUpIcon.svelte';
 	import ProfitDownIcon from '$icons/ProfitDownIcon.svelte';
-	import { selectedWallet } from '$stores/user/wallets';
+	import { previousSelectedWallet, selectedWallet } from '$stores/user/wallets';
 	import { tokenLoaders } from '$stores/dataLoaders';
 	import { user } from '$stores/user';
 	import { loadTokenBalance } from '$utils/tokens';
@@ -20,7 +20,7 @@
 	export let tokenName = 'Casper'; // defaults
 	export let tokenTicker = 'CSPR'; // defaults
 	export let tokenAmountHeld = 0;
-	export let contractAddress = '';
+	export let contractHash = 'CSPR';
 	let tokenPriceInUsd = 0;
 	let percentageChange = 0;
 	let positive = percentageChange > 0;
@@ -32,7 +32,7 @@
 
 	onMount(async () => {
 		// @ts-ignore
-		const tokenInfo = await getTokenValue(contractAddress.trim() || tokenTicker);
+		const tokenInfo = await getTokenValue(contractHash.trim());
 		tokenPriceInUsd = tokenInfo.price[$user?.currency || 'usd'];
 		percentageChange = tokenInfo.price_change;
 
@@ -49,6 +49,14 @@
 		}
 		dispatch('selectToken', token);
 	}
+
+	selectedWallet.subscribe((wallet) => {
+		if (wallet && wallet?.publicKey !== $previousSelectedWallet?.publicKey) {
+			if (token) {
+				loadTokenBalance(token, $selectedWallet!.publicKey);
+			}
+		}
+	});
 </script>
 
 <div on:click={select} class="token-card {selected ? 'selected' : ''}">
@@ -61,7 +69,7 @@
 					: 'text-light-red'
 				: 'text-gray-600 dark:text-gray-400'}"
 		>
-			{#if !$tokenLoaders[tokenTicker]}
+			{#if !$tokenLoaders[contractHash]}
 				{parseFloat(
 					(tokenTicker.toLowerCase() === 'cspr'
 						? $selectedWallet?.availableBalance[$user?.network ?? 'testnet'] ?? tokenAmountHeld

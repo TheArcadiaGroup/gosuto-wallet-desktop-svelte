@@ -77,6 +77,11 @@
 				}
 			} else if (selectedToken.contractHash === 'CSPR') {
 				popup = 'Send Failed!';
+			} else if (selectedToken.contractHash !== 'CSPR') {
+				popup = 'Sending';
+				popupContent = `<p>Currently sending, <span class='amount'>${tokenAmount}</span> ${
+					selectedToken.tokenTicker
+				} to ${shortenAddress(recipientAddress)}.</p>`;
 			}
 
 			console.log(result);
