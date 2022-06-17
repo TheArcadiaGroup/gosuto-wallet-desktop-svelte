@@ -34,37 +34,32 @@
 		}
 
 		// load profile first
-		if ($selectedWallet?.publicKey.toLowerCase() !== $page.params['publicKey'].toLowerCase()) {
+		if ($selectedWallet?.publicKey !== $page.params['publicKey']) {
 			pollyfillSelectedWallet();
 		}
 
 		// If no tokens are present, load them
-		if ($tokens[$user?.network ?? 'testnet'].length <= 0) {
-			pollyFillTokens();
-		}
-
+		pollyFillTokens();
 		receiveTokenBalance();
 	});
 
-	$: ((userTokens) => {
-		// Load all token balances
-		if ($selectedWallet) {
-			userTokens[$user?.network ?? 'testnet'].map((token) =>
-				loadTokenBalance(token, $selectedWallet!.publicKey),
-			);
-		}
-	})($tokens);
+	let tokensToShow: IToken[] = [];
+	$: tokensToShow =
+		$selectedWallet &&
+		$tokens &&
+		$tokens[$selectedWallet.publicKey] &&
+		$tokens[$selectedWallet.publicKey][$user?.network ?? 'testnet']
+			? $tokens[$selectedWallet.publicKey][$user?.network ?? 'testnet']
+			: [];
 
 	selectedWallet.subscribe((wallet) => {
-		if (wallet?.publicKey !== $previousSelectedWallet?.publicKey) {
-			selectedToken = null;
+		if (wallet && wallet?.publicKey !== $previousSelectedWallet?.publicKey) {
+			// selectedToken = null;
 
 			// If no tokens are present, load them
-			// if ($tokens[$user?.network ?? 'testnet'].length <= 0) {
-			pollyFillTokens();
-			// }
-
-			receiveTokenBalance();
+			if ($tokens?.[wallet.publicKey]?.[$user?.network ?? 'testnet']?.length <= 0) {
+				pollyFillTokens();
+			}
 		}
 	});
 </script>
@@ -77,11 +72,7 @@
 		<ProfileNavigation />
 	</div>
 	<div class="global-grid-mid">
-		<Send
-			on:selectToken={selectToken}
-			bind:tokens={$tokens[$user?.network ?? 'testnet']}
-			bind:selectedToken
-		/>
+		<Send on:selectToken={selectToken} bind:tokens={tokensToShow} bind:selectedToken />
 	</div>
 	<!-- TODO DISPATCH VALUE IS NOT RESET BUG -->
 	<div class="global-grid-right sidebar">

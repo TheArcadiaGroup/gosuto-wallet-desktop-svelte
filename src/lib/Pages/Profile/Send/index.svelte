@@ -9,7 +9,6 @@
 	import { page } from '$app/stores';
 
 	export let tokens: IToken[] = [];
-
 	/**
 	 * This is the currently selected index of TokenCards.
 	 * -1 = none
@@ -68,21 +67,15 @@
 			</div>
 		</div>
 		<div on:scroll={onScroll} class="scroll-container scrollbar-hide">
-			{#each Array(Math.ceil(tokens.length / 4)) as _, i}
-				<div class="token-group">
-					{#each tokens.slice(i * 4, i * 4 + 4) as token, y}
-						<TokenCard
-							{token}
-							cardId={i * 4 + y}
-							selected={selectedToken === token}
-							on:selectToken
-							{...token}
-						/>
-					{/each}
-				</div>
-			{/each}
+			<!-- {#each Array(Math.ceil(tokens?.length / 4)) as _, i} -->
+			<div class="token-group">
+				{#each tokens as token, y}
+					<TokenCard {token} selected={selectedToken === token} on:selectToken {...token} />
+				{/each}
+			</div>
+			<!-- {/each} -->
 		</div>
-		<div class="mobile-scrollbar">
+		<!-- <div class="mobile-scrollbar">
 			{#each Array(Math.ceil(tokens.length / 4)) as _, i}
 				<div
 					class="mobile-scrollbar-dot {currentPage === i
@@ -90,7 +83,7 @@
 						: 'w-1.5 bg-light-gray'}"
 				/>
 			{/each}
-		</div>
+		</div> -->
 	</div>
 </div>
 

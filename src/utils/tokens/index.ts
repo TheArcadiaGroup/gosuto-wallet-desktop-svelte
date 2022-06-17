@@ -69,7 +69,7 @@ export const getCSPRUsdPrice = async () => {
 
 export const loadTokenBalance = async (token: IToken, publicKey: string) => {
 	// CSPR Is loaded from the wallet not as a token - its the main global token
-	if (token.contractHash !== 'CSPR') {
+	if (token.contractHash !== 'CSPR' && publicKey === get(selectedWallet)?.publicKey) {
 		if (!get(tokenLoaders)[token.contractHash]) {
 			tokenLoaders.update((_loader) => {
 				_loader[token.contractHash] = new Date();
@@ -99,7 +99,7 @@ export const receiveTokenBalance = async () => {
 			balance: number;
 		}) => {
 			// If its not the current user's data, discard it
-			if (get(selectedWallet)?.publicKey.toLowerCase() === data.publicKey.toLowerCase()) {
+			if (get(selectedWallet)?.publicKey === data.publicKey) {
 				const dbTokens = retrieveData('tokens');
 
 				(dbTokens[data.publicKey][data.network ?? 'testnet'] as IToken[]).map((token) => {
@@ -111,18 +111,8 @@ export const receiveTokenBalance = async () => {
 
 				saveData('tokens', dbTokens);
 
-				// Only Update the token balances we wish as opposed to resetting everything
-				tokens.update((_tokens) => {
-					_tokens[data.network ?? 'testnet'].map((token) => {
-						if (token.contractHash === data.contractHash) {
-							token.tokenAmountHeld = +data.balance;
-						}
-						return token;
-					});
-					return _tokens;
-				});
+				tokens.set(dbTokens);
 			}
-
 			tokenLoaders.update((_loader) => {
 				_loader[data.contractHash] = null;
 				return _loader;

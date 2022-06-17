@@ -8,11 +8,11 @@
 	import { selectedWallet } from '$stores/user/wallets';
 	import { tokenLoaders } from '$stores/dataLoaders';
 	import { user } from '$stores/user';
+	import { loadTokenBalance } from '$utils/tokens';
 
 	/**
 	 * The index of this card. Used when dispatching selectToken event to parent
 	 */
-	export let cardId: number;
 
 	export let selected = false;
 
@@ -35,6 +35,10 @@
 		const tokenInfo = await getTokenValue(contractAddress.trim() || tokenTicker);
 		tokenPriceInUsd = tokenInfo.price[$user?.currency || 'usd'];
 		percentageChange = tokenInfo.price_change;
+
+		if (token) {
+			loadTokenBalance(token, $selectedWallet!.publicKey);
+		}
 	});
 
 	const dispatch = createEventDispatcher();

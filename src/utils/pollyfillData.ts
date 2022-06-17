@@ -68,7 +68,7 @@ export const pollyFillTokens = async () => {
 			}),
 		);
 
-		tokens.set(tokensInDB[selectedWallet.publicKey]);
+		tokens.set(tokensInDB);
 
 		saveData('tokens', tokensInDB);
 
