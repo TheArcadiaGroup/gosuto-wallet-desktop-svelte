@@ -62,7 +62,7 @@
 		"private": true,
 		"owner": "TheArcadiaGroup",
 		"repo": "gosuto-wallet-desktop-svelte",
-		"token": "GITHUB_TOKEN_HERE",
+		"token": "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",
 		"vPrefixedTagName": true,
 		"publishAutoUpdate": true,
 		"releaseType": "prerelease"
