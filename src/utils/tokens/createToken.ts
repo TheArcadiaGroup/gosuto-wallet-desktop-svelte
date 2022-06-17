@@ -1,4 +1,5 @@
 import { user } from '$stores/user';
+import { mintingTokens } from '$stores/user/tokens';
 import { parseTokenCreationHash } from '$utils/responseParsers/tokenCreation';
 import { get } from 'svelte/store';
 import { decryptPrvKey, retrieveData, saveData } from '../dataStorage';
@@ -67,6 +68,15 @@ export function createToken(
 ): boolean {
 	// Send request to electron
 	const txId = Math.random().toString(16).slice(2);
+
+	mintingTokens.update((tokensMinting) => {
+		tokensMinting[txId] = {
+			result: false,
+			error: null,
+		};
+
+		return tokensMinting;
+	});
 
 	window.api.send(
 		'deployErc20Contract',

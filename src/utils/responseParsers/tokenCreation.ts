@@ -25,16 +25,16 @@ export const parseTokenCreationHash = async (
 				// TX Suceeded
 
 				// Add this contract hash to db - but confirm the contract is correct first
-				console.log(
-					(deploy[1].execution_results[0].result.Success as any)?.effect.transforms.find(
-						(item: any) => item.transform === 'WriteContract',
-					)?.key,
-				);
+				// console.log(
+				// 	(deploy[1].execution_results[0].result.Success as any)?.effect.transforms
+				// 		.find((item: any) => item.transform === 'WriteContract')
+				// 		?.key.replace('hash-', ''),
+				// );
 
 				addTokenGivenContractHash(
 					(deploy[1].execution_results[0].result.Success as any)?.effect.transforms
 						.find((item: any) => item.transform === 'WriteContract')
-						?.key.replace('hash', ''),
+						?.key.replace('hash-', ''),
 					0,
 					shareToken,
 					publicKey,

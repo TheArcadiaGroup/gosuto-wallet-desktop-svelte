@@ -31,7 +31,7 @@
 	let confirmPopup = false;
 
 	function submitCreateToken() {
-		popupContent = 'Deploying Token';
+		popup = 'Deploying Token';
 		confirmPopup = false;
 
 		if (!$selectedWallet?.privateKey) {

@@ -85,16 +85,16 @@ export const addTokenGivenContractHash = async (
 			: await getTokenNamedKeyValue(contractHash, 'symbol', network);
 		const tokenName = await getTokenNamedKeyValue(contractHash, 'name', network);
 
-		console.log({
-			tokenName: tokenName,
-			tokenTicker: tokenTicker as string,
-			tokenAmountHeld: 0,
-			tokenAmountHeldUSD: 0,
-			shareToken: shareToken,
-			contractHash: contractHash,
-			tokenPriceUSD: 0,
-			decimals: decimals as number,
-		});
+		// console.log({
+		// 	tokenName: tokenName,
+		// 	tokenTicker: tokenTicker as string,
+		// 	tokenAmountHeld: 0,
+		// 	tokenAmountHeldUSD: 0,
+		// 	shareToken: shareToken,
+		// 	contractHash: contractHash,
+		// 	tokenPriceUSD: 0,
+		// 	decimals: decimals as number,
+		// });
 
 		if (shareToken) {
 			// Loop through every wallet addding this token
