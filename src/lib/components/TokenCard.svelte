@@ -50,7 +50,13 @@
 <div on:click={select} class="token-card {selected ? 'selected' : ''}">
 	<div class="token-card-left-col">
 		<p class="token-card-title">{tokenName} ({tokenTicker})</p>
-		<p class="token-card-text-sm {positive ? 'text-light-green' : 'text-light-red'}">
+		<p
+			class="token-card-text-sm {token?.contractHash === 'CSPR'
+				? positive
+					? 'text-light-green'
+					: 'text-light-red'
+				: 'text-gray-600 dark:text-gray-400'}"
+		>
 			{#if !$tokenLoaders[tokenTicker]}
 				{parseFloat(
 					(tokenTicker.toLowerCase() === 'cspr'

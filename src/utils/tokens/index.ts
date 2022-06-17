@@ -5,23 +5,6 @@ import { tokens } from '$stores/user/tokens';
 import { selectedWallet } from '$stores/user/wallets';
 import { retrieveData, saveData } from '$utils/dataStorage';
 import { get } from 'svelte/store';
-import pkg from 'casper-erc20-js-client/dist/index';
-import { getEndpointByNetwork } from '$utils/casper';
-import { CLPublicKey } from 'casper-js-sdk';
-
-const erc20ClassInstance = (
-	rpc: string,
-	network_name: 'casper' | 'casper-test',
-	event_stream_address = undefined,
-) => {
-	const erc20 = new pkg.ERC20Client(
-		rpc, // RPC address
-		network_name, // Network name
-		event_stream_address, // Event stream address
-	);
-
-	return erc20;
-};
 
 // TOKEN - TRANSFORM TO TOKEN SPECIFIC ADDRESS AND MAKE IT DYNAMIC
 export const getTokenUsdPrice = async (token: string) => {
@@ -86,7 +69,7 @@ export const getCSPRUsdPrice = async () => {
 
 export const loadTokenBalance = async (token: IToken, publicKey: string) => {
 	// CSPR Is loaded from the wallet not as a token - its the main global token
-	if (token.tokenTicker !== 'CSPR') {
+	if (token.contractHash !== 'CSPR') {
 		if (!get(tokenLoaders)[token.contractHash]) {
 			tokenLoaders.update((_loader) => {
 				_loader[token.contractHash] = new Date();
