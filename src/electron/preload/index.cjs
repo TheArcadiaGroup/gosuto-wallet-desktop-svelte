@@ -21,6 +21,7 @@ contextBridge.exposeInMainWorld('api', {
 			'encryption',
 			'saveData',
 			'deployErc20Contract',
+			'erc20TokenBalance',
 		];
 		if (validChannels.includes(channel)) {
 			ipcRenderer.send(channel, data);
@@ -63,6 +64,7 @@ contextBridge.exposeInMainWorld('api', {
 			'undelegateResponse',
 			'encryptionResponse',
 			'deployErc20ContractResponse',
+			'erc20TokenBalanceResponse',
 		];
 		if (validChannels.includes(channel)) {
 			// Deliberately strip event as it includes `sender`

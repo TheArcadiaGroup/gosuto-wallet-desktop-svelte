@@ -256,7 +256,6 @@ declare global {
 		| 'accountCsprBalance'
 		| 'sendCSPRTokens'
 		| 'selectProfileImage'
-		| 'tokenBalance'
 		| 'getValidators'
 		| 'delegate'
 		| 'undelegate'
@@ -265,7 +264,8 @@ declare global {
 		| 'encryption'
 		| 'saveData'
 		| 'retrieveData'
-		| 'deployErc20Contract';
+		| 'deployErc20Contract'
+		| 'erc20TokenBalance';
 	type MainReceiveChannels =
 		| 'createWalletFromFileResponse'
 		| 'createWalletFromMnemonicsResponse'
@@ -279,5 +279,6 @@ declare global {
 		| 'delegateResponse'
 		| 'undelegateResponse'
 		| 'encryptionResponse'
-		| 'deployErc20ContractResponse';
+		| 'deployErc20ContractResponse'
+		| 'erc20TokenBalanceResponse';
 }

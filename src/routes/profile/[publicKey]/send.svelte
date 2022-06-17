@@ -60,9 +60,9 @@
 			selectedToken = null;
 
 			// If no tokens are present, load them
-			if ($tokens[$user?.network ?? 'testnet'].length <= 0) {
-				pollyFillTokens();
-			}
+			// if ($tokens[$user?.network ?? 'testnet'].length <= 0) {
+			pollyFillTokens();
+			// }
 
 			receiveTokenBalance();
 		}

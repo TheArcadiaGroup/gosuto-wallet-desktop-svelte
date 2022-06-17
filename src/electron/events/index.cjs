@@ -13,7 +13,7 @@ const {
 	decryptString,
 } = require('../utils/storage/index.cjs');
 const { saveData, retrieveData } = require('../data/index.cjs');
-const { deployErc20Contract } = require('../utils/tokens/index.cjs');
+const { deployErc20Contract, getErc20TokenBalance } = require('../utils/tokens/index.cjs');
 
 /**
  * Receiving messages from Renderer
@@ -141,25 +141,32 @@ module.exports = () => {
 	});
 
 	// LOAD TOKEN BALANCE - TODO
-	ipcMain.on('tokenBalance', async (event, data) => {
+	ipcMain.on('erc20TokenBalance', async (event, data) => {
+		const parsedData = JSON.parse(data);
 		try {
 			// Testnet is the fallback network here
-			const parsedData = JSON.parse(data); // {publicKey: publicKey; token: 'CSPR', contractAddress: 'STRING'}
 			const returnValue = {
-				token: parsedData.token,
+				contractHash: parsedData.contractHash,
 				publicKey: parsedData.publicKey,
-				balance: await getTokenBalance(),
+				network: parsedData.network,
+				balance: await getErc20TokenBalance(
+					parsedData.contractHash,
+					parsedData.publicKey,
+					parsedData.network ?? 'testnet',
+				),
 			};
 			event.returnValue = returnValue;
-			sendMessage('tokenBalanceResponse', returnValue);
-		} catch (_err) {
+			sendMessage('erc20TokenBalanceResponse', returnValue);
+		} catch (err) {
 			const returnValue = {
-				balance: '0',
-				token: parsedData.token,
+				balance: 0,
+				contractHash: parsedData.contractHash,
 				publicKey: parsedData.publicKey,
+				network: parsedData.network,
+				error: err,
 			};
 			event.returnValue = returnValue;
-			sendMessage('tokenBalanceResponse', returnValue);
+			sendMessage('erc20TokenBalanceResponse', returnValue);
 		}
 	});
 

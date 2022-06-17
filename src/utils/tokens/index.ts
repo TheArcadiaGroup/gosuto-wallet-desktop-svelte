@@ -5,6 +5,23 @@ import { tokens } from '$stores/user/tokens';
 import { selectedWallet } from '$stores/user/wallets';
 import { retrieveData, saveData } from '$utils/dataStorage';
 import { get } from 'svelte/store';
+import pkg from 'casper-erc20-js-client/dist/index';
+import { getEndpointByNetwork } from '$utils/casper';
+import { CLPublicKey } from 'casper-js-sdk';
+
+const erc20ClassInstance = (
+	rpc: string,
+	network_name: 'casper' | 'casper-test',
+	event_stream_address = undefined,
+) => {
+	const erc20 = new pkg.ERC20Client(
+		rpc, // RPC address
+		network_name, // Network name
+		event_stream_address, // Event stream address
+	);
+
+	return erc20;
+};
 
 // TOKEN - TRANSFORM TO TOKEN SPECIFIC ADDRESS AND MAKE IT DYNAMIC
 export const getTokenUsdPrice = async (token: string) => {
@@ -70,57 +87,63 @@ export const getCSPRUsdPrice = async () => {
 export const loadTokenBalance = async (token: IToken, publicKey: string) => {
 	// CSPR Is loaded from the wallet not as a token - its the main global token
 	if (token.tokenTicker !== 'CSPR') {
-		tokenLoaders.update((_loader) => {
-			_loader[token.tokenTicker] = new Date();
-			return _loader;
-		});
+		if (!get(tokenLoaders)[token.contractHash]) {
+			tokenLoaders.update((_loader) => {
+				_loader[token.contractHash] = new Date();
+				return _loader;
+			});
 
-		// TODO Improve This to Match which token is being loaded
-		window.api.send(
-			'tokenBalance',
-			JSON.stringify({
-				token: token.tokenTicker,
-				contractHash: token.contractHash,
-				publicKey: publicKey,
-				network: get(user)?.network || 'testnet',
-			}),
-		);
+			// TODO Improve This to Match which token is being loaded
+			window.api.send(
+				'erc20TokenBalance',
+				JSON.stringify({
+					contractHash: token.contractHash,
+					publicKey: publicKey,
+					network: get(user)?.network || 'testnet',
+				}),
+			);
+		}
 	}
 };
 
 export const receiveTokenBalance = async () => {
-	window.api.receive('tokenBalanceResponse', async (data: any) => {
-		// If its not the current user's data, discard it
-		if (get(selectedWallet)?.publicKey.toLowerCase() === data.publicKey.toLowerCase()) {
-			const dbTokens = retrieveData('tokens');
-			const userTokens: IToken[] = dbTokens[data.publicKey][get(user)?.network ?? 'testnet'];
+	window.api.receive(
+		'erc20TokenBalanceResponse',
+		async (data: {
+			contractHash: string;
+			publicKey: string;
+			network: 'testnet' | 'mainnet';
+			balance: number;
+		}) => {
+			// If its not the current user's data, discard it
+			if (get(selectedWallet)?.publicKey.toLowerCase() === data.publicKey.toLowerCase()) {
+				const dbTokens = retrieveData('tokens');
 
-			userTokens.map((token) => {
-				if (token.tokenTicker === data.token) {
-					token.tokenAmountHeld = +data.balance;
-					// TODO: SET TOKEN USD BALANCE
-				}
-				return token;
-			});
-
-			saveData('tokens', dbTokens);
-
-			// Only Update the token balances we wish as opposed to resetting everything
-			tokens.update((_tokens) => {
-				_tokens[get(user)?.network ?? 'testnet'].map((token) => {
+				(dbTokens[data.publicKey][data.network ?? 'testnet'] as IToken[]).map((token) => {
 					if (token.contractHash === data.contractHash) {
 						token.tokenAmountHeld = +data.balance;
-						// TODO: SET TOKEN USD BALANCE
 					}
 					return token;
 				});
-				return _tokens;
-			});
-		}
 
-		tokenLoaders.update((_loader) => {
-			_loader[data.token] = null;
-			return _loader;
-		});
-	});
+				saveData('tokens', dbTokens);
+
+				// Only Update the token balances we wish as opposed to resetting everything
+				tokens.update((_tokens) => {
+					_tokens[data.network ?? 'testnet'].map((token) => {
+						if (token.contractHash === data.contractHash) {
+							token.tokenAmountHeld = +data.balance;
+						}
+						return token;
+					});
+					return _tokens;
+				});
+			}
+
+			tokenLoaders.update((_loader) => {
+				_loader[data.contractHash] = null;
+				return _loader;
+			});
+		},
+	);
 };

@@ -1,7 +1,15 @@
 const { ERC20Client } = require('casper-erc20-js-client');
 const { getCasperClientAndService } = require('../index.cjs');
 const { mainnetApiUrl, testnetApiUrl } = require('../../constants/index.cjs');
-const { Keys, DeployUtil, RuntimeArgs, CLString, CLU8, CLU256 } = require('casper-js-sdk');
+const {
+	Keys,
+	DeployUtil,
+	RuntimeArgs,
+	CLString,
+	CLU8,
+	CLU256,
+	CLPublicKey,
+} = require('casper-js-sdk');
 const fs = require('fs');
 const path = require('path');
 
@@ -98,7 +106,6 @@ const deployNormalContract = async (
 };
 
 module.exports = {
-	getContractKeyValue: async () => {},
 	deployErc20Contract: async (
 		token_name,
 		token_symbol,
@@ -146,6 +153,16 @@ module.exports = {
 		}
 	},
 	sendErc20Tokens: async () => {},
-	getErc20TokenBalance: async () => {},
+	getErc20TokenBalance: async (contractHash, publicKey, network) => {
+		const rpc = network === 'mainnet' ? mainnetApiUrl : testnetApiUrl;
+
+		const erc20 = erc20ClassInstance(rpc, network === 'mainnet' ? 'casper' : 'casper-test');
+
+		await erc20.setContractHash(contractHash);
+
+		const balance = await erc20.balanceOf(CLPublicKey.fromHex(publicKey));
+
+		return balance;
+	},
 	getErc20TokenKeys: async () => {},
 };
