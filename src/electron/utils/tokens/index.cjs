@@ -13,6 +13,8 @@ const {
 } = require('casper-js-sdk');
 const fs = require('fs');
 const path = require('path');
+const { ethers } = require('ethers');
+const { contractSimpleGetter } = require('casper-js-client-helper/dist/helpers/lib.js');
 
 const erc20ClassInstance = (rpc, network_name, event_stream_address = undefined) => {
 	const erc20 = new ERC20Client(
@@ -104,6 +106,49 @@ const deployNormalContract = async (
 	);
 
 	return installDeployHash;
+};
+
+const getTokenNamedKeyValue = async (contractHash, key, network) => {
+	const rpc = network === 'mainnet' ? mainnetApiUrl : testnetApiUrl;
+	return await contractSimpleGetter(rpc, contractHash, [key]);
+};
+
+const checkIfTokenIsSupported = async (contractHash, network) => {
+	try {
+		const rpc = network === 'mainnet' ? mainnetApiUrl : testnetApiUrl;
+		const casperClient = new CasperClient(rpc);
+		// Check contract keys
+		const namedKeys =
+			(
+				await casperClient.nodeClient.getBlockState(
+					await casperClient.nodeClient.getStateRootHash(),
+					`hash-${contractHash}`,
+					[],
+				)
+			).Contract?.namedKeys.map((item) => item.name) ?? [];
+		// required keys - name*, symbol, decimals, balances, allowances, total_supply*
+
+		console.log(namedKeys);
+
+		if (namedKeys.length < 5) {
+			return false;
+		}
+
+		if (
+			namedKeys.includes('name') &&
+			namedKeys.includes('symbol') &&
+			namedKeys.includes('decimals') &&
+			namedKeys.includes('balances') &&
+			namedKeys.includes('allowances')
+		) {
+			return true;
+		} else {
+			return false;
+		}
+	} catch (error) {
+		// Enter a valid contract address
+		return false;
+	}
 };
 
 module.exports = {
@@ -200,5 +245,24 @@ module.exports = {
 
 		return balance;
 	},
-	getErc20TokenKeys: async () => {},
+	getTokenDetails: async (contractHash, network) => {
+		if (!(await checkIfTokenIsSupported(contractHash, network))) {
+			throw 'Please make sure your token has at least one of the following keys: symbol, decimals, balances, allowances';
+		}
+
+		// Add token to page and fetch details from Casper to Confirm the one's entered
+		const decimals = +ethers.utils.formatUnits(
+			await getTokenNamedKeyValue(contractHash, 'decimals', network),
+			0,
+		);
+		const tokenTicker = await getTokenNamedKeyValue(contractHash, 'symbol', network);
+		const tokenName = await getTokenNamedKeyValue(contractHash, 'name', network);
+
+		return {
+			tokenName,
+			tokenTicker,
+			decimals,
+			contractHash,
+		};
+	},
 };

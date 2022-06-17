@@ -1,6 +1,7 @@
-import { mintingTokens } from '$stores/user/tokens';
+import { addingTokens, mintingTokens } from '$stores/user/tokens';
 import { getEndpointByNetwork } from '$utils/casper';
 import { retrieveData, saveData } from '$utils/dataStorage';
+import { pollyFillTokens } from '$utils/pollyfillData';
 import { addTokenGivenContractHash } from '$utils/tokens/addToken';
 import { addTokenTxToBeTracked } from '$utils/tokens/createToken';
 import { CasperClient } from 'casper-js-sdk';
@@ -87,5 +88,91 @@ export default () => {
 
 			return;
 		}
+	});
+
+	window.api.receive('getErc20TokenDetailsResponse', async (response: string) => {
+		try {
+			const res: {
+				data: {
+					id: string;
+					contractHash: string;
+					decimals: number;
+					shareToken: boolean;
+					publicKey: string;
+					tokenTicker: string;
+					network: 'testnet' | 'mainnet';
+					preferContractDetails: boolean;
+					tokenName: string;
+				};
+				error: any | null;
+			} = JSON.parse(response);
+
+			if (res.data.id) {
+				addingTokens.update((tokensAdding) => {
+					Object.keys(tokensAdding).map((key) => {
+						if (key === res.data.id) {
+							tokensAdding[key].result = true;
+							tokensAdding[key].error = res.error
+								? 'We Encountered an Error Performing That Request.'
+								: null;
+						}
+					});
+
+					return tokensAdding;
+				});
+			}
+
+			if (res.error) {
+				return {
+					data: null,
+					error: res.error,
+				};
+			}
+
+			res.data.decimals = !res.data.preferContractDetails ? res.data.decimals : res.data.decimals;
+			res.data.tokenTicker = !res.data.preferContractDetails
+				? res.data.tokenTicker
+				: res.data.tokenTicker;
+			const tokenName = res.data.tokenName;
+
+			const dbTokens: DBTokens = retrieveData('tokens');
+			// Get token data
+			if (res.data.shareToken) {
+				// Loop through every wallet addding this token
+				Object.keys(dbTokens).map((key) => {
+					if (
+						!dbTokens[key][res.data.network].find(
+							(item) => item.contractHash === res.data.contractHash,
+						)
+					) {
+						dbTokens[key][res.data.network].push({
+							tokenName: tokenName,
+							tokenTicker: res.data.tokenTicker,
+							tokenAmountHeld: 0,
+							tokenAmountHeldUSD: 0,
+							shareToken: res.data.shareToken,
+							contractHash: res.data.contractHash,
+							tokenPriceUSD: 0,
+							decimals: res.data.decimals,
+						});
+					}
+				});
+			} else {
+				// Add to the current wallet only
+				dbTokens[res.data.publicKey][res.data.network].push({
+					tokenName: tokenName,
+					tokenTicker: res.data.tokenTicker,
+					tokenAmountHeld: 0,
+					tokenAmountHeldUSD: 0,
+					shareToken: res.data.shareToken,
+					contractHash: res.data.contractHash,
+					tokenPriceUSD: 0,
+					decimals: res.data.decimals,
+				});
+			}
+
+			saveData('tokens', dbTokens);
+			pollyFillTokens();
+		} catch (error) {}
 	});
 };

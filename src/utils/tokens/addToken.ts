@@ -1,57 +1,9 @@
 import { getEndpointByNetwork } from '$utils/casper';
 import { retrieveData, saveData } from '$utils/dataStorage';
 import { CasperClient } from 'casper-js-sdk';
-import { contractSimpleGetter } from 'casper-js-client-helper/dist/helpers/lib';
-import { ethers } from 'ethers';
 import { pollyFillTokens } from '$utils/pollyfillData';
-
-export const checkIfTokenIsSupported = async (
-	contractHash: string,
-	network: 'testnet' | 'mainnet',
-) => {
-	try {
-		const casperClient = new CasperClient(getEndpointByNetwork(network));
-		// Check contract keys
-		const namedKeys =
-			(
-				await casperClient.nodeClient.getBlockState(
-					await casperClient.nodeClient.getStateRootHash(),
-					`hash-${contractHash}`,
-					[],
-				)
-			).Contract?.namedKeys.map((item) => item.name) ?? [];
-		// required keys - name*, symbol, decimals, balances, allowances, total_supply*
-
-		console.log(namedKeys);
-
-		if (namedKeys.length < 5) {
-			return false;
-		}
-
-		if (
-			namedKeys.includes('name') &&
-			namedKeys.includes('symbol') &&
-			namedKeys.includes('decimals') &&
-			namedKeys.includes('balances') &&
-			namedKeys.includes('allowances')
-		) {
-			return true;
-		} else {
-			return false;
-		}
-	} catch (error) {
-		// Enter a valid contract address
-		return false;
-	}
-};
-
-export const getTokenNamedKeyValue = async (
-	contractHash: string,
-	key: string,
-	network: 'testnet' | 'mainnet',
-) => {
-	return await contractSimpleGetter(getEndpointByNetwork(network), contractHash, [key]);
-};
+import { contractSimpleGetter } from 'casper-js-client-helper/dist/helpers/lib';
+import { addingTokens } from '$stores/user/tokens';
 
 export const addTokenGivenContractHash = async (
 	contractHash: string,
@@ -62,72 +14,32 @@ export const addTokenGivenContractHash = async (
 	network: 'testnet' | 'mainnet' = 'testnet',
 	preferContractDetails: boolean = true,
 ) => {
-	if (!(await checkIfTokenIsSupported(contractHash, network))) {
-		return {
-			data: null,
-			error:
-				'Please make sure your token has at least one of the following keys: symbol, decimals, balances, allowances',
-		};
-	}
-
-	// Add token to page and fetch details from Casper to Confirm the one's entered
 	const dbTokens: DBTokens = retrieveData('tokens');
 	if (!dbTokens[publicKey][network].find((item) => item.contractHash === contractHash)) {
-		// Get token data
-		decimals = !preferContractDetails
-			? decimals
-			: +ethers.utils.formatUnits(
-					await getTokenNamedKeyValue(contractHash, 'decimals', network),
-					0,
-			  );
-		tokenTicker = !preferContractDetails
-			? tokenTicker
-			: await getTokenNamedKeyValue(contractHash, 'symbol', network);
-		const tokenName = await getTokenNamedKeyValue(contractHash, 'name', network);
+		const txId = Math.random().toString(16).slice(2);
 
-		// console.log({
-		// 	tokenName: tokenName,
-		// 	tokenTicker: tokenTicker as string,
-		// 	tokenAmountHeld: 0,
-		// 	tokenAmountHeldUSD: 0,
-		// 	shareToken: shareToken,
-		// 	contractHash: contractHash,
-		// 	tokenPriceUSD: 0,
-		// 	decimals: decimals as number,
-		// });
+		addingTokens.update((tokensAdding) => {
+			tokensAdding[txId] = {
+				result: false,
+				error: null,
+			};
 
-		if (shareToken) {
-			// Loop through every wallet addding this token
-			Object.keys(dbTokens).map((key) => {
-				if (!dbTokens[key][network].find((item) => item.contractHash === contractHash)) {
-					dbTokens[key][network].push({
-						tokenName: tokenName,
-						tokenTicker: tokenTicker as string,
-						tokenAmountHeld: 0,
-						tokenAmountHeldUSD: 0,
-						shareToken: shareToken,
-						contractHash: contractHash,
-						tokenPriceUSD: 0,
-						decimals: decimals as number,
-					});
-				}
-			});
-		} else {
-			// Add to the current wallet only
-			dbTokens[publicKey][network].push({
-				tokenName: tokenName,
-				tokenTicker: tokenTicker as string,
-				tokenAmountHeld: 0,
-				tokenAmountHeldUSD: 0,
-				shareToken: shareToken,
-				contractHash: contractHash,
-				tokenPriceUSD: 0,
-				decimals: decimals as number,
-			});
-		}
+			return tokensAdding;
+		});
 
-		saveData('tokens', dbTokens);
-		pollyFillTokens();
+		window.api.send(
+			'getErc20TokenDetails',
+			JSON.stringify({
+				id: txId,
+				contractHash,
+				network,
+				decimals,
+				publicKey,
+				tokenTicker,
+				preferContractDetails,
+				shareToken,
+			}),
+		);
 
 		return { data: 'Successfully Added Token', error: null };
 	} else {

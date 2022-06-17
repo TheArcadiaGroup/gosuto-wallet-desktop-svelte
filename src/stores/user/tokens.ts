@@ -7,3 +7,6 @@ export const sendTokenArr = writable<SendTokenArr[]>([]);
 export const mintingTokens = writable<{ [id: string]: { result: boolean; error: string | null } }>(
 	{},
 );
+export const addingTokens = writable<{ [id: string]: { result: boolean; error: string | null } }>(
+	{},
+);

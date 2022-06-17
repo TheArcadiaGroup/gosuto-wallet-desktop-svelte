@@ -12,6 +12,7 @@
 	import Loading from '$lib/components/Loading.svelte';
 	import ErrorIcon from '$icons/ErrorIcon.svelte';
 	import SuccessIcon from '$icons/SuccessIcon.svelte';
+	import { addingTokens } from '$stores/user/tokens';
 
 	let contractHash = '';
 	let tokenTicker = '';
@@ -31,7 +32,7 @@
 			pollyfillSelectedWallet();
 		}
 
-		const result = await addTokenGivenContractHash(
+		await addTokenGivenContractHash(
 			contractHash,
 			decimals,
 			shareToken,
@@ -40,20 +41,6 @@
 			$user?.network ?? 'testnet',
 			preferContractDetails,
 		);
-
-		if (result.error) {
-			// Show error
-			popup = 'Token Addition Failed!';
-			popupContent = `<p>${result.error}</p>`;
-		} else {
-			// Clear loader and show respective popup with tx details
-			popup = 'Success';
-			popupContent = `<p>Succcessfully Added Token</p>`;
-
-			contractHash = '';
-			tokenTicker = '';
-			decimals = 18;
-		}
 	}
 
 	function openConfirmPopup() {
@@ -73,6 +60,35 @@
 		popupContent = '';
 		popup = '';
 	}
+
+	$: ((tokenAddTxes) => {
+		if (tokenAddTxes) {
+			Object.keys(tokenAddTxes).map((key) => {
+				if (tokenAddTxes[key]) {
+					if (tokenAddTxes[key]?.error) {
+						// Show error
+						popup = 'Token Import Failed!';
+						popupContent = tokenAddTxes[key]?.error || `<p>Failed to Import The Token</p>`;
+					} else if (tokenAddTxes[key]?.result) {
+						// Clear loader and show respective popup with tx details
+						popup = 'Success';
+						popupContent = `<p>Succcessfully Imported Token</p>`;
+
+						// Clear Create Token Form
+						contractHash = '';
+						tokenTicker = '';
+						decimals = 18;
+					}
+
+					if (tokenAddTxes[key]?.result) {
+						// remove the key from the sendTokenTrackers list
+						delete tokenAddTxes[key];
+						addingTokens.set(tokenAddTxes);
+					}
+				}
+			});
+		}
+	})($addingTokens);
 
 	const dispatch = createEventDispatcher();
 </script>

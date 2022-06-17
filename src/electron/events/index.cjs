@@ -17,6 +17,7 @@ const {
 	deployErc20Contract,
 	getErc20TokenBalance,
 	sendErc20Tokens,
+	getTokenDetails,
 } = require('../utils/tokens/index.cjs');
 
 /**
@@ -201,6 +202,41 @@ module.exports = () => {
 				JSON.stringify({
 					data: null,
 					id: parsedData.id,
+					error: error,
+				}),
+			);
+		}
+	});
+
+	ipcMain.on('getErc20TokenDetails', async (event, data) => {
+		try {
+			const parsedData = JSON.parse(data);
+			const res = await getTokenDetails(parsedData.contractHash, parsedData.network ?? 'testnet');
+
+			event.returnValue = JSON.stringify({
+				data: {
+					...parsedData,
+					...res,
+				},
+				error: null,
+			});
+
+			sendMessage(
+				'getErc20TokenDetailsResponse',
+				JSON.stringify({
+					data: { ...parsedData, ...res },
+					error: null,
+				}),
+			);
+		} catch (error) {
+			event.returnValue = JSON.stringify({
+				data: null,
+				error: error,
+			});
+			sendMessage(
+				'getErc20TokenDetailsResponse',
+				JSON.stringify({
+					data: null,
 					error: error,
 				}),
 			);
