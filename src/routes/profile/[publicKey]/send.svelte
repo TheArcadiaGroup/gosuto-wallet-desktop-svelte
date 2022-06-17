@@ -57,6 +57,8 @@
 
 	selectedWallet.subscribe((wallet) => {
 		if (wallet?.publicKey !== $previousSelectedWallet?.publicKey) {
+			selectedToken = null;
+
 			// If no tokens are present, load them
 			if ($tokens[$user?.network ?? 'testnet'].length <= 0) {
 				pollyFillTokens();
