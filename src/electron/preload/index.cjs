@@ -1,4 +1,6 @@
 const { contextBridge, ipcRenderer } = require('electron');
+// const path = require('path');
+// const { Titlebar } = require('custom-electron-titlebar');
 
 // Expose protected methods that allow the renderer process to use
 // the ipcRenderer without exposing the entire object
@@ -78,3 +80,12 @@ contextBridge.exposeInMainWorld('api', {
 		}
 	},
 });
+
+// window.addEventListener('DOMContentLoaded', () => {
+// 	// Title bar implemenation
+// 	new Titlebar({
+// 		backgroundColor: '#363B46',
+// 		foregroundColor: '#fff',
+// 		icon: path.join(__dirname, '../logo.png'),
+// 	});
+// });

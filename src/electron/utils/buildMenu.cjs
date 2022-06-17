@@ -1,7 +1,7 @@
 module.exports = {
-	buildDarwinMenu: (app, shell, mainWindow) => {
+	buildDarwinMenu: (app, shell, mainWindow, dev) => {
 		const subMenuAbout = {
-			label: 'Electron',
+			label: 'Gosuto',
 			submenu: [
 				{
 					label: 'About Gosuto',
@@ -68,7 +68,7 @@ module.exports = {
 					label: 'Toggle Developer Tools',
 					accelerator: 'Alt+Command+I',
 					click: () => {
-						mainWindow.webContents.toggleDevTools();
+						mainWindow.webContents.openDevTools({ mode: 'detach' });
 					},
 				},
 			],
@@ -105,30 +105,25 @@ module.exports = {
 					label: 'Learn More',
 					click() {
 						shell.openExternal('https://www.gosutowallet.com/');
-						// ipcRenderer.send('openUrl', 'https://www.gosutowallet.com/');
-						//  require('electron').shell.openExternal('https://www.gosutowallet.com/');
 					},
 				},
 			],
 		};
 
-		const subMenuView =
-			process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true'
-				? subMenuViewDev
-				: subMenuViewProd;
+		const subMenuView = dev ? subMenuViewDev : subMenuViewProd;
 
 		return [subMenuAbout, subMenuEdit, subMenuView, subMenuWindow, subMenuHelp];
 	},
 
-	buildDefaultMenu: (app, shell, mainWindow) => {
+	buildDefaultMenu: (app, shell, mainWindow, dev) => {
 		const templateDefault = [
 			{
 				label: '&File',
 				submenu: [
-					{
-						label: '&Open',
-						accelerator: 'Ctrl+O',
-					},
+					// {
+					// 	label: '&Open',
+					// 	accelerator: 'Ctrl+O',
+					// },
 					{
 						label: '&Close',
 						accelerator: 'Ctrl+W',
@@ -140,40 +135,39 @@ module.exports = {
 			},
 			{
 				label: '&View',
-				submenu:
-					process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true'
-						? [
-								{
-									label: '&Reload',
-									accelerator: 'Ctrl+R',
-									click: () => {
-										mainWindow.webContents.reload();
-									},
+				submenu: dev
+					? [
+							{
+								label: '&Reload',
+								accelerator: 'Ctrl+R',
+								click: () => {
+									mainWindow.webContents.reload();
 								},
-								{
-									label: 'Toggle &Full Screen',
-									accelerator: 'F11',
-									click: () => {
-										mainWindow.setFullScreen(!mainWindow.isFullScreen());
-									},
+							},
+							{
+								label: 'Toggle &Full Screen',
+								accelerator: 'F11',
+								click: () => {
+									mainWindow.setFullScreen(!mainWindow.isFullScreen());
 								},
-								{
-									label: 'Toggle &Developer Tools',
-									accelerator: 'Alt+Ctrl+I',
-									click: () => {
-										mainWindow.webContents.toggleDevTools();
-									},
+							},
+							{
+								label: 'Toggle &Developer Tools',
+								accelerator: 'Alt+Ctrl+I',
+								click: () => {
+									mainWindow.webContents.openDevTools({ mode: 'detach' });
 								},
-						  ]
-						: [
-								{
-									label: 'Toggle &Full Screen',
-									accelerator: 'F11',
-									click: () => {
-										mainWindow.setFullScreen(!mainWindow.isFullScreen());
-									},
+							},
+					  ]
+					: [
+							{
+								label: 'Toggle &Full Screen',
+								accelerator: 'F11',
+								click: () => {
+									mainWindow.setFullScreen(!mainWindow.isFullScreen());
 								},
-						  ],
+							},
+					  ],
 			},
 			{
 				label: 'Help',
@@ -182,8 +176,6 @@ module.exports = {
 						label: 'Learn More',
 						click() {
 							shell.openExternal('https://www.gosutowallet.com/');
-
-							// require('electron').shell.openExternal('https://www.gosutowallet.com/');
 						},
 					},
 				],

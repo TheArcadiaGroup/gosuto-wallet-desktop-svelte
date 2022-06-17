@@ -6,6 +6,7 @@ const windowStateManager = require('electron-win-state').default;
 const contextMenu = require('electron-context-menu');
 const loadEvents = require('./events/index.cjs');
 const { buildDarwinMenu, buildDefaultMenu } = require('./utils/buildMenu.cjs');
+// const { createTitleBar } = require('./utils/titlebar.cjs');
 
 const dev = process.env.NODE_ENV === 'development' || !app.isPackaged;
 const port = process.env.PORT || 3000;
@@ -44,8 +45,6 @@ const createWindow = () => {
 			y: 32,
 		},
 		backgroundColor: 'whitesmoke',
-		// minWidth: 1300,
-		// minHeight: 850,
 		width: windowState.width,
 		height: windowState.height,
 		minWidth: minWidth,
@@ -58,11 +57,15 @@ const createWindow = () => {
 			contextIsolation: true,
 			nodeIntegration: true,
 			spellcheck: false,
-			devTools: true,
+			devTools: dev,
 			preload: path.join(__dirname, 'preload/index.cjs'),
 			webSecurity: false,
 		},
 		icon: path.join(__dirname, 'logo.icns'),
+		// frame: false,
+		// titleBarStyle: 'hidden',
+		// autoHideMenuBar: true,
+		// trafficLightPosition: { x: process.platform === 'darwin' ? 10 : 0, y: 5 },
 	});
 
 	mainWindow.once('ready-to-show', () => {
@@ -111,9 +114,11 @@ const createMainWindow = () => {
 		showCopyImage: false,
 		prepend: (defaultActions, params, browserWindow) =>
 			process.platform === 'darwin'
-				? buildDarwinMenu(app, shell, mainWindow)
-				: buildDefaultMenu(app, shell, mainWindow),
+				? buildDarwinMenu(app, shell, mainWindow, dev)
+				: buildDefaultMenu(app, shell, mainWindow, dev),
 	});
+
+	// createTitleBar(mainWindow, app, shell, dev);
 };
 
 // This method will be called when Electron has finished
