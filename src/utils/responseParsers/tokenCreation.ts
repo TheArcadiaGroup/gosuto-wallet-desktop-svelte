@@ -91,6 +91,7 @@ export default () => {
 	});
 
 	window.api.receive('getErc20TokenDetailsResponse', async (response: string) => {
+		console.log(response);
 		try {
 			const res: {
 				data: {

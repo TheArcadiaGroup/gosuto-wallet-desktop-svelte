@@ -14,7 +14,7 @@ const {
 const fs = require('fs');
 const path = require('path');
 const { ethers } = require('ethers');
-const { contractSimpleGetter } = require('casper-js-client-helper/dist/helpers/lib.js');
+const casperHelper = require('casper-js-client-helper');
 
 const erc20ClassInstance = (rpc, network_name, event_stream_address = undefined) => {
 	const erc20 = new ERC20Client(
@@ -110,7 +110,7 @@ const deployNormalContract = async (
 
 const getTokenNamedKeyValue = async (contractHash, key, network) => {
 	const rpc = network === 'mainnet' ? mainnetApiUrl : testnetApiUrl;
-	return await contractSimpleGetter(rpc, contractHash, [key]);
+	return await casperHelper.helpers.contractSimpleGetter(rpc, contractHash, [key]);
 };
 
 const checkIfTokenIsSupported = async (contractHash, network) => {
