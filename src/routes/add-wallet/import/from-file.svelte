@@ -248,7 +248,7 @@
 	.fileImport-wrapper {
 		@apply absolute inset-0 overflow-auto;
 		@apply grid justify-items-center items-end;
-		@apply dark:bg-dark-gosutoDark;
+		@apply bg-white dark:bg-dark-gosutoDark;
 	}
 
 	.fileImport-wrapper .gosuto-logo {

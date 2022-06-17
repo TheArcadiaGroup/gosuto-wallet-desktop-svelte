@@ -10,6 +10,6 @@
 	:local(.import-seed-content-wrapper) {
 		@apply absolute inset-0 overflow-auto;
 		@apply grid;
-		@apply dark:bg-dark-gosutoDark;
+		@apply bg-white dark:bg-dark-gosutoDark;
 	}
 </style>

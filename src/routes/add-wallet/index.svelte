@@ -93,7 +93,7 @@
 	.addWallet-wrapper {
 		@apply absolute inset-0 overflow-auto;
 		@apply grid place-items-center;
-		@apply dark:bg-dark-gosutoDark;
+		@apply bg-white dark:bg-dark-gosutoDark;
 	}
 
 	.addWallet-wrapper .addWallet-gosuto-logo {
