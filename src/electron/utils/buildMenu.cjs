@@ -61,6 +61,7 @@ module.exports = {
 					label: 'Toggle Full Screen',
 					accelerator: 'Ctrl+Command+F',
 					click: () => {
+						console.log('Full Screen', mainWindow.isFullScreen());
 						mainWindow.setFullScreen(!mainWindow.isFullScreen());
 					},
 				},

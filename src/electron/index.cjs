@@ -1,4 +1,4 @@
-const { app, BrowserWindow, screen, shell } = require('electron');
+const { app, BrowserWindow, screen, shell, Menu } = require('electron');
 const path = require('path');
 const serve = require('electron-serve');
 const windowStateManager = require('electron-win-state').default;
@@ -109,8 +109,6 @@ const createMainWindow = () => {
 		mainWindow.webContents.setZoomFactor(0.75);
 	}
 
-	createAppMenu(app, shell, mainWindow, dev);
-
 	contextMenu({
 		showLookUpSelection: false,
 		showSearchWithGoogle: false,
@@ -120,6 +118,13 @@ const createMainWindow = () => {
 				? buildDarwinMenu(app, shell, mainWindow, dev)
 				: buildDefaultMenu(app, shell, mainWindow, dev),
 	});
+
+	const menu = Menu.buildFromTemplate(
+		process.platform === 'darwin'
+			? buildDarwinMenu(app, shell, mainWindow, dev)
+			: buildDefaultMenu(app, shell, mainWindow, dev),
+	);
+	Menu.setApplicationMenu(menu);
 
 	// createTitleBar(mainWindow);
 };
