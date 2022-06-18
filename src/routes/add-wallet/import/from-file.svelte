@@ -243,16 +243,22 @@
 				<span slot="text" class="fileImport-bt-text">Import</span>
 			</Button>
 		</div>
-		<button class="fileImport-bt fileImport-cancel-bt" on:click={() => goto('/add-wallet')}>
-			<span class="fileImport-bt-text fileImport-cancel-bt-text">Back</span>
-		</button>
+		<div class="fileImport-bt">
+			<Button
+				class="fileImport-cancel-bt"
+				isTransparent={true}
+				on:click={() => goto('/add-wallet')}
+			>
+				<span slot="text" class="addWallet-bt-text">Back</span>
+			</Button>
+		</div>
 	</div>
 </div>
 
 <style type="postcss" global>
 	.fileImport-wrapper {
 		@apply absolute inset-0 overflow-auto;
-		@apply grid justify-items-center items-end;
+		@apply grid place-items-center;
 		@apply bg-white dark:bg-dark-gosutoDark;
 	}
 
@@ -282,13 +288,13 @@
 	.fileImport-buttons {
 		@apply flex flex-col items-center justify-items-end;
 		@apply w-11/12 sm:w-3/4 md:w-1/2 lg:w-2/5 xl:w-1/4;
-		@apply mb-10 md:mb-20;
+		@apply mt-3;
+		@apply mb-1;
 	}
 
 	.fileImport-bt {
 		@apply w-11/12 max-w-2xl h-12 4xl:h-28;
-		@apply mt-10 4xl:mt-20;
-		@apply rounded-3xl;
+		@apply rounded-3xl my-2;
 	}
 
 	.fileImport-bt:disabled {
@@ -296,7 +302,7 @@
 	}
 
 	.fileImport-cancel-bt {
-		@apply mb-5;
+		/* @apply mb-5; */
 	}
 
 	.fileImport-bt-text {
