@@ -6,7 +6,6 @@ const windowStateManager = require('electron-win-state').default;
 const contextMenu = require('electron-context-menu');
 const loadEvents = require('./events/index.cjs');
 const { buildDarwinMenu, buildDefaultMenu } = require('./utils/buildMenu.cjs');
-const { createAppMenu } = require('./utils/titlebar.cjs');
 // const { createTitleBar } = require('./utils/titlebar.cjs');
 
 const dev = process.env.NODE_ENV === 'development' || !app.isPackaged;
