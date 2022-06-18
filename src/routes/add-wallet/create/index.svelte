@@ -147,10 +147,10 @@
 			>
 				<span slot="text" class="createWallet-bt-text">Continue</span>
 			</Button>
+			<Button class="addWallet-cancel-bt" isTransparent={true} on:click={() => goto('/add-wallet')}>
+				<span slot="text" class="addWallet-bt-text">Back</span>
+			</Button>
 		</div>
-		<button class="createWallet-bt createWallet-cancel-bt" on:click={() => goto('/add-wallet')}>
-			<span class="createWallet-bt-text createWallet-cancel-bt-text">Back</span>
-		</button>
 	</div>
 </div>
 
@@ -169,34 +169,33 @@
 	.createWallet-content {
 		@apply place-self-start justify-self-center 3xl:place-self-center;
 		@apply grid place-items-center;
-		@apply mt-10 md:mt-20;
+		@apply mt-10 lg:mt-20;
 		@apply w-11/12 sm:w-3/4 md:w-1/2 lg:w-2/5 xl:w-1/4;
 	}
 
 	.createWallet-header {
 		@apply text-2xl md:text-3xl 3xl:text-4xl 4xl:text-7xl font-display font-bold;
-		@apply mb-4 4xl:mb-16;
+		@apply mb-8 lg:mt-10 4xl:mb-16;
 		@apply text-dark-gray dark:text-white;
 	}
 
 	.createWallet-explanation-text {
 		@apply text-light-fadedText dark:text-white opacity-80;
 		@apply text-xs font-display 4xl:text-2xl;
-		@apply relative;
-		@apply ml-3 md:ml-0;
+		@apply relative w-10/12 mb-4;
 	}
 
 	.createWallet-explanation-text-header {
-		@apply -translate-x-4;
+		@apply text-left;
 		@apply mb-2;
 	}
 
 	.createWallet-listItem {
-		@apply list-item list-disc;
+		@apply list-item list-disc ml-9;
 	}
 
 	.createWallet-input-wrapper {
-		@apply mt-5 4xl:mt-10 mb-10 4xl:mb-20;
+		@apply mb-10 4xl:mb-20;
 		@apply w-5/6;
 	}
 
@@ -273,7 +272,7 @@
 	}
 
 	.createWallet-next-bt {
-		@apply mt-28 md:mt-10 4xl:mt-32;
+		@apply mt-5 md:mt-10 4xl:mt-32;
 	}
 
 	.createWallet-cancel-bt {
