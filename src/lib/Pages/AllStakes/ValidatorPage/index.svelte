@@ -7,8 +7,38 @@
 -->
 <script lang="ts">
 	import Loading from '$lib/components/Loading.svelte';
+	import { user } from '$stores/user';
 	import { loadingValidators, validators } from '$stores/user/stake';
 	import ValidatorItem from './ValidatorItem.svelte';
+
+	let filteredValidators: IValidator[] = [];
+	$: filteredValidators;
+
+	$: ((valsToFilter) => {
+		if ($user?.network === 'testnet') {
+			filteredValidators = valsToFilter;
+		} else {
+			let tempVals: IValidator[] = [];
+			$validators.forEach((item) => {
+				if (
+					item.publicKey === '01b1126cfaf8f6df4209b5f4a88a5e3bb95f912c0307fa3e1d3e89a3946411b021'
+				) {
+					if (!item.profile) {
+						item.profile = {
+							is_active: true,
+							name: 'Arcadia',
+							description: '',
+							website: 'https://www.arcadiamgroup.com/',
+						};
+					}
+					tempVals.unshift(item);
+				} else {
+					tempVals.push(item);
+				}
+			});
+			filteredValidators = tempVals;
+		}
+	})($validators);
 </script>
 
 <div class="validators">
@@ -17,7 +47,7 @@
 		{#if $loadingValidators}
 			<Loading />
 		{:else if $validators.length > 0}
-			{#each $validators as validator, i}
+			{#each filteredValidators as validator, i}
 				<ValidatorItem {validator} class={i > 0 ? 'top-border' : ''} />
 			{/each}
 		{/if}

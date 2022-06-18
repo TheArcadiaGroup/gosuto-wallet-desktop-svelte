@@ -27,7 +27,7 @@
 
 	let amount = 0;
 	let selectedValidatorPublicKey: string = '';
-	let walletBalance = $selectedWallet!.availableBalance;
+	let walletBalance = $selectedWallet!.availableBalance[$user?.network ?? 'testnet'];
 
 	$: userIsDelegatorOnSelectedValidator = $selectedWallet?.walletStakes[
 		$user?.network ?? 'testnet'
@@ -101,7 +101,12 @@
 	</div>
 	<div class="select-container">
 		<SelectInput label={'Recipient Address'} bind:value={selectedValidatorPublicKey}>
-			{#each $validators as validator}
+			{#if $user?.network !== 'testnet'}
+				<option value="01b1126cfaf8f6df4209b5f4a88a5e3bb95f912c0307fa3e1d3e89a3946411b021">
+					Arcadia
+				</option>
+			{/if}
+			{#each $user?.network === 'testnet' ? $validators : $validators.filter((item) => item.publicKey !== '01b1126cfaf8f6df4209b5f4a88a5e3bb95f912c0307fa3e1d3e89a3946411b021') as validator}
 				<option value={validator.publicKey}>
 					{validator.profile?.name ?? validator.publicKey}
 				</option>
