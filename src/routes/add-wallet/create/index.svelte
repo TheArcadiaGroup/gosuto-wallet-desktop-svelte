@@ -59,6 +59,8 @@
 		<div class="createWallet-input-wrapper">
 			<TextInput
 				label={'Wallet Name'}
+				addTextBg={true}
+				class="gosuto-dark"
 				bind:value={walletNameValue}
 				on:input={() => {
 					walletValid = walletNameIsValid(walletNameValue);
@@ -66,15 +68,17 @@
 			/>
 		</div>
 
-		<div class="error-div wallet-name-error-div">
-			{#if !walletValid}
-				Wallet Name Already Exists
-			{/if}
-			{#if walletNameValue && walletNameValue?.length > 20}
-				<br />
-				Maximum of 20 Characters Allowed
-			{/if}
-		</div>
+		{#if !walletValid || (walletNameValue && walletNameValue?.length > 20)}
+			<div class="error-div wallet-name-error-div">
+				{#if !walletValid}
+					Wallet Name Already Exists
+				{/if}
+				{#if walletNameValue && walletNameValue?.length > 20}
+					<br />
+					Maximum of 20 Characters Allowed
+				{/if}
+			</div>
+		{/if}
 
 		<div class="createWallet-password-input-wrapper createWallet-password-new">
 			<p class="createWallet-password-label">New Password</p>
@@ -96,11 +100,11 @@
 				<EyeIcon class="createWallet-eye-icon" />
 			</button>
 		</div>
-		<div class="error-div wallet-name-error-div">
-			{#if passwordErrors}
+		{#if passwordErrors}
+			<div class="error-div wallet-name-error-div">
 				{@html passwordErrors}
-			{/if}
-		</div>
+			</div>
+		{/if}
 		<div class="createWallet-password-input-wrapper createWallet-password-confirm">
 			<p class="createWallet-password-label">Confirm Password</p>
 			<LockIcon class="createWallet-lock-icon" />
@@ -120,11 +124,9 @@
 				<EyeIcon class="createWallet-eye-icon" />
 			</button>
 		</div>
-		<div class="error-div">
-			{#if passwordValue && confirmPassword && !passwordsAreSimilar(passwordValue, confirmPassword)}
-				Passwords do no match
-			{/if}
-		</div>
+		{#if passwordValue && confirmPassword && !passwordsAreSimilar(passwordValue, confirmPassword)}
+			<div class="error-div">Passwords do no match</div>
+		{/if}
 		<div class="createWallet-use-terms">
 			<input class="createWallet-checkbox" type="checkbox" name="terms of use" bind:checked />
 			<label class="createWallet-checkbox-label" for="terms of use">

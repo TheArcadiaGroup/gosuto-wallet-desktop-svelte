@@ -84,6 +84,14 @@
 		@apply dark:bg-dark-grey;
 	}
 
+	:local(p.dark-bg.gosuto-dark) {
+		@apply dark:bg-dark-gosutoDark;
+	}
+
+	:local(input.gosuto-dark) {
+		@apply dark:bg-dark-gosutoDark;
+	}
+
 	:local(p.normal-bg) {
 		@apply dark:bg-transparent;
 	}

@@ -144,15 +144,15 @@
 			/>
 		</div>
 
-		<div class="error-div">
-			{#if !walletValid}
+		{#if !walletValid}
+			<div class="error-div">
 				Wallet Name Already Exists
 				{#if walletName && walletName?.length > 20}
 					<br />
 					Maximum of 20 Characters Allowed
 				{/if}
-			{/if}
-		</div>
+			</div>
+		{/if}
 
 		<div class="fileImport-input-wrapper">
 			<label class="fileImport-label" for="name">New Password</label>
@@ -176,11 +176,11 @@
 				</button>
 			</div>
 		</div>
-		<div class="error-div">
-			{#if passwordErrors}
+		{#if passwordErrors}
+			<div class="error-div">
 				{@html passwordErrors}
-			{/if}
-		</div>
+			</div>
+		{/if}
 
 		<div class="fileImport-input-wrapper">
 			<label class="fileImport-label" for="name">Confirm Password</label>
@@ -204,26 +204,25 @@
 				</button>
 			</div>
 		</div>
-		<div class="error-div">
-			{#if password && confirmPassword && !passwordsAreSimilar(password, confirmPassword)}
-				Passwords do no match
-			{/if}
-		</div>
+		{#if password && confirmPassword && !passwordsAreSimilar(password, confirmPassword)}
+			<div class="error-div">Passwords do no match</div>
+		{/if}
 
 		<ImportPrivateKey on:click={selectFile} />
-		<div class="error-div pt-6 items-center justify-center text-center leading-5">
-			{#if certificateIsInvalid}
-				Error, the app only supports private keys encrypted using the ED25519 or SECP256K1 Algorithm
-			{/if}
-			{#if walletExists}
-				Wallet already exists, please import a different private key
-			{/if}
-		</div>
-		<div class="success-div text-center leading-5">
-			{#if !certificateIsInvalid && !walletExists && accountHash && accountHex && privateKey}
-				Wallet File Imported
-			{/if}
-		</div>
+		{#if certificateIsInvalid || walletExists}
+			<div class="error-div pt-6 items-center justify-center text-center leading-5">
+				{#if certificateIsInvalid}
+					Error, the app only supports private keys encrypted using the ED25519 or SECP256K1
+					Algorithm
+				{/if}
+				{#if walletExists}
+					Wallet already exists, please import a different private key
+				{/if}
+			</div>
+		{/if}
+		{#if !certificateIsInvalid && !walletExists && accountHash && accountHex && privateKey}
+			<div class="success-div text-center leading-5">Wallet File Imported</div>
+		{/if}
 	</div>
 	<div class="fileImport-buttons">
 		<div class="fileImport-bt next-bt">
@@ -338,6 +337,6 @@
 	}
 
 	.success-div {
-		@apply text-center text-xs text-green-300 -mt-6 mb-5 flex items-center justify-center w-96 px-2;
+		@apply text-center text-xs text-green-300 mt-0 mb-5 flex items-center justify-center w-96 px-2;
 	}
 </style>
