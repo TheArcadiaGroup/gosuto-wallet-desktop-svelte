@@ -225,7 +225,13 @@
 					</Button>
 				</div>
 			</div>
-			<TextInput bind:value={walletName} label="Wallet Name" type="text" addTextBg={true} />
+			<TextInput
+				bind:value={walletName}
+				class="gosuto-dark"
+				label="Wallet Name"
+				type="text"
+				addTextBg={true}
+			/>
 			<div class="error-div">
 				{#if $wallets?.filter((item) => item.walletName === walletName).length > 0 && wallet.walletName !== walletName}
 					Wallet Name Already Exists
@@ -239,6 +245,7 @@
 			<TextInput
 				isDisabled={true}
 				bind:value={wallet.publicKey}
+				class="gosuto-dark"
 				label="Public Key"
 				type="text"
 				addTextBg={true}
@@ -256,6 +263,7 @@
 				<TextInput
 					isDisabled={true}
 					bind:value={privateKey}
+					class="gosuto-dark"
 					label="Private Key"
 					type="password"
 					addTextBg={true}
@@ -267,6 +275,7 @@
 			<TextInput
 				bind:value={currentPassword}
 				label="Current Password"
+				class="gosuto-dark"
 				type="password"
 				addTextBg={true}
 			/>
@@ -276,7 +285,13 @@
 				{/if}
 			</div>
 			<br />
-			<TextInput bind:value={newPassword} label="New Password" type="password" addTextBg={true} />
+			<TextInput
+				bind:value={newPassword}
+				class="gosuto-dark"
+				label="New Password"
+				type="password"
+				addTextBg={true}
+			/>
 			<div class="error-div">
 				{#if passwordErrors}
 					{@html passwordErrors}
@@ -286,6 +301,7 @@
 			<TextInput
 				bind:value={confirmPassword}
 				label="Re-Enter New Password"
+				class="gosuto-dark"
 				type="password"
 				addTextBg={true}
 			/>
