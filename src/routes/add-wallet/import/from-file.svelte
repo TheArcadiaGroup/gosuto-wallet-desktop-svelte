@@ -64,7 +64,7 @@
 				}
 
 				console.log(walletCreationResult);
-			} else {
+			} else if (data) {
 				certificateIsInvalid = true;
 			}
 		} catch (error) {
@@ -211,12 +211,17 @@
 		</div>
 
 		<ImportPrivateKey on:click={selectFile} />
-		<div class="error-div pt-6 text-center leading-5">
+		<div class="error-div pt-6 items-center justify-center text-center leading-5">
 			{#if certificateIsInvalid}
 				Error, the app only supports private keys encrypted using the ED25519 or SECP256K1 Algorithm
 			{/if}
 			{#if walletExists}
 				Wallet already exists, please import a different private key
+			{/if}
+		</div>
+		<div class="success-div text-center leading-5">
+			{#if !certificateIsInvalid && !walletExists && accountHash && accountHex && privateKey}
+				Wallet File Imported
 			{/if}
 		</div>
 	</div>
@@ -324,5 +329,9 @@
 
 	.error-div {
 		@apply text-left text-xs text-red-300 -mt-2 mb-5 flex w-96 px-2;
+	}
+
+	.success-div {
+		@apply text-center text-xs text-green-300 -mt-6 mb-5 flex items-center justify-center w-96 px-2;
 	}
 </style>
