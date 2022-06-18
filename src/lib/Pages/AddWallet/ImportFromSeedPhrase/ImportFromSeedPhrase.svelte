@@ -248,7 +248,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="seedImport-btn-continue">
+			<div class="seedImport-btns">
 				<Button
 					isDisabled={!walletValid ||
 						!confirmPassword ||
@@ -266,32 +266,34 @@
 					</div>
 				</Button>
 			</div>
-			<button
-				type="button"
-				class="seedImport-btn seedImport-btn-back"
-				on:click={() => goto('/add-wallet')}
-			>
-				Back
-			</button>
+			<div class="seedImport-btns">
+				<Button
+					class="seedImport-btn-back"
+					isTransparent={true}
+					on:click={() => goto('/add-wallet')}
+				>
+					<span slot="text" class="addWallet-bt-text">Back</span>
+				</Button>
+			</div>
 		</div>
 	</div>
 </div>
 
 <style lang="postcss" global>
 	.seedImport-wrapper {
-		@apply font-display dark:bg-dark-background flex flex-col items-center;
+		@apply font-display dark:bg-dark-background flex items-center justify-center flex-col px-3;
 	}
 
 	.seedImport-logo-gosuto {
-		@apply mt-20 sm:mt-32;
+		@apply mt-5 md:mt-10 2xl:mt-32;
 	}
 
 	.seedImport-page-heading {
-		@apply mt-6 sm:mt-9 text-light-grey dark:text-white text-center font-bold text-2xl sm:text-3xl;
+		@apply mt-5 2xl:mt-9 text-light-grey dark:text-white text-center font-bold text-2xl sm:text-3xl;
 	}
 
 	.seedImport-instructions {
-		@apply mt-7 sm:mt-11 mx-auto text-xs sm:text-sm leading-6 sm:leading-8 text-light-lighterGray dark:text-white dark:text-opacity-80 text-left font-normal;
+		@apply mt-7 sm:mt-9 mx-auto text-xs sm:text-sm leading-6 sm:leading-8 text-light-lighterGray dark:text-white dark:text-opacity-80 text-left font-normal;
 	}
 
 	.seedImport-instruction-list {
@@ -299,11 +301,11 @@
 	}
 
 	.seedImport-form-wrapper {
-		@apply mt-8 sm:mt-14 mx-auto;
+		@apply mt-8 sm:mt-12 mx-auto;
 	}
 
 	:local(.form) {
-		@apply flex flex-col items-center;
+		@apply flex flex-col items-center justify-center;
 	}
 
 	.seedImport-form-inputs {
@@ -327,7 +329,7 @@
 	}
 
 	.seedImport-details-wrapper {
-		@apply flex flex-col gap-y-8;
+		@apply flex flex-col gap-y-6;
 	}
 
 	.seedImport-details-input {
@@ -338,15 +340,15 @@
 		@apply w-full flex items-center px-5 text-opacity-40 text-black dark:text-white dark:text-opacity-40;
 	}
 
-	.seedImport-btn-continue {
-		@apply sm:mt-12 w-96 h-14 mt-8;
+	.seedImport-btns {
+		@apply w-96 h-14 mb-3;
 	}
 
 	.seedImport-btn-back {
-		@apply my-9 sm:my-48 sm:mt-11 text-light-grey dark:text-white;
+		@apply text-light-grey dark:text-white;
 	}
 
 	.error-div {
-		@apply text-left text-xs text-red-300 -mt-6 mb-1 flex w-full px-2;
+		@apply text-left text-xs text-red-300 -mt-5 mb-1 flex w-full px-2;
 	}
 </style>
