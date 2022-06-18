@@ -147,7 +147,13 @@
 			>
 				<span slot="text" class="createWallet-bt-text">Continue</span>
 			</Button>
-			<Button class="addWallet-cancel-bt" isTransparent={true} on:click={() => goto('/add-wallet')}>
+		</div>
+		<div class="createWallet-bt">
+			<Button
+				class="createWallet-cancel-bt"
+				isTransparent={true}
+				on:click={() => goto('/add-wallet')}
+			>
 				<span slot="text" class="addWallet-bt-text">Back</span>
 			</Button>
 		</div>
@@ -169,13 +175,13 @@
 	.createWallet-content {
 		@apply place-self-start justify-self-center 3xl:place-self-center;
 		@apply grid place-items-center;
-		@apply mt-10 lg:mt-20;
+		@apply mt-10 2xl:mt-20;
 		@apply w-11/12 sm:w-3/4 md:w-1/2 lg:w-2/5 xl:w-1/4;
 	}
 
 	.createWallet-header {
 		@apply text-2xl md:text-3xl 3xl:text-4xl 4xl:text-7xl font-display font-bold;
-		@apply mb-8 lg:mt-10 4xl:mb-16;
+		@apply mb-8 mt-5 2xl:mt-10 4xl:mb-16;
 		@apply text-dark-gray dark:text-white;
 	}
 
@@ -263,7 +269,7 @@
 
 	.createWallet-bt {
 		@apply w-11/12 max-w-3xl h-12 4xl:h-28;
-		@apply mt-10 4xl:mt-32;
+		/* @apply mt-10 4xl:mt-32; */
 		@apply rounded-3xl;
 	}
 
@@ -276,7 +282,7 @@
 	}
 
 	.createWallet-cancel-bt {
-		@apply mb-5;
+		@apply mb-5 mt-3;
 	}
 
 	.createWallet-bt-text {
