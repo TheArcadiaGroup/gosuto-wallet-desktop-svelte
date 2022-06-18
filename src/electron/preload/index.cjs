@@ -82,10 +82,13 @@ contextBridge.exposeInMainWorld('api', {
 });
 
 // window.addEventListener('DOMContentLoaded', () => {
-// 	// Title bar implemenation
+// 	// 	// Title bar implemenation
 // 	new Titlebar({
 // 		backgroundColor: '#363B46',
 // 		foregroundColor: '#fff',
 // 		icon: path.join(__dirname, '../logo.png'),
+// 		containerOverflow: 'hidden',
+// 		minimizable: false,
+// 		maximizable: false,
 // 	});
 // });
