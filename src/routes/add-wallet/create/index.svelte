@@ -16,7 +16,7 @@
 	let walletNameValue: string;
 	let passwordValue: string;
 	let confirmPassword: string;
-	let checked: boolean = false;
+	// let checked: boolean = false;
 	let walletValid = true;
 
 	let passwordInput: HTMLInputElement;
@@ -127,16 +127,16 @@
 		{#if passwordValue && confirmPassword && !passwordsAreSimilar(passwordValue, confirmPassword)}
 			<div class="error-div">Passwords do no match</div>
 		{/if}
-		<div class="createWallet-use-terms">
+		<!-- <div class="createWallet-use-terms">
 			<input class="createWallet-checkbox" type="checkbox" name="terms of use" bind:checked />
 			<label class="createWallet-checkbox-label" for="terms of use">
 				I have read and agree to the terms of service
 			</label>
-		</div>
+		</div> -->
 		<div class="createWallet-bt createWallet-next-bt">
 			<Button
 				isDisabled={!walletValid ||
-					!checked ||
+					// !checked ||
 					!walletNameValue ||
 					!passwordValue ||
 					!confirmPassword ||
@@ -270,7 +270,7 @@
 	}
 
 	.createWallet-bt {
-		@apply w-11/12 max-w-3xl h-12 4xl:h-28;
+		@apply w-10/12 max-w-3xl h-12 4xl:h-28;
 		/* @apply mt-10 4xl:mt-32; */
 		@apply rounded-3xl;
 	}

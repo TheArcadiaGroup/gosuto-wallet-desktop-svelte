@@ -7,7 +7,7 @@
 
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import { retrieveData } from '$utils/dataStorage';
+	import { retrieveData, saveData } from '$utils/dataStorage';
 
 	/** A variable for the currently selected choice card */
 	let selected: choiceCard;
@@ -52,11 +52,13 @@
 		selected = choiceCard;
 		choiceCards = choiceCards;
 	};
+	let checked: boolean = false;
 
 	let wallets: IWallet[];
 
 	onMount(() => {
 		wallets = retrieveData('wallets');
+		checked = retrieveData('hasAgreedToToS');
 	});
 </script>
 
@@ -72,11 +74,30 @@
 				<ChoiceCard {choiceCard} {selectCard} />
 			{/each}
 		</div>
+
+		<div class="createWallet-use-terms">
+			<input class="createWallet-checkbox" type="checkbox" name="terms of use" bind:checked />
+			<label class="createWallet-checkbox-label" for="terms of use">
+				I have read and agree to the
+				<span
+					on:click={() => {
+						window.api.send('openUrl', 'https://www.arcadiamgroup.com/');
+					}}
+					class="text-light-orange cursor-pointer"
+				>
+					terms of service
+				</span>
+			</label>
+		</div>
+
 		<div class="addWallet-bt next-bt">
 			<Button
 				class="h-12 4xl:h-28"
-				isDisabled={selected === undefined}
-				on:click={() => goto(selected.route)}
+				isDisabled={selected === undefined || !checked}
+				on:click={() => {
+					saveData('hasAgreedToToS', true);
+					goto(selected.route);
+				}}
 			>
 				<span slot="text" class="addWallet-bt-text">Next</span>
 			</Button>
@@ -132,7 +153,6 @@
 	.addWallet-bt {
 		@apply w-11/12 max-w-2xl;
 		@apply h-12 4xl:h-28;
-		@apply mt-20 4xl:mt-32;
 		@apply rounded-3xl;
 	}
 
@@ -147,5 +167,26 @@
 	.addWallet-cancel-bt {
 		@apply mt-5;
 		/* @apply mt-10 4xl:mt-16; */
+	}
+
+	.createWallet-use-terms {
+		@apply w-5/6;
+		@apply translate-x-2;
+		@apply mt-14 4xl:mt-32;
+		@apply mb-5;
+	}
+
+	.createWallet-checkbox {
+		@apply focus:ring-0;
+		@apply dark:bg-dark-background;
+		@apply rounded-[0.3rem] 4xl:rounded-xl;
+		@apply border-light-fadedText dark:border-white;
+		@apply 4xl:p-5 4xl:-translate-y-9 4xl:mt-16;
+	}
+
+	.createWallet-checkbox-label {
+		@apply text-light-lighterGray dark:text-white;
+		@apply text-xs 4xl:text-2xl font-display;
+		@apply ml-px 4xl:ml-4;
 	}
 </style>
