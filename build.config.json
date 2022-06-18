@@ -1,5 +1,5 @@
 {
-	"appId": "com.gosuto.app",
+	"appId": "agency.arcadia.gosuto-wallet",
 	"productName": "Gosuto",
 	"directories": {
 		"output": "dist"

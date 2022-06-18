@@ -1,8 +1,9 @@
 {
 	"name": "gosuto-wallet",
+	"productName": "Gosuto Wallet",
 	"version": "0.0.1",
 	"private": true,
-	"description": "Minimal Sveltekit + Electron starter template.",
+	"description": "Gosuto Wallet for Casper Network",
 	"main": "src/electron/index.cjs",
 	"type": "module",
 	"scripts": {

@@ -4,7 +4,7 @@ const account = require('../utils/account.cjs');
 const profileHistory = require('../utils/profileHistory.cjs');
 const { importWalletFromFile } = require('../utils/walletImportExports.cjs');
 const sendMessage = require('./sendMessage.cjs');
-const { getBalance, getTokenBalance } = require('../utils/account.cjs');
+const { getBalance } = require('../utils/account.cjs');
 const { readFileUsingDialog, writeFile } = require('../utils/fileInteractions.cjs');
 const { getAllValidators, delegate, undelegate } = require('../utils/staking.cjs');
 const {

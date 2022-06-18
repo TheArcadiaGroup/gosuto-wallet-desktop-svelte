@@ -6,6 +6,7 @@ const windowStateManager = require('electron-win-state').default;
 const contextMenu = require('electron-context-menu');
 const loadEvents = require('./events/index.cjs');
 const { buildDarwinMenu, buildDefaultMenu } = require('./utils/buildMenu.cjs');
+const { createAppMenu } = require('./utils/titlebar.cjs');
 // const { createTitleBar } = require('./utils/titlebar.cjs');
 
 const dev = process.env.NODE_ENV === 'development' || !app.isPackaged;
@@ -108,6 +109,8 @@ const createMainWindow = () => {
 		mainWindow.webContents.setZoomFactor(0.75);
 	}
 
+	createAppMenu(app, shell, mainWindow, dev);
+
 	contextMenu({
 		showLookUpSelection: false,
 		showSearchWithGoogle: false,
@@ -118,7 +121,7 @@ const createMainWindow = () => {
 				: buildDefaultMenu(app, shell, mainWindow, dev),
 	});
 
-	// createTitleBar(mainWindow, app, shell, dev);
+	// createTitleBar(mainWindow);
 };
 
 // This method will be called when Electron has finished
