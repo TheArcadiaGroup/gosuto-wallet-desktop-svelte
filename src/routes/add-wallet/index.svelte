@@ -73,15 +73,15 @@
 			{/each}
 		</div>
 		<div class="addWallet-bt next-bt">
-			<Button isDisabled={selected === undefined} on:click={() => goto(selected.route)}>
+			<Button
+				class="h-12 4xl:h-28"
+				isDisabled={selected === undefined}
+				on:click={() => goto(selected.route)}
+			>
 				<span slot="text" class="addWallet-bt-text">Next</span>
 			</Button>
 			{#if wallets?.length > 0}
-				<Button
-					class="addWallet-bt addWallet-cancel-bt"
-					isTransparent={true}
-					on:click={() => goto('/profile')}
-				>
+				<Button class="addWallet-cancel-bt" isTransparent={true} on:click={() => goto('/profile')}>
 					<span slot="text" class="addWallet-bt-text">Cancel</span>
 				</Button>
 			{/if}
@@ -92,7 +92,7 @@
 <style type="postcss" global>
 	.addWallet-wrapper {
 		@apply absolute inset-0 overflow-auto;
-		@apply grid place-items-center;
+		@apply grid place-items-center h-screen w-screen;
 		@apply bg-white dark:bg-dark-gosutoDark;
 	}
 
@@ -103,9 +103,9 @@
 	}
 
 	.addWallet-content {
-		@apply flex flex-col place-items-center;
-		@apply mt-10 md:mt-20;
-		@apply w-11/12 sm:w-3/4 md:w-1/2 lg:w-2/5 xl:w-1/4;
+		@apply flex flex-col items-center justify-between;
+		/* @apply mt-0 md:mt-20; */
+		/* @apply w-11/12 sm:w-3/4 md:w-1/2 lg:w-2/5 xl:w-1/4; */
 	}
 
 	.addWallet-page-header {
@@ -130,7 +130,8 @@
 	}
 
 	.addWallet-bt {
-		@apply w-11/12 max-w-2xl h-12 4xl:h-28;
+		@apply w-11/12 max-w-2xl;
+		@apply h-12 4xl:h-28;
 		@apply mt-20 4xl:mt-32;
 		@apply rounded-3xl;
 	}
@@ -144,6 +145,7 @@
 	}
 
 	.addWallet-cancel-bt {
-		@apply mt-10 4xl:mt-16;
+		@apply mt-5;
+		/* @apply mt-10 4xl:mt-16; */
 	}
 </style>
