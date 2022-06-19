@@ -128,7 +128,7 @@
 		@apply px-3 py-2;
 		@apply rounded-2xl border border-light-transparentGrey10 cursor-pointer select-none;
 		@apply lg:p-5 lg:rounded-[1.375rem];
-		@apply dark:bg-dark-blue;
+		@apply dark:bg-dark-blue h-max;
 		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 	}
 

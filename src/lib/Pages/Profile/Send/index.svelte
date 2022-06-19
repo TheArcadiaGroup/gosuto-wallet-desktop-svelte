@@ -7,6 +7,7 @@
 	import TokenCard from '$lib/components/TokenCard.svelte';
 
 	import { page } from '$app/stores';
+	import NetworkSelector from '$lib/components/NetworkSelector.svelte';
 
 	export let tokens: IToken[] = [];
 	/**
@@ -49,60 +50,62 @@
 
 <svelte:body on:click={cancelButtonListener} />
 
-<div class="wallet-swap" on:click={deselectListener}>
-	<ReturnHome walletName={''} publicKey={$page.params.publicKey} profileLocation="Send Tokens" />
-	<div class="container">
-		<div class="title-row">
-			<p class="tokens-in-wallet-title">Tokens in this wallet</p>
-			<div class="ml-auto">
-				<Button
-					class="add-token-button"
-					on:click={() => dispatch('selectToken', { tokenName: 'AddToken' })}
-					hasGlow={true}
-				>
-					<div slot="text" class="inner-btn">
-						<PlusIcon />
-						<span>Add Token</span>
+<div class="wallet-send" on:click={deselectListener}>
+	<div class="header-wrapper">
+		<div class="header">
+			<div class="top-bit">
+				<div class="item-1 pl-9">
+					<ReturnHome
+						walletName={''}
+						publicKey={$page.params.publicKey}
+						profileLocation="Send Tokens"
+					/>
+				</div>
+				<NetworkSelector />
+			</div>
+			<div class="lower-bit">
+				<div class="title-row">
+					<p class="tokens-in-wallet-title">Tokens in this wallet</p>
+					<div class="ml-auto">
+						<Button
+							class="add-token-button"
+							on:click={() => dispatch('selectToken', { tokenName: 'AddToken' })}
+							hasGlow={true}
+						>
+							<div slot="text" class="inner-btn">
+								<PlusIcon />
+								<span>Add Token</span>
+							</div>
+						</Button>
 					</div>
-				</Button>
+				</div>
 			</div>
 		</div>
-		<div class="scroll-container scrollbar-hide">
-			<!-- {#each Array(Math.ceil(tokens?.length / 4)) as _, i} -->
-			<div class="token-group">
-				{#each tokens as token, _y}
-					<TokenCard {token} selected={selectedToken === token} on:selectToken {...token} />
-				{/each}
-			</div>
-			<!-- {/each} -->
-		</div>
-		<!-- <div class="mobile-scrollbar">
-			{#each Array(Math.ceil(tokens.length / 4)) as _, i}
-				<div
-					class="mobile-scrollbar-dot {currentPage === i
-						? 'w-3 bg-light-orange'
-						: 'w-1.5 bg-light-gray'}"
-				/>
-			{/each}
-		</div> -->
 	</div>
+	<!-- <div class="scroll-container scrollbar-hide"> -->
+	<div class="token-group">
+		{#each tokens as token, _y}
+			<TokenCard {token} selected={selectedToken === token} on:selectToken {...token} />
+		{/each}
+	</div>
+	<!-- </div> -->
 </div>
 
 <style lang="postcss" global>
-	:local(.wallet-swap) {
-		@apply h-max min-h-screen;
-		@apply px-4 pt-10 m-0;
-		@apply lg:px-11 lg:pt-20;
+	:local(.wallet-send) {
+		@apply h-screen w-full;
+		@apply m-0;
 		@apply dark:bg-dark-gosutoDark;
-		@apply dark:border-0;
+		@apply dark:border-0 overflow-hidden pb-20;
 	}
 
-	:local(.container) {
-		@apply py-6 lg:py-12;
+	:local(.header-wrapper) {
+		@apply px-4 pt-10 bg-white dark:bg-dark-gosutoDark;
+		@apply lg:px-11 lg:pt-20 pb-5;
 	}
 
 	:local(.title-row) {
-		@apply px-2;
+		@apply pl-2;
 		@apply flex flex-row items-center;
 	}
 
@@ -112,37 +115,27 @@
 		@apply dark:text-white;
 	}
 
-	:local(.scroll-container) {
-		@apply flex flex-row;
-		@apply px-2 py-8 gap-x-3.5 gap-y-5;
-		@apply snap-x overflow-x-scroll;
-		@apply lg:gap-8 lg:flex-col lg:overflow-auto;
-	}
-
 	:local(.token-group) {
-		@apply w-full shrink-0;
-		@apply grid grid-cols-2 auto-rows-fr;
+		@apply w-full;
+		@apply grid;
 		@apply gap-x-3.5 gap-y-5;
 		@apply snap-center;
-		@apply lg:gap-8;
-	}
-
-	:local(.mobile-scrollbar) {
-		@apply w-full;
-		@apply flex flex-row justify-center;
-		@apply mx-auto px-2 pb-2 gap-1 mb-7;
-		@apply lg:hidden;
-	}
-
-	:local(.mobile-scrollbar-dot) {
-		@apply h-1.5;
-		@apply rounded-full;
-		@apply transition-all duration-200;
+		@apply overflow-y-auto h-[85%] overflow-x-hidden;
+		@apply px-2 py-8 gap-x-3.5 gap-y-5 lg:gap-8 lg:px-16 pb-20;
+		grid-template-columns: repeat(2, minmax(50%, 1fr));
 	}
 
 	:local(.inner-btn) {
 		@apply flex items-center;
 		@apply gap-1 py-1 px-3.5;
 		@apply lg:gap-2.5 lg:py-2 lg:px-5 lg:text-base;
+	}
+
+	:local(.header) {
+		@apply flex relative flex-col space-y-9 mr-2;
+	}
+
+	:local(.bottom-bit) {
+		/* @apply mt-3 mb; */
 	}
 </style>
