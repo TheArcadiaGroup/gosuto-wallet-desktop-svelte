@@ -3,7 +3,7 @@
 	import TextInput from '$lib/components/TextInput.svelte';
 
 	import GosutoLogoAndText from '$icons/GosutoLogoAndText.svelte';
-	import EyeIcon from '$icons/EyeIcon.svelte';
+	import OpenEyeIcon from '$icons/OpenEyeIcon.svelte';
 	import LockIcon from '$icons/LockIcon.svelte';
 
 	import { walletName } from '$stores/WalletCreation';
@@ -12,6 +12,7 @@
 	import { goto } from '$app/navigation';
 	import { walletNameIsValid } from '$utils/profiles';
 	import { passwordsAreSimilar, validatePassword } from '$utils/validators/passwordValidation';
+	import ClosedEyeIcon from '$icons/ClosedEyeIcon.svelte';
 
 	let walletNameValue: string;
 	let passwordValue: string;
@@ -22,15 +23,31 @@
 	let passwordInput: HTMLInputElement;
 	let confirmPasswordInput: HTMLInputElement;
 
+	let passwordShown = false;
+	let confirmPasswordShown = false;
+
 	/**
 	 * @function
 	 * A function to toggle whether password in the input field is visible or hidden
 	 */
-	const togglePasswordVisibility = (inputElement: HTMLInputElement) => {
+	const togglePasswordVisibility = (
+		inputElement: HTMLInputElement,
+		whichPassword: 'confirmPassword' | 'password',
+	) => {
 		if (inputElement.type === 'text') {
 			inputElement.type = 'password';
+			if (whichPassword === 'confirmPassword') {
+				confirmPasswordShown = false;
+			} else if (whichPassword === 'password') {
+				passwordShown = false;
+			}
 		} else {
 			inputElement.type = 'text';
+			if (whichPassword === 'confirmPassword') {
+				confirmPasswordShown = true;
+			} else if (whichPassword === 'password') {
+				passwordShown = true;
+			}
 		}
 	};
 
@@ -95,9 +112,13 @@
 			<button
 				class="createWallet-eye-wrapper"
 				type="button"
-				on:click={() => togglePasswordVisibility(passwordInput)}
+				on:click={() => togglePasswordVisibility(passwordInput, 'password')}
 			>
-				<EyeIcon class="createWallet-eye-icon" />
+				{#if passwordShown}
+					<ClosedEyeIcon class="createWallet-eye-icon" />
+				{:else}
+					<OpenEyeIcon class="createWallet-eye-icon" />
+				{/if}
 			</button>
 		</div>
 		{#if passwordErrors}
@@ -119,9 +140,13 @@
 			/>
 			<button
 				class="createWallet-eye-wrapper"
-				on:click={() => togglePasswordVisibility(confirmPasswordInput)}
+				on:click={() => togglePasswordVisibility(confirmPasswordInput, 'confirmPassword')}
 			>
-				<EyeIcon class="createWallet-eye-icon" />
+				{#if confirmPasswordShown}
+					<ClosedEyeIcon class="createWallet-eye-icon" />
+				{:else}
+					<OpenEyeIcon class="createWallet-eye-icon" />
+				{/if}
 			</button>
 		</div>
 		{#if passwordValue && confirmPassword && !passwordsAreSimilar(passwordValue, confirmPassword)}

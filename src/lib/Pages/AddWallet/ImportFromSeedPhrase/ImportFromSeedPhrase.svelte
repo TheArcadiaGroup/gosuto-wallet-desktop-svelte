@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
 
-	import EyeIcon from '$icons/EyeIcon.svelte';
+	import OpenEyeIcon from '$icons/OpenEyeIcon.svelte';
 	import GosutoLogoAndText from '$icons/GosutoLogoAndText.svelte';
 	import LockIcon from '$icons/LockIcon.svelte';
 
@@ -9,6 +9,7 @@
 	import { encryptPassword, encryptPrvKey, retrieveData, saveData } from '$utils/dataStorage';
 	import { walletNameIsValid } from '$utils/profiles';
 	import { passwordsAreSimilar, validatePassword } from '$utils/validators/passwordValidation';
+	import ClosedEyeIcon from '$icons/ClosedEyeIcon.svelte';
 
 	let seedPhrase: string;
 	let walletName: string;
@@ -23,15 +24,31 @@
 	let walletExists = false;
 	let algorithm: 'secp256k1' | 'ed25519' = 'ed25519';
 
+	let passwordShown = false;
+	let confirmPasswordShown = false;
+
 	/**
 	 * @function
-	 * A function to toggle whether is password in the input field is visible or hidden
+	 * A function to toggle whether password in the input field is visible or hidden
 	 */
-	const togglePasswordVisibility = (inputElement: HTMLInputElement) => {
+	const togglePasswordVisibility = (
+		inputElement: HTMLInputElement,
+		whichPassword: 'confirmPassword' | 'password',
+	) => {
 		if (inputElement.type === 'text') {
 			inputElement.type = 'password';
+			if (whichPassword === 'confirmPassword') {
+				confirmPasswordShown = false;
+			} else if (whichPassword === 'password') {
+				passwordShown = false;
+			}
 		} else {
 			inputElement.type = 'text';
+			if (whichPassword === 'confirmPassword') {
+				confirmPasswordShown = true;
+			} else if (whichPassword === 'password') {
+				passwordShown = true;
+			}
 		}
 	};
 
@@ -201,10 +218,15 @@
 								bind:value={password}
 								bind:this={passwordInput}
 							/>
-							<button type="button" on:click={() => togglePasswordVisibility(passwordInput)}>
-								<span class="w-6 h-6">
-									<EyeIcon />
-								</span>
+							<button
+								type="button"
+								on:click={() => togglePasswordVisibility(passwordInput, 'confirmPassword')}
+							>
+								{#if confirmPasswordShown}
+									<ClosedEyeIcon class="eye-icon" />
+								{:else}
+									<OpenEyeIcon class="eye-icon" />
+								{/if}
 							</button>
 						</div>
 					</div>
@@ -229,10 +251,15 @@
 								bind:value={confirmPassword}
 								bind:this={confirmPasswordInput}
 							/>
-							<button type="button" on:click={() => togglePasswordVisibility(confirmPasswordInput)}>
-								<span class="w-6 h-6">
-									<EyeIcon />
-								</span>
+							<button
+								type="button"
+								on:click={() => togglePasswordVisibility(confirmPasswordInput, 'confirmPassword')}
+							>
+								{#if confirmPasswordShown}
+									<ClosedEyeIcon class="createWallet-eye-icon" />
+								{:else}
+									<OpenEyeIcon class="createWallet-eye-icon" />
+								{/if}
 							</button>
 						</div>
 					</div>
@@ -350,5 +377,12 @@
 
 	.error-div {
 		@apply text-left text-xs text-red-300 -mt-5 mb-1 flex w-full px-2;
+	}
+
+	.eye-icon {
+		@apply absolute;
+		@apply top-[0.85rem] 4xl:top-10 right-[4%] 4xl:right-[3%];
+		@apply 4xl:w-14 4xl:h-14;
+		@apply opacity-40 text-black dark:text-white;
 	}
 </style>
