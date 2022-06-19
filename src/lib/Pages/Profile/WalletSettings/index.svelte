@@ -354,7 +354,7 @@
 	}
 
 	:local(.header) {
-		@apply flex justify-center items-center h-12 md:my-[8vh] gap-8;
+		@apply flex justify-between items-center h-12 md:my-[8vh] gap-8 pl-6;
 	}
 
 	:local(.cancel-button) {

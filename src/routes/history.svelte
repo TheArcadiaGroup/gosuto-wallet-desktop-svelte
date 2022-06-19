@@ -53,6 +53,11 @@
 	function showMoreItems() {
 		getAllHistory();
 	}
+
+	$: if ($user?.network) {
+		allHistory = [];
+		getAllHistory();
+	}
 </script>
 
 <div class="flex">

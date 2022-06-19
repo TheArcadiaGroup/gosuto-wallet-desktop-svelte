@@ -15,6 +15,7 @@
 	import HistoryComponent from './HistoryComponent/HistoryComponent.svelte';
 	import Loading from '$lib/components/Loading.svelte';
 	import { historyLoading } from '$stores/user/history';
+	import NetworkSelector from '$lib/components/NetworkSelector.svelte';
 
 	$: isInProfileRoute = $page.url.pathname.startsWith('/profile');
 	$: address = $page.params.publicKey;
@@ -72,15 +73,20 @@
 	class:centered={!isInProfileRoute}
 	on:click={historySelectionsListener}
 >
-	<div class="header">
-		{#if !isInProfileRoute}
-			<h3 class="history-title">{historyFilter} History</h3>
-		{:else}
-			<ReturnHome {walletName} publicKey={address} profileLocation="History" />
-			<br />
-			<h3>History of this wallet</h3>
-		{/if}
-		<RoundedSelect {optionsArray} bind:value={filterId} />
+	<div class="header relative">
+		<div class="header-inner-wrapper {!isInProfileRoute ? 'pl-7' : 'pl-12'}">
+			{#if !isInProfileRoute}
+				<h3 class="history-title">{historyFilter} History</h3>
+			{:else}
+				<ReturnHome {walletName} publicKey={address} profileLocation="History" />
+				<br />
+				<!-- <h3>History of this wallet</h3> -->
+			{/if}
+			<div class="filter {!isInProfileRoute ? '' : '-m-7'}">
+				<RoundedSelect {optionsArray} bind:value={filterId} />
+			</div>
+		</div>
+		<NetworkSelector />
 	</div>
 	<div class="history-holder">
 		{#each filteredArray as historyObject, i}
@@ -131,6 +137,10 @@
 	} */
 
 	:local(.header) {
+		@apply flex;
+	}
+
+	:local(.header-inner-wrapper) {
 		@apply relative items-center justify-between md:flex-col md:items-start md:justify-start;
 	}
 

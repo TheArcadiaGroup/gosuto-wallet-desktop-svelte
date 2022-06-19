@@ -16,6 +16,7 @@
 
 	let wallet: IWallet | null = $selectedWallet;
 	$: publicKey = $page.params.publicKey;
+	$: network = $user?.network ?? 'testnet';
 
 	const populateData = () => {
 		pollyFillUser();
@@ -79,9 +80,7 @@
 		<ProfileNavigation on:cardClicked={creditCardClicked} />
 	</div>
 	<div class="global-grid-mid">
-		<HistoryPage
-			historyArray={$userHistory?.[$user?.network ?? 'testnet'][publicKey]?.data || []}
-		/>
+		<HistoryPage historyArray={$userHistory?.[network][publicKey]?.data || []} />
 	</div>
 	<div class="global-grid-right">
 		<Sidebar historyObject={$sidebarContent} />

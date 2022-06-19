@@ -4,28 +4,27 @@
 	import ChangeThemeBar from '$lib/pages/Settings/ChangeThemeBar.svelte';
 	import InfoInput from '$lib/pages/Settings/InfoInput.svelte';
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
-	import RoundedSelectIcon from '$icons/RoundedSelectIcon.svelte';
 
-	import { slide } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	import { pollyFillUser } from '$utils/pollyfillData';
 	import { saveData } from '$utils/dataStorage';
 	import { user } from '$stores/user';
 	import emailValidation from '$utils/validators/emailValidation';
+	import NetworkSelector from '$lib/components/NetworkSelector.svelte';
 
-	const networkOptionsArr: ('testnet' | 'mainnet')[] = ['testnet', 'mainnet'];
-	$: networkOptionValue = networkOptionsArr.indexOf($user?.network!) || 0;
-	let droppedDown = false;
+	// const networkOptionsArr: ('testnet' | 'mainnet')[] = ['testnet', 'mainnet'];
+	// $: networkOptionValue = networkOptionsArr.indexOf($user?.network!) || 0;
+	// let droppedDown = false;
 
 	let settingsData: IUser | null = $user;
 	let nameError = '';
 	let emailError = '';
 
-	let initialized = false;
+	// let initialized = false;
 
 	onMount(() => {
 		settingsData = pollyFillUser();
-		initialized = true;
+		// initialized = true;
 	});
 
 	let handleSave = (inputValue: string, infoType: infoCategory) => {
@@ -84,14 +83,15 @@
 	];
 
 	// Dynamically Update the Selected Network
-	$: ((selectedNetwork) => {
-		if (initialized && settingsData) {
-			settingsData['network'] = networkOptionsArr[selectedNetwork];
-			saveData('user', settingsData);
-		}
-	})(networkOptionValue);
+	// $: ((selectedNetwork) => {
+	// 	if (initialized && settingsData) {
+	// 		settingsData['network'] = networkOptionsArr[selectedNetwork];
+	// 		saveData('user', settingsData);
+	// 	}
+	// })(networkOptionValue);
 </script>
 
+<!-- 
 <svelte:window
 	on:click={(e) => {
 		// @ts-ignore
@@ -99,7 +99,7 @@
 			droppedDown = false;
 		}
 	}}
-/>
+/> -->
 
 <div class="flex">
 	<div class="global-grid-nav">
@@ -131,36 +131,7 @@
 					<div class="settings-network">
 						<h2 class="settings-network-title">Network</h2>
 						<!-- Rounded Select -->
-						<div class="settings-network-select">
-							<div
-								class="top cursor-pointer"
-								on:click={() => {
-									droppedDown = !droppedDown;
-								}}
-							>
-								<p class="selection">
-									{networkOptionsArr[networkOptionValue]}
-								</p>
-								<div class="icon" class:rotate={droppedDown}>
-									<RoundedSelectIcon />
-								</div>
-							</div>
-							{#if droppedDown}
-								<div class="options-holder" transition:slide|local>
-									{#each networkOptionsArr as option, i}
-										<p
-											class="option {i === networkOptionValue ? 'selected' : ''}"
-											on:click={() => {
-												networkOptionValue = i;
-												droppedDown = false;
-											}}
-										>
-											{option}
-										</p>
-									{/each}
-								</div>
-							{/if}
-						</div>
+						<NetworkSelector />
 					</div>
 					<!-- <div class="settings-buttons">
 						<button class="settings-save-bt" on:click={saveGlobalUserSettings}>Save</button>
