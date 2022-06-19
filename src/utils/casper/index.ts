@@ -132,9 +132,9 @@ export const getDelegatorRewards = async (
 	// publicKey = '01b1126cfaf8f6df4209b5f4a88a5e3bb95f912c0307fa3e1d3e89a3946411b021'
 
 	try {
-		const startDate = new Date();
-		const rewardsSum = 0;
-		const currentPage = 1;
+		// const startDate = new Date();
+		// const rewardsSum = 0;
+		// const currentPage = 1;
 		const url = `https://event-store-api-clarity-${network}.make.services/delegators/${publicKey}/total-rewards`;
 		const response = await fetch(url);
 		const jsonResponse = await response.json();
@@ -208,7 +208,7 @@ export const fetchUserRewards = async (
 				pageCount: number;
 			};
 		})
-		.catch((err) => {
+		.catch((_err) => {
 			return null;
 		});
 };

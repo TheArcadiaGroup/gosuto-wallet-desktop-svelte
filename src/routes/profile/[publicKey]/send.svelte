@@ -13,7 +13,7 @@
 	import { tokens } from '$stores/user/tokens';
 	import { pollyfillSelectedWallet, pollyFillTokens } from '$utils/pollyfillData';
 	import { page } from '$app/stores';
-	import { loadTokenBalance, receiveTokenBalance } from '$utils/tokens';
+	import { receiveTokenBalance } from '$utils/tokens';
 	import { user } from '$stores/user';
 
 	/**

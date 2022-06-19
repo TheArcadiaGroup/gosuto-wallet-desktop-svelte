@@ -59,7 +59,7 @@
 					y: {
 						offset: true,
 						ticks: {
-							callback: (value: string) => {
+							callback: (value: any) => {
 								return `$${value}k`;
 							},
 							color: '#AAB5C5',
@@ -102,7 +102,7 @@
 								lineHeight: '28px',
 								weight: 'bold',
 							},
-							callback: (tick: string) => {
+							callback: (tick: any) => {
 								let formattedTick: string = <string>tick;
 								if (formattedTick.indexOf('A') === 1 || formattedTick.indexOf('P') === 1) {
 									formattedTick = '0' + formattedTick;
@@ -116,7 +116,7 @@
 								return formattedTick;
 							},
 						},
-						type: 'time',
+						type: 'timeseries',
 						time: {
 							unit: 'hour',
 						},

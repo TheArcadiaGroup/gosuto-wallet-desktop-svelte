@@ -142,7 +142,7 @@
 		$page.url.searchParams.delete('validator');
 	}
 
-	function addStake(e: CustomEvent) {
+	function addStake(_e: CustomEvent) {
 		selectedLastColumnContent = 'addStake';
 	}
 

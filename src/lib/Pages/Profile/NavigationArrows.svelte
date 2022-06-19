@@ -24,15 +24,9 @@
 </script>
 
 <div class="main">
-	<ArrowInCircle
-		direction="left"
-		customClass="card-carousel-prev"
-		disabled={!(carouselPosition > 0)}
-		on:click={moveWallets}
-	/>
+	<ArrowInCircle direction="left" disabled={!(carouselPosition > 0)} on:click={moveWallets} />
 	<ArrowInCircle
 		direction="right"
-		customClass="card-carousel-next"
 		disabled={!(carouselPosition < numberOfCards - 1)}
 		on:click={moveWallets}
 	/>

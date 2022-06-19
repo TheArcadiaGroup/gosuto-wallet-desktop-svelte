@@ -11,6 +11,7 @@
 		"dev": "nodemon --watch . --exec npm run dev:all",
 		"dev:all": "concurrently -n=svelte,electron -c='#ff3e00',blue \"npm run dev:svelte\" \"npm run dev:electron\"",
 		"dev:svelte": "svelte-kit dev",
+		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"dev:electron": "electron src/electron/index.cjs",
 		"build": "svelte-kit build",
 		"build:all": "rm -rf dist && rm -rf release && cross-env NODE_ENV=production && npm run build && electron-builder -mwl --config build.config.json",

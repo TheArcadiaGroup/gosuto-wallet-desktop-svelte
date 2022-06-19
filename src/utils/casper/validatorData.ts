@@ -85,14 +85,11 @@ export const getValidatorProfiles = async (
 					prevResponse = res.data.data;
 					// Parse Data
 					res.data.data.map(
-						(
-							validator: {
-								account_hash: string;
-								info: { owner: { name: any; description: any; website: any; type: string[] } };
-								is_active: any;
-							},
-							index: number,
-						) => {
+						(validator: {
+							account_hash: string;
+							info: { owner: { name: any; description: any; website: any; type: string[] } };
+							is_active: any;
+						}) => {
 							if (validator.info?.owner?.type?.some((item) => item === 'validator')) {
 								returnObj[validator.account_hash] = {
 									is_active: validator.is_active,

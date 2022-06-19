@@ -25,7 +25,7 @@
 
 	const dispatch = createEventDispatcher();
 
-	function onScroll(event) {
+	function onScroll(event: any) {
 		if (!event.target || !event.target.scrollLeft || !event.target.clientWidth) return;
 		scroll = event.target.scrollLeft;
 		scrollWidth = event.target.scrollWidth;
@@ -83,12 +83,7 @@
 			{#each Array(Math.ceil(tokens.length / 4)) as _, i}
 				<div class="swap-token-group">
 					{#each tokens.slice(i * 4, i * 4 + 4) as token, y}
-						<TokenCard
-							cardId={i * 4 + y}
-							selected={selected === i * 4 + y}
-							on:selectToken
-							{...token}
-						/>
+						<TokenCard selected={selected === i * 4 + y} on:selectToken {...token} />
 					{/each}
 				</div>
 			{/each}

@@ -14,8 +14,6 @@
 	import ErrorIcon from '$icons/ErrorIcon.svelte';
 	import isValidPublicKey from '$utils/validators/isValidPublicKey';
 	import SuccessIcon from '$icons/SuccessIcon.svelte';
-	import { retrieveData, saveData } from '$utils/dataStorage';
-	import { tokens } from '$stores/user/tokens';
 
 	/*
 	Validation Requirements

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getTokenValue, swapToken } from '$utils/token.util';
+	import { swapToken } from '$utils/token.util';
 
 	import TextInput from '$lib/components/TextInput.svelte';
 	import SwapTokensIcon from '$icons/SwapTokensIcon.svelte';
@@ -24,8 +24,8 @@
 	let fromUSDValue = 0;
 	let toUSDValue = 0;
 
-	$: fromUSDValue = getTokenValue(fromToken);
-	$: toUSDValue = getTokenValue(toToken);
+	// $: fromUSDValue = getTokenValue(fromToken);
+	// $: toUSDValue = getTokenValue(toToken);
 
 	async function confirmSwap(): Promise<void> {
 		confirmPopup = false;

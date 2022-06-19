@@ -112,7 +112,7 @@
 			<div class="carousel-container">
 				{#if $wallets.length > 0}
 					<CardCarousel>
-						{#each $wallets as wallet, i}
+						{#each $wallets as wallet, _i}
 							<CarouselItem>
 								<CreditCard
 									name={wallet.walletName || 'Unknown Name'}

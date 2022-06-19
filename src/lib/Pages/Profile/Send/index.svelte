@@ -16,21 +16,22 @@
 	 */
 	export let selectedToken: IToken | null = null;
 
-	let scroll = 0;
-	let scrollWidth = 0;
-	let currentPage = 0;
+	// let scroll = 0;
+	// let scrollWidth = 0;
+	// let currentPage = 0;
 
 	const dispatch = createEventDispatcher();
 
-	function onScroll(event: any) {
-		if (!event.target || !event.target.scrollLeft || !event.target.clientWidth) return;
-		scroll = event.target.scrollLeft;
-		scrollWidth = event.target.scrollWidth;
+	// previously on scroll-container
+	// function onScroll(event: any) {
+	// 	if (!event.target || !event.target.scrollLeft || !event.target.clientWidth) return;
+	// 	// scroll = event.target.scrollLeft;
+	// 	// scrollWidth = event.target.scrollWidth;
 
-		const totalPages = Math.ceil(tokens.length / 4);
+	// 	// const totalPages = Math.ceil(tokens.length / 4);
 
-		currentPage = Math.round(scroll / (scrollWidth / totalPages));
-	}
+	// 	// currentPage = Math.round(scroll / (scrollWidth / totalPages));
+	// }
 
 	function deselectListener(event: any): void {
 		if (!event.target) return;
@@ -66,10 +67,10 @@
 				</Button>
 			</div>
 		</div>
-		<div on:scroll={onScroll} class="scroll-container scrollbar-hide">
+		<div class="scroll-container scrollbar-hide">
 			<!-- {#each Array(Math.ceil(tokens?.length / 4)) as _, i} -->
 			<div class="token-group">
-				{#each tokens as token, y}
+				{#each tokens as token, _y}
 					<TokenCard {token} selected={selectedToken === token} on:selectToken {...token} />
 				{/each}
 			</div>

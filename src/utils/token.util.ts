@@ -42,7 +42,7 @@ export async function sendToken(
 	recipientPublicKey: string,
 	contractHash: string = 'CSPR',
 	network: 'testnet' | 'mainnet' = 'testnet',
-	note: string = '',
+	_note: string = '',
 	tokenTicker: string = 'CSPR',
 	algorithm: 'secp256k1' | 'ed25519' = 'ed25519',
 ): Promise<void | {

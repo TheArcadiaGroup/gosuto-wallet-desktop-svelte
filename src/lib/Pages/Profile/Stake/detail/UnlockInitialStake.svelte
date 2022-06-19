@@ -5,20 +5,7 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
 
-	export let stake: IStake = {
-		parentWallet: 'wallet-1',
-		stakeAmount: 420,
-		unstakeDatetime: new Date(2021, 11, 17),
-		unstakeCountdown: Math.abs(new Date(2020, 12, 17) - new Date(2019, 11, 17)),
-		reclamationDate: new Date(2020, 12, 17),
-		initialStakeDate: new Date(2019, 11, 17),
-		rewardDate: new Date(2022, 11, 17),
-		rewardCountdown: Math.abs(new Date(2022, 11, 17) - new Date(2019, 11, 17)),
-		reward: 420,
-		unlocked: 84,
-		stakePercent: 0.8,
-		parentWalletAddress: '0x8dgvc09vcg290gvg4v2f2vrvb23',
-	};
+	export let stake: IStake;
 
 	/**Handler for clicking the "Claim" button. Claims the initial stake*/
 	function claim() {

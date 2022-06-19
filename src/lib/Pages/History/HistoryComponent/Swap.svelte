@@ -21,7 +21,6 @@
 		<Amount
 			type="negative"
 			amount={swapData.fromAmount}
-			price={swapData.fromPrice}
 			cryptoUnit={swapData.fromCryptoUnit}
 			{smaller}
 			{clicked}
@@ -31,13 +30,7 @@
 		<Swap />
 	</div>
 	<div class="text-right">
-		<Amount
-			amount={swapData.toAmount}
-			price={swapData.toPrice}
-			cryptoUnit={swapData.toCryptoUnit}
-			{smaller}
-			{clicked}
-		/>
+		<Amount amount={swapData.toAmount} cryptoUnit={swapData.toCryptoUnit} {smaller} {clicked} />
 	</div>
 </div>
 
