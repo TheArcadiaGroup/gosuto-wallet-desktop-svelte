@@ -88,7 +88,7 @@
 	:local(.wallet-stakes-container) {
 		@apply h-screen w-full flex flex-col gap-4 items-center dark:text-white dark:bg-dark-gosutoDark;
 		@apply px-4 pt-10;
-		@apply lg:px-11 lg:pt-20 bg-red-200 relative;
+		@apply lg:px-11 lg:pt-20 relative;
 	}
 
 	:local(.header) {
