@@ -73,16 +73,14 @@
 	class:centered={!isInProfileRoute}
 	on:click={historySelectionsListener}
 >
-	<div class="header relative">
+	<div class="header relative {!isInProfileRoute ? 'pb-2' : 'pb-5'}">
 		<div class="header-inner-wrapper {!isInProfileRoute ? 'pl-7' : 'pl-12'}">
 			{#if !isInProfileRoute}
 				<h3 class="history-title">{historyFilter} History</h3>
 			{:else}
 				<ReturnHome {walletName} publicKey={address} profileLocation="History" />
-				<br />
-				<!-- <h3>History of this wallet</h3> -->
 			{/if}
-			<div class="filter {!isInProfileRoute ? '' : '-m-7'}">
+			<div class="mt-4 {!isInProfileRoute ? '' : '-m-7'}">
 				<RoundedSelect {optionsArray} bind:value={filterId} />
 			</div>
 		</div>
