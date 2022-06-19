@@ -7,6 +7,7 @@
 -->
 <script lang="ts">
 	import Loading from '$lib/components/Loading.svelte';
+	import NetworkSelector from '$lib/components/NetworkSelector.svelte';
 	import { user } from '$stores/user';
 	import { loadingValidators, validators } from '$stores/user/stake';
 	import ValidatorItem from './ValidatorItem.svelte';
@@ -42,7 +43,12 @@
 </script>
 
 <div class="validators">
-	<h3>Validators</h3>
+	<div class="header">
+		<h3>Validators</h3>
+		<div class="network-container">
+			<NetworkSelector />
+		</div>
+	</div>
 	<div class="validator-holder">
 		{#if $loadingValidators}
 			<Loading />
@@ -66,6 +72,15 @@
 	:local(.validator-holder) {
 		@apply w-full overflow-y-scroll pr-6;
 	}
+
+	:local(.header) {
+		@apply flex justify-between items-center py-5 px-5;
+	}
+
+	:local(.network-container) {
+		@apply relative;
+	}
+
 	/* 
 	:local(button) {
 		@apply border-2 border-light-lineColor rounded-[90px];

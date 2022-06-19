@@ -13,6 +13,10 @@
 			getValidators($user?.network ?? 'testnet');
 		}
 	});
+
+	$: if ($user?.network) {
+		getValidators($user?.network ?? 'testnet');
+	}
 </script>
 
 <div class="main">
