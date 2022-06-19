@@ -2,6 +2,7 @@
 /// <reference types="svelte" />
 /// <reference types="vite/client" />
 /// <reference types="vite/client" />
+/// <reference types="casper-js-sdk" />
 import type { Moment } from 'moment';
 
 interface ImportMetaEnv {
@@ -24,7 +25,7 @@ declare global {
 			send: (channel: MainSendChannels, data: string) => void;
 			sendSync: (channel: MainSendChannels, data?: any) => any;
 		};
-		// CasperSDK: CasperSDKType;
+		CasperSDK: typeof import('casper-js-sdk');
 		CoinGecko: typeof CoinGecko;
 		moment: Moment;
 	}

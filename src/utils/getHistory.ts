@@ -1,6 +1,5 @@
 import { historyLoading, userHistory } from '$stores/user/history';
 import axios from 'axios';
-import { CasperClient } from 'casper-js-sdk';
 import { ethers } from 'ethers';
 import { getEndpointByNetwork } from './casper';
 import { retrieveData, saveData } from './dataStorage';
@@ -31,6 +30,7 @@ const consumeHistoryData = async (
 	network: 'mainnet' | 'testnet' = 'testnet',
 	walletName = '',
 ) => {
+	const { CasperClient } = window.CasperSDK;
 	// Parse history response - transfer history
 	const returnedHistory: HistoryResponse = {
 		data: [],

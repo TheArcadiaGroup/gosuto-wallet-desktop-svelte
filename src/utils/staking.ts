@@ -1,12 +1,4 @@
 import { stakeCsprTracker, unStakeCsprTracker } from '$stores/activityLoaders';
-import {
-	CasperClient,
-	CLPublicKey,
-	CLValueBuilder,
-	DeployUtil,
-	Keys,
-	RuntimeArgs,
-} from 'casper-js-sdk';
 import { ethers } from 'ethers';
 import { getEndpointByNetwork } from './casper';
 import { decryptPrvKey } from './dataStorage';
@@ -21,6 +13,8 @@ export const delegate = (
 	network: 'testnet' | 'mainnet' = 'testnet',
 	algorithm: 'secp256k1' | 'ed25519' = 'ed25519',
 ) => {
+	const { CasperClient, CLPublicKey, CLValueBuilder, DeployUtil, Keys, RuntimeArgs } =
+		window.CasperSDK;
 	const txId = Math.random().toString(16).slice(2);
 
 	stakeCsprTracker.update((stakeTxs) => {
@@ -128,6 +122,8 @@ export const undelegate = (
 	network: 'testnet' | 'mainnet' = 'testnet',
 	algorithm: 'secp256k1' | 'ed25519' = 'ed25519',
 ) => {
+	const { CasperClient, CLPublicKey, CLValueBuilder, DeployUtil, Keys, RuntimeArgs } =
+		window.CasperSDK;
 	const txId = Math.random().toString(16).slice(2);
 
 	unStakeCsprTracker.update((unStakeTxs) => {

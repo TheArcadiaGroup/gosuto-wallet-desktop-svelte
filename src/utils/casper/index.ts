@@ -1,4 +1,3 @@
-import { BalanceServiceByJsonRPC, CasperServiceByJsonRPC, CLPublicKey } from 'casper-js-sdk';
 import { ethers } from 'ethers';
 import CoinGecko from 'coingecko-api';
 import { retrieveData, saveData } from '$utils/dataStorage';
@@ -20,6 +19,8 @@ export const getAccountBalance = async (
 	network: 'testnet' | 'mainnet' = 'testnet',
 ) => {
 	try {
+		const { BalanceServiceByJsonRPC, CasperServiceByJsonRPC, CLPublicKey } = window.CasperSDK;
+
 		const casperService = new CasperServiceByJsonRPC(getEndpointByNetwork(network));
 		const balanceService = new BalanceServiceByJsonRPC(casperService);
 		const balance = await balanceService.getAccountBalance(
@@ -82,6 +83,8 @@ export const getValidatorWeight = async (
 	network: 'testnet' | 'mainnet' = 'testnet',
 ) => {
 	// publicKey = '01b1126cfaf8f6df4209b5f4a88a5e3bb95f912c0307fa3e1d3e89a3946411b021'
+	const { BalanceServiceByJsonRPC, CasperServiceByJsonRPC, CLPublicKey } = window.CasperSDK;
+
 	try {
 		const eraValidators = (
 			await new CasperServiceByJsonRPC(getEndpointByNetwork(network)).getValidatorsInfo()
@@ -148,6 +151,8 @@ export const getDelegatorRewards = async (
 
 export const getLatestBlockInfo = async (network: 'testnet' | 'mainnet' = 'testnet') => {
 	try {
+		const { BalanceServiceByJsonRPC, CasperServiceByJsonRPC, CLPublicKey } = window.CasperSDK;
+
 		const casperService = new CasperServiceByJsonRPC(getEndpointByNetwork(network));
 		const latestBlock = await casperService.getLatestBlockInfo();
 		return latestBlock;
@@ -158,6 +163,8 @@ export const getLatestBlockInfo = async (network: 'testnet' | 'mainnet' = 'testn
 
 export const getTotalStaked = async (network: 'testnet' | 'mainnet' = 'testnet') => {
 	try {
+		const { BalanceServiceByJsonRPC, CasperServiceByJsonRPC, CLPublicKey } = window.CasperSDK;
+
 		const casperService = new CasperServiceByJsonRPC(getEndpointByNetwork(network));
 		const validatorsInfo = await casperService.getValidatorsInfo();
 		const validatorWeights = validatorsInfo.auction_state.era_validators[0].validator_weights;
@@ -263,6 +270,8 @@ export const filterUserRewards = async (
 };
 
 export const getNetworkValidators = async (network: 'testnet' | 'mainnet' = 'testnet') => {
+	const { BalanceServiceByJsonRPC, CasperServiceByJsonRPC, CLPublicKey } = window.CasperSDK;
+
 	try {
 		const casperService = new CasperServiceByJsonRPC(getEndpointByNetwork(network));
 		const validatorsInfo = await casperService.getValidatorsInfo();
@@ -327,6 +336,8 @@ export const getUserDelegatedAmount = async (
 	publicKey: string,
 	network: 'testnet' | 'mainnet' = 'testnet',
 ) => {
+	const { BalanceServiceByJsonRPC, CasperServiceByJsonRPC, CLPublicKey } = window.CasperSDK;
+
 	// publicKey = '01b1126cfaf8f6df4209b5f4a88a5e3bb95f912c0307fa3e1d3e89a3946411b021'
 	loadingStakes.set(true);
 	try {
@@ -430,6 +441,8 @@ export const getValidatorByDeploy = async (
 	deployHash: string,
 	network: 'testnet' | 'mainnet' = 'testnet',
 ) => {
+	const { BalanceServiceByJsonRPC, CasperServiceByJsonRPC, CLPublicKey } = window.CasperSDK;
+
 	let sess = null;
 	try {
 		const casperService = new CasperServiceByJsonRPC(getEndpointByNetwork(network));

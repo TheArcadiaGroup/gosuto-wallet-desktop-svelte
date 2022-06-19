@@ -1,5 +1,4 @@
 import { user } from '$stores/user';
-import { CasperClient, CasperServiceByJsonRPC, CLPublicKey } from 'casper-js-sdk';
 import { ethers } from 'ethers';
 import { get } from 'svelte/store';
 import { getEndpointByNetwork } from './casper';
@@ -11,6 +10,8 @@ export const getBalance = async (
 	publicKey: string,
 	network: 'testnet' | 'mainnet' = 'testnet',
 ) => {
+	const { CasperClient, CasperServiceByJsonRPC, CLPublicKey } = window.CasperSDK;
+
 	try {
 		// TODO - FIX MOST RECENT BLOCK INFORMATION BUG
 		const casperService = new CasperServiceByJsonRPC(getEndpointByNetwork(network));

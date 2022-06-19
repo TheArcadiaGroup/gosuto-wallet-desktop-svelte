@@ -1,6 +1,5 @@
 import { getEndpointByNetwork } from '$utils/casper';
 import { decryptPrvKey } from '$utils/dataStorage';
-import { CasperClient, Keys, CLPublicKey, DeployUtil } from 'casper-js-sdk';
 import { ethers } from 'ethers';
 
 export default async (
@@ -11,6 +10,8 @@ export default async (
 	network: 'testnet' | 'mainnet' = 'testnet',
 	algorithm: 'secp256k1' | 'ed25519' = 'ed25519',
 ) => {
+	const { CasperClient, Keys, CLPublicKey, DeployUtil } = window.CasperSDK;
+
 	try {
 		const casperClient = new CasperClient(getEndpointByNetwork(network));
 

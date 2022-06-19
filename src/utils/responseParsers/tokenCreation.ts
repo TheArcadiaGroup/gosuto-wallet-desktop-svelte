@@ -4,7 +4,6 @@ import { retrieveData, saveData } from '$utils/dataStorage';
 import { pollyFillTokens } from '$utils/pollyfillData';
 import { addTokenGivenContractHash } from '$utils/tokens/addToken';
 import { addTokenTxToBeTracked } from '$utils/tokens/createToken';
-import { CasperClient } from 'casper-js-sdk';
 
 export const parseTokenCreationHash = async (
 	deployHash: string,
@@ -12,6 +11,8 @@ export const parseTokenCreationHash = async (
 	publicKey: string,
 	network: 'testnet' | 'mainnet',
 ) => {
+	const { CasperClient } = window.CasperSDK;
+
 	try {
 		const casperClient = new CasperClient(getEndpointByNetwork(network));
 		const deploy = await casperClient.getDeploy(deployHash);
