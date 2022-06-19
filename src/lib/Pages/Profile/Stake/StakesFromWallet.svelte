@@ -16,6 +16,7 @@
 
 	import { page } from '$app/stores';
 	import { createEventDispatcher } from 'svelte';
+	import NetworkSelector from '$lib/components/NetworkSelector.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -47,7 +48,14 @@
 <div class="wallet-stakes-container" on:click={deselectListener}>
 	{#if forRoute === 'profile'}
 		<div class="header">
-			<ReturnHome walletName={''} publicKey={$page.params.publicKey} profileLocation="Stake CSPR" />
+			<div class="item-1 pl-9">
+				<ReturnHome
+					walletName={''}
+					publicKey={$page.params.publicKey}
+					profileLocation="Stake CSPR"
+				/>
+			</div>
+			<NetworkSelector />
 		</div>
 
 		<div class="title item">
@@ -75,7 +83,7 @@
 	}
 
 	:local(.header) {
-		@apply self-start;
+		@apply self-start relative w-full;
 	}
 
 	:local(.header-name) {
@@ -95,7 +103,7 @@
 	}
 
 	:local(.title-label) {
-		@apply text-lg font-semibold;
+		@apply text-lg font-semibold pl-3;
 	}
 
 	:local(.button-label) {
