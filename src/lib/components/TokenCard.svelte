@@ -9,6 +9,9 @@
 	import { tokenLoaders } from '$stores/dataLoaders';
 	import { user } from '$stores/user';
 	import { loadTokenBalance } from '$utils/tokens';
+	import DeleteIcon from '$icons/DeleteIcon.svelte';
+	import { tokens } from '$stores/user/tokens';
+	import { saveData } from '$utils/dataStorage';
 
 	/**
 	 * The index of this card. Used when dispatching selectToken event to parent
@@ -48,6 +51,18 @@
 			token.tokenPriceUSD = tokenPriceInUsd;
 		}
 		dispatch('selectToken', token);
+	}
+
+	function deleteToken() {
+		const tokensFromThisNetwork = $tokens[$selectedWallet!.publicKey][
+			$user?.network ?? 'testnet'
+		].filter((item) => item.contractHash !== token?.contractHash);
+		$tokens[$selectedWallet!.publicKey][$user?.network ?? 'testnet'] = tokensFromThisNetwork;
+
+		saveData('tokens', $tokens);
+
+		selected = false;
+		dispatch('selectToken', null);
 	}
 
 	selectedWallet.subscribe((wallet) => {
@@ -119,16 +134,20 @@
 			</p>
 			<p class="token-card-text-xs text-light-gray">(24h)</p>
 		</div>
+	{:else if selected}
+		<div class="delete-icon" title="Delete" on:click={deleteToken}>
+			<DeleteIcon />
+		</div>
 	{/if}
 </div>
 
 <style lang="postcss" global>
 	.token-card {
-		@apply flex flex-row;
+		@apply flex flex-row relative;
 		@apply px-3 py-2;
 		@apply rounded-2xl border border-light-transparentGrey10 cursor-pointer select-none;
 		@apply lg:p-5 lg:rounded-[1.375rem];
-		@apply dark:bg-dark-blue h-max;
+		@apply dark:bg-dark-blue h-[140px];
 		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 	}
 
@@ -157,17 +176,22 @@
 
 	.token-card-text-xs {
 		@apply text-xs font-bold;
-		@apply lg:text-base;
+		@apply 2xl:text-base;
 	}
 
 	.token-card-text-sm {
 		@apply text-sm font-bold;
-		@apply lg:text-2xl;
+		@apply 2xl:text-2xl;
 	}
 
 	.token-card-text-flex {
 		@apply inline-flex flex-row items-center justify-end;
 		@apply gap-1;
 		@apply lg:gap-2;
+	}
+
+	:local(.delete-icon) {
+		@apply absolute bottom-4 right-4;
+		@apply h-6 w-4 flex;
 	}
 </style>
