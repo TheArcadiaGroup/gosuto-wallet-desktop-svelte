@@ -5,6 +5,7 @@ import { retrieveData, saveData } from '$utils/dataStorage';
 import { selectedWallet, wallets } from '$stores/user/wallets';
 import { get } from 'svelte/store';
 import { getValidatorPerformances, getValidatorProfiles } from './validatorData';
+import { loadingStakes } from '$stores/user/stake';
 
 export const getEndpointByNetwork = (network: 'testnet' | 'mainnet' = 'testnet') => {
 	if (network === 'mainnet') {
@@ -327,7 +328,7 @@ export const getUserDelegatedAmount = async (
 	network: 'testnet' | 'mainnet' = 'testnet',
 ) => {
 	// publicKey = '01b1126cfaf8f6df4209b5f4a88a5e3bb95f912c0307fa3e1d3e89a3946411b021'
-
+	loadingStakes.set(true);
 	try {
 		const casperService = new CasperServiceByJsonRPC(getEndpointByNetwork(network));
 		const validatorsInfo = await casperService.getValidatorsInfo();
@@ -420,6 +421,8 @@ export const getUserDelegatedAmount = async (
 	} catch (error) {
 		console.log('error =', error);
 		return { stakedAmount: 0, unclaimedRewards: 0, stakingOperations: [] };
+	} finally {
+		loadingStakes.set(false);
 	}
 };
 

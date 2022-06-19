@@ -35,6 +35,11 @@
 			getUserDelegatedAmount(wallet.publicKey, $user?.network || 'testnet');
 		});
 	};
+
+	$: if ($user?.network) {
+		stakeArray = [];
+		getData();
+	}
 </script>
 
 <StakePage {stakeArray} />

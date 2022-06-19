@@ -17,6 +17,8 @@
 	import { page } from '$app/stores';
 	import { createEventDispatcher } from 'svelte';
 	import NetworkSelector from '$lib/components/NetworkSelector.svelte';
+	import { loadingStakes } from '$stores/user/stake';
+	import Loading from '$lib/components/Loading.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -66,12 +68,19 @@
 				</Button>
 			</div>
 		</div>
+	{:else}
+		<div class="all-stakes-header">
+			<NetworkSelector />
+		</div>
 	{/if}
 
 	<div class="stake-cards-container item">
 		{#each stakeArray.sort((a, b) => new Date(b.initialStakeDate).getTime() - new Date(a.initialStakeDate).getTime()) as stake}
 			<StakeCard {stake} on:click={() => selectStake(stake)} {selectedStake} />
 		{/each}
+		{#if $loadingStakes}
+			<Loading class="h-1/3 w-1/3" />
+		{/if}
 	</div>
 </div>
 
@@ -79,7 +88,7 @@
 	:local(.wallet-stakes-container) {
 		@apply h-screen w-full flex flex-col gap-4 items-center dark:text-white dark:bg-dark-gosutoDark;
 		@apply px-4 pt-10;
-		@apply lg:px-11 lg:pt-20;
+		@apply lg:px-11 lg:pt-20 bg-red-200 relative;
 	}
 
 	:local(.header) {
@@ -127,5 +136,9 @@
 
 	:local(.item) {
 		@apply w-full;
+	}
+
+	:local(.all-stakes-header) {
+		@apply absolute bg-red-200 top-8 right-14;
 	}
 </style>
