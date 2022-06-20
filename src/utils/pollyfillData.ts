@@ -42,7 +42,7 @@ export const pollyFillTokens = async () => {
 					shareToken: true,
 					contractHash: 'CSPR', // defaults to this to facilitate sending
 					tokenPriceUSD: (await getTokenValue('CSPR')).price[get(user)?.currency || 'usd'],
-					decimals: 5,
+					decimals: 9,
 				});
 			};
 
@@ -62,6 +62,7 @@ export const pollyFillTokens = async () => {
 					token.tokenAmountHeldUSD =
 						selectedWallet.availableBalanceUSD[get(user)?.network || 'testnet'];
 					token.tokenPriceUSD = (await getTokenValue('CSPR')).price[get(user)?.currency || 'usd'];
+					token.decimals = 9;
 				}
 
 				return token;

@@ -14,6 +14,7 @@
 	import ErrorIcon from '$icons/ErrorIcon.svelte';
 	import isValidPublicKey from '$utils/validators/isValidPublicKey';
 	import SuccessIcon from '$icons/SuccessIcon.svelte';
+	import { ethers } from 'ethers';
 
 	/*
 	Validation Requirements
@@ -40,9 +41,11 @@
 
 	function sendCurrency(): void {
 		popup = 'Send CSPR';
-		popupContent = `<p>You are about to send <span class='amount'>${tokenAmount}</span> ${
-			selectedToken.tokenTicker
-		} to ${shortenAddress(recipientAddress)} on the ${network}.</p>`;
+		popupContent = `<p>You are about to send <span class='amount'>${parseFloat(
+			tokenAmount.toString(),
+		)}</span> ${selectedToken.tokenTicker} to ${shortenAddress(
+			recipientAddress,
+		)} on the ${network}.</p>`;
 		confirmPopup = true;
 	}
 
@@ -54,7 +57,8 @@
 			const result = await sendToken(
 				$selectedWallet.publicKey,
 				$selectedWallet.privateKey,
-				tokenAmount,
+				tokenAmount.toFixed(selectedToken.decimals),
+				selectedToken.decimals,
 				recipientAddress,
 				selectedToken.contractHash,
 				network,
@@ -71,17 +75,17 @@
 					popupContent = `<p>${result.error ?? ''}</p>`;
 				} else {
 					popup = 'Sending';
-					popupContent = `<p>Currently sending, <span class='amount'>${tokenAmount}</span> ${
-						selectedToken.tokenTicker
-					} to ${shortenAddress(recipientAddress)}.</p>`;
+					popupContent = `<p>Currently sending, <span class='amount'>${parseFloat(
+						tokenAmount.toString(),
+					)}</span> ${selectedToken.tokenTicker} to ${shortenAddress(recipientAddress)}.</p>`;
 				}
 			} else if (selectedToken.contractHash === 'CSPR') {
 				popup = 'Send Failed!';
 			} else if (selectedToken.contractHash !== 'CSPR') {
 				popup = 'Sending';
-				popupContent = `<p>Currently sending, <span class='amount'>${tokenAmount}</span> ${
-					selectedToken.tokenTicker
-				} to ${shortenAddress(recipientAddress)}.</p>`;
+				popupContent = `<p>Currently sending, <span class='amount'>${parseFloat(
+					tokenAmount.toString(),
+				)}</span> ${selectedToken.tokenTicker} to ${shortenAddress(recipientAddress)}.</p>`;
 			}
 
 			console.log(result);
@@ -105,16 +109,18 @@
 						popup = 'Send Failed!';
 						popupContent =
 							sendTokensTxs[item]?.error ||
-							`<p>Failed to send <span class='amount'>${sendTokensTxs[item]?.amount}</span> ${
-								sendTokensTxs[item]?.token
-							} to ${shortenAddress(sendTokensTxs[item]?.recipientPublicKey ?? '')}</p>`;
+							`<p>Failed to send <span class='amount'>${parseFloat(
+								sendTokensTxs[item]?.amount || '',
+							)}</span> ${sendTokensTxs[item]?.token} to ${shortenAddress(
+								sendTokensTxs[item]?.recipientPublicKey ?? '',
+							)}</p>`;
 					} else if (sendTokensTxs[item]?.fulfilled) {
 						// Clear loader and show respective popup with tx details
 
 						popup = 'Success';
-						popupContent = `<p>Succcessfully sent <span class='amount'>${
-							sendTokensTxs[item]?.amount
-						}</span> ${sendTokensTxs[item]?.token} to ${shortenAddress(
+						popupContent = `<p>Succcessfully sent <span class='amount'>${parseFloat(
+							sendTokensTxs[item]?.amount || '',
+						)}</span> ${sendTokensTxs[item]?.token} to ${shortenAddress(
 							sendTokensTxs[item]?.recipientPublicKey ?? '',
 						)}.</p>`;
 					}
@@ -137,8 +143,9 @@
 
 	$: hasError =
 		tokenAmount <= 0 ||
-		tokenAmount < 2.5 ||
-		tokenAmount > selectedToken.tokenAmountHeld - totalCost ||
+		(selectedToken.contractHash === 'CSPR' && tokenAmount < 2.5) ||
+		(selectedToken.contractHash === 'CSPR' &&
+			tokenAmount > selectedToken.tokenAmountHeld - totalCost) ||
 		(Boolean(recipientAddress) && recipientAddress === $selectedWallet!.publicKey) ||
 		(Boolean(recipientAddress) && !publicKeyValid);
 	$: publicKeyValid = isValidPublicKey(recipientAddress);
@@ -154,42 +161,44 @@
 				bind:value={tokenAmount}
 				class="send-currency-dark-sidebar-input"
 				type="number"
-				step={0.00001}
+				step={1 / +'1'.padEnd(selectedToken.decimals, '0')}
 				label="Enter {selectedToken.tokenName} amount"
 				addTextBg={true}
 			/>
 		</div>
-		<!-- Amount Validation -->
-		{#if tokenAmount <= 0 || tokenAmount < 2.5}
-			<div class="error-div">
-				<ErrorIcon class="mr-1" fill={'#e6332a'} />
-				Amount must be at least 2.5 CSPR.
-			</div>
-		{/if}
-		{#if tokenAmount > selectedToken.tokenAmountHeld - totalCost}
-			<div class="error-div">
-				<ErrorIcon class="mr-1" fill={'#e6332a'} />
-				You can send a maximum of {Math.max(0, selectedToken.tokenAmountHeld - totalCost)}
-			</div>
-		{/if}
+		{#if selectedToken.contractHash === 'CSPR'}
+			<!-- Amount Validation -->
+			{#if tokenAmount <= 0 || tokenAmount < 2.5}
+				<div class="error-div">
+					<ErrorIcon class="mr-1" fill={'#e6332a'} />
+					Amount must be at least 2.5 CSPR.
+				</div>
+			{/if}
+			{#if tokenAmount > selectedToken.tokenAmountHeld - totalCost}
+				<div class="error-div">
+					<ErrorIcon class="mr-1" fill={'#e6332a'} />
+					You can send a maximum of {Math.max(0, selectedToken.tokenAmountHeld - totalCost)}
+				</div>
+			{/if}
 
-		<div class="currency-money-amount">
-			<p class={selectedToken.tokenPriceUSD * tokenAmount > 0 ? 'text-light-lighterOrange' : ''}>
-				${parseFloat((selectedToken.tokenPriceUSD * totalCost)?.toFixed(2))}
-				{$user?.currency.toUpperCase() || 'USD'}
+			<div class="currency-money-amount">
+				<p class={selectedToken.tokenPriceUSD * tokenAmount > 0 ? 'text-light-lighterOrange' : ''}>
+					${parseFloat((selectedToken.tokenPriceUSD * totalCost)?.toFixed(2))}
+					{$user?.currency.toUpperCase() || 'USD'}
+				</p>
+				<p class="money-right">Approx. Fee</p>
+			</div>
+			<p class="currency-money-amount send-recipient-details">
+				Recipient Receives:
+				<span class={tokenAmount > 0 ? 'text-light-lighterOrange 2xl:ml-2' : ''}>
+					<br class="2xl:hidden" />
+					{parseFloat(tokenAmount?.toFixed(5)) ?? 0}
+					{selectedToken.tokenTicker}
+					({parseFloat((selectedToken.tokenPriceUSD * tokenAmount)?.toFixed(2))}
+					{$user?.currency.toUpperCase() || 'USD'})
+				</span>
 			</p>
-			<p class="money-right">Approx. Fee</p>
-		</div>
-		<p class="currency-money-amount send-recipient-details">
-			Recipient Receives:
-			<span class={tokenAmount > 0 ? 'text-light-lighterOrange 2xl:ml-2' : ''}>
-				<br class="2xl:hidden" />
-				{parseFloat(tokenAmount?.toFixed(5)) ?? 0}
-				{selectedToken.tokenTicker}
-				({parseFloat((selectedToken.tokenPriceUSD * tokenAmount)?.toFixed(2))}
-				{$user?.currency.toUpperCase() || 'USD'})
-			</span>
-		</p>
+		{/if}
 		<div class="currency-form-row">
 			<TextInput
 				bind:value={recipientAddress}

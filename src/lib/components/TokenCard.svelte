@@ -19,7 +19,7 @@
 
 	export let selected = false;
 
-	export let token: IToken | null = null;
+	export let token: IToken;
 	export let tokenName = 'Casper'; // defaults
 	export let tokenTicker = 'CSPR'; // defaults
 	export let tokenAmountHeld = 0;
@@ -84,17 +84,20 @@
 					: 'text-light-red'
 				: 'text-gray-600 dark:text-gray-400'}"
 		>
-			{#if !$tokenLoaders[contractHash]}
-				{parseFloat(
-					(tokenTicker.toLowerCase() === 'cspr'
-						? $selectedWallet?.availableBalance[$user?.network ?? 'testnet'] ?? tokenAmountHeld
-						: tokenAmountHeld
-					).toFixed(4),
-				)}
-			{:else}
-				<span class="skeleton-loader" />
-			{/if}
-			{tokenTicker}
+			<span class="max-w-full text-ellipsis">
+				{#if !$tokenLoaders[contractHash]}
+					{tokenTicker.toLowerCase() === 'cspr'
+						? (
+								$selectedWallet?.availableBalance[$user?.network ?? 'testnet'] ?? tokenAmountHeld
+						  ).toFixed(token.decimals)
+						: tokenAmountHeld.toFixed(token.decimals)}
+				{:else}
+					<span class="skeleton-loader" />
+				{/if}
+			</span>
+			<span>
+				{tokenTicker}
+			</span>
 		</p>
 
 		{#if tokenTicker.toLowerCase() === 'cspr'}
@@ -147,7 +150,7 @@
 		@apply px-3 py-2;
 		@apply rounded-2xl border border-light-transparentGrey10 cursor-pointer select-none;
 		@apply lg:p-5 lg:rounded-[1.375rem];
-		@apply dark:bg-dark-blue h-[140px];
+		@apply dark:bg-dark-blue h-[140px] overflow-hidden;
 		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 	}
 

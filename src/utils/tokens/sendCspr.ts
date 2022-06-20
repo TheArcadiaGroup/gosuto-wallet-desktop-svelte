@@ -6,7 +6,7 @@ export default async (
 	fromPublicKey: string,
 	fromPrivateKey: string,
 	toPublicKey: string,
-	amount: number,
+	amount: string,
 	network: 'testnet' | 'mainnet' = 'testnet',
 	algorithm: 'secp256k1' | 'ed25519' = 'ed25519',
 ) => {
@@ -17,7 +17,7 @@ export default async (
 
 		const decryptedFromPrivateKey = decryptPrvKey(fromPrivateKey);
 
-		const amountAsBigNumber = ethers.utils.parseUnits(amount.toString(), 9); // Convert the digit amount to BigNumber
+		const amountAsBigNumber = ethers.utils.parseUnits(amount, 9); // Convert the digit amount to BigNumber
 
 		const signKeyPair =
 			algorithm === 'ed25519'

@@ -202,6 +202,7 @@ module.exports = {
 		contractHash,
 		reciepientPublicKey,
 		amount,
+		tokenDecimals,
 		privateKey,
 		pvk_algorithm,
 		network,
@@ -225,12 +226,13 @@ module.exports = {
 			const deployHash = await erc20.transfer(
 				keyPair, // Key pair used for signing
 				CLPublicKey.fromHex(reciepientPublicKey), // Receiver public key
-				amount.toString(), // Amount to transfer
+				ethers.utils.parseUnits(amount, tokenDecimals), // Amount to transfer
 				'1000000000', // Payment amount
 			);
 
 			return await casperClient.getDeploy(deployHash);
 		} catch (error) {
+			console.log(error);
 			throw error;
 		}
 	},
@@ -243,7 +245,16 @@ module.exports = {
 
 		const balance = await erc20.balanceOf(CLPublicKey.fromHex(publicKey));
 
-		return balance;
+		const decimals = +ethers.utils.formatUnits(
+			await getTokenNamedKeyValue(contractHash, 'decimals', network),
+			0,
+		);
+
+		const parsedBalance = +ethers.utils.formatUnits(balance.toString(), decimals);
+
+		console.log(parsedBalance);
+
+		return parsedBalance;
 	},
 	getTokenDetails: async (contractHash, network) => {
 		if (!(await checkIfTokenIsSupported(contractHash, network))) {

@@ -1,5 +1,6 @@
 import { sendTokenTracker } from '$stores/activityLoaders';
 import { user } from '$stores/user';
+import { ethers } from 'ethers';
 import { get } from 'svelte/store';
 import { decryptPrvKey, retrieveData, saveData } from './dataStorage';
 import { parseTransferData } from './responseParsers/transfers';
@@ -38,7 +39,8 @@ export function deleteToken(wallet: string, contractAddress: string): boolean {
 export async function sendToken(
 	publicKey: string,
 	privateKey: string,
-	tokenAmount: number,
+	tokenAmount: string,
+	tokenDecimals: number,
 	recipientPublicKey: string,
 	contractHash: string = 'CSPR',
 	network: 'testnet' | 'mainnet' = 'testnet',
@@ -65,6 +67,7 @@ export async function sendToken(
 		network: network, // use testnet just in case the user makes a mistake
 		contractHash: contractHash,
 		algorithm: algorithm,
+		tokenDecimals: tokenDecimals,
 	};
 
 	sendTokenTracker.update((transactions) => {

@@ -182,6 +182,7 @@ module.exports = () => {
 				parsedData.contractHash,
 				parsedData.recipientPublicKey,
 				parsedData.amount,
+				parsedData.tokenDecimals,
 				parsedData.senderPrivateKey,
 				parsedData.algorithm,
 				parsedData.network,
