@@ -63,8 +63,9 @@ const deployMintableContract = async (
 			name: new CLString(token_name),
 			symbol: new CLString(token_symbol),
 			decimals: new CLU8(token_decimals),
-			total_supply: new CLU256(token_supply),
+			total_supply: new CLU256(ethers.utils.parseUnits(token_supply.toString(), token_decimals)),
 			authorized_minter: new CLString(authorized_minter),
+			contract_key_name: new CLString(token_name),
 		}),
 	);
 	const deploy = DeployUtil.makeDeploy(deployParams, session, payment);
@@ -83,8 +84,36 @@ const deployNormalContract = async (
 	pvk_algorithm = 'ed25519',
 	network = 'testnet',
 ) => {
-	const rpc = network === 'mainnet' ? mainnetApiUrl : testnetApiUrl;
-	const erc20 = erc20ClassInstance(rpc, network === 'mainnet' ? 'casper' : 'casper-test');
+	// const rpc = network === 'mainnet' ? mainnetApiUrl : testnetApiUrl;
+	// const erc20 = erc20ClassInstance(rpc, network === 'mainnet' ? 'casper' : 'casper-test');
+
+	// const publicKey =
+	// 	pvk_algorithm === 'ed25519'
+	// 		? Keys.Ed25519.privateToPublicKey(Buffer.from(private_key, 'hex'))
+	// 		: Keys.Secp256K1.privateToPublicKey(Buffer.from(private_key, 'hex'));
+	// const keyPair =
+	// 	pvk_algorithm === 'ed25519'
+	// 		? Keys.Ed25519.parseKeyPair(publicKey, Buffer.from(private_key, 'hex'))
+	// 		: Keys.Secp256K1.parseKeyPair(publicKey, Buffer.from(private_key, 'hex'));
+
+	// const installDeployHash = await erc20.install(
+	// 	keyPair, // Key pair used for signing
+	// 	token_name, // Name of the token
+	// 	token_symbol, // Token Symbol
+	// 	token_decimals, // Token decimals
+	// 	ethers.utils.parseUnits(token_supply.toString(), token_decimals), // Token supply
+	// 	90000000000, // Payment amount 200000000000
+	// 	path.join(__dirname, './erc20_token.wasm'), // Path to WASM file
+	// );
+
+	const { casperClient } = getCasperClientAndService(network);
+	const networkName = network === 'mainnet' ? 'casper' : 'casper-test';
+
+	const erc20MintableContractCode = fs.readFileSync(path.join(__dirname, './erc20_token.wasm'), {
+		encoding: 'hex',
+	});
+
+	const contractCode = Uint8Array.from(Buffer.from(erc20MintableContractCode, 'hex'));
 
 	const publicKey =
 		pvk_algorithm === 'ed25519'
@@ -95,17 +124,25 @@ const deployNormalContract = async (
 			? Keys.Ed25519.parseKeyPair(publicKey, Buffer.from(private_key, 'hex'))
 			: Keys.Secp256K1.parseKeyPair(publicKey, Buffer.from(private_key, 'hex'));
 
-	const installDeployHash = await erc20.install(
-		keyPair, // Key pair used for signing
-		token_name, // Name of the token
-		token_symbol, // Token Symbol
-		token_decimals, // Token decimals
-		token_supply, // Token supply
-		90000000000, // Payment amount 200000000000
-		path.join(__dirname, './erc20_token.wasm'), // Path to WASM file
-	);
+	const deployParams = new DeployUtil.DeployParams(keyPair.publicKey, networkName);
+	const payment = DeployUtil.standardPayment(90000000000);
 
-	return installDeployHash;
+	const session = DeployUtil.ExecutableDeployItem.newModuleBytes(
+		contractCode,
+		RuntimeArgs.fromMap({
+			name: new CLString(token_name),
+			symbol: new CLString(token_symbol),
+			decimals: new CLU8(token_decimals),
+			total_supply: new CLU256(ethers.utils.parseUnits(token_supply.toString(), token_decimals)),
+			// authorized_minter: new CLString(authorized_minter),
+			contract_key_name: new CLString(token_name),
+		}),
+	);
+	const deploy = DeployUtil.makeDeploy(deployParams, session, payment);
+	const signedDeploy = DeployUtil.signDeploy(deploy, keyPair);
+	const deployHash = await casperClient.putDeploy(signedDeploy);
+
+	return deployHash;
 };
 
 const getTokenNamedKeyValue = async (contractHash, key, network) => {

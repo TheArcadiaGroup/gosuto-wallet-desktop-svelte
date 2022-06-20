@@ -38,6 +38,10 @@
 			pollyfillSelectedWallet();
 		}
 
+		if (!authorizedMinterHash) {
+			authorizedMinterHash = $selectedWallet!.accountHash;
+		}
+
 		createToken(
 			$selectedWallet!.privateKey,
 			$selectedWallet!.publicKey,

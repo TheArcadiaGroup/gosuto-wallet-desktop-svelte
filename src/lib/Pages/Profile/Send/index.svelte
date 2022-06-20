@@ -123,6 +123,7 @@
 		@apply overflow-y-auto h-[85%] overflow-x-hidden;
 		@apply px-2 py-8 gap-x-3.5 gap-y-5 lg:gap-8 lg:px-16 pb-20;
 		grid-template-columns: repeat(2, minmax(50%, 1fr));
+		grid-template-rows: repeat(auto-fit, minmax(140px, 140px));
 	}
 
 	:local(.inner-btn) {

@@ -12,6 +12,7 @@
 	import DeleteIcon from '$icons/DeleteIcon.svelte';
 	import { tokens } from '$stores/user/tokens';
 	import { saveData } from '$utils/dataStorage';
+	import { ethers, utils } from 'ethers';
 
 	/**
 	 * The index of this card. Used when dispatching selectToken event to parent
@@ -90,7 +91,10 @@
 						? (
 								$selectedWallet?.availableBalance[$user?.network ?? 'testnet'] ?? tokenAmountHeld
 						  ).toFixed(token.decimals)
-						: tokenAmountHeld.toFixed(token.decimals)}
+						: ethers.utils.formatUnits(
+								ethers.utils.parseUnits(tokenAmountHeld.toFixed(token.decimals), token.decimals),
+								token.decimals,
+						  )}
 				{:else}
 					<span class="skeleton-loader" />
 				{/if}
