@@ -35,6 +35,13 @@
 			route: '/add-wallet/import/from-file',
 			isSelected: false,
 		},
+		{
+			id: 3,
+			header: 'Import From Private Key',
+			description: 'Import wallet from private key string',
+			route: '/add-wallet/import/from-private-key-text',
+			isSelected: false,
+		},
 	];
 
 	/**
@@ -101,12 +108,14 @@
 			>
 				<span slot="text" class="addWallet-bt-text">Next</span>
 			</Button>
-			{#if wallets?.length > 0}
+		</div>
+		{#if wallets?.length > 0}
+			<div class="addWallet-bt next-bt">
 				<Button class="addWallet-cancel-bt" isTransparent={true} on:click={() => goto('/profile')}>
 					<span slot="text" class="addWallet-bt-text">Cancel</span>
 				</Button>
-			{/if}
-		</div>
+			</div>
+		{/if}
 	</div>
 </div>
 
@@ -147,11 +156,12 @@
 
 	.choice-cards {
 		@apply w-full;
-		@apply flex flex-col gap-6 4xl:gap-12;
+		@apply grid gap-6 4xl:gap-12;
+		@apply grid-cols-2 grid-rows-2;
 	}
 
 	.addWallet-bt {
-		@apply w-11/12 max-w-2xl;
+		@apply w-1/2 max-w-2xl;
 		@apply h-12 4xl:h-28;
 		@apply rounded-3xl;
 	}
@@ -170,7 +180,7 @@
 	}
 
 	.createWallet-use-terms {
-		@apply w-5/6;
+		@apply w-full flex justify-center items-center;
 		@apply translate-x-2;
 		@apply mt-14 4xl:mt-32;
 		@apply mb-5;

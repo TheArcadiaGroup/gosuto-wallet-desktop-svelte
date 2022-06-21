@@ -53,13 +53,6 @@
 
 		return;
 	}
-
-	$: console.log(
-		wallet.publicKey,
-		wallet?.stakedBalance[$user?.network ?? 'testnet'],
-		wallet?.unclaimedRewards[$user?.network ?? 'testnet'],
-		$csprPrice.price[$user?.currency || 'usd'],
-	);
 </script>
 
 <div class="credit-card-container" on:click={saveAddress}>

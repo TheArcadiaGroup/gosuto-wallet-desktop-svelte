@@ -3,7 +3,7 @@ import { walletLoaders } from '$stores/dataLoaders';
 import { user } from '$stores/user';
 import { tokens } from '$stores/user/tokens';
 import { selectedWallet, wallets } from '$stores/user/wallets';
-import { retrieveData, saveData } from '$utils/dataStorage';
+import { decryptPrvKey, retrieveData, saveData } from '$utils/dataStorage';
 import { get } from 'svelte/store';
 import { loadWalletData } from './dataLoaders';
 import { getTokenValue } from './token.util';
