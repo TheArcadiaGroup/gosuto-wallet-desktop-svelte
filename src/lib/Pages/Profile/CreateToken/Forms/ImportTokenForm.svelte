@@ -119,12 +119,12 @@
 				class="create-token-dark-sidebar-input"
 				label="Token Ticker"
 			/>
-			<TextInput
+			<!-- <TextInput
 				bind:value={decimals}
 				class="create-token-dark-sidebar-input"
 				label="Decimals"
 				type="number"
-			/>
+			/> -->
 		{/if}
 		<div class="switch-row">
 			<p class="switch-text">Prefer Contract Details</p>
@@ -139,7 +139,7 @@
 			</div>
 		</div>
 		<div class="confirm-buttons">
-			<Button isDisabled={!contractHash || (!preferContractDetails && (!tokenTicker || !decimals))}>
+			<Button isDisabled={!contractHash || (!preferContractDetails && !tokenTicker)}>
 				<div slot="text" class="my-2 leading-7">Import</div>
 			</Button>
 			<Button

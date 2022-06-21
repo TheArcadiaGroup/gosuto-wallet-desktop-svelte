@@ -22,4 +22,4 @@ jobs:
       - name: Install dependencies
         run: yarn || "ls"
       - name: Build
-        run: yarn package:always
+        run: yarn package

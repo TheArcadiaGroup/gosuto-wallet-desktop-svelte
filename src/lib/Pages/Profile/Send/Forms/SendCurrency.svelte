@@ -162,7 +162,7 @@
 				class="send-currency-dark-sidebar-input"
 				type="number"
 				step={1 / +'1'.padEnd(selectedToken.decimals, '0')}
-				label="Enter {selectedToken.tokenName} amount"
+				label="Enter {selectedToken.tokenName.substring(0, 5)}... amount"
 				addTextBg={true}
 			/>
 		</div>

@@ -131,10 +131,8 @@ export default () => {
 				};
 			}
 
-			res.data.decimals = !res.data.preferContractDetails ? res.data.decimals : res.data.decimals;
-			res.data.tokenTicker = !res.data.preferContractDetails
-				? res.data.tokenTicker
-				: res.data.tokenTicker;
+			// res.data.decimals = res.data.decimals;
+			// res.data.tokenTicker = res.data.tokenTicker;
 			const tokenName = res.data.tokenName;
 
 			const dbTokens: DBTokens = retrieveData('tokens');

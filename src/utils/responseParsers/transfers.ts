@@ -74,6 +74,8 @@ export default function () {
 			});
 		} else {
 			// Definitely an error occurred
+			console.log(response.error);
+
 			sendTokenTracker.update((transactions) => {
 				if (response.id && transactions[response.id]) {
 					transactions[response.id] = transactions[response.id];

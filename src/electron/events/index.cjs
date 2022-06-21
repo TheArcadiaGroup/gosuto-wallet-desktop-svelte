@@ -212,23 +212,21 @@ module.exports = () => {
 	ipcMain.on('getErc20TokenDetails', async (event, data) => {
 		try {
 			const parsedData = JSON.parse(data);
+
 			const res = await getTokenDetails(parsedData.contractHash, parsedData.network ?? 'testnet');
 
-			event.returnValue = JSON.stringify({
+			const returnVal = JSON.stringify({
 				data: {
 					...parsedData,
 					...res,
+					tokenTicker: parsedData.preferContractDetails ? res.tokenTicker : parsedData.tokenTicker,
 				},
 				error: null,
 			});
 
-			sendMessage(
-				'getErc20TokenDetailsResponse',
-				JSON.stringify({
-					data: { ...parsedData, ...res },
-					error: null,
-				}),
-			);
+			event.returnValue = returnVal;
+
+			sendMessage('getErc20TokenDetailsResponse', returnVal);
 		} catch (error) {
 			event.returnValue = JSON.stringify({
 				data: null,

@@ -52,7 +52,7 @@ const deployMintableContract = async (
 	const keyPair =
 		pvk_algorithm === 'ed25519'
 			? Keys.Ed25519.parseKeyPair(publicKey, Buffer.from(private_key, 'hex'))
-			: Keys.Secp256K1.parseKeyPair(publicKey, Buffer.from(private_key, 'hex'));
+			: Keys.Secp256K1.parseKeyPair(publicKey, Buffer.from(private_key, 'hex'), 'raw');
 
 	const deployParams = new DeployUtil.DeployParams(keyPair.publicKey, networkName);
 	const payment = DeployUtil.standardPayment(90000000000);
@@ -122,7 +122,7 @@ const deployNormalContract = async (
 	const keyPair =
 		pvk_algorithm === 'ed25519'
 			? Keys.Ed25519.parseKeyPair(publicKey, Buffer.from(private_key, 'hex'))
-			: Keys.Secp256K1.parseKeyPair(publicKey, Buffer.from(private_key, 'hex'));
+			: Keys.Secp256K1.parseKeyPair(publicKey, Buffer.from(private_key, 'hex'), 'raw');
 
 	const deployParams = new DeployUtil.DeployParams(keyPair.publicKey, networkName);
 	const payment = DeployUtil.standardPayment(90000000000);
@@ -258,7 +258,7 @@ module.exports = {
 			const keyPair =
 				pvk_algorithm === 'ed25519'
 					? Keys.Ed25519.parseKeyPair(publicKey, Buffer.from(privateKey, 'hex'))
-					: Keys.Secp256K1.parseKeyPair(publicKey, Buffer.from(privateKey, 'hex'));
+					: Keys.Secp256K1.parseKeyPair(publicKey, Buffer.from(privateKey, 'hex'), 'raw');
 
 			const deployHash = await erc20.transfer(
 				keyPair, // Key pair used for signing
