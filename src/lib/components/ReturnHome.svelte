@@ -77,7 +77,7 @@
 		@apply relative;
 		@apply flex flex-col;
 		@apply gap-x-8 px-2;
-		@apply lg:flex-row lg:items-center;
+		@apply 2xl:flex-row 2xl:items-center;
 	}
 
 	.return-back-button {
