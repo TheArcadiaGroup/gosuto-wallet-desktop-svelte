@@ -192,7 +192,7 @@
 				Recipient Receives:
 				<span class={tokenAmount > 0 ? 'text-light-lighterOrange 2xl:ml-2' : ''}>
 					<br class="2xl:hidden" />
-					{parseFloat(tokenAmount?.toFixed(5)) ?? 0}
+					{parseFloat((tokenAmount * 1)?.toFixed(5)) ?? 0}
 					{selectedToken.tokenTicker}
 					({parseFloat((selectedToken.tokenPriceUSD * tokenAmount)?.toFixed(2))}
 					{$user?.currency.toUpperCase() || 'USD'})
