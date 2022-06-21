@@ -79,6 +79,8 @@
 				}
 
 				console.log(walletCreationResult);
+			} else if (!data && !privateKey) {
+				privateKeyValid = true;
 			} else {
 				privateKeyValid = false;
 			}
@@ -118,6 +120,9 @@
 				algorithm,
 			};
 		} catch (error) {
+			privateKeyValid = false;
+			accountHash = '';
+			accountHex = '';
 			return null;
 		}
 	};
@@ -284,7 +289,7 @@
 			/>
 		</div>
 		{#if !privateKeyValid || walletExists}
-			<div class="error-div pt-6 items-center justify-center text-center leading-5">
+			<div class="error-div pt-1 items-center justify-center text-center leading-5">
 				{#if !privateKeyValid}
 					Error, the app only supports private keys encrypted using the ED25519 or SECP256K1
 					Algorithm
@@ -408,7 +413,7 @@
 	}
 
 	.error-div {
-		@apply text-left text-xs text-red-300 -mt-6 mb-2 flex w-96 px-2;
+		@apply text-left text-xs text-red-300 -mt-3 mb-2 flex w-96 px-2;
 	}
 
 	.success-div {
