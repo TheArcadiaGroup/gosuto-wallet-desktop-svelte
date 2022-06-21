@@ -98,6 +98,11 @@ declare global {
 			mainnet: number;
 			testnet: number;
 		};
+		stakingRewards: {
+			// using this approach since this tends to come in later after the balance
+			mainnet: number;
+			testnet: number;
+		};
 		walletTokens: {
 			mainnet: IToken[];
 			testnet: IToken[];

@@ -270,7 +270,7 @@ export const filterUserRewards = async (
 };
 
 export const getNetworkValidators = async (network: 'testnet' | 'mainnet' = 'testnet') => {
-	const { BalanceServiceByJsonRPC, CasperServiceByJsonRPC, CLPublicKey } = window.CasperSDK;
+	const { CasperServiceByJsonRPC, CLPublicKey } = window.CasperSDK;
 
 	try {
 		const casperService = new CasperServiceByJsonRPC(getEndpointByNetwork(network));
@@ -356,6 +356,7 @@ export const getUserDelegatedAmount = async (
 		const eraValidators = validatorsInfo.auction_state.era_validators[0];
 		const { bids } = validatorsInfo.auction_state;
 		let stakedAmount = 0;
+		let stakingRewards = 0;
 
 		const userRewardsBreakdown = await filterUserRewards(publicKey, network);
 
@@ -391,6 +392,7 @@ export const getUserDelegatedAmount = async (
 						validatorWeight,
 					});
 					stakedAmount += +delegator.staked_amount / 1e9;
+					stakingRewards += (userRewardsBreakdown?.[bid.public_key]?.amount ?? 0) / 1e9 ?? 0;
 				}
 			}
 		});
@@ -428,10 +430,10 @@ export const getUserDelegatedAmount = async (
 		saveData('wallets', dbWallets);
 		wallets.set(dbWallets);
 
-		return { stakedAmount, unclaimedRewards, stakingOperations };
+		return { stakedAmount, unclaimedRewards, stakingOperations, stakingRewards };
 	} catch (error) {
 		console.log('error =', error);
-		return { stakedAmount: 0, unclaimedRewards: 0, stakingOperations: [] };
+		return { stakedAmount: 0, unclaimedRewards: 0, stakingOperations: [], stakingRewards: 0 };
 	} finally {
 		loadingStakes.set(false);
 	}
@@ -441,7 +443,7 @@ export const getValidatorByDeploy = async (
 	deployHash: string,
 	network: 'testnet' | 'mainnet' = 'testnet',
 ) => {
-	const { BalanceServiceByJsonRPC, CasperServiceByJsonRPC, CLPublicKey } = window.CasperSDK;
+	const { CasperServiceByJsonRPC } = window.CasperSDK;
 
 	let sess = null;
 	try {

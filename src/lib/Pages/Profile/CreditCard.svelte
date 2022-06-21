@@ -15,7 +15,7 @@
 	import ProfilePicture from '$lib/components/ProfilePicture.svelte';
 	import { saveData } from '$utils/dataStorage';
 	import { selectedWallet } from '$stores/user/wallets';
-	import { walletLoaders } from '$stores/dataLoaders';
+	import { walletLoaders, walletStakingBalances } from '$stores/dataLoaders';
 	import { loadWalletData } from '$utils/dataLoaders';
 	import { user } from '$stores/user';
 	import { csprPrice } from '$stores/tokens';
@@ -53,6 +53,13 @@
 
 		return;
 	}
+
+	$: console.log(
+		wallet.publicKey,
+		wallet?.stakedBalance[$user?.network ?? 'testnet'],
+		wallet?.unclaimedRewards[$user?.network ?? 'testnet'],
+		$csprPrice.price[$user?.currency || 'usd'],
+	);
 </script>
 
 <div class="credit-card-container" on:click={saveAddress}>
@@ -100,7 +107,7 @@
 		<div class="grow-0">
 			<div class="field-title">Staked</div>
 			<div class="amount">
-				{#if !$walletLoaders[wallet.publicKey]}
+				{#if !$walletStakingBalances[wallet.publicKey]}
 					<span class="block mr-1">
 						{parseFloat(
 							(
@@ -116,13 +123,13 @@
 			</div>
 		</div>
 		<div class="grow-0">
-			<div class="field-title">unclaimed rewards</div>
+			<div class="field-title">staking rewards</div>
 			<div class="amount">
-				{#if !$walletLoaders[wallet.publicKey]}
+				{#if !$walletStakingBalances[wallet.publicKey]}
 					<span class="block mr-1">
 						{parseFloat(
 							(
-								wallet?.unclaimedRewards[$user?.network ?? 'testnet'] *
+								wallet?.stakingRewards?.[$user?.network ?? 'testnet'] *
 								$csprPrice.price[$user?.currency || 'usd']
 							).toFixed(2),
 						) || 0}

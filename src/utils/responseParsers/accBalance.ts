@@ -1,4 +1,4 @@
-import { tokenLoaders, walletLoaders } from '$stores/dataLoaders';
+import { tokenLoaders, walletLoaders, walletStakingBalances } from '$stores/dataLoaders';
 import { csprPrice } from '$stores/tokens';
 import { user } from '$stores/user';
 import { wallets, selectedWallet } from '$stores/user/wallets';
@@ -8,12 +8,17 @@ import { getCSPRUsdPrice } from '$utils/tokens';
 import { get } from 'svelte/store';
 
 const parseStakingData = (publicKey: string, network: 'testnet' | 'mainnet' = 'testnet') => {
+	walletStakingBalances.update((_loader) => {
+		_loader[publicKey] = new Date();
+		return _loader;
+	});
 	getUserDelegatedAmount(publicKey, network)
 		.then((stakingData) => {
 			const _wallets = get(wallets).map((wallet) => {
 				if (wallet.publicKey === publicKey) {
 					wallet.unclaimedRewards[get(user)?.network ?? 'testnet'] = stakingData.unclaimedRewards;
 					wallet.stakedBalance[get(user)?.network ?? 'testnet'] = stakingData.stakedAmount;
+					wallet.stakingRewards[get(user)?.network ?? 'testnet'] = stakingData.stakingRewards;
 				}
 				return wallet;
 			});
@@ -23,11 +28,18 @@ const parseStakingData = (publicKey: string, network: 'testnet' | 'mainnet' = 't
 			if (thisWallet && thisWallet.publicKey === publicKey) {
 				thisWallet.unclaimedRewards[get(user)?.network ?? 'testnet'] = stakingData.unclaimedRewards;
 				thisWallet.stakedBalance[get(user)?.network ?? 'testnet'] = stakingData.stakedAmount;
+				thisWallet.stakingRewards[get(user)?.network ?? 'testnet'] = stakingData.stakingRewards;
 				selectedWallet.set(thisWallet);
 				saveData('selectedWallet', thisWallet);
 			}
 		})
-		.catch((error) => console.log(error));
+		.catch((error) => console.log(error))
+		.finally(() => {
+			walletStakingBalances.update((_loader) => {
+				_loader[publicKey] = null;
+				return _loader;
+			});
+		});
 };
 
 const parseWalletDataGivenPrice = (

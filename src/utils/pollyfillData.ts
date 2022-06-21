@@ -100,6 +100,17 @@ export const pollyFillWallets = () => {
 	// Wallets
 	const dbWallets: IWallet[] = retrieveData('wallets') || [];
 
+	dbWallets.map((item) => {
+		if (!item.stakingRewards) {
+			item['stakingRewards'] = {
+				mainnet: 0,
+				testnet: 0,
+			};
+		}
+
+		return item;
+	});
+
 	saveData('wallets', dbWallets);
 
 	wallets.set(dbWallets);
@@ -119,6 +130,13 @@ export const pollyfillSelectedWallet = () => {
 		// If its not present, get the first item from the wallets array, if it doesn't exist, a better option is to redirect to onboarding for the user to create wallet.
 		const dbWallets: IWallet[] = retrieveData('wallets');
 		dbSelectedWallet = dbWallets[0] || null;
+	}
+
+	if (!dbSelectedWallet.stakingRewards) {
+		dbSelectedWallet['stakingRewards'] = {
+			mainnet: 0,
+			testnet: 0,
+		};
 	}
 
 	if (dbSelectedWallet) {

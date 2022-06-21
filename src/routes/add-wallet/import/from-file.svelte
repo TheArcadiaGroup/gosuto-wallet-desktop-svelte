@@ -111,6 +111,10 @@
 					mainnet: 0.0,
 					testnet: 0.0,
 				},
+				stakingRewards: {
+					mainnet: 0.0,
+					testnet: 0.0,
+				},
 				unclaimedRewards: {
 					mainnet: 0.0,
 					testnet: 0.0,

@@ -5,4 +5,5 @@ type UnknownObjectMap = {
 };
 
 export const walletLoaders = writable<UnknownObjectMap>({});
+export const walletStakingBalances = writable<UnknownObjectMap>({});
 export const tokenLoaders = writable<UnknownObjectMap>({});
