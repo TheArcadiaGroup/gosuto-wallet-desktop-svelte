@@ -203,11 +203,12 @@
 			/>
 		</div>
 
-		{#if !walletValid}
+		{#if !walletValid || (walletName && walletName?.length > 20)}
 			<div class="error-div">
-				Wallet Name Already Exists
+				{#if !walletValid}
+					Wallet Name Already Exists
+				{/if}
 				{#if walletName && walletName?.length > 20}
-					<br />
 					Maximum of 20 Characters Allowed
 				{/if}
 			</div>
@@ -313,6 +314,7 @@
 					!passwordsAreSimilar(password, confirmPassword) ||
 					Boolean(passwordErrors) ||
 					!walletName ||
+					walletName?.length > 20 ||
 					!accountHash ||
 					!accountHex ||
 					!privateKey ||

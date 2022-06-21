@@ -288,6 +288,7 @@
 						Boolean(passwordErrors) ||
 						!seedPhrase ||
 						!walletName ||
+						walletName?.length > 20 ||
 						seedPhrase.split(' ').length < 12}
 					on:click={() => confirmAndSendMnemonics()}
 				>

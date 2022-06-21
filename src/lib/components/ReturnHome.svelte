@@ -35,7 +35,13 @@
 	</div>
 	<p class="return-wallet-title">
 		{#if walletName.trim().length > 0}
-			{walletName}{walletName.endsWith('s') ? "'" : walletName.endsWith("'") ? 's' : "'s"}
+			{walletName.length > 8 ? `${walletName.substring(0, 8)}...` : walletName}{walletName.endsWith(
+				's',
+			)
+				? "'"
+				: walletName.endsWith("'")
+				? 's'
+				: "'s"}
 			<span class="return-swap-text">{profileLocation}</span>
 		{:else}
 			<span class="return-swap-text">{profileLocation}</span>

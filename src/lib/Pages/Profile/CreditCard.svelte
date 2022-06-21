@@ -62,7 +62,7 @@
 				<ProfilePicture url={avatar || '/images/png/avatar.png'} />
 			</div>
 			<div class="wallet_name">
-				{name}
+				{name.length > 8 ? `${name.substring(0, 8)}...` : name}
 			</div>
 		</div>
 		<div class="grow-0">
