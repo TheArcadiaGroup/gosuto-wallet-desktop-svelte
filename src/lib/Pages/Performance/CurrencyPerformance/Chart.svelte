@@ -1,8 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import Chart from 'chart.js/auto/auto.esm';
 	import 'chartjs-adapter-date-fns';
 	import { user } from '$stores/user';
+
+	import { Chart, registerables, type ChartConfiguration } from 'chart.js';
+	// const { Chart, registerables } = pkg;
+
+	Chart.register(...registerables);
 
 	let ctx: HTMLCanvasElement;
 	export let chartPrices: ChartPrice[];
@@ -25,8 +29,8 @@
 		chartRender();
 	};
 
-	const chartRender = () => {
-		chart = new Chart(ctx, {
+	const chartConfig: () => ChartConfiguration = () => {
+		return {
 			type: 'line',
 			data: {
 				datasets: [
@@ -39,6 +43,10 @@
 							: Math.round((window.innerWidth * 2) / 1440),
 						pointRadius: 0,
 						data: chartPrices,
+						parsing: {
+							yAxisKey: 'y',
+							xAxisKey: 'x',
+						},
 						tension: 0.5,
 					},
 				],
@@ -123,7 +131,12 @@
 					},
 				},
 			},
-		});
+			plugins: [],
+		};
+	};
+
+	const chartRender = () => {
+		chart = new Chart(ctx, chartConfig());
 	};
 
 	$: ((changed) => {
