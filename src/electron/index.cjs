@@ -9,7 +9,7 @@ const { buildDarwinMenu, buildDefaultMenu } = require('./utils/buildMenu.cjs');
 // const { createTitleBar } = require('./utils/titlebar.cjs');
 
 const dev = process.env.NODE_ENV === 'development' || !app.isPackaged;
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5173;
 const serveURL = serve({ directory: '.' });
 
 // if (dev) {
