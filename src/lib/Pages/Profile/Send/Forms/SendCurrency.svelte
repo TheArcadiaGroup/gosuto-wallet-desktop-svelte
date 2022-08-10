@@ -35,6 +35,13 @@
 	let confirmPopup = false;
 
 	let tokenAmount = 2.5;
+	let userTokenBalance = +ethers.utils.formatUnits(
+		ethers.utils.parseUnits(
+			selectedToken?.tokenAmountHeld.toFixed(selectedToken?.decimals),
+			selectedToken?.decimals,
+		),
+		selectedToken?.decimals,
+	);
 	let recipientAddress = '';
 	let note = '';
 	let network: 'mainnet' | 'testnet' = $user?.network || 'mainnet';
@@ -146,6 +153,7 @@
 		(selectedToken.contractHash === 'CSPR' && tokenAmount < 2.5) ||
 		(selectedToken.contractHash === 'CSPR' &&
 			tokenAmount > selectedToken.tokenAmountHeld - totalCost) ||
+		(selectedToken.contractHash !== 'CSPR' && tokenAmount > userTokenBalance) ||
 		(Boolean(recipientAddress) && recipientAddress === $selectedWallet!.publicKey) ||
 		(Boolean(recipientAddress) && !publicKeyValid);
 	$: publicKeyValid = isValidPublicKey(recipientAddress);
@@ -198,6 +206,11 @@
 					{$user?.currency.toUpperCase() || 'USD'})
 				</span>
 			</p>
+		{:else if tokenAmount > userTokenBalance}
+			<div class="error-div">
+				<ErrorIcon class="mr-1" fill={'#e6332a'} />
+				You can send a maximum of {userTokenBalance}
+			</div>
 		{/if}
 		<div class="currency-form-row">
 			<TextInput

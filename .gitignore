@@ -12,3 +12,4 @@ yarn.lock
 .vscode/
 pnpm-lock.yaml
 .env
+vite.config.js.timestamp*

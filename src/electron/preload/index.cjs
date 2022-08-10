@@ -51,6 +51,7 @@ contextBridge.exposeInMainWorld('api', {
 			'retrieveData',
 			'sendErc20Tokens',
 			'getErc20TokenDetails',
+			'appInfo',
 		];
 		if (validChannels.includes(channel)) {
 			return ipcRenderer.sendSync(channel, data);

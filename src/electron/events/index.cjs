@@ -483,7 +483,7 @@ module.exports = () => {
 		}
 	});
 
-	ipcMain.on('appInfo', (event, _data) => {
+	ipcMain.on('appInfo', async (event, data) => {
 		event.returnValue = { rootPath: app.getAppPath() };
 	});
 };

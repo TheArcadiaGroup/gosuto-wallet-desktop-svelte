@@ -274,7 +274,8 @@ declare global {
 		| 'deployErc20Contract'
 		| 'erc20TokenBalance'
 		| 'sendErc20Tokens'
-		| 'getErc20TokenDetails';
+		| 'getErc20TokenDetails'
+		| 'appInfo';
 	type MainReceiveChannels =
 		| 'createWalletFromFileResponse'
 		| 'createWalletFromMnemonicsResponse'
