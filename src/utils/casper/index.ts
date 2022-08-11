@@ -310,7 +310,7 @@ export const getUserDelegatedAmount = async (
 			selfStake: number;
 			stakedAmount: number;
 			reward: number;
-			latestRewardDate: Date;
+			latestRewardDate: Date | null;
 			recentStake: Date;
 			validatorWeight: number;
 		}[] = [];
@@ -348,7 +348,7 @@ export const getUserDelegatedAmount = async (
 						selfStake: +bid.bid.staked_amount / 1e9,
 						stakedAmount: +delegator.staked_amount / 1e9,
 						reward: (userRewardsBreakdown?.[bid.public_key]?.amount ?? 0) / 1e9 ?? 0,
-						latestRewardDate: userRewardsBreakdown?.[bid.public_key]?.lastRewardDate ?? new Date(),
+						latestRewardDate: userRewardsBreakdown?.[bid.public_key]?.lastRewardDate ?? null,
 						recentStake: lastStakeTx?.transactionDate || new Date(),
 						validatorWeight,
 					});

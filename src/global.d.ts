@@ -184,7 +184,7 @@ declare global {
 		walletName: string;
 		stakeAmount: number;
 		initialStakeDate: Date;
-		latestRewardDate: Date;
+		latestRewardDate: Date | null;
 		reward: number;
 		// unlocked: number;
 		personalStakeWeight: number; // percentage of user stake on validator

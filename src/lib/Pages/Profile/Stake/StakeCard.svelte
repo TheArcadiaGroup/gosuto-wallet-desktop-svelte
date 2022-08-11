@@ -83,7 +83,9 @@
 		<div class="flex flex-col items-end justify-center w-1/3 text-right text-normal">
 			<span>Most Recent Reward on</span>
 			<span>
-				{window.moment(stake?.latestRewardDate).format('DD MMM YYYY')}
+				{stake?.latestRewardDate
+					? window.moment(stake?.latestRewardDate).format('DD MMM YYYY')
+					: 'No Reward Yet'}
 			</span>
 		</div>
 	</div>
@@ -92,7 +94,7 @@
 			{window.moment(stake?.initialStakeDate).fromNow()}
 		</div>
 		<div class="full">
-			{window.moment(stake?.latestRewardDate).fromNow()}
+			{stake?.latestRewardDate ? window.moment(stake?.latestRewardDate).fromNow() : 'No Reward Yet'}
 		</div>
 	</div>
 	<div class="footer">
