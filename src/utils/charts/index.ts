@@ -56,7 +56,7 @@ export const getCoinChart = async (coin: string, coinName: string) => {
 	return {
 		tokenName: coinName,
 		price: get(csprPrice).price[get(user)?.currency ?? 'usd'],
-		percentageChange: get(csprPrice).price_change,
+		percentageChange: get(csprPrice).price_change[get(user)?.currency ?? 'usd'],
 		chartPrices: {
 			day: oneDay.data.prices.map((item) => ({
 				x: new Date(item[0]).toISOString(),

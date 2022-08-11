@@ -203,7 +203,7 @@ declare global {
 	}
 
 	interface CSPRPrices {
-		price_change: number;
+		price_change: { usd: number; jpy: number; eur: number };
 		price: { usd: number; jpy: number; eur: number };
 	}
 

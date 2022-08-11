@@ -38,7 +38,7 @@
 		// @ts-ignore
 		const tokenInfo = await getTokenValue(contractHash.trim());
 		tokenPriceInUsd = tokenInfo.price[$user?.currency || 'usd'];
-		percentageChange = tokenInfo.price_change;
+		percentageChange = tokenInfo.price_change[$user?.currency || 'usd'];
 
 		if (token) {
 			loadTokenBalance(token, $selectedWallet!.publicKey);

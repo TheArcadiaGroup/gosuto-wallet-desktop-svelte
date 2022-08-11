@@ -1,5 +1,4 @@
 import { ethers } from 'ethers';
-import CoinGecko from 'coingecko-api';
 import { retrieveData, saveData } from '$utils/dataStorage';
 import { selectedWallet, wallets } from '$stores/user/wallets';
 import { get } from 'svelte/store';
@@ -58,25 +57,6 @@ export const getWalletBalancesSum = async (
 		return sum;
 	} catch (error) {}
 };
-
-// export const getTotalStakedSum = async (
-// 	publicKeys: string[],
-// 	network: 'testnet' | 'mainnet' = 'testnet',
-// ) => {
-// 	try {
-// 		let sum = 0;
-// 		for (let index = 0; index < publicKeys.length; index++) {
-// 			try {
-// 				const element = publicKeys[index];
-// 				const response = await getUserDelegatedAmount(element);
-// 				if (response) {
-// 					sum += response.stakedAmount;
-// 				}
-// 			} catch (error) {}
-// 		}
-// 		return sum;
-// 	} catch (error) {}
-// };
 
 export const getValidatorWeight = async (
 	publicKey: string,
@@ -173,25 +153,6 @@ export const getTotalStaked = async (network: 'testnet' | 'mainnet' = 'testnet')
 		}, 0);
 		return sumOfWeights / 1e9;
 	} catch (error) {}
-};
-
-export const getCasperMarketInformation = async () => {
-	try {
-		const casperInformation = await new CoinGecko().coins.fetch('casper-network', {});
-		const price = casperInformation.data.market_data.current_price.usd;
-		const casperTotalSupply = casperInformation.data.market_data.total_supply;
-		const casperCirculatingSupply = casperInformation.data.market_data.circulating_supply;
-		const casperPriceChangePercentage24h = (casperInformation.data.market_data as any)
-			.price_change_percentage_24h_in_currency;
-		return {
-			price,
-			casperTotalSupply,
-			casperCirculatingSupply,
-			casperPriceChangePercentage24h,
-		};
-	} catch (error) {
-		console.log('getCasperMarketInformation Error : ', error);
-	}
 };
 
 export const fetchUserRewards = async (

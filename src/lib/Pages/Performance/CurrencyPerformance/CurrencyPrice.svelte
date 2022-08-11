@@ -3,10 +3,19 @@
 
 	export let price: number;
 	export let percentageChange: number;
+
+	const currencySymbol: { [key: string]: string } = {
+		eur: '€',
+		jpy: '¥',
+		usd: '$',
+	};
 </script>
 
 <div class="price-wrapper">
-	<h3 class="price ">${price.toFixed(5)} ${$user?.currency.toUpperCase() || 'USD'}</h3>
+	<h3 class="price ">
+		{currencySymbol[$user?.currency.toLowerCase() || 'usd']}{price.toFixed(5)}
+		{$user?.currency.toUpperCase() || 'USD'}
+	</h3>
 	<span
 		class="percentage-change {percentageChange > 0
 			? 'text-light-green'

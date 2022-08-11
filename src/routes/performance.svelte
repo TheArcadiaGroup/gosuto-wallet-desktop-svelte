@@ -6,6 +6,7 @@
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 	import { getCoinChart } from '$utils/charts';
 	import Loading from '$lib/components/Loading.svelte';
+	import { user } from '$stores/user';
 
 	/**
 	 * This is the array of tokens, that will be shown in this route. It is being populated by the onMount hook.
@@ -48,13 +49,22 @@
 			month: ChartPrice[];
 		};
 	}[] = [];
-	$: loading = false;
 
-	onMount(async () => {
+	async function loadData() {
 		loading = true;
 		currencyPerfomance = [await getCoinChart('casper-network', 'Casper (CSPR)')];
 		loading = false;
+	}
+
+	$: loading = false;
+
+	onMount(async () => {
+		await loadData();
 	});
+
+	$: if ($user?.currency) {
+		loadData();
+	}
 </script>
 
 <div class="page-container">

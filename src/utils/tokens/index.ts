@@ -14,7 +14,11 @@ export const getTokenUsdPrice = async (token: string) => {
 			eur: 0,
 			jpy: 0,
 		},
-		price_change: 0,
+		price_change: {
+			usd: 0,
+			eur: 0,
+			jpy: 0,
+		},
 	};
 	switch (token) {
 		case 'CSPR':
@@ -32,17 +36,17 @@ export const getTokenUsdPrice = async (token: string) => {
 export const getCSPRUsdPrice = async () => {
 	try {
 		const casperInformation = await new window.CoinGecko().coins.fetch('casper-network', {});
+
 		const price = {
 			usd: casperInformation.data.market_data.current_price.usd,
 			eur: casperInformation.data.market_data.current_price.eur,
 			jpy: casperInformation.data.market_data.current_price.jpy,
 		};
-		// const casperTotalSupply = casperInformation.data.market_data.total_supply;
-		// const casperCirculatingSupply =
-		//   casperInformation.data.market_data.circulating_supply;
-		// const casperPriceChangePercentage24h =
-		const casperPriceChangePercentage24h = (casperInformation.data.market_data as any)
-			.price_change_percentage_24h;
+		const casperPriceChangePercentage24h = {
+			usd: (casperInformation.data.market_data as any).price_change_percentage_24h_in_currency.usd,
+			jpy: (casperInformation.data.market_data as any).price_change_percentage_24h_in_currency.jpy,
+			eur: (casperInformation.data.market_data as any).price_change_percentage_24h_in_currency.eur,
+		};
 
 		csprPrice.set({
 			price,
@@ -62,7 +66,11 @@ export const getCSPRUsdPrice = async () => {
 				eur: 1,
 				jpy: 1,
 			},
-			price_change: 0,
+			price_change: {
+				usd: 0,
+				eur: 0,
+				jpy: 0,
+			},
 		};
 	}
 };

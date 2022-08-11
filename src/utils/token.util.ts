@@ -1,6 +1,5 @@
 import { sendTokenTracker } from '$stores/activityLoaders';
 import { user } from '$stores/user';
-import { ethers } from 'ethers';
 import { get } from 'svelte/store';
 import { decryptPrvKey, retrieveData, saveData } from './dataStorage';
 import { parseTransferData } from './responseParsers/transfers';
@@ -158,7 +157,11 @@ export async function getTokenValue(contractAddress: string): Promise<{
 		eur: number;
 		jpy: number;
 	};
-	price_change: number;
+	price_change: {
+		usd: number;
+		eur: number;
+		jpy: number;
+	};
 }> {
 	return await getTokenUsdPrice(contractAddress);
 }
