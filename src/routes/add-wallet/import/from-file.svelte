@@ -96,7 +96,7 @@
 
 			wallets.push({
 				walletName: walletName.trim(),
-				walletPassword: encryptPassword(password.trim()),
+				walletPassword: { password: encryptPassword(password.trim()), isEncrypted: true },
 				walletImage: '',
 				seedPhrase: [],
 				availableBalanceUSD: {
@@ -131,6 +131,11 @@
 				publicKey: accountHex.trim(),
 				accountHash: accountHash.trim(),
 				privateKey: encryptPrvKey(privateKey.trim()),
+				lockStatus: {
+					lastUnlocked: Date.now(),
+					lockTimeout: 300,
+					isLocked: false,
+				},
 			});
 
 			saveData('wallets', wallets);

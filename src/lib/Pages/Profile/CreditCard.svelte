@@ -8,31 +8,53 @@
 	- `wallet` = Object with data (like balance, staked, etc.) of the wallet.
 -->
 <script lang="ts">
-	import { goto } from '$app/navigation';
-
 	import CardGraphics from '$icons/CardGraphics.svelte';
 	import PurpleTriangle from '$icons/PurpleTriangle.svelte';
 	import ProfilePicture from '$lib/components/ProfilePicture.svelte';
-	import { saveData } from '$utils/dataStorage';
-	import { selectedWallet } from '$stores/user/wallets';
 	import { walletLoaders, walletStakingBalances } from '$stores/dataLoaders';
-	import { loadWalletData } from '$utils/dataLoaders';
 	import { user } from '$stores/user';
 	import { csprPrice } from '$stores/tokens';
 	import { page } from '$app/stores';
+	import { selectedWallet, walletToUnlock, wallets } from '$stores/user/wallets';
+	import { saveData } from '$utils/dataStorage';
+	import { loadWalletData } from '$utils/dataLoaders';
+	import { goto } from '$app/navigation';
 
 	export let avatar = '/images/png/avatar.png';
 	export let name = 'Unknown Name';
 	export let wallet: IWallet;
 
-	function saveAddress() {
+	function switchWalletInternal(wallet: IWallet, path: string) {
+		// Check whether wallet is locked yet
+		if (
+			wallet.lockStatus.isLocked ||
+			(wallet.lockStatus.lastUnlocked + wallet.lockStatus.lockTimeout * 1000 < Date.now() &&
+				!wallet.lockStatus.isLocked)
+		) {
+			// Trigger unlock popup
+			selectedWallet.set(wallet);
+			walletToUnlock.set({ wallet, path });
+			return;
+		}
+
+		wallet.lockStatus = {
+			...wallet.lockStatus,
+			isLocked: false,
+		};
+
+		walletToUnlock.set(null);
 		selectedWallet.set(wallet);
 		saveData('selectedWallet', wallet);
 
-		// if (!$walletLoaders[wallet.publicKey]) {
-		// 	loadWalletData(wallet.publicKey);
-		// }
-		// goto(`/profile/${$selectedWallet?.publicKey}/history`);
+		saveData(
+			'wallets',
+			$wallets.map((_wallet) => {
+				if (_wallet.publicKey === wallet.publicKey) {
+					return wallet;
+				}
+				return _wallet;
+			}),
+		);
 
 		// There's a bug related to this and we don't want to break this until we find the culprit
 		if ($page.params.publicKey && $page.params.publicKey !== wallet.publicKey) {
@@ -50,12 +72,19 @@
 		if ($page.url.pathname === '/profile') {
 			goto(`/profile/${$selectedWallet?.publicKey}/history`);
 		}
-
-		return;
 	}
 </script>
 
-<div class="credit-card-container" on:click={saveAddress}>
+<div
+	class="credit-card-container"
+	on:click={() =>
+		switchWalletInternal(
+			wallet,
+			$page.params.publicKey && $page.params.publicKey !== wallet.publicKey
+				? $page.url.pathname.replace($page.params.publicKey, wallet.publicKey)
+				: `/profile/${wallet.publicKey}/history`,
+		)}
+>
 	<div class="data-column">
 		<div class="pp-and-name">
 			<div class="pp">

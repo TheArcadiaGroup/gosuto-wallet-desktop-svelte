@@ -95,8 +95,43 @@ export const decryptPassword = (encryptedPassword: string) => {
 	return encryptedPassword;
 };
 
+export const prepWalletBeforeSaving = (wallet: IWallet) => {
+	if (wallet && !wallet.walletPassword.isEncrypted) {
+		wallet.walletPassword = {
+			password: encryptPassword(wallet.walletPassword.password),
+			isEncrypted: true,
+		};
+	}
+	return wallet;
+};
+
+export const prepWalletBeforeLoading = (wallet: IWallet) => {
+	if (wallet && typeof wallet.walletPassword === 'string') {
+		wallet.walletPassword = {
+			isEncrypted: false,
+			password: decryptPassword(wallet.walletPassword),
+		};
+	}
+
+	if (wallet && !wallet.walletPassword.isEncrypted) {
+		wallet.walletPassword = {
+			password: encryptPassword(wallet.walletPassword.password),
+			isEncrypted: true,
+		};
+	}
+	return wallet;
+};
+
 export const saveData = (key: string, data: any) => {
 	// localStorage.setItem(key, JSON.stringify(data));
+	if (key === 'selectedWallet') {
+		data = prepWalletBeforeSaving(data as IWallet);
+	}
+
+	if (key === 'wallets') {
+		data = data.map((item: IWallet) => prepWalletBeforeSaving(item));
+	}
+
 	window.api.send(
 		'saveData',
 		JSON.stringify({
@@ -110,7 +145,16 @@ export const saveData = (key: string, data: any) => {
 export const retrieveData = (key: string) => {
 	try {
 		// const data = JSON.parse(localStorage.getItem(key)!);
-		const data = window.api.sendSync('retrieveData', key);
+		let data = window.api.sendSync('retrieveData', key);
+
+		if (key === 'selectedWallet') {
+			data = prepWalletBeforeLoading(data as IWallet);
+		}
+
+		if (key === 'wallets') {
+			data = data.map((item: IWallet) => prepWalletBeforeLoading(item));
+		}
+
 		return data;
 	} catch (_err) {
 		return null;

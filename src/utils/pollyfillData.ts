@@ -1,9 +1,10 @@
 import { goto } from '$app/navigation';
+import { isPollyfilling } from '$stores';
 import { walletLoaders } from '$stores/dataLoaders';
 import { user } from '$stores/user';
 import { tokens } from '$stores/user/tokens';
 import { selectedWallet, wallets } from '$stores/user/wallets';
-import { decryptPrvKey, retrieveData, saveData } from '$utils/dataStorage';
+import { retrieveData, saveData } from '$utils/dataStorage';
 import { get } from 'svelte/store';
 import { loadWalletData } from './dataLoaders';
 import { getTokenValue } from './token.util';
@@ -97,6 +98,7 @@ export const pollyFillUser = () => {
 };
 
 export const pollyFillWallets = () => {
+	const firstSetup = !get(wallets) || get(wallets).length <= 0;
 	// Wallets
 	const dbWallets: IWallet[] = retrieveData('wallets') || [];
 
@@ -108,12 +110,32 @@ export const pollyFillWallets = () => {
 			};
 		}
 
+		if (!item.lockStatus) {
+			item['lockStatus'] = {
+				lastUnlocked: Date.now(),
+				lockTimeout: 300,
+				isLocked: true,
+			};
+		}
+
+		if (firstSetup) {
+			item['lockStatus'] = {
+				...item['lockStatus'],
+				isLocked: true,
+				lastUnlocked: Date.now() - 4800 * 1000,
+			};
+		}
+
 		return item;
 	});
 
 	saveData('wallets', dbWallets);
 
 	wallets.set(dbWallets);
+
+	if (firstSetup) {
+		pollyfillSelectedWallet(firstSetup);
+	}
 
 	if (dbWallets.length === 0) {
 		goto('/add-wallet');
@@ -122,7 +144,7 @@ export const pollyFillWallets = () => {
 	return dbWallets;
 };
 
-export const pollyfillSelectedWallet = () => {
+export const pollyfillSelectedWallet = (firstSetup = false) => {
 	// Wallets
 	let dbSelectedWallet: IWallet = retrieveData('selectedWallet');
 
@@ -136,6 +158,22 @@ export const pollyfillSelectedWallet = () => {
 		dbSelectedWallet['stakingRewards'] = {
 			mainnet: 0,
 			testnet: 0,
+		};
+	}
+
+	if (!dbSelectedWallet.lockStatus) {
+		dbSelectedWallet['lockStatus'] = {
+			lastUnlocked: Date.now(),
+			lockTimeout: 300,
+			isLocked: true,
+		};
+	}
+
+	if (firstSetup) {
+		dbSelectedWallet['lockStatus'] = {
+			...dbSelectedWallet['lockStatus'],
+			isLocked: true,
+			lastUnlocked: Date.now() - 4800 * 1000,
 		};
 	}
 
@@ -153,8 +191,12 @@ export const pollyfillSelectedWallet = () => {
 };
 
 export default () => {
-	pollyFillUser();
-	pollyFillWallets();
-	pollyfillSelectedWallet();
-	pollyFillTokens();
+	if (!get(isPollyfilling)) {
+		isPollyfilling.set(true);
+		pollyFillUser();
+		pollyFillWallets();
+		pollyfillSelectedWallet();
+		pollyFillTokens();
+		isPollyfilling.set(false);
+	}
 };

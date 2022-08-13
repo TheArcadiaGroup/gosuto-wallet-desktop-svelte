@@ -69,7 +69,7 @@
 	selectedWallet.subscribe((wallet) => {
 		if (wallet && wallet?.publicKey !== $previousSelectedWallet?.publicKey) {
 			if (token) {
-				loadTokenBalance(token, $selectedWallet!.publicKey);
+				loadTokenBalance(token, wallet.publicKey);
 			}
 		}
 	});

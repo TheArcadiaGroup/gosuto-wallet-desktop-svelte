@@ -1,4 +1,5 @@
 import { tokenLoaders, walletLoaders } from '$stores/dataLoaders';
+import { encryptPassword } from './dataStorage';
 
 const monthNames = [
 	'Jan',

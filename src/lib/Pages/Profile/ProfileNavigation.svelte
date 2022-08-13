@@ -16,9 +16,9 @@
 
 	// MENU IMPORTS
 	import Bookmark from '$icons/Bookmark.svelte';
-	import PaperAirplane from '$icons/PaperAirplane.svelte';
 	import Stake from '$icons/Stake.svelte';
 	// import Swap from '$icons/Swap.svelte';
+	import SendIcon from '$icons/SendIcon.svelte';
 	import Wallet from '$icons/Wallet.svelte';
 	import ChartPie from '$icons/ChartPie.svelte';
 	import Checklist from '$icons/Checklist.svelte';
@@ -48,7 +48,7 @@
 	} = {
 		profile: [
 			{ name: 'history', label: 'History', icon: Bookmark },
-			{ name: 'send', label: 'Send', icon: PaperAirplane },
+			{ name: 'send', label: 'Send', icon: SendIcon },
 			{ name: 'stake', label: 'Stakes', icon: Stake },
 			{ name: 'settings', label: 'Wallet Settings', icon: Wallet },
 			// { name: 'swap', label: 'Swap', icon: Swap },

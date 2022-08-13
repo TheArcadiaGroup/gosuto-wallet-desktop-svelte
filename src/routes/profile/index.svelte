@@ -3,12 +3,65 @@
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 	import Button from '$lib/components/Button.svelte';
 
-	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
-	import { saveData } from '$utils/dataStorage';
-	import { wallets } from '$stores/user/wallets';
 	import { user } from '$stores/user';
 	import pollyfillData from '$utils/pollyfillData';
+	import { selectedWallet, walletToUnlock, wallets } from '$stores/user/wallets';
+	import { saveData } from '$utils/dataStorage';
+	import { loadWalletData } from '$utils/dataLoaders';
+	import { walletLoaders } from '$stores/dataLoaders';
+	import { goto } from '$app/navigation';
+
+	function switchWalletInternal(wallet: IWallet, path: string) {
+		// Check whether wallet is locked yet
+		if (
+			wallet.lockStatus.isLocked ||
+			(wallet.lockStatus.lastUnlocked + wallet.lockStatus.lockTimeout * 1000 < Date.now() &&
+				!wallet.lockStatus.isLocked)
+		) {
+			// Trigger unlock popup
+			selectedWallet.set(wallet);
+			walletToUnlock.set({ wallet, path });
+			return;
+		}
+
+		wallet.lockStatus = {
+			...wallet.lockStatus,
+			isLocked: false,
+		};
+
+		walletToUnlock.set(null);
+		selectedWallet.set(wallet);
+		saveData('selectedWallet', wallet);
+
+		saveData(
+			'wallets',
+			$wallets.map((_wallet) => {
+				if (_wallet.publicKey === wallet.publicKey) {
+					return wallet;
+				}
+				return _wallet;
+			}),
+		);
+
+		// There's a bug related to this and we don't want to break this until we find the culprit
+		if ($page.params.publicKey && $page.params.publicKey !== wallet.publicKey) {
+			const newUrl = $page.url.pathname.replace($page.params.publicKey, wallet.publicKey);
+
+			// Only send load request when it is not currently loading
+			if (!$walletLoaders[wallet.publicKey]) {
+				loadWalletData(wallet.publicKey);
+			}
+
+			goto(newUrl);
+			return;
+		}
+
+		if ($page.url.pathname === '/profile') {
+			goto(`/profile/${$selectedWallet?.publicKey}/history`);
+		}
+	}
 
 	onMount(() => {
 		if ($wallets.length <= 0) {
@@ -37,9 +90,13 @@
 				{#each $wallets as wallet}
 					<div
 						class="single-card-wrap"
-						on:click={() => {
-							saveData('selectedWallet', wallet);
-						}}
+						on:click={() =>
+							switchWalletInternal(
+								wallet,
+								$page.params.publicKey && $page.params.publicKey !== wallet.publicKey
+									? $page.url.pathname.replace($page.params.publicKey, wallet.publicKey)
+									: `/profile/${wallet.publicKey}/history`,
+							)}
 					>
 						<CreditCard name={wallet.walletName} {wallet} avatar={$user?.avatar} />
 					</div>

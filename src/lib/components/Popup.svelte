@@ -92,7 +92,7 @@
 	}
 
 	:local(.popup-holder) {
-		@apply fixed top-0 left-0 right-0 bottom-0 h-screen w-screen z-50 px-4;
+		@apply fixed top-0 left-0 right-0 bottom-0 h-screen w-screen z-[1000] px-4;
 		@apply justify-center items-center flex;
 	}
 

@@ -83,7 +83,10 @@ declare global {
 
 	interface IWallet {
 		walletName: string;
-		walletPassword: string;
+		walletPassword: {
+			password: string;
+			isEncrypted: boolean;
+		};
 		walletImage: string;
 		seedPhrase: string[];
 		availableBalanceUSD: { mainnet: number; testnet: number };
@@ -116,6 +119,11 @@ declare global {
 		accountHash: string;
 		privateKey: string;
 		algorithm: 'ed25519' | 'secp256k1';
+		lockStatus: {
+			isLocked: boolean;
+			lastUnlocked: number; // timestamp from Date.now()
+			lockTimeout: 300 | 600 | 900 | 1800 | 3600; // in seconds
+		};
 	}
 
 	interface IToken {

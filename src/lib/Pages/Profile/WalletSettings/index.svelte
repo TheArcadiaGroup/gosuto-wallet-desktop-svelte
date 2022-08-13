@@ -25,14 +25,17 @@
 	import { passwordsAreSimilar, validatePassword } from '$utils/validators/passwordValidation';
 	import { userHistory } from '$stores/user/history';
 	import { walletAsPem } from '$utils/exportWallet';
+	import LockDurationSelector from '$lib/components/LockDurationSelector.svelte';
 
 	let walletName = '';
+	let unlockDuration = 300;
 	let privateKey = '';
 	let newPassword = '';
 	let confirmPassword = '';
 	let canSave = false;
 	let canChangePassword = false;
 	let currentPassword = '';
+	let walletCurrentPassword = ''; // current wallet password loaded before hand
 
 	let showCopyWalletPasswordPopup: boolean = false;
 	let showExportWalletFilePopup: boolean = false;
@@ -57,8 +60,11 @@
 		}
 
 		walletName = wallet.walletName;
+		unlockDuration = wallet.lockStatus.lockTimeout;
 		privateKey = wallet.privateKey.substring(0, 30);
-		wallet.walletPassword = decryptPassword(wallet.walletPassword);
+		walletCurrentPassword = wallet.walletPassword.isEncrypted
+			? decryptPassword(wallet.walletPassword.password).trim()
+			: wallet.walletPassword.password.trim();
 	});
 
 	let copyToClipboard = (copyText: string) => {
@@ -67,7 +73,8 @@
 
 	let changePassword = () => {
 		if (newPassword && newPassword === confirmPassword) {
-			wallet.walletPassword = encryptPassword(newPassword);
+			wallet.walletPassword = { password: encryptPassword(newPassword), isEncrypted: true };
+
 			canChangePassword = false;
 
 			// clear form state
@@ -95,6 +102,11 @@
 	const updateWalletDetails = () => {
 		if (canSave) {
 			wallet.walletName = walletName;
+			wallet.lockStatus = {
+				...wallet.lockStatus,
+				lockTimeout: unlockDuration as 300 | 600 | 900 | 1800 | 3600,
+			};
+
 			const _wallets = $wallets.map((_wallet) => {
 				if (_wallet.publicKey === wallet.publicKey) {
 					_wallet = wallet;
@@ -129,20 +141,23 @@
 		}
 	};
 
-	$: ((walletName) => {
-		if (walletName.trim() && walletName.trim() !== wallet.walletName.trim()) {
+	$: ((walletName, unlockDuration) => {
+		if (
+			(walletName.trim() && walletName.trim() !== wallet.walletName.trim()) ||
+			unlockDuration !== wallet.lockStatus.lockTimeout
+		) {
 			canSave = true;
 		} else {
 			canSave = false;
 		}
-	})(walletName);
+	})(walletName, unlockDuration);
 
 	$: ((newPassword, confirmPassword) => {
 		if (
 			newPassword.trim() &&
 			confirmPassword.trim() &&
 			newPassword.trim() === confirmPassword.trim() &&
-			newPassword.trim() !== wallet.walletPassword.trim()
+			newPassword.trim() !== walletCurrentPassword.trim()
 		) {
 			canChangePassword = true;
 		} else {
@@ -163,10 +178,10 @@
 		{#if showCopyWalletPasswordPopup}
 			<PasswordToCopyPopup
 				bind:password={copyPrivateKeyPassword}
-				okDisabled={copyPrivateKeyPassword !== wallet.walletPassword}
+				okDisabled={copyPrivateKeyPassword !== walletCurrentPassword}
 				on:confirm={() => {
 					showCopyWalletPasswordPopup = false;
-					if (copyPrivateKeyPassword === wallet.walletPassword) {
+					if (copyPrivateKeyPassword === walletCurrentPassword) {
 						copyToClipboard(decryptPrvKey(wallet.privateKey));
 						showWalletCopiedPopup = true;
 						copyPrivateKeyPassword = '';
@@ -181,11 +196,11 @@
 		{#if showExportWalletFilePopup}
 			<PasswordToExportPopup
 				bind:password={exportWalletPassword}
-				okDisabled={exportWalletPassword !== wallet.walletPassword}
+				okDisabled={exportWalletPassword !== walletCurrentPassword}
 				on:confirm={() => {
 					showExportWalletFilePopup = false;
 					// TODO: Validate password then export file
-					if (exportWalletPassword === wallet.walletPassword) {
+					if (exportWalletPassword === walletCurrentPassword) {
 						walletAsPem(wallet.walletName, wallet.privateKey, wallet.algorithm);
 						exportWalletPassword = '';
 					}
@@ -280,7 +295,7 @@
 				addTextBg={true}
 			/>
 			<div class="error-div">
-				{#if currentPassword && wallet.walletPassword && !passwordsAreSimilar(currentPassword, wallet.walletPassword)}
+				{#if currentPassword && walletCurrentPassword && !passwordsAreSimilar(currentPassword, walletCurrentPassword)}
 					Enter correct wallet password
 				{/if}
 			</div>
@@ -295,6 +310,11 @@
 			<div class="error-div">
 				{#if passwordErrors}
 					{@html passwordErrors}
+				{/if}
+			</div>
+			<div class="error-div">
+				{#if newPassword && walletCurrentPassword && passwordsAreSimilar(newPassword, walletCurrentPassword)}
+					For security reasons, please Enter a different password from your previous one.
 				{/if}
 			</div>
 			<br />
@@ -317,8 +337,8 @@
 						hasGlow={true}
 						isDisabled={!canChangePassword ||
 							(currentPassword &&
-								wallet.walletPassword &&
-								!passwordsAreSimilar(currentPassword, wallet.walletPassword)) ||
+								walletCurrentPassword &&
+								!passwordsAreSimilar(currentPassword, walletCurrentPassword)) ||
 							($wallets?.filter((item) => item.walletName === walletName) &&
 								wallet.walletName !== walletName) ||
 							!passwordsAreSimilar(newPassword, confirmPassword)}
@@ -328,6 +348,14 @@
 					</Button>
 				</div>
 			</div>
+			<br />
+			<div class="flex justify-between relative">
+				<h2>Lock Wallet After:</h2>
+				<div>
+					<LockDurationSelector bind:selectedDuration={unlockDuration} />
+				</div>
+			</div>
+			<br />
 			<div class="ok-cancel">
 				<div class="save-bt" on:click={updateWalletDetails}>
 					<Button isDisabled={!canSave || walletName?.length > 20}>
