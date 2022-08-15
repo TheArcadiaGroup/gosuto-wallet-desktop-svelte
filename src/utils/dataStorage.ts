@@ -129,7 +129,14 @@ export const saveData = (key: string, data: any) => {
 	}
 
 	if (key === 'wallets') {
-		data = data.map((item: IWallet) => prepWalletBeforeSaving(item));
+		data = data
+			.filter(
+				(v: IWallet, i: number, a: IWallet[]) =>
+					a.findIndex((v2: IWallet) =>
+						['privateKey'].every((k) => v2[k as 'privateKey'] === v[k as 'privateKey']),
+					) === i,
+			)
+			.map((item: IWallet) => prepWalletBeforeSaving(item));
 	}
 
 	window.api.send(

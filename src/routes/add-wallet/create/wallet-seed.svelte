@@ -152,12 +152,13 @@
 	};
 
 	const confirmAndSendMnemonics = () => {
+		const seedPhrase = words.map((item) => item.word).join(' ');
 		const data: {
 			accountHex: string;
 			accountHash: string;
 			privateKey: string;
 			algorithm: 'secp256k1' | 'ed25519';
-		} = window.api.sendSync('createWalletFromMnemonics', words.join(' '));
+		} = window.api.sendSync('createWalletFromMnemonics', seedPhrase);
 		try {
 			if (data?.accountHex && data?.accountHash && data?.privateKey) {
 				const walletCreationResult = data;

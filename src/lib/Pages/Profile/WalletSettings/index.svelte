@@ -26,6 +26,7 @@
 	import { userHistory } from '$stores/user/history';
 	import { walletAsPem } from '$utils/exportWallet';
 	import LockDurationSelector from '$lib/components/LockDurationSelector.svelte';
+	import PasswordToRemoveWalletPopup from '$lib/components/PopUps/WalletSettings/PasswordToRemoveWalletPopup.svelte';
 
 	let walletName = '';
 	let unlockDuration = 300;
@@ -39,9 +40,11 @@
 
 	let showCopyWalletPasswordPopup: boolean = false;
 	let showExportWalletFilePopup: boolean = false;
+	let showRemoveWalletPopup: boolean = false;
 	let showWalletCopiedPopup: boolean = false;
 
 	let exportWalletPassword = '';
+	let removeWalletPassword = '';
 	let copyPrivateKeyPassword = '';
 
 	let wallet: IWallet = $selectedWallet!;
@@ -141,6 +144,18 @@
 		}
 	};
 
+	const removeWallet = () => {
+		if (wallet) {
+			const _wallets = $wallets.filter((_wallet) => _wallet.walletName !== wallet.walletName);
+			if (wallet.publicKey === $selectedWallet?.walletName) {
+				selectedWallet.set(null);
+			}
+			saveData('wallets', _wallets);
+			saveData('selectedWallet', null);
+			goto('/profile');
+		}
+	};
+
 	$: ((walletName, unlockDuration) => {
 		if (
 			(walletName.trim() && walletName.trim() !== wallet.walletName.trim()) ||
@@ -211,6 +226,24 @@
 				}}
 			/>
 		{/if}
+		{#if showRemoveWalletPopup}
+			<PasswordToRemoveWalletPopup
+				bind:password={removeWalletPassword}
+				okDisabled={removeWalletPassword !== walletCurrentPassword}
+				on:confirm={() => {
+					showExportWalletFilePopup = false;
+					// TODO: Validate password then export file
+					if (removeWalletPassword === walletCurrentPassword) {
+						removeWallet();
+						removeWalletPassword = '';
+					}
+				}}
+				on:cancel={() => {
+					showExportWalletFilePopup = false;
+					removeWalletPassword = '';
+				}}
+			/>
+		{/if}
 		{#if showWalletCopiedPopup}
 			<WalletCopiedPopup
 				on:confirm={() => {
@@ -233,10 +266,18 @@
 					<Button
 						hasGlow={true}
 						on:click={() => {
+							showRemoveWalletPopup = true;
+						}}
+					>
+						<p slot="text" class="settings-btn-text">Remove Wallet</p>
+					</Button>
+					<Button
+						hasGlow={true}
+						on:click={() => {
 							showExportWalletFilePopup = true;
 						}}
 					>
-						<p slot="text" class="settings-btn-text">Export Wallet File</p>
+						<p slot="text" class="settings-btn-text">Export Wallet</p>
 					</Button>
 				</div>
 			</div>
@@ -391,7 +432,7 @@
 	}
 
 	:local(.settings-btn) {
-		@apply text-xs md:text-base h-9 md:h-12 min-w-fit;
+		@apply text-xs h-9 md:h-12 min-w-fit flex gap-x-1;
 	}
 
 	:local(.back-btn) {
