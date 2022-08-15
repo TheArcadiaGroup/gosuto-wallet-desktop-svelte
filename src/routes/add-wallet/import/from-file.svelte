@@ -12,6 +12,7 @@
 	import { walletNameIsValid } from '$utils/profiles';
 	import { passwordsAreSimilar, validatePassword } from '$utils/validators/passwordValidation';
 	import ClosedEyeIcon from '$icons/ClosedEyeIcon.svelte';
+	import pollyfillData from '$utils/pollyfillData';
 
 	let walletName: string;
 	let password: string;
@@ -96,7 +97,7 @@
 
 			wallets.push({
 				walletName: walletName.trim(),
-				walletPassword: { password: encryptPassword(password.trim()), isEncrypted: true },
+				walletPassword: { password: password.trim(), isEncrypted: false },
 				walletImage: '',
 				seedPhrase: [],
 				availableBalanceUSD: {
@@ -139,6 +140,7 @@
 			});
 
 			saveData('wallets', wallets);
+			pollyfillData();
 			goto(`/profile/${accountHex.trim()}`);
 		}
 	};

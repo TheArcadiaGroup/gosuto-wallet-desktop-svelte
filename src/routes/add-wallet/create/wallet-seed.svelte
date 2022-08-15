@@ -14,6 +14,7 @@
 
 	import { goto } from '$app/navigation';
 	import { encryptPassword, encryptPrvKey, retrieveData, saveData } from '$utils/dataStorage';
+	import pollyfillData from '$utils/pollyfillData';
 
 	/** True if user copied seed phrase*/
 	let copied: boolean = false;
@@ -99,7 +100,7 @@
 
 			wallets.push({
 				walletName: walletNameValue.trim(),
-				walletPassword: { password: encryptPassword(passwordValue.trim()), isEncrypted: true },
+				walletPassword: { password: passwordValue.trim(), isEncrypted: false },
 				walletImage: '',
 				seedPhrase: seedPhrase,
 				availableBalanceUSD: {
@@ -143,6 +144,7 @@
 			});
 
 			saveData('wallets', wallets);
+			pollyfillData();
 			goto(`/profile/${accountHex.trim()}`);
 		} else {
 			goto('/add-wallet/create');
