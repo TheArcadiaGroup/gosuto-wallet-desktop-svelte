@@ -154,14 +154,14 @@ export const pollyfillSelectedWallet = (firstSetup = false) => {
 		dbSelectedWallet = dbWallets[0] || null;
 	}
 
-	if (!dbSelectedWallet.stakingRewards) {
+	if (dbSelectedWallet && !dbSelectedWallet?.stakingRewards) {
 		dbSelectedWallet['stakingRewards'] = {
 			mainnet: 0,
 			testnet: 0,
 		};
 	}
 
-	if (!dbSelectedWallet.lockStatus) {
+	if (dbSelectedWallet && !dbSelectedWallet?.lockStatus) {
 		dbSelectedWallet['lockStatus'] = {
 			lastUnlocked: Date.now(),
 			lockTimeout: 300,
@@ -169,7 +169,7 @@ export const pollyfillSelectedWallet = (firstSetup = false) => {
 		};
 	}
 
-	if (firstSetup) {
+	if (firstSetup && dbSelectedWallet) {
 		dbSelectedWallet['lockStatus'] = {
 			...dbSelectedWallet['lockStatus'],
 			isLocked: true,
