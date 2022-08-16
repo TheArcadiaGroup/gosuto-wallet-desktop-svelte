@@ -19,10 +19,18 @@
 	export let goBack: boolean = false;
 	export let confirmText = 'Confirm';
 	export let okDisabled = false;
+
+	function onKey(event: any) {
+		switch (event.key) {
+			case 'Enter':
+				if (!okDisabled) dispatch('confirm');
+				break;
+		}
+	}
 </script>
 
 <!-- <div transition:fade|local class="darker" /> -->
-<div class="popup-holder" transition:fade|local>
+<div class="popup-holder" transition:fade|local on:keyup={onKey}>
 	<div class="popup bg-white dark:bg-dark-blue">
 		<div class="pcontainer">
 			<div class="popuptitle">{title}</div>
