@@ -23,7 +23,7 @@ const serveURL = serve({ directory: '.' });
 // 	}
 // }
 
-let mainWindow;
+let mainWindow = null;
 
 const createWindow = () => {
 	const display = screen.getPrimaryDisplay();
@@ -131,8 +131,28 @@ const createMainWindow = () => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
+// to make singleton instance
+const gotTheLock = app.requestSingleInstanceLock(null);
 
-app.on('ready', createMainWindow);
+if (!gotTheLock) {
+	app.quit();
+} else {
+	app.on('second-instance', (event, commandLine, workingDirectory, additionalData) => {
+		// Print out data received from the second instance.
+		// console.log(additionalData);
+
+		// Someone tried to run a second instance, we should focus our window.
+		if (mainWindow) {
+			if (mainWindow.isMinimized()) mainWindow.restore();
+			mainWindow.focus();
+		}
+	});
+
+	// Create mainWindow, load the rest of the app, etc...
+	app.whenReady().then(() => {
+		createMainWindow();
+	});
+}
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
