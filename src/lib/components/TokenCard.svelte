@@ -13,6 +13,7 @@
 	import { tokens } from '$stores/user/tokens';
 	import { saveData } from '$utils/dataStorage';
 	import { ethers, utils } from 'ethers';
+	import { csprPrice } from '$stores/tokens';
 
 	/**
 	 * The index of this card. Used when dispatching selectToken event to parent
@@ -25,20 +26,18 @@
 	export let tokenTicker = 'CSPR'; // defaults
 	export let tokenAmountHeld = 0;
 	export let contractHash = 'CSPR';
-	let tokenPriceInUsd = 0;
-	let percentageChange = 0;
-	let positive = percentageChange > 0;
+	$: tokenPriceInUsd = $csprPrice.price[$user?.currency || 'usd'];
+	$: percentageChange = $csprPrice.price_change[$user?.currency || 'usd'];
+	$: positive = percentageChange > 0;
 
 	/**
 	 * Code of the real currency shown inside this component
 	 */
-	export let currencyUnit = $user?.currency.toUpperCase() || 'USD';
+	$: currencyUnit = $user?.currency.toUpperCase() || 'USD';
 
 	onMount(async () => {
 		// @ts-ignore
-		const tokenInfo = await getTokenValue(contractHash.trim());
-		tokenPriceInUsd = tokenInfo.price[$user?.currency || 'usd'];
-		percentageChange = tokenInfo.price_change[$user?.currency || 'usd'];
+		await getTokenValue(contractHash.trim());
 
 		if (token) {
 			loadTokenBalance(token, $selectedWallet!.publicKey);
