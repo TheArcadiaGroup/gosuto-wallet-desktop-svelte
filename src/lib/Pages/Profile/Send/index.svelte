@@ -38,7 +38,8 @@
 		if (!event.target) return;
 		const isInToken = Boolean(event.target.closest('.token-card'));
 		const isInAddButton = Boolean(event.target.closest('.add-token-button'));
-		if (!isInToken && !isInAddButton) dispatch('selectToken', null);
+		// Commented out to prevent the windows from closing by virtue of the user clicking outside the section
+		// if (!isInToken && !isInAddButton) dispatch('selectToken', null);
 	}
 
 	function cancelButtonListener(event: any): void {
