@@ -152,6 +152,9 @@
 			}
 			saveData('wallets', _wallets);
 			saveData('selectedWallet', null);
+
+			pollyfillData();
+
 			goto('/profile');
 		}
 	};
@@ -231,7 +234,7 @@
 				bind:password={removeWalletPassword}
 				okDisabled={removeWalletPassword !== walletCurrentPassword}
 				on:confirm={() => {
-					showExportWalletFilePopup = false;
+					showRemoveWalletPopup = false;
 					// TODO: Validate password then export file
 					if (removeWalletPassword === walletCurrentPassword) {
 						removeWallet();
@@ -239,7 +242,7 @@
 					}
 				}}
 				on:cancel={() => {
-					showExportWalletFilePopup = false;
+					showRemoveWalletPopup = false;
 					removeWalletPassword = '';
 				}}
 			/>
