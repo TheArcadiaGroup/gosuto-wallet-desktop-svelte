@@ -14,6 +14,8 @@
 
 	import { goto } from '$app/navigation';
 	import { encryptPrvKey, retrieveData, saveData } from '$utils/dataStorage';
+	import { loadWalletData } from '$utils/dataLoaders';
+	import { walletLoaders } from '$stores/dataLoaders';
 	import pollyfillData from '$utils/pollyfillData';
 
 	/** True if user copied seed phrase*/
@@ -97,8 +99,7 @@
 	const postData = async () => {
 		if (walletNameValue && accountHash && accountHex && passwordValue && privateKey && algorithm) {
 			let wallets: IWallet[] = retrieveData('wallets') || [];
-
-			wallets.push({
+			const newWallet: IWallet = {
 				walletName: walletNameValue.trim(),
 				walletPassword: { password: passwordValue.trim(), isEncrypted: false },
 				walletImage: '',
@@ -141,10 +142,18 @@
 					lockTimeout: 300,
 					isLocked: false,
 				},
-			});
+			};
+
+			wallets.push(newWallet);
 
 			saveData('wallets', wallets);
+			saveData('selectedWallet', newWallet);
 			pollyfillData();
+
+			if (!$walletLoaders[accountHex.trim()]) {
+				loadWalletData(accountHex.trim());
+			}
+
 			goto(`/profile/${accountHex.trim()}`);
 		} else {
 			goto('/add-wallet/create');

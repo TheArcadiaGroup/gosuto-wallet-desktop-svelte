@@ -11,6 +11,8 @@
 	import { passwordsAreSimilar, validatePassword } from '$utils/validators/passwordValidation';
 	import ClosedEyeIcon from '$icons/ClosedEyeIcon.svelte';
 	import pollyfillData from '$utils/pollyfillData';
+	import { loadWalletData } from '$utils/dataLoaders';
+	import { walletLoaders } from '$stores/dataLoaders';
 
 	let seedPhrase: string;
 	let walletName: string;
@@ -67,8 +69,7 @@
 	const postData = async () => {
 		if (walletName && accountHash && accountHex && password && privateKey && algorithm) {
 			let wallets: IWallet[] = retrieveData('wallets') || [];
-
-			wallets.push({
+			const newWallet: IWallet = {
 				walletName: walletName.trim(),
 				walletPassword: { password: password.trim(), isEncrypted: false },
 				walletImage: '',
@@ -111,10 +112,18 @@
 					lockTimeout: 300,
 					isLocked: false,
 				},
-			});
+			};
+			wallets.push(newWallet);
 
 			saveData('wallets', wallets);
+			saveData('selectedWallet', newWallet);
+
 			pollyfillData();
+
+			if (!$walletLoaders[accountHex.trim()]) {
+				loadWalletData(accountHex.trim());
+			}
+
 			goto(`/profile/${accountHex.trim()}`);
 		} else {
 			goto('/add-wallet/import/from-seed-phrase');

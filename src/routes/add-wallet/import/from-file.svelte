@@ -8,11 +8,13 @@
 	import ImportPrivateKey from '$lib/pages/AddWallet/ImportFromFile/ImportPrivateKey.svelte';
 
 	import { goto } from '$app/navigation';
-	import { encryptPassword, encryptPrvKey, retrieveData, saveData } from '$utils/dataStorage';
+	import { encryptPrvKey, retrieveData, saveData } from '$utils/dataStorage';
 	import { walletNameIsValid } from '$utils/profiles';
 	import { passwordsAreSimilar, validatePassword } from '$utils/validators/passwordValidation';
 	import ClosedEyeIcon from '$icons/ClosedEyeIcon.svelte';
 	import pollyfillData from '$utils/pollyfillData';
+	import { loadWalletData } from '$utils/dataLoaders';
+	import { walletLoaders } from '$stores/dataLoaders';
 
 	let walletName: string;
 	let password: string;
@@ -94,8 +96,7 @@
 	const postData = async () => {
 		if (walletName && password && accountHex && accountHash && privateKey) {
 			let wallets: IWallet[] = retrieveData('wallets') || [];
-
-			wallets.push({
+			const newWallet: IWallet = {
 				walletName: walletName.trim(),
 				walletPassword: { password: password.trim(), isEncrypted: false },
 				walletImage: '',
@@ -137,10 +138,17 @@
 					lockTimeout: 300,
 					isLocked: false,
 				},
-			});
+			};
+			wallets.push(newWallet);
 
 			saveData('wallets', wallets);
+			saveData('selectedWallet', newWallet);
 			pollyfillData();
+
+			if (!$walletLoaders[accountHex.trim()]) {
+				loadWalletData(accountHex.trim());
+			}
+
 			goto(`/profile/${accountHex.trim()}`);
 		}
 	};
