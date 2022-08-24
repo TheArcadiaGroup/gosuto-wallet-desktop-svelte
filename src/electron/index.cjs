@@ -1,6 +1,8 @@
 const { app, BrowserWindow, screen, shell, Menu } = require('electron');
 const path = require('path');
 const serve = require('electron-serve');
+const { autoUpdater } = require('electron-updater');
+const log = require('electron-log');
 const windowStateManager = require('electron-win-state').default;
 // const electronLocalshortcut = require('electron-localshortcut');
 const contextMenu = require('electron-context-menu');
@@ -11,6 +13,15 @@ const { buildDarwinMenu, buildDefaultMenu } = require('./utils/buildMenu.cjs');
 const dev = process.env.NODE_ENV === 'development' || !app.isPackaged;
 const port = process.env.PORT || 5173;
 const serveURL = serve({ directory: '.' });
+
+// Setup Update
+log.transports.file.level = 'info';
+autoUpdater.logger = log;
+const rs = 'https://gosuto-updater.vercel.app';
+const url = `${rs}/update/${process.platform}/${app.getVersion()}`;
+
+autoUpdater.setFeedURL(url);
+autoUpdater.checkForUpdatesAndNotify();
 
 // if (dev) {
 // 	try {
@@ -173,3 +184,30 @@ app.on('activate', () => {
 });
 
 app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors');
+
+// App Updates
+autoUpdater.on('checking-for-update', () => {
+	sendStatusToWindow('Checking for updates...');
+});
+autoUpdater.on('error', (err) => {
+	sendStatusToWindow(`Error in updater ${err.toString()}`);
+});
+
+autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+	sendStatusToWindow('Update downloaded...');
+
+	const dialogOpts = {
+		type: 'info',
+		buttons: ['Restart', 'Later'],
+		title: 'Application Update',
+		message: process.platform === 'win32' ? releaseNotes : releaseName,
+		detail: 'A new version has been downloaded. Restart the application to apply the updates.',
+	};
+
+	dialog.showMessageBox(dialogOpts).then((returnValue) => {
+		if (returnValue.response === 0)
+			setImmediate(() => {
+				autoUpdater.quitAndInstall();
+			});
+	});
+});
