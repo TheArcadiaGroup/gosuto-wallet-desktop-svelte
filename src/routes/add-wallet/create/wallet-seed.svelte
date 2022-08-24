@@ -204,7 +204,7 @@
 	{#if words}
 		<div class="createSeed-content">
 			<GosutoLogoAndText class="createSeed-gosuto-logo" />
-			<h1 class="createSeed-header">Create new wallet</h1>
+			<h1 class="createSeed-header">Create New Wallet</h1>
 			<div class="createSeed-explanation-text">
 				{#if secondPage}
 					<h2 class="createSeed-explanation-header">Complete your seed phrase to continue</h2>

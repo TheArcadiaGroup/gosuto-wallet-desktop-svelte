@@ -193,7 +193,7 @@
 <div class="fileImport-wrapper">
 	<div class="fileImport-content">
 		<GosutoLogoAndText class="gosuto-logo" />
-		<h1 class="fileImport-header">Import From File</h1>
+		<h1 class="fileImport-header">Import From Private Key</h1>
 
 		<div class="fileImport-input-wrapper">
 			<label class="fileImport-label" for="name">Wallet Name</label>
@@ -365,7 +365,7 @@
 	.fileImport-header {
 		@apply text-xl md:text-3xl 3xl:text-4xl 4xl:text-7xl font-display font-bold;
 		@apply mb-4 4xl:mb-16;
-		@apply text-dark-gray dark:text-white;
+		@apply text-dark-gray dark:text-white w-full text-center;
 	}
 
 	/* .fileImport-input-wrapper {

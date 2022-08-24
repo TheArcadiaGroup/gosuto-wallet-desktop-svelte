@@ -66,7 +66,7 @@
 <div class="createWallet-wrapper">
 	<div class="createWallet-content">
 		<GosutoLogoAndText class="createWallet-gosuto-logo" />
-		<h1 class="createWallet-header">Create new wallet</h1>
+		<h1 class="createWallet-header">Create New Wallet</h1>
 		<div class="createWallet-explanation-text">
 			<h2 class="createWallet-explanation-text-header">Name your wallet and create a password</h2>
 			<ul>

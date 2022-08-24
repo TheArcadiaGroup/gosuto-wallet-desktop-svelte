@@ -162,7 +162,7 @@
 	<div class="seedImport-logo-gosuto">
 		<GosutoLogoAndText />
 	</div>
-	<h1 class="seedImport-page-heading">Import your wallet</h1>
+	<h1 class="seedImport-page-heading">Import From Wallet From Seed</h1>
 	<div class="seedImport-instructions">
 		<p>Import from seed phrase:</p>
 		<ul class="seedImport-instruction-list">

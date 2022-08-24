@@ -155,7 +155,7 @@
 <div class="fileImport-wrapper">
 	<div class="fileImport-content">
 		<GosutoLogoAndText class="gosuto-logo" />
-		<h1 class="fileImport-header">Import From File</h1>
+		<h1 class="fileImport-header">Import Wallet From File</h1>
 
 		<div class="fileImport-input-wrapper">
 			<label class="fileImport-label" for="name">Wallet Name</label>
