@@ -16,7 +16,7 @@
 					!stakeArray.some(
 						(stake) =>
 							stake.validatorPublicKey === item.validatorPublicKey &&
-							stake.walletName === item.walletName,
+							stake.publicKey === item.publicKey,
 					),
 			),
 		];

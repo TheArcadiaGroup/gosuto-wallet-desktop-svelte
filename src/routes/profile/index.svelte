@@ -56,6 +56,12 @@
 
 			goto(newUrl);
 			return;
+		} else if ($page.params.publicKey && $page.params.publicKey === wallet.publicKey) {
+			// Only send load request when it is not currently loading
+			if (!$walletLoaders[wallet.publicKey]) {
+				loadWalletData(wallet.publicKey);
+			}
+			return;
 		}
 
 		if ($page.url.pathname === '/profile') {

@@ -22,7 +22,8 @@
 </script>
 
 <div
-	class="stake-card-item {selectedStake?.validatorPublicKey === stake.validatorPublicKey
+	class="stake-card-item {selectedStake?.validatorPublicKey === stake.validatorPublicKey &&
+	stake.publicKey === selectedStake?.publicKey
 		? 'selected'
 		: ''}"
 	on:click

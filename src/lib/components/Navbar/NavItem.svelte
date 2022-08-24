@@ -5,18 +5,24 @@
  -->
 <script lang="ts">
 	import { page } from '$app/stores';
+
 	export let baseUrl = '';
+	export let justCheckBaseUrl = false;
+	export let useIncludes = false;
 	/** A variable representing a boolean value to indicate reverse colouring for dark and light themes */
 	export let reverse = false;
+
+	$: isActive =
+		baseUrl &&
+		(justCheckBaseUrl
+			? $page.url.pathname === baseUrl
+			: useIncludes
+			? $page.url.pathname.includes(baseUrl)
+			: `/${$page.url.pathname.split('/')[1]}` === baseUrl);
 </script>
 
 <!-- svelte-ignore missing-declaration -->
-<div
-	class="nav-item"
-	class:reverse
-	class:active={baseUrl && `/${$page.url.pathname.split('/')[1]}` === baseUrl}
-	on:click
->
+<div class="nav-item" class:reverse class:active={isActive} on:click>
 	<slot />
 </div>
 

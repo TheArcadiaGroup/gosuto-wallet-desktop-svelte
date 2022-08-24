@@ -2,7 +2,6 @@
 	import NavActivityIcon from '$icons/NavActivityIcon.svelte';
 	import NavBookmarkIcon from '$icons/NavBookmarkIcon.svelte';
 	import NavSettingsIcon from '$icons/NavSettingsIcon.svelte';
-	import NavFlameIcon from '$icons/NavFlameIcon.svelte';
 	import NavStackIcon from '$icons/NavStackIcon.svelte';
 	import GosutoNavLogo from '$icons/NavLogo.svelte';
 
@@ -14,6 +13,7 @@
 	import { user } from '$stores/user';
 	import { saveData } from '$utils/dataStorage';
 	import { loadWalletData } from '$utils/dataLoaders';
+	import AllWalletsIcon from '$icons/AllWalletsIcon.svelte';
 
 	const updateUniversalToken = (e: any) => {
 		if ($user) {
@@ -33,11 +33,12 @@
 <div class="navbar">
 	<div class="navbar-top">
 		<NavItem><GosutoNavLogo class="large-nav-icon" /></NavItem>
-		<NavItem reverse={true}>
-			<NavFlameIcon class="large-nav-icon" />
+		<NavItem baseUrl={'/profile'} on:click={() => goto(`/profile`)} justCheckBaseUrl={true}>
+			<AllWalletsIcon />
 		</NavItem>
 		<NavItem
-			baseUrl={'/profile'}
+			baseUrl={`/profile/${$selectedWallet?.publicKey}`}
+			useIncludes={true}
 			on:click={() => goto(`/profile/${$selectedWallet?.publicKey}/history`)}
 		>
 			<div class="navbar-avatar-img" />

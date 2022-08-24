@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import { page } from '$app/stores';
 
 	import { createToken } from '$utils/tokens/createToken';
 
@@ -15,6 +16,8 @@
 	import ErrorIcon from '$icons/ErrorIcon.svelte';
 	import SuccessIcon from '$icons/SuccessIcon.svelte';
 	import { mintingTokens } from '$stores/user/tokens';
+	import { checkLockStatus } from '$utils/profiles';
+	import { goto } from '$app/navigation';
 
 	let tokenName = '';
 	let tokenTicker = '';
@@ -31,6 +34,10 @@
 	let confirmPopup = false;
 
 	function submitCreateToken() {
+		if (!$selectedWallet) {
+			goto('/profile');
+			return;
+		}
 		popup = 'Deploying Token';
 		confirmPopup = false;
 
@@ -57,11 +64,15 @@
 	}
 
 	function openConfirmPopup() {
-		popup = 'Deploy Contract';
-		popupContent = `<p>You are about to deploy an ERC-20 Token Contract on the Casper ${
-			$user?.network ?? 'testnet'
-		} Network.</p>`;
-		confirmPopup = true;
+		const canProceed = checkLockStatus($selectedWallet, $page.url.pathname);
+
+		if (canProceed) {
+			popup = 'Deploy Contract';
+			popupContent = `<p>You are about to deploy an ERC-20 Token Contract on the Casper ${
+				$user?.network ?? 'testnet'
+			} Network.</p>`;
+			confirmPopup = true;
+		}
 	}
 
 	function confirmDeploy() {

@@ -8,7 +8,7 @@
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 	import ConfirmStake from '$components/PopUps/StakePopups/ConfirmStake.svelte';
 
-	import { selectedWallet } from '$stores/user/wallets';
+	import { selectedWallet, wallets } from '$stores/user/wallets';
 	import { delegate, undelegate } from '$utils/staking';
 	import { user } from '$stores/user';
 	import Popup from '$lib/components/Popup.svelte';
@@ -18,6 +18,8 @@
 	import SuccessStake from '$lib/components/PopUps/StakePopups/SuccessStake.svelte';
 	import { page } from '$app/stores';
 	import ConfirmUnStake from '$lib/components/PopUps/StakePopups/ConfirmUnStake.svelte';
+	import { checkLockStatus } from '$utils/profiles';
+	import { goto } from '$app/navigation';
 
 	// Popup
 	let popup:
@@ -35,6 +37,10 @@
 
 	/**Handler for clicking the "Confirm" button. Confirms the stake.*/
 	function confirmStake() {
+		if (!$selectedWallet) {
+			goto('/profile');
+			return;
+		}
 		// confirm stake
 		popup = 'loadingStake';
 		isUnstaking = false;
@@ -65,17 +71,30 @@
 	/**Handler for clicking the "Confirm" button. Confirms the unstake.*/
 	function confirmUnStake() {
 		// confirm stake
+		let wallet =
+			selectedStake?.publicKey.toLowerCase() === $selectedWallet?.publicKey?.toLowerCase()
+				? $selectedWallet
+				: $wallets.find((_wallet) => _wallet.publicKey === selectedStake?.publicKey.toLowerCase());
+		if (!wallet) {
+			wallet = $selectedWallet;
+		}
+
+		if (!wallet) {
+			goto('/profile');
+			return;
+		}
+
 		popup = 'loadingStake';
 		isUnstaking = true;
 
 		const result = undelegate(
-			$selectedWallet!.publicKey,
-			$selectedWallet!.accountHash,
-			$selectedWallet!.privateKey,
+			wallet!.publicKey,
+			wallet!.accountHash,
+			wallet!.privateKey,
 			selectedValidatorPublicKey,
 			stakeAmount,
 			$user!.network,
-			$selectedWallet!.algorithm,
+			wallet!.algorithm,
 		);
 
 		if (result) {
@@ -117,17 +136,29 @@
 	}
 
 	function showConfirmStakePopup(stakeDetails: { validatorPublicKey: string; amount: number }) {
-		popup = 'confirmStake';
-		isUnstaking = false;
-		selectedValidatorPublicKey = stakeDetails.validatorPublicKey;
-		stakeAmount = stakeDetails.amount;
+		const canProceed = checkLockStatus($selectedWallet, $page.url.pathname);
+
+		if (canProceed) {
+			popup = 'confirmStake';
+			isUnstaking = false;
+			selectedValidatorPublicKey = stakeDetails.validatorPublicKey;
+			stakeAmount = stakeDetails.amount;
+		}
 	}
 
 	function showConfirmUnStakePopup(stakeDetails: { validatorPublicKey: string; amount: number }) {
-		popup = 'confirmUnStake';
-		isUnstaking = true;
-		selectedValidatorPublicKey = stakeDetails.validatorPublicKey;
-		stakeAmount = stakeDetails.amount;
+		const wallet =
+			selectedStake?.publicKey.toLowerCase() === $selectedWallet?.publicKey?.toLowerCase()
+				? $selectedWallet
+				: $wallets.find((_wallet) => _wallet.publicKey === selectedStake?.publicKey.toLowerCase());
+		const canProceed = checkLockStatus(wallet ?? $selectedWallet, $page.url.pathname);
+
+		if (canProceed) {
+			popup = 'confirmUnStake';
+			isUnstaking = true;
+			selectedValidatorPublicKey = stakeDetails.validatorPublicKey;
+			stakeAmount = stakeDetails.amount;
+		}
 	}
 
 	function closePopup() {

@@ -15,6 +15,8 @@
 	import isValidPublicKey from '$utils/validators/isValidPublicKey';
 	import SuccessIcon from '$icons/SuccessIcon.svelte';
 	import { ethers } from 'ethers';
+	import { page } from '$app/stores';
+	import { checkLockStatus } from '$utils/profiles';
 
 	/*
 	Validation Requirements
@@ -46,17 +48,26 @@
 	let note = '';
 	let network: 'mainnet' | 'testnet' = $user?.network || 'mainnet';
 
-	function sendCurrency(): void {
-		popup = 'Send CSPR';
-		popupContent = `<p>You are about to send <span class='amount'>${parseFloat(
-			tokenAmount.toString(),
-		)}</span> ${selectedToken.tokenTicker} to ${shortenAddress(
-			recipientAddress,
-		)} on the ${network}.</p>`;
-		confirmPopup = true;
+	async function sendCurrency(): Promise<void> {
+		const canProceed = checkLockStatus($selectedWallet, $page.url.pathname);
+
+		if (canProceed) {
+			popup = 'Send CSPR';
+			popupContent = `<p>You are about to send <span class='amount'>${parseFloat(
+				tokenAmount.toString(),
+			)}</span> ${selectedToken.tokenTicker} to ${shortenAddress(
+				recipientAddress,
+			)} on the ${network}.</p>`;
+			confirmPopup = true;
+		}
 	}
 
 	async function confirmSend(): Promise<void> {
+		if (!$selectedWallet) {
+			goto('/profile');
+			return;
+		}
+
 		confirmPopup = false;
 		popupContent = '';
 
