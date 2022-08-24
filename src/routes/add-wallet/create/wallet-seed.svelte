@@ -13,7 +13,7 @@
 	import { onMount } from 'svelte';
 
 	import { goto } from '$app/navigation';
-	import { encryptPassword, encryptPrvKey, retrieveData, saveData } from '$utils/dataStorage';
+	import { encryptPrvKey, retrieveData, saveData } from '$utils/dataStorage';
 	import pollyfillData from '$utils/pollyfillData';
 
 	/** True if user copied seed phrase*/
@@ -236,7 +236,11 @@
 				</button>
 			{/if}
 			<div class="createSeed-bt createSeed-next-bt">
-				<Button on:click={swapToSecond}>
+				<Button
+					isDisabled={secondPage &&
+						words.filter((w) => w.word === seedPhrase[w.id - 1]).length !== 12}
+					on:click={swapToSecond}
+				>
 					<span slot="text" class="createSeed-bt-text">Continue</span>
 				</Button>
 			</div>

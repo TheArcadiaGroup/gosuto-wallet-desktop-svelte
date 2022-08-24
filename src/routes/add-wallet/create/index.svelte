@@ -320,11 +320,11 @@
 		@apply text-dark-gray dark:text-white;
 	}
 
-	.error-div {
+	:local(.error-div) {
 		@apply text-left text-xs text-red-300 -mt-2 mb-3 flex w-full px-10;
 	}
 
-	.wallet-name-error-div {
+	:local(.wallet-name-error-div) {
 		@apply -mt-8 mb-6;
 	}
 </style>

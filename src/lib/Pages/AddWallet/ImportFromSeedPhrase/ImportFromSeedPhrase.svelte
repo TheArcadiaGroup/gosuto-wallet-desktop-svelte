@@ -387,7 +387,7 @@
 		@apply text-light-grey dark:text-white;
 	}
 
-	.error-div {
+	:local(.error-div) {
 		@apply text-left text-xs text-red-300 -mt-5 mb-1 flex w-full px-2;
 	}
 

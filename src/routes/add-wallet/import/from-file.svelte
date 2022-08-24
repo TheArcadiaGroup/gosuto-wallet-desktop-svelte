@@ -369,11 +369,11 @@
 		@apply w-full flex items-center px-5 text-opacity-40 text-black dark:text-white dark:text-opacity-40 h-14;
 	}
 
-	.error-div {
+	:local(.error-div) {
 		@apply text-left text-xs text-red-300 -mt-2 mb-5 flex w-96 px-2;
 	}
 
-	.success-div {
+	:local(.success-div) {
 		@apply text-center text-xs text-green-300 mt-0 mb-5 flex items-center justify-center w-96 px-2;
 	}
 </style>
