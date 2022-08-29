@@ -11,8 +11,7 @@ const sendMessage = require('./events/sendMessage.cjs');
 const windowStateManager = require('electron-win-state').default;
 // const { createTitleBar } = require('./utils/titlebar.cjs');
 
-const dev =
-	process.env.NODE_ENV === 'development' || process.env.TESTING_BUILD === 'true' || !app.isPackaged;
+const dev = process.env.NODE_ENV === 'development' || !app.isPackaged;
 const port = process.env.PORT || 5173;
 const serveURL = serve({ directory: '.' });
 
@@ -25,6 +24,7 @@ const url = `${rs}/update/${process.platform}/${app.getVersion()}`;
 autoUpdater.setFeedURL(url);
 autoUpdater.autoDownload = false;
 autoUpdater.autoInstallOnAppQuit = true;
+autoUpdater.checkForUpdatesAndNotify();
 
 let mainWindow = null;
 
@@ -182,13 +182,25 @@ autoUpdater.on('error', (err) => {
 	console.log('ENCOUNTERED ERROR TRYING TO UPDATE APP: ', JSON.stringify(err));
 });
 
+autoUpdater.on('update-available', (info) => {
+	sendMessage(
+		'appUpdatesResponse',
+		JSON.stringify({
+			action: 'CHECK_UPDATES',
+			data: info.version,
+			message: 'ready',
+			error: 'update-ready',
+		}),
+	);
+});
+
 autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
 	sendMessage(
 		'appUpdatesResponse',
 		JSON.stringify({
 			action: 'DOWNLOAD_UPDATE',
 			data: null,
-			message: 'ready',
+			message: 'download-ready',
 			error: null,
 		}),
 	);

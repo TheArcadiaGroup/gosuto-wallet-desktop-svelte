@@ -32,10 +32,17 @@ export default function () {
 						hasProgress: false,
 						buttonMessage: 'OK',
 					});
+				} else if (parsedData?.message === 'update-ready') {
+					updaterMessage.set({
+						message: `New version of Gosuto ready for download (${parsedData?.data}). Download it?`,
+						hasProgress: false,
+						buttonMessage: 'Download Updates',
+						action: 'DOWNLOAD_UPDATES',
+					});
 				}
 				break;
 			case 'DOWNLOAD_UPDATES':
-				if (parsedData.message === 'ready') {
+				if (parsedData.message === 'download-ready') {
 					appInfo.update((info) => {
 						if (!info) {
 							info = {
@@ -56,7 +63,7 @@ export default function () {
 						buttonMessage: 'Restart and Install',
 						action: 'UPDATE_APP',
 					});
-				} else {
+				} else if (!parsedData?.error) {
 					updaterMessage.set({
 						message: 'Update Download has Started',
 						hasProgress: false,

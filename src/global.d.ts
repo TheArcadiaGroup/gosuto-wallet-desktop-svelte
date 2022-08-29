@@ -266,7 +266,7 @@ declare global {
 		message: string;
 		hasProgress: boolean;
 		buttonMessage: string;
-		action?: 'UPDATE_APP' | null;
+		action?: 'UPDATE_APP' | 'DOWNLOAD_UPDATES' | null;
 		hasCancel?: boolean;
 	}
 

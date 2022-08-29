@@ -1,16 +1,4 @@
-const { app } = require('electron');
 const { autoUpdater } = require('electron-updater');
-const log = require('electron-log');
-
-log.transports.file.level = 'info';
-autoUpdater.logger = log;
-const rs = 'https://gosuto-updater.vercel.app';
-const url = `${rs}/update/${process.platform}/${app.getVersion()}`;
-
-autoUpdater.setFeedURL(url);
-autoUpdater.checkForUpdatesAndNotify();
-autoUpdater.autoDownload = false;
-autoUpdater.autoInstallOnAppQuit = true;
 
 module.exports = {
 	appVersion: function () {
@@ -18,15 +6,13 @@ module.exports = {
 	},
 	checkUpdates: async function () {
 		try {
-			const result = await autoUpdater.checkForUpdates();
-			console.log('check updates result: ', result);
+			const result = await autoUpdater.checkForUpdatesAndNotify();
 			return {
-				data: result,
+				data: null,
 				error: null,
 				message: 'Successfully checked for update.',
 			};
 		} catch (error) {
-			console.log('check for updates error: ', error);
 			return {
 				data: null,
 				error: error,
