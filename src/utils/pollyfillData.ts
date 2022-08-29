@@ -99,6 +99,12 @@ export const pollyFillUser = () => {
 
 export const pollyFillWallets = () => {
 	const firstSetup = !get(wallets) || get(wallets).length <= 0;
+
+	// Check for updates here since the app has just booted up
+	if (firstSetup) {
+		window.api.send('appUpdates', JSON.stringify({ action: 'CHECK_UPDATES' }));
+	}
+
 	// Wallets
 	const dbWallets: IWallet[] = retrieveData('wallets') || [];
 

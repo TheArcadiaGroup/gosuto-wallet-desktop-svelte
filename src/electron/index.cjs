@@ -3,14 +3,16 @@ const path = require('path');
 const serve = require('electron-serve');
 const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
-const windowStateManager = require('electron-win-state').default;
-// const electronLocalshortcut = require('electron-localshortcut');
 const contextMenu = require('electron-context-menu');
 const loadEvents = require('./events/index.cjs');
 const { buildDarwinMenu, buildDefaultMenu } = require('./utils/buildMenu.cjs');
+const sendMessage = require('./events/sendMessage.cjs');
+
+const windowStateManager = require('electron-win-state').default;
 // const { createTitleBar } = require('./utils/titlebar.cjs');
 
-const dev = process.env.NODE_ENV === 'development' || !app.isPackaged;
+const dev =
+	process.env.NODE_ENV === 'development' || process.env.TESTING_BUILD === 'true' || !app.isPackaged;
 const port = process.env.PORT || 5173;
 const serveURL = serve({ directory: '.' });
 
@@ -21,18 +23,8 @@ const rs = 'https://gosuto-updater.vercel.app';
 const url = `${rs}/update/${process.platform}/${app.getVersion()}`;
 
 autoUpdater.setFeedURL(url);
-autoUpdater.checkForUpdatesAndNotify();
-
-// if (dev) {
-// 	try {
-// 		require('electron-reloader')(module, {
-// 			debug: true,
-// 			watchRenderer: true,
-// 		});
-// 	} catch (error) {
-// 		console.log(error);
-// 	}
-// }
+autoUpdater.autoDownload = false;
+autoUpdater.autoInstallOnAppQuit = true;
 
 let mainWindow = null;
 
@@ -186,21 +178,25 @@ app.on('activate', () => {
 app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors');
 
 // App Updates
-autoUpdater.on('checking-for-update', () => {
-	sendStatusToWindow('Checking for updates...');
-});
 autoUpdater.on('error', (err) => {
-	sendStatusToWindow(`Error in updater ${err.toString()}`);
+	console.log('ENCOUNTERED ERROR TRYING TO UPDATE APP: ', JSON.stringify(err));
 });
 
 autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
-	sendStatusToWindow('Update downloaded...');
-
+	sendMessage(
+		'appUpdatesResponse',
+		JSON.stringify({
+			action: 'DOWNLOAD_UPDATE',
+			data: null,
+			message: 'ready',
+			error: null,
+		}),
+	);
 	const dialogOpts = {
 		type: 'info',
 		buttons: ['Restart', 'Later'],
 		title: 'Application Update',
-		message: process.platform === 'win32' ? releaseNotes : releaseName,
+		message: process.platform === 'win32' && releaseNotes ? releaseNotes : releaseName,
 		detail: 'A new version has been downloaded. Restart the application to apply the updates.',
 	};
 

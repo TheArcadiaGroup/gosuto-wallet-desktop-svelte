@@ -16,9 +16,13 @@
 	import NavigationHandlers from '$lib/components/NavigationHandlers.svelte';
 	import { navigateToUrl } from '$utils/profiles';
 	import { page } from '$app/stores';
+	import { updaterMessage } from '$stores';
+	import UpdaterPopup from '$lib/components/PopUps/Updater/UpdaterPopup.svelte';
 
 	onMount(async () => {
 		initializeTheme();
+
+		window.api.send('appUpdates', JSON.stringify({ action: 'APP_VERSION' }));
 
 		// Global Listeners
 		globalListeners();
@@ -44,6 +48,9 @@
 <main>
 	{#if $walletToUnlock}
 		<LoginPopup unlockData={$walletToUnlock} />
+	{/if}
+	{#if $updaterMessage}
+		<UpdaterPopup appUpdateComms={$updaterMessage} />
 	{/if}
 	<slot />
 </main>

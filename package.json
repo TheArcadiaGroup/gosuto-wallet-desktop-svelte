@@ -15,6 +15,7 @@
 		"dev:electron": "electron src/electron/index.cjs",
 		"build": "vite build",
 		"build:all": "rm -rf dist && rm -rf release && cross-env NODE_ENV=production && npm run build && electron-builder -mwl --config build.config.json",
+		"build:dev": "rm -rf dist && rm -rf release && cross-env NODE_ENV=development TESTING_BUILD=true && npm run build && electron-builder -mwl --config build.config.json",
 		"build:linux": "rm -rf dist && rm -rf release && cross-env NODE_ENV=production && npm run build && electron-builder -l --config build.config.json",
 		"build:mac": "rm -rf dist && rm -rf release && cross-env NODE_ENV=production && npm run build && electron-builder -m --config build.config.json",
 		"build:win": "rm -rf dist && rm -rf release && cross-env NODE_ENV=production && npm run build && electron-builder -w --config build.config.json",

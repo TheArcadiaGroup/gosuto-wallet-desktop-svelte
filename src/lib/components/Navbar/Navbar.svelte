@@ -15,6 +15,9 @@
 	import { loadWalletData } from '$utils/dataLoaders';
 	import AllWalletsIcon from '$icons/AllWalletsIcon.svelte';
 
+	import { appInfo, updaterMessage } from '$stores';
+	import UpdateIcon from '$icons/UpdateIcon.svelte';
+
 	const updateUniversalToken = (e: any) => {
 		if ($user) {
 			const prevUser = $user;
@@ -68,6 +71,30 @@
 			class="navbar-select-items -rotate-90 -ml-3"
 			items={{ testnet: 'Testnet', mainnet: 'Mainnet' }}
 		/> -->
+		{#if $appInfo?.version}
+			<div class="text-xs">
+				<NavItem>v{$appInfo?.version}</NavItem>
+			</div>
+		{/if}
+		{#if $appInfo?.updatesReady}
+			<div
+				class="text-xs -mt-10"
+				title="Updates Ready, restart to update"
+				on:click={() => {
+					updaterMessage.set({
+						message: 'Update has downloaded and is ready for install. Install right now?',
+						hasProgress: false,
+						buttonMessage: 'Restart and Install',
+						action: 'UPDATE_APP',
+						hasCancel: true,
+					});
+				}}
+			>
+				<NavItem>
+					<UpdateIcon class="nav-icon text-green-500" />
+				</NavItem>
+			</div>
+		{/if}
 	</div>
 </div>
 

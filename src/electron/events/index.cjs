@@ -19,6 +19,7 @@ const {
 	sendErc20Tokens,
 	getTokenDetails,
 } = require('../utils/tokens/index.cjs');
+const { checkUpdates, downloadUpdate, updateApp, appVersion } = require('../utils/appUpdates.cjs');
 
 /**
  * Receiving messages from Renderer
@@ -481,6 +482,35 @@ module.exports = () => {
 			});
 			sendMessage('encryptionResponse', JSON.stringify({ data: null, error: error, message: '' }));
 		}
+	});
+
+	ipcMain.on('appUpdates', async (event, data) => {
+		const parsedData = JSON.parse(data);
+		let res = null;
+		switch (parsedData?.action) {
+			case 'APP_VERSION':
+				res = appVersion();
+				res.action = 'APP_VERSION';
+				break;
+			case 'CHECK_UPDATES':
+				res = checkUpdates();
+				res.action = 'CHECK_UPDATES';
+				break;
+			case 'DOWNLOAD_UPDATE':
+				res = downloadUpdate();
+				res.action = 'DOWNLOAD_UPDATE';
+				break;
+			case 'UPDATE_APP':
+				res = updateApp();
+				res.action = 'UPDATE_APP';
+				break;
+			default:
+				res = checkUpdates();
+				res.action = 'CHECK_UPDATES';
+				break;
+		}
+		event.returnValue = JSON.stringify(res);
+		sendMessage('appUpdatesResponse', JSON.stringify(res));
 	});
 
 	ipcMain.on('appInfo', async (event, data) => {

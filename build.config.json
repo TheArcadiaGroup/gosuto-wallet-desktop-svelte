@@ -11,6 +11,7 @@
 			"to": ""
 		}
 	],
+	"generateUpdatesFilesForAllChannels": true,
 	"mac": {
 		"icon": "./static/images/logo.icns",
 		"target": [

@@ -4,6 +4,7 @@ import { get } from 'svelte/store';
 import { getEndpointByNetwork } from './casper';
 import { retrieveData } from './dataStorage';
 import { parseBalanceResponse } from './responseParsers/accBalance';
+import { tokenLoaders, walletLoaders } from '$stores/dataLoaders';
 
 export const getBalance = async (
 	accountHash: string,
@@ -87,6 +88,17 @@ export const getCsprBalance = (publicKey: string) => {
 					}),
 				);
 			})
-			.catch((err) => err);
+			.catch((err) => err)
+			.finally(() => {
+				walletLoaders.update((_loader) => {
+					_loader[publicKey] = null;
+					return _loader;
+				});
+
+				tokenLoaders.update((_loader) => {
+					_loader['CSPR'] = null;
+					return _loader;
+				});
+			});
 	}
 };

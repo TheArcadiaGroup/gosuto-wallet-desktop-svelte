@@ -262,6 +262,14 @@ declare global {
 		[key: string]: any;
 	}
 
+	interface AppUpdateComms {
+		message: string;
+		hasProgress: boolean;
+		buttonMessage: string;
+		action?: 'UPDATE_APP' | null;
+		hasCancel?: boolean;
+	}
+
 	type MainSendChannels =
 		| 'createWalletFromMnemonics'
 		| 'createWalletFromFile'
@@ -283,7 +291,8 @@ declare global {
 		| 'erc20TokenBalance'
 		| 'sendErc20Tokens'
 		| 'getErc20TokenDetails'
-		| 'appInfo';
+		| 'appInfo'
+		| 'appUpdates';
 	type MainReceiveChannels =
 		| 'createWalletFromFileResponse'
 		| 'createWalletFromMnemonicsResponse'
@@ -300,5 +309,6 @@ declare global {
 		| 'deployErc20ContractResponse'
 		| 'erc20TokenBalanceResponse'
 		| 'sendErc20TokensResponse'
-		| 'getErc20TokenDetailsResponse';
+		| 'getErc20TokenDetailsResponse'
+		| 'appUpdatesResponse';
 }
