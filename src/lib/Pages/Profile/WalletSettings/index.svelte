@@ -144,6 +144,10 @@
 		}
 	};
 
+	const goBackToProfile = () => {
+		goto('/profile/' + $page.params.publicKey);
+	};
+
 	const removeWallet = () => {
 		if (wallet) {
 			const _wallets = $wallets.filter((_wallet) => _wallet.walletName !== wallet.walletName);
@@ -407,7 +411,7 @@
 					</Button>
 				</div>
 				<div class="cancel-bt">
-					<Button hasRing={true}>
+					<Button hasRing={true} on:click={goBackToProfile}>
 						<p slot="text" class="btn-text">Cancel</p>
 					</Button>
 				</div>

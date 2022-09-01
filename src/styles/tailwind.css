@@ -29,6 +29,11 @@
 	display: none;
 }
 
+html,
+body {
+	@apply dark:bg-dark-grey bg-white;
+}
+
 /* Global app grid */
 
 .global-grid-nav {
