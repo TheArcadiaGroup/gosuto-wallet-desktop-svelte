@@ -1,8 +1,11 @@
 # Gosuto Wallet
 
+## Warning
+This version is incompatible with the previous version
+
 ## Technologies
 
-Sveltekit + Electron + Tailwindcss
+Sveltekit + Electron + Tailwindcss 
 
 ## Getting Started
 
@@ -64,9 +67,3 @@ Owing to the fact that there is no theme initialized in the tailwind files, thes
 		},
 	},
 ```
-
-### Steps to Creating a New IPC Endpoint on Electron
-
-- First create the message handler in the `preload.cjs` file. See the example of the `createWallet` Message.
-- Once the message has been registered, we create the function handling it in the `events` directory and create the actual function that requires node integration in the electron directory's `utils` folder.
-- Make sure the function is exported using `module.exports` and that all the files created are cjs files.
