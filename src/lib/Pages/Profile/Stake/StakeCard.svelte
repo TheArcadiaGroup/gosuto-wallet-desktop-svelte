@@ -9,6 +9,8 @@
 	- `click` = Dispatched when the card is clicked. Passes the stake data and the `closeStake()` function via the event details.
 -->
 <script lang="ts">
+	import { page } from '$app/stores';
+
 	import ProgressBar from '$lib/components/ProgressBar.svelte';
 	import { user } from '$stores/user';
 	import { validators } from '$stores/user/stake';
@@ -44,6 +46,16 @@
 				: 'Unknown Validator'}
 		</span>
 	</div>
+	{#if !$page.params.publicKey}
+		<span
+			class="wallet text-sm font-bold -mt-2 {selectedStake?.validatorPublicKey ===
+				stake.validatorPublicKey && stake.publicKey === selectedStake?.publicKey
+				? 'text-white'
+				: 'text-light-grey'}"
+		>
+			{stake.walletName}
+		</span>
+	{/if}
 	<div class="first-line">
 		<div
 			class="flex flex-col items-start justify-center {stake?.stakeAmount > 0
