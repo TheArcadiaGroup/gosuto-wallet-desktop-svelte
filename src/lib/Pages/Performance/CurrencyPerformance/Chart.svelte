@@ -68,7 +68,7 @@
 						offset: true,
 						ticks: {
 							callback: (value: any) => {
-								return `$${value}k`;
+								return `$${value}`;
 							},
 							color: '#AAB5C5',
 							font: {

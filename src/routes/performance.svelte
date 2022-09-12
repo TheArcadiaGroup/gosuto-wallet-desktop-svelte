@@ -53,6 +53,7 @@
 	async function loadData() {
 		loading = true;
 		currencyPerfomance = [await getCoinChart('casper-network', 'Casper (CSPR)')];
+		console.log(currencyPerfomance);
 		loading = false;
 	}
 
