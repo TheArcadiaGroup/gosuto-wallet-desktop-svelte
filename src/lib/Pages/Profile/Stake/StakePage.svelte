@@ -27,6 +27,7 @@
 		| 'failedStake'
 		| 'successStake'
 		| 'loadingStake'
+		| 'loadingUnStake'
 		| 'confirmUnStake'
 		| null = null;
 
@@ -84,7 +85,7 @@
 			return;
 		}
 
-		popup = 'loadingStake';
+		popup = 'loadingUnStake';
 		isUnstaking = true;
 
 		const result = undelegate(
@@ -104,7 +105,7 @@
 				error = result.error;
 			} else {
 				isUnstaking = true;
-				popup = 'loadingStake';
+				popup = 'loadingUnStake';
 				popupAmount = stakeAmount;
 			}
 		}
@@ -296,6 +297,14 @@
 {:else if popup === 'loadingStake'}
 	<Popup
 		title="Currently Staking Your {stakeAmount} CSPR"
+		hasCancel={false}
+		on:confirm={() => (popup = null)}
+	>
+		<Loading useFirework={false} size={60} />
+	</Popup>
+{:else if popup === 'loadingUnStake'}
+	<Popup
+		title="Currently Unstaking Your {stakeAmount} CSPR"
 		hasCancel={false}
 		on:confirm={() => (popup = null)}
 	>
