@@ -67,12 +67,24 @@
 	};
 
 	$: image = settingsData?.avatar;
+	$: avatarUpdated = false;
+	$: avatarLoading = false;
 
 	const selectProfileImage = () => {
+		avatarLoading = true;
 		const res = window.api.sendSync('selectProfileImage');
 		if (res && settingsData) {
 			settingsData.avatar = res ?? '/images/png/avatar.png';
+			avatarUpdated = true;
 		}
+		avatarLoading = false;
+	};
+
+	const saveProfileImage = () => {
+		avatarLoading = true;
+		saveData('user', settingsData);
+		avatarUpdated = false;
+		avatarLoading = false;
 	};
 
 	/** Array to be used for creating InfoInput components with an each loop */
@@ -81,25 +93,7 @@
 		{ name: 'Name', placeholder: settingsData?.name! },
 		{ name: 'Email', placeholder: settingsData?.email! },
 	];
-
-	// Dynamically Update the Selected Network
-	// $: ((selectedNetwork) => {
-	// 	if (initialized && settingsData) {
-	// 		settingsData['network'] = networkOptionsArr[selectedNetwork];
-	// 		saveData('user', settingsData);
-	// 	}
-	// })(networkOptionValue);
 </script>
-
-<!-- 
-<svelte:window
-	on:click={(e) => {
-		// @ts-ignore
-		if (!e?.target?.closest('.settings-network-select')) {
-			droppedDown = false;
-		}
-	}}
-/> -->
 
 <div class="flex">
 	<div class="global-grid-nav">
@@ -111,7 +105,11 @@
 				<div class="settings-left-side">
 					<h1 class="settings-header">Account Settings</h1>
 					<AvatarCard avatar={image} on:click={selectProfileImage} />
-					<ChooseFileButton on:click={selectProfileImage} />
+					<ChooseFileButton
+						on:click={() => (avatarUpdated ? saveProfileImage() : selectProfileImage())}
+						fileUpdated={avatarUpdated}
+						loading={avatarLoading}
+					/>
 				</div>
 				<div class="settings-right-side">
 					{#each info as infoType}

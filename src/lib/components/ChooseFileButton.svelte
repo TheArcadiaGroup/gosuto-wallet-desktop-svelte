@@ -5,13 +5,24 @@
  -->
 <script lang="ts">
 	import UploadIcon from '$icons/UploadIcon.svelte';
+	import Loading from './Loading.svelte';
+
+	export let fileUpdated = false;
+	export let loading = false;
 </script>
 
 <button on:click>
 	<div class="bt-content-wrapper">
-		<UploadIcon class="icon" />
-		<span>Choose File</span>
+		{#if fileUpdated}
+			<span>Update Account Avatar</span>
+		{:else}
+			<UploadIcon class="icon" />
+			<span>Choose File</span>
+		{/if}
 	</div>
+	{#if loading}
+		<Loading useFirework={false} size={40} />
+	{/if}
 </button>
 
 <style type="postcss">
