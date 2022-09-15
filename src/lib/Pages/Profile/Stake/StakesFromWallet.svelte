@@ -33,8 +33,8 @@
 	}
 
 	function addStake() {
-		selectedStake = null;
 		dispatch('addStake');
+		selectedStake = null;
 	}
 
 	function deselectListener(event: any): void {

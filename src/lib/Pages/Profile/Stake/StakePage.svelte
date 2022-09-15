@@ -263,7 +263,7 @@
 	<div class="global-grid-right">
 		<div class="size-full last-column">
 			{#if selectedLastColumnContent}
-				{#if selectedLastColumnContent !== 'addStake' && selectedStake}
+				{#if selectedLastColumnContent === 'addStake' || selectedStake}
 					<div
 						class="last-column-header {$page.url.pathname.includes('all-positions')
 							? 'higher-arrow'
