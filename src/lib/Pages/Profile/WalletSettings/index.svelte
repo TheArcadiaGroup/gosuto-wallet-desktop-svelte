@@ -47,6 +47,8 @@
 	let removeWalletPassword = '';
 	let copyPrivateKeyPassword = '';
 
+	$: allWalletNames = $wallets.map((wallet) => wallet.walletName);
+
 	let wallet: IWallet = $selectedWallet!;
 
 	onMount(() => {
@@ -163,10 +165,17 @@
 		}
 	};
 
+	$: walletNameIsDuplicate =
+		walletName.trim() &&
+		allWalletNames.some((name) => name.trim() === walletName.trim()) &&
+		wallet.walletName !== walletName;
+
 	$: ((walletName, unlockDuration) => {
 		if (
-			(walletName.trim() && walletName.trim() !== wallet.walletName.trim()) ||
-			unlockDuration !== wallet.lockStatus.lockTimeout
+			((walletName.trim() && walletName.trim() !== wallet.walletName.trim()) ||
+				unlockDuration !== wallet.lockStatus.lockTimeout) &&
+			!walletNameIsDuplicate &&
+			walletName.trim().length < 20
 		) {
 			canSave = true;
 		} else {
@@ -296,7 +305,7 @@
 				addTextBg={true}
 			/>
 			<div class="error-div">
-				{#if $wallets?.filter((item) => item.walletName === walletName).length > 0 && wallet.walletName !== walletName}
+				{#if walletNameIsDuplicate}
 					Wallet Name Already Exists
 				{/if}
 				{#if walletName && walletName?.length > 20}
@@ -406,7 +415,7 @@
 			<br />
 			<div class="ok-cancel">
 				<div class="save-bt" on:click={updateWalletDetails}>
-					<Button isDisabled={!canSave || walletName?.length > 20}>
+					<Button isDisabled={!canSave}>
 						<p slot="text" class="btn-text">Save</p>
 					</Button>
 				</div>
