@@ -131,7 +131,7 @@ export const getDelegatorRewards = async (
 
 export const getLatestBlockInfo = async (network: 'testnet' | 'mainnet' = 'testnet') => {
 	try {
-		const { BalanceServiceByJsonRPC, CasperServiceByJsonRPC, CLPublicKey } = window.CasperSDK;
+		const { CasperServiceByJsonRPC } = window.CasperSDK;
 
 		const casperService = new CasperServiceByJsonRPC(getEndpointByNetwork(network));
 		const latestBlock = await casperService.getLatestBlockInfo();
@@ -143,7 +143,7 @@ export const getLatestBlockInfo = async (network: 'testnet' | 'mainnet' = 'testn
 
 export const getTotalStaked = async (network: 'testnet' | 'mainnet' = 'testnet') => {
 	try {
-		const { BalanceServiceByJsonRPC, CasperServiceByJsonRPC, CLPublicKey } = window.CasperSDK;
+		const { CasperServiceByJsonRPC } = window.CasperSDK;
 
 		const casperService = new CasperServiceByJsonRPC(getEndpointByNetwork(network));
 		const validatorsInfo = await casperService.getValidatorsInfo();

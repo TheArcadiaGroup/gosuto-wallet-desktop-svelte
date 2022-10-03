@@ -42,6 +42,13 @@
 			route: '/add-wallet/import/from-private-key-text',
 			isSelected: false,
 		},
+		{
+			id: 5,
+			header: 'Import From Ledger',
+			description: 'Import wallet from Ledger',
+			route: '/add-wallet/import/from-ledger',
+			isSelected: false,
+		},
 	];
 
 	/**

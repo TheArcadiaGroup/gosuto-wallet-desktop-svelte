@@ -1,4 +1,5 @@
 import { sendTokenTracker } from '$stores/activityLoaders';
+import { sendingFundsUsingLedger } from '$stores/ledger';
 import { user } from '$stores/user';
 import { get } from 'svelte/store';
 import { decryptPrvKey, retrieveData, saveData } from './dataStorage';
@@ -37,7 +38,7 @@ export function deleteToken(wallet: string, contractAddress: string): boolean {
 
 export async function sendToken(
 	publicKey: string,
-	privateKey: string,
+	privateKey: string | number,
 	tokenAmount: string,
 	tokenDecimals: number,
 	recipientPublicKey: string,
@@ -81,32 +82,46 @@ export async function sendToken(
 
 	if (contractHash === 'CSPR') {
 		// window.api.send('sendCSPRTokens', JSON.stringify(requestObj));
-		sendCspr(publicKey, privateKey, recipientPublicKey, tokenAmount, network, algorithm)
+		sendCspr(
+			publicKey,
+			privateKey,
+			recipientPublicKey,
+			tokenAmount,
+			network,
+			algorithm,
+			requestObj.id,
+		)
 			.then((response) => {
-				parseTransferData(
-					JSON.stringify({
-						id: requestObj.id,
-						data: response,
-						error: null,
-						message: 'Successfully Executed Transaction',
-					}),
-				);
+				if (!get(sendingFundsUsingLedger)) {
+					parseTransferData(
+						JSON.stringify({
+							id: requestObj.id,
+							data: response,
+							error: null,
+							message: 'Successfully Executed Transaction',
+						}),
+					);
+				}
 			})
 			.catch((err) => {
-				console.log(err);
-				parseTransferData(
-					JSON.stringify({
-						id: requestObj.id,
-						data: null,
-						error: err,
-						message: 'Encountered Error While Transferring CSPR Tokens',
-					}),
-				);
+				if (!get(sendingFundsUsingLedger)) {
+					console.log(err);
+					parseTransferData(
+						JSON.stringify({
+							id: requestObj.id,
+							data: null,
+							error: err,
+							message: 'Encountered Error While Transferring CSPR Tokens',
+						}),
+					);
+				}
 			});
 
 		return { ...requestObj, error: null, fulfilled: false };
 	} else {
-		requestObj.senderPrivateKey = decryptPrvKey(requestObj.senderPrivateKey);
+		requestObj.senderPrivateKey = !isNaN(+requestObj.senderPrivateKey)
+			? requestObj.senderPrivateKey
+			: decryptPrvKey(requestObj.senderPrivateKey.toString());
 		window.api.send('sendErc20Tokens', JSON.stringify(requestObj));
 	}
 }

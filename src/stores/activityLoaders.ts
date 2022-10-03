@@ -3,7 +3,7 @@ import { writable } from 'svelte/store';
 interface SendTokenDetails {
 	id: string;
 	senderWallet: string;
-	senderPrivateKey: string;
+	senderPrivateKey: string | number;
 	recipientPublicKey: string;
 	amount: string;
 	network: 'testnet' | 'mainnet';

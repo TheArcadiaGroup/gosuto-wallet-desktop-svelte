@@ -17,6 +17,7 @@
 	import { ethers } from 'ethers';
 	import { page } from '$app/stores';
 	import { checkLockStatus } from '$utils/profiles';
+	import { sendingFundsUsingLedger } from '$stores/ledger';
 
 	/*
 	Validation Requirements
@@ -74,7 +75,7 @@
 		if ($selectedWallet) {
 			const result = await sendToken(
 				$selectedWallet.publicKey,
-				$selectedWallet.privateKey,
+				$selectedWallet.ledgerIndex ?? $selectedWallet.privateKey,
 				tokenAmount.toFixed(selectedToken.decimals),
 				selectedToken.decimals,
 				recipientAddress,
@@ -97,16 +98,20 @@
 						tokenAmount.toString(),
 					)}</span> ${selectedToken.tokenTicker} to ${shortenAddress(recipientAddress)}.</p>`;
 				}
-			} else if (selectedToken.contractHash === 'CSPR') {
+			} else if (selectedToken.contractHash === 'CSPR' && !$sendingFundsUsingLedger) {
+				// we must prevent this entry from running when using ledger
 				popup = 'Send Failed!';
-			} else if (selectedToken.contractHash !== 'CSPR') {
+			} else if (selectedToken.contractHash !== 'CSPR' || $sendingFundsUsingLedger) {
+				// this is where we use ledger since we are using the nodeHID connector
 				popup = 'Sending';
 				popupContent = `<p>Currently sending, <span class='amount'>${parseFloat(
 					tokenAmount.toString(),
-				)}</span> ${selectedToken.tokenTicker} to ${shortenAddress(recipientAddress)}.</p>`;
+				)}</span> ${selectedToken.tokenTicker} to ${shortenAddress(recipientAddress)}. ${
+					$sendingFundsUsingLedger
+						? 'Initiating Transaction. Please Make Sure Your Ledger Device is Connected'
+						: ''
+				}</p>`;
 			}
-
-			console.log(result);
 
 			return;
 		} else {

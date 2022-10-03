@@ -26,6 +26,7 @@ contextBridge.exposeInMainWorld('api', {
 			'erc20TokenBalance',
 			'sendErc20Tokens',
 			'getErc20TokenDetails',
+			'ledger',
 			'appUpdates',
 		];
 		if (validChannels.includes(channel)) {
@@ -53,6 +54,7 @@ contextBridge.exposeInMainWorld('api', {
 			'sendErc20Tokens',
 			'getErc20TokenDetails',
 			'appInfo',
+			'ledger',
 			'appUpdates',
 		];
 		if (validChannels.includes(channel)) {
@@ -77,6 +79,7 @@ contextBridge.exposeInMainWorld('api', {
 			'sendErc20TokensResponse',
 			'getErc20TokenDetailsResponse',
 			'appUpdatesResponse',
+			'ledgerResponse',
 		];
 		if (validChannels.includes(channel)) {
 			// Deliberately strip event as it includes `sender`

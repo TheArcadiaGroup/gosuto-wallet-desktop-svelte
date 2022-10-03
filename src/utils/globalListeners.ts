@@ -3,6 +3,7 @@ import appUpdates from './responseParsers/appUpdates';
 import delegations from './responseParsers/delegations';
 import tokenCreation from './responseParsers/tokenCreation';
 import transfers from './responseParsers/transfers';
+import ledger from './responseParsers/ledger';
 
 export default () => {
 	accBalance();
@@ -10,4 +11,5 @@ export default () => {
 	delegations();
 	tokenCreation();
 	appUpdates();
+	ledger();
 };

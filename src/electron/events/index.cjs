@@ -20,6 +20,12 @@ const {
 	getTokenDetails,
 } = require('../utils/tokens/index.cjs');
 const { checkUpdates, downloadUpdate, updateApp, appVersion } = require('../utils/appUpdates.cjs');
+const {
+	getCasperLedgerAppInformation,
+	getFiveAccounts,
+	queryAppStatus,
+} = require('../utils/legder/index.cjs');
+const { sendUsingLedger } = require('../utils/legder/ledgerTransactions.cjs');
 
 /**
  * Receiving messages from Renderer
@@ -482,6 +488,84 @@ module.exports = () => {
 			});
 			sendMessage('encryptionResponse', JSON.stringify({ data: null, error: error, message: '' }));
 		}
+	});
+
+	// Ledger Support Or Ledger Messages
+	ipcMain.on('ledger', async (event, data) => {
+		const parsedData = JSON.parse(data);
+		let res = null;
+
+		switch (parsedData?.action) {
+			case 'AppInfo':
+				res = await getCasperLedgerAppInformation().catch((error) => (res = { error }));
+				break;
+			case 'AppStatus':
+				await queryAppStatus()
+					.then((result) => (res = result))
+					.catch((error) => {
+						res = { error };
+					});
+				break;
+			case 'FiveAccounts':
+				res = await getFiveAccounts(
+					parsedData.fromIndex || 0,
+					parsedData.network || 'testnet',
+				).catch((error) => (res = { error }));
+				break;
+			case 'SendCspr':
+				res = await sendUsingLedger(
+					parsedData.fromPublicKey,
+					parsedData.ledgerAccountIndex,
+					parsedData.toPublicKey,
+					parsedData.amount,
+					parsedData.network,
+				)
+					.then((result) => {
+						sendMessage(
+							'sendErc20TokensResponse', // using this to make sure we use the rails already in place for the UI
+							JSON.stringify({
+								data: result,
+								id: parsedData.id,
+								error: null,
+							}),
+						);
+						return null;
+					})
+					.catch((err) => {
+						sendMessage(
+							'sendErc20TokensResponse',
+							JSON.stringify({
+								data: null,
+								error: err,
+								message:
+									'Encountered an error while trying to send your CSPR. Please make sure your ledger device is unlocked and the Casper App is open before proceeding',
+								id: parsedData.id,
+							}),
+						);
+						return null;
+					});
+				break;
+			default:
+				res = await queryAppStatus().catch((error) => {
+					res = { error };
+				});
+				break;
+		}
+
+		event.returnValue = JSON.stringify({
+			action: parsedData.action,
+			nextAction: parsedData.nextAction ?? null,
+			...res,
+		});
+		sendMessage(
+			'ledgerResponse',
+			JSON.stringify({
+				action: parsedData.action,
+				nextAction: parsedData.nextAction ?? null,
+				network: parsedData.network ?? 'testnet',
+				...res,
+			}),
+		);
 	});
 
 	ipcMain.on('appUpdates', async (event, data) => {

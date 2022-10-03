@@ -34,6 +34,7 @@
 	<div class="text-container">
 		<slot name="text" />
 	</div>
+	<slot />
 </button>
 
 <style lang="postcss" global>

@@ -4,6 +4,7 @@
 /// <reference types="vite/client" />
 /// <reference types="casper-js-sdk" />
 import type { Moment } from 'moment';
+import CoinGecko from 'coingecko-api';
 
 interface ImportMetaEnv {
 	readonly VITE_SEND_TX_FEE_PERCENTAGE: string;
@@ -13,8 +14,6 @@ interface ImportMetaEnv {
 interface ImportMeta {
 	readonly env: ImportMetaEnv;
 }
-
-import CoinGecko from 'coingecko-api';
 
 type dataFunc = (data: string) => void;
 
@@ -119,6 +118,7 @@ declare global {
 		accountHash: string;
 		privateKey: string;
 		algorithm: 'ed25519' | 'secp256k1';
+		ledgerIndex?: number | undefined | null;
 		lockStatus: {
 			isLocked: boolean;
 			lastUnlocked: number; // timestamp from Date.now()
@@ -255,6 +255,7 @@ declare global {
 			mainnet: IToken[];
 			testnet: IToken[];
 		};
+
 		// global: IToken[];
 	}
 
@@ -292,6 +293,7 @@ declare global {
 		| 'sendErc20Tokens'
 		| 'getErc20TokenDetails'
 		| 'appInfo'
+		| 'ledger'
 		| 'appUpdates';
 	type MainReceiveChannels =
 		| 'createWalletFromFileResponse'
@@ -310,5 +312,6 @@ declare global {
 		| 'erc20TokenBalanceResponse'
 		| 'sendErc20TokensResponse'
 		| 'getErc20TokenDetailsResponse'
+		| 'ledgerResponse'
 		| 'appUpdatesResponse';
 }

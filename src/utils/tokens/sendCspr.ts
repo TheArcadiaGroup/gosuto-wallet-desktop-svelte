@@ -1,35 +1,63 @@
+import { sendingFundsUsingLedger } from '$stores/ledger';
 import { getEndpointByNetwork } from '$utils/casper';
 import { decryptPrvKey } from '$utils/dataStorage';
+import type { AsymmetricKey } from 'casper-js-sdk/dist/lib/Keys';
 import { ethers } from 'ethers';
 
 export default async (
 	fromPublicKey: string,
-	fromPrivateKey: string,
+	fromPrivateKeyOrLedgerAccountIndex: string | number, // not the best design
 	toPublicKey: string,
 	amount: string,
 	network: 'testnet' | 'mainnet' = 'testnet',
 	algorithm: 'secp256k1' | 'ed25519' = 'ed25519',
+	taskId?: string,
 ) => {
 	const { CasperClient, Keys, CLPublicKey, DeployUtil } = window.CasperSDK;
 
 	try {
+		if (typeof fromPrivateKeyOrLedgerAccountIndex !== 'string') {
+			sendingFundsUsingLedger.set(true);
+			window.api.send(
+				'ledger',
+				JSON.stringify({
+					action: 'SendCspr',
+					fromPublicKey,
+					ledgerAccountIndex: fromPrivateKeyOrLedgerAccountIndex,
+					toPublicKey,
+					amount,
+					network,
+					id: taskId,
+				}),
+			);
+
+			return;
+		}
+
+		//  Just added here to cover the type error related to this value not being a string
+		if (typeof fromPrivateKeyOrLedgerAccountIndex !== 'string') {
+			return;
+		}
+
 		const casperClient = new CasperClient(getEndpointByNetwork(network));
 
-		const decryptedFromPrivateKey = decryptPrvKey(fromPrivateKey);
-
-		const amountAsBigNumber = ethers.utils.parseUnits(amount, 9); // Convert the digit amount to BigNumber
+		const decryptedfromPrivateKeyOrLedgerAccountIndex = decryptPrvKey(
+			fromPrivateKeyOrLedgerAccountIndex,
+		);
 
 		const signKeyPair =
 			algorithm === 'ed25519'
 				? Keys.Ed25519.parseKeyPair(
 						Buffer.from(fromPublicKey, 'hex'),
-						Buffer.from(decryptedFromPrivateKey, 'hex'),
+						Buffer.from(decryptedfromPrivateKeyOrLedgerAccountIndex, 'hex'),
 				  )
 				: Keys.Secp256K1.parseKeyPair(
 						Buffer.from(fromPublicKey.slice(2), 'hex'),
-						Buffer.from(decryptedFromPrivateKey, 'hex'),
+						Buffer.from(decryptedfromPrivateKeyOrLedgerAccountIndex, 'hex'),
 						'raw',
 				  );
+
+		const amountAsBigNumber = ethers.utils.parseUnits(amount, 9); // Convert the digit amount to BigNumber
 
 		let networkName = network === 'mainnet' ? 'casper' : 'casper-test';
 
@@ -57,7 +85,7 @@ export default async (
 
 		const payment = DeployUtil.standardPayment(paymentAmount);
 		const deploy = DeployUtil.makeDeploy(deployParams, session, payment);
-		const signedDeploy = DeployUtil.signDeploy(deploy, signKeyPair);
+		const signedDeploy = DeployUtil.signDeploy(deploy, signKeyPair as AsymmetricKey);
 
 		// Here we are sending the signed deploy - returns the hash
 		const deployHash = await casperClient.putDeploy(signedDeploy);

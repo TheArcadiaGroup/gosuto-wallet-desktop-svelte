@@ -9,6 +9,7 @@
 	"scripts": {
 		"dev:app": "cross-env NODE_ENV=development && npm run dev:all",
 		"dev": "cross-env NODE_ENV=development && nodemon --watch . --exec npm run dev:all",
+		"test-script": "nodemon --watch . --exec node ./src/test.cjs",
 		"dev:all": "concurrently -n=svelte,electron -c='#ff3e00',blue \"npm run dev:svelte\" \"npm run dev:electron\"",
 		"dev:svelte": "vite dev",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
@@ -31,7 +32,10 @@
 	],
 	"dependencies": {
 		"@lapo/asn1js": "^1.2.3",
+		"@ledgerhq/hw-transport-node-hid": "^6.27.5",
+		"@ledgerhq/logs": "^6.10.0",
 		"@tailwindcss/forms": "^0.5.2",
+		"@zondax/ledger-casper": "^2.4.3",
 		"axios": "^0.27.2",
 		"bip39": "^3.0.4",
 		"browserify": "^17.0.0",

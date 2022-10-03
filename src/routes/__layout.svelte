@@ -18,6 +18,7 @@
 	import { page } from '$app/stores';
 	import { updaterMessage } from '$stores';
 	import UpdaterPopup from '$lib/components/PopUps/Updater/UpdaterPopup.svelte';
+	import LedgerComms from '$lib/components/Ledger/LedgerComms.svelte';
 
 	onMount(async () => {
 		initializeTheme();
@@ -52,5 +53,7 @@
 	{#if $updaterMessage}
 		<UpdaterPopup appUpdateComms={$updaterMessage} />
 	{/if}
+
+	<LedgerComms />
 	<slot />
 </main>

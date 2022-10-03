@@ -30,7 +30,7 @@
 
 	let walletName = '';
 	let unlockDuration = 300;
-	let privateKey = '';
+	let privateKey: string | null = null;
 	let newPassword = '';
 	let confirmPassword = '';
 	let canSave = false;
@@ -49,7 +49,7 @@
 
 	$: allWalletNames = $wallets.map((wallet) => wallet.walletName);
 
-	let wallet: IWallet = $selectedWallet!;
+	let wallet = $selectedWallet;
 
 	onMount(() => {
 		if (!$selectedWallet) {
@@ -66,7 +66,10 @@
 
 		walletName = wallet.walletName;
 		unlockDuration = wallet.lockStatus.lockTimeout;
-		privateKey = wallet.privateKey.substring(0, 30);
+		privateKey =
+			isNaN(wallet.ledgerIndex ?? 0.1) && !wallet.privateKey
+				? null
+				: wallet.privateKey?.substring(0, 30) ?? null;
 		walletCurrentPassword = wallet.walletPassword.isEncrypted
 			? decryptPassword(wallet.walletPassword.password).trim()
 			: wallet.walletPassword.password.trim();
@@ -77,7 +80,7 @@
 	};
 
 	let changePassword = () => {
-		if (newPassword && newPassword === confirmPassword) {
+		if (wallet && newPassword && newPassword === confirmPassword) {
 			wallet.walletPassword = { password: encryptPassword(newPassword), isEncrypted: true };
 
 			canChangePassword = false;
@@ -91,7 +94,7 @@
 			saveData(
 				'wallets',
 				storedWallets.map((_wallet) => {
-					if (_wallet.publicKey === wallet.publicKey) {
+					if (wallet && _wallet.publicKey === wallet.publicKey) {
 						_wallet = wallet;
 					}
 
@@ -105,7 +108,7 @@
 	};
 
 	const updateWalletDetails = () => {
-		if (canSave) {
+		if (canSave && wallet) {
 			wallet.walletName = walletName;
 			wallet.lockStatus = {
 				...wallet.lockStatus,
@@ -113,7 +116,7 @@
 			};
 
 			const _wallets = $wallets.map((_wallet) => {
-				if (_wallet.publicKey === wallet.publicKey) {
+				if (_wallet.publicKey === wallet?.publicKey) {
 					_wallet = wallet;
 
 					// Update the item everywhere
@@ -152,7 +155,7 @@
 
 	const removeWallet = () => {
 		if (wallet) {
-			const _wallets = $wallets.filter((_wallet) => _wallet.walletName !== wallet.walletName);
+			const _wallets = $wallets.filter((_wallet) => _wallet.walletName !== wallet?.walletName);
 			if (wallet.publicKey === $selectedWallet?.walletName) {
 				selectedWallet.set(null);
 			}
@@ -168,12 +171,12 @@
 	$: walletNameIsDuplicate =
 		walletName.trim() &&
 		allWalletNames.some((name) => name.trim() === walletName.trim()) &&
-		wallet.walletName !== walletName;
+		wallet?.walletName !== walletName;
 
 	$: ((walletName, unlockDuration) => {
 		if (
-			((walletName.trim() && walletName.trim() !== wallet.walletName.trim()) ||
-				unlockDuration !== wallet.lockStatus.lockTimeout) &&
+			((walletName.trim() && walletName.trim() !== wallet?.walletName.trim()) ||
+				unlockDuration !== wallet?.lockStatus.lockTimeout) &&
 			!walletNameIsDuplicate &&
 			walletName.trim().length < 20
 		) {
@@ -212,7 +215,7 @@
 				okDisabled={copyPrivateKeyPassword !== walletCurrentPassword}
 				on:confirm={() => {
 					showCopyWalletPasswordPopup = false;
-					if (copyPrivateKeyPassword === walletCurrentPassword) {
+					if (wallet && copyPrivateKeyPassword === walletCurrentPassword && wallet.privateKey) {
 						copyToClipboard(decryptPrvKey(wallet.privateKey));
 						showWalletCopiedPopup = true;
 						copyPrivateKeyPassword = '';
@@ -231,7 +234,7 @@
 				on:confirm={() => {
 					showExportWalletFilePopup = false;
 					// TODO: Validate password then export file
-					if (exportWalletPassword === walletCurrentPassword) {
+					if (wallet && exportWalletPassword === walletCurrentPassword && wallet.privateKey) {
 						walletAsPem(wallet.walletName, wallet.privateKey, wallet.algorithm);
 						exportWalletPassword = '';
 					}
@@ -287,14 +290,17 @@
 					>
 						<p slot="text" class="settings-btn-text">Remove Wallet</p>
 					</Button>
-					<Button
-						hasGlow={true}
-						on:click={() => {
-							showExportWalletFilePopup = true;
-						}}
-					>
-						<p slot="text" class="settings-btn-text">Export Wallet</p>
-					</Button>
+
+					{#if wallet.privateKey}
+						<Button
+							hasGlow={true}
+							on:click={() => {
+								showExportWalletFilePopup = true;
+							}}
+						>
+							<p slot="text" class="settings-btn-text">Export Wallet</p>
+						</Button>
+					{/if}
 				</div>
 			</div>
 			<TextInput
@@ -323,25 +329,27 @@
 				addTextBg={true}
 			/>
 			<br />
-			<div class="private-container">
-				<div
-					class="img"
-					on:click={() => {
-						showCopyWalletPasswordPopup = true;
-					}}
-				>
-					<CopyOrange />
+			{#if privateKey}
+				<div class="private-container">
+					<div
+						class="img"
+						on:click={() => {
+							showCopyWalletPasswordPopup = true;
+						}}
+					>
+						<CopyOrange />
+					</div>
+					<TextInput
+						isDisabled={true}
+						bind:value={privateKey}
+						class="gosuto-dark"
+						label="Private Key"
+						type="password"
+						addTextBg={true}
+					/>
 				</div>
-				<TextInput
-					isDisabled={true}
-					bind:value={privateKey}
-					class="gosuto-dark"
-					label="Private Key"
-					type="password"
-					addTextBg={true}
-				/>
-			</div>
-			<br />
+				<br />
+			{/if}
 			<h2>Change Password</h2>
 			<br />
 			<TextInput

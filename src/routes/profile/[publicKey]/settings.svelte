@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
 
 	import Navbar from '$lib/components/Navbar/Navbar.svelte';
 
@@ -8,7 +9,6 @@
 	import Settings from '$lib/pages/Profile/WalletSettings/index.svelte';
 	import { selectedWallet, wallets } from '$stores/user/wallets';
 	import { pollyfillSelectedWallet, pollyFillUser } from '$utils/pollyfillData';
-	import { onMount } from 'svelte';
 
 	onMount(() => {
 		// If no wallets, navigate user to create them
