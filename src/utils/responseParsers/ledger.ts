@@ -5,6 +5,8 @@ import {
 	loadingLedgerAccounts,
 } from '$stores/ledger';
 import { get } from 'svelte/store';
+import { parseDelegationResponse } from './delegations';
+import { parseTransferData } from './transfers';
 
 function processLedgerResponse(jsonResponse: string) {
 	const response = JSON.parse(jsonResponse);
@@ -17,7 +19,8 @@ function processLedgerResponse(jsonResponse: string) {
 	) {
 		isLedgerConnected.set(false);
 		ledgerError.set(
-			'Please Make Sure Your Ledger is Unlocked and Casper App is Active/Open Before Proceeding',
+			response.message ??
+				'Please Make Sure Your Ledger is Unlocked and Casper App is Active/Open Before Proceeding',
 		);
 		return;
 	}
@@ -41,7 +44,25 @@ function processLedgerResponse(jsonResponse: string) {
 			loadingLedgerAccounts.set(false);
 		}
 		ledgerAccounts.set((get(ledgerAccounts) ?? []).concat(response.accounts));
-		console.log(get(ledgerAccounts));
+	}
+
+	// Process Staking/Unstaking Responses
+	if (
+		response.action === 'UnStakeUsingLedger' ||
+		response.action === 'StakeUsingLedger' ||
+		response.action === 'SendCspr'
+	) {
+		switch (response.action) {
+			case 'UnStakeUsingLedger':
+				parseDelegationResponse(JSON.stringify(response), 'unstake');
+				break;
+			case 'StakeUsingLedger':
+				parseDelegationResponse(JSON.stringify(response), 'stake');
+				break;
+			case 'SendCspr':
+				parseTransferData(JSON.stringify(response));
+				break;
+		}
 	}
 }
 

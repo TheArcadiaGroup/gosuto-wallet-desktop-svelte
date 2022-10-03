@@ -98,7 +98,7 @@
 					} else if (tokenMintTxes[key]?.result) {
 						// Clear loader and show respective popup with tx details
 						popup = 'Success';
-						popupContent = `<p>Succcessfully Deployed Contract</p>`;
+						popupContent = `<p>Successfully Deployed Contract</p>`;
 
 						// Clear Create Token Form
 						tokenName = '';

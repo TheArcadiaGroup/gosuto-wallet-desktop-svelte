@@ -1,5 +1,4 @@
 import { sendTokenTracker } from '$stores/activityLoaders';
-import { sendingFundsUsingLedger } from '$stores/ledger';
 import { user } from '$stores/user';
 import { get } from 'svelte/store';
 import { decryptPrvKey, retrieveData, saveData } from './dataStorage';
@@ -38,7 +37,7 @@ export function deleteToken(wallet: string, contractAddress: string): boolean {
 
 export async function sendToken(
 	publicKey: string,
-	privateKey: string | number,
+	privateKey: string,
 	tokenAmount: string,
 	tokenDecimals: number,
 	recipientPublicKey: string,
@@ -47,6 +46,7 @@ export async function sendToken(
 	_note: string = '',
 	tokenTicker: string = 'CSPR',
 	algorithm: 'secp256k1' | 'ed25519' = 'ed25519',
+	ledgerTx: { accountIndex: number } | null,
 ): Promise<void | {
 	id: string;
 	senderWallet: any;
@@ -82,17 +82,22 @@ export async function sendToken(
 
 	if (contractHash === 'CSPR') {
 		// window.api.send('sendCSPRTokens', JSON.stringify(requestObj));
-		sendCspr(
-			publicKey,
-			privateKey,
-			recipientPublicKey,
-			tokenAmount,
-			network,
-			algorithm,
-			requestObj.id,
-		)
-			.then((response) => {
-				if (!get(sendingFundsUsingLedger)) {
+		if (ledgerTx) {
+			window.api.send(
+				'ledger',
+				JSON.stringify({
+					action: 'SendCspr',
+					fromPublicKey: publicKey,
+					ledgerAccountIndex: ledgerTx.accountIndex,
+					toPublicKey: recipientPublicKey,
+					amount: tokenAmount,
+					network,
+					id: requestObj.id,
+				}),
+			);
+		} else {
+			sendCspr(publicKey, privateKey, recipientPublicKey, tokenAmount, network, algorithm)
+				.then((response) => {
 					parseTransferData(
 						JSON.stringify({
 							id: requestObj.id,
@@ -101,10 +106,8 @@ export async function sendToken(
 							message: 'Successfully Executed Transaction',
 						}),
 					);
-				}
-			})
-			.catch((err) => {
-				if (!get(sendingFundsUsingLedger)) {
+				})
+				.catch((err) => {
 					console.log(err);
 					parseTransferData(
 						JSON.stringify({
@@ -114,8 +117,8 @@ export async function sendToken(
 							message: 'Encountered Error While Transferring CSPR Tokens',
 						}),
 					);
-				}
-			});
+				});
+		}
 
 		return { ...requestObj, error: null, fulfilled: false };
 	} else {

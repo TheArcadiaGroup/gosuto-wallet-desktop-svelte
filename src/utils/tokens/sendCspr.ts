@@ -1,4 +1,3 @@
-import { sendingFundsUsingLedger } from '$stores/ledger';
 import { getEndpointByNetwork } from '$utils/casper';
 import { decryptPrvKey } from '$utils/dataStorage';
 import type { AsymmetricKey } from 'casper-js-sdk/dist/lib/Keys';
@@ -6,54 +5,33 @@ import { ethers } from 'ethers';
 
 export default async (
 	fromPublicKey: string,
-	fromPrivateKeyOrLedgerAccountIndex: string | number, // not the best design
+	fromPrivateKey: string, // not the best design
 	toPublicKey: string,
 	amount: string,
 	network: 'testnet' | 'mainnet' = 'testnet',
 	algorithm: 'secp256k1' | 'ed25519' = 'ed25519',
-	taskId?: string,
 ) => {
 	const { CasperClient, Keys, CLPublicKey, DeployUtil } = window.CasperSDK;
 
 	try {
-		if (typeof fromPrivateKeyOrLedgerAccountIndex !== 'string') {
-			sendingFundsUsingLedger.set(true);
-			window.api.send(
-				'ledger',
-				JSON.stringify({
-					action: 'SendCspr',
-					fromPublicKey,
-					ledgerAccountIndex: fromPrivateKeyOrLedgerAccountIndex,
-					toPublicKey,
-					amount,
-					network,
-					id: taskId,
-				}),
-			);
-
-			return;
-		}
-
 		//  Just added here to cover the type error related to this value not being a string
-		if (typeof fromPrivateKeyOrLedgerAccountIndex !== 'string') {
+		if (typeof fromPrivateKey !== 'string') {
 			return;
 		}
 
 		const casperClient = new CasperClient(getEndpointByNetwork(network));
 
-		const decryptedfromPrivateKeyOrLedgerAccountIndex = decryptPrvKey(
-			fromPrivateKeyOrLedgerAccountIndex,
-		);
+		const decryptedfromPrivateKey = decryptPrvKey(fromPrivateKey);
 
 		const signKeyPair =
 			algorithm === 'ed25519'
 				? Keys.Ed25519.parseKeyPair(
 						Buffer.from(fromPublicKey, 'hex'),
-						Buffer.from(decryptedfromPrivateKeyOrLedgerAccountIndex, 'hex'),
+						Buffer.from(decryptedfromPrivateKey, 'hex'),
 				  )
 				: Keys.Secp256K1.parseKeyPair(
 						Buffer.from(fromPublicKey.slice(2), 'hex'),
-						Buffer.from(decryptedfromPrivateKeyOrLedgerAccountIndex, 'hex'),
+						Buffer.from(decryptedfromPrivateKey, 'hex'),
 						'raw',
 				  );
 

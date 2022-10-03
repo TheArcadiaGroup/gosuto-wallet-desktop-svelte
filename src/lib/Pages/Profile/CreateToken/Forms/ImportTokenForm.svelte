@@ -83,7 +83,7 @@
 					} else if (tokenAddTxes[key]?.result) {
 						// Clear loader and show respective popup with tx details
 						popup = 'Success';
-						popupContent = `<p>Succcessfully Imported Token</p>`;
+						popupContent = `<p>Successfully Imported Token</p>`;
 
 						// Clear Create Token Form
 						contractHash = '';

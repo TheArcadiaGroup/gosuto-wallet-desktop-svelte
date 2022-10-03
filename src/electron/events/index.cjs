@@ -25,7 +25,11 @@ const {
 	getFiveAccounts,
 	queryAppStatus,
 } = require('../utils/legder/index.cjs');
-const { sendUsingLedger } = require('../utils/legder/ledgerTransactions.cjs');
+const {
+	sendUsingLedger,
+	delegateUsingLedger,
+	undelegateUsingLedger,
+} = require('../utils/legder/ledgerTransactions.cjs');
 
 /**
  * Receiving messages from Renderer
@@ -519,31 +523,48 @@ module.exports = () => {
 					parsedData.toPublicKey,
 					parsedData.amount,
 					parsedData.network,
-				)
-					.then((result) => {
-						sendMessage(
-							'sendErc20TokensResponse', // using this to make sure we use the rails already in place for the UI
-							JSON.stringify({
-								data: result,
-								id: parsedData.id,
-								error: null,
-							}),
-						);
-						return null;
-					})
-					.catch((err) => {
-						sendMessage(
-							'sendErc20TokensResponse',
-							JSON.stringify({
-								data: null,
-								error: err,
-								message:
-									'Encountered an error while trying to send your CSPR. Please make sure your ledger device is unlocked and the Casper App is open before proceeding',
-								id: parsedData.id,
-							}),
-						);
-						return null;
-					});
+				).catch((err) => {
+					// sendMessage(
+					// 	'sendErc20TokensResponse',
+					// 	JSON.stringify({
+					// 		data: null,
+					// 		error: err,
+					// 		message:
+					// 			'Encountered an error while trying to send your CSPR. Please make sure your ledger device is unlocked and the Casper App is open before retrying.',
+					// 		id: parsedData.id,
+					// 	}),
+					// );
+					// return null;
+					return {
+						data: null,
+						error: err,
+						message:
+							'Encountered an error while trying to send your CSPR. Please make sure your ledger device is unlocked and the Casper App is open before retrying.',
+						id: parsedData.id,
+					};
+				});
+				break;
+			case 'StakeUsingLedger':
+				res = await delegateUsingLedger(parsedData).catch((err) => {
+					return {
+						error: err,
+						data: null,
+						message:
+							'Encountered an error white trying to stake your tokens. Please make sure your ledger device is unlocked and the Casper App is open before retrying.',
+						id: parsedData.id,
+					};
+				});
+				break;
+			case 'UnStakeUsingLedger':
+				res = await undelegateUsingLedger(parsedData).catch((err) => {
+					return {
+						error: err,
+						data: null,
+						message:
+							'Encountered an error white trying to unstake your tokens. Please make sure your ledger device is unlocked and the Casper App is open before retrying.',
+						id: parsedData.id,
+					};
+				});
 				break;
 			default:
 				res = await queryAppStatus().catch((error) => {

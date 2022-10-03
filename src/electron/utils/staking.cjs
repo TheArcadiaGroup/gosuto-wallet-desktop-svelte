@@ -23,20 +23,6 @@ module.exports = {
 		algorithm,
 	}) => {
 		try {
-			console.log(
-				'private key',
-				privateKey,
-				'account hash',
-				accountHash,
-				'public key',
-				publicKey,
-				'validator',
-				validatorPublicKey,
-				'amount',
-				amount,
-				'network',
-				network,
-			);
 			network = network ?? 'testnet';
 
 			const { casperService, casperClient } = getCasperClientAndService(network);

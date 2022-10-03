@@ -17,7 +17,6 @@
 	import { ethers } from 'ethers';
 	import { page } from '$app/stores';
 	import { checkLockStatus } from '$utils/profiles';
-	import { sendingFundsUsingLedger } from '$stores/ledger';
 
 	/*
 	Validation Requirements
@@ -75,7 +74,7 @@
 		if ($selectedWallet) {
 			const result = await sendToken(
 				$selectedWallet.publicKey,
-				$selectedWallet.ledgerIndex ?? $selectedWallet.privateKey,
+				$selectedWallet.privateKey,
 				tokenAmount.toFixed(selectedToken.decimals),
 				selectedToken.decimals,
 				recipientAddress,
@@ -84,6 +83,7 @@
 				note,
 				selectedToken.tokenTicker,
 				$selectedWallet.algorithm,
+				$selectedWallet.ledgerIndex ? { accountIndex: $selectedWallet.ledgerIndex } : null,
 			);
 
 			// The result in this case matches the ID of the transaction that has just been sent out, or will be undefined until non-cspr token sending is enabled
@@ -98,19 +98,20 @@
 						tokenAmount.toString(),
 					)}</span> ${selectedToken.tokenTicker} to ${shortenAddress(recipientAddress)}.</p>`;
 				}
-			} else if (selectedToken.contractHash === 'CSPR' && !$sendingFundsUsingLedger) {
+			} else if (selectedToken.contractHash === 'CSPR') {
 				// we must prevent this entry from running when using ledger
 				popup = 'Send Failed!';
-			} else if (selectedToken.contractHash !== 'CSPR' || $sendingFundsUsingLedger) {
+			} else if (selectedToken.contractHash !== 'CSPR') {
 				// this is where we use ledger since we are using the nodeHID connector
 				popup = 'Sending';
 				popupContent = `<p>Currently sending, <span class='amount'>${parseFloat(
 					tokenAmount.toString(),
-				)}</span> ${selectedToken.tokenTicker} to ${shortenAddress(recipientAddress)}. ${
-					$sendingFundsUsingLedger
-						? 'Initiating Transaction. Please Make Sure Your Ledger Device is Connected'
-						: ''
-				}</p>`;
+				)}</span> ${selectedToken.tokenTicker} to ${shortenAddress(recipientAddress)}.</p>`;
+				// ${
+				// 	// $sendingFundsUsingLedger
+				// 	// 	? 'Initiating Transaction. Please Make Sure Your Ledger Device is Connected'
+				// 	// 	: ''
+				// }
 			}
 
 			return;
@@ -141,7 +142,7 @@
 						// Clear loader and show respective popup with tx details
 
 						popup = 'Success';
-						popupContent = `<p>Succcessfully sent <span class='amount'>${parseFloat(
+						popupContent = `<p>Successfully sent <span class='amount'>${parseFloat(
 							sendTokensTxs[item]?.amount || '',
 						)}</span> ${sendTokensTxs[item]?.token} to ${shortenAddress(
 							sendTokensTxs[item]?.recipientPublicKey ?? '',
