@@ -7,7 +7,6 @@ node_modules/
 *.local
 build/
 dist/
-yarn.lock
 .idea/
 .vscode/
 pnpm-lock.yaml
