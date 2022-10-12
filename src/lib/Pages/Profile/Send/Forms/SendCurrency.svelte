@@ -83,7 +83,9 @@
 				note,
 				selectedToken.tokenTicker,
 				$selectedWallet.algorithm,
-				$selectedWallet.ledgerIndex ? { accountIndex: $selectedWallet.ledgerIndex } : null,
+				$selectedWallet.ledgerIndex || $selectedWallet.ledgerIndex === 0
+					? { accountIndex: $selectedWallet.ledgerIndex }
+					: null,
 			);
 
 			// The result in this case matches the ID of the transaction that has just been sent out, or will be undefined until non-cspr token sending is enabled

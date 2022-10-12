@@ -1,93 +1,84 @@
-const { CLPublicKey, DeployUtil, CLValueBuilder } = require('casper-js-sdk');
+const { CLPublicKey, DeployUtil, CLValueBuilder, RuntimeArgs } = require('casper-js-sdk');
 const { ethers } = require('ethers');
 const { getCasperClientAndService } = require('../index.cjs');
 const { signTransaction } = require('./index.cjs');
 
 module.exports = {
-	sendUsingLedger: async (fromPublicKey, ledgerAccountIndex, toPublicKey, amount, network) => {
-		const { _casperService, casperClient } = getCasperClientAndService(network);
+	sendUsingLedger: async (
+		fromPublicKey,
+		ledgerAccountIndex,
+		toPublicKey,
+		amount,
+		network = 'testnet',
+	) => {
+		try {
+			const { _casperService, casperClient } = getCasperClientAndService(network);
 
-		const amountAsBigNumber = ethers.utils.parseUnits(amount, 9); // Convert the digit amount to BigNumber
+			const amountAsBigNumber = ethers.utils.parseUnits(amount, 9); // Convert the digit amount to BigNumber
 
-		let networkName = network === 'mainnet' ? 'casper' : 'casper-test';
+			let networkName = network === 'mainnet' ? 'casper' : 'casper-test';
 
-		// For native-transfers the payment price is fixed
-		const paymentAmount = 100000000; // previously 10000000000
+			// For native-transfers the payment price is fixed
+			const paymentAmount = 100000000; // previously 10000000000
 
-		// transfer_id field in the request to tag the transaction and to correlate it to your back-end storage
-		const id = 187821;
+			// transfer_id field in the request to tag the transaction and to correlate it to your back-end storage
+			const id = 187821;
 
-		// gasPrice for native transfers can be set to 1
-		const gasPrice = 1;
+			// gasPrice for native transfers can be set to 1
+			const gasPrice = 1;
 
-		// Time that the deploy will remain valid for, in milliseconds
-		// The default value is 1800000 ms (30 minutes)
-		const ttl = 1800000;
+			// Time that the deploy will remain valid for, in milliseconds
+			// The default value is 1800000 ms (30 minutes)
+			const ttl = 1800000;
 
-		const publicKey = CLPublicKey.fromHex(fromPublicKey);
+			const publicKey = CLPublicKey.fromHex(fromPublicKey);
 
-		let deployParams = new DeployUtil.DeployParams(publicKey, networkName, gasPrice, ttl);
+			let deployParams = new DeployUtil.DeployParams(publicKey, networkName, gasPrice, ttl);
 
-		// We create a public key from account-address (it is the hex representation of the public-key with an added prefix)
-		const toKey = CLPublicKey.fromHex(toPublicKey);
+			// We create a public key from account-address (it is the hex representation of the public-key with an added prefix)
+			const toKey = CLPublicKey.fromHex(toPublicKey);
 
-		const session = DeployUtil.ExecutableDeployItem.newTransfer(amountAsBigNumber, toKey, null, id);
+			const session = DeployUtil.ExecutableDeployItem.newTransfer(
+				amountAsBigNumber,
+				toKey,
+				null,
+				id,
+			);
 
-		const payment = DeployUtil.standardPayment(paymentAmount);
-		const deploy = DeployUtil.makeDeploy(deployParams, session, payment);
+			const payment = DeployUtil.standardPayment(paymentAmount);
+			const deploy = DeployUtil.makeDeploy(deployParams, session, payment);
 
-		// To Sign the Deploy, we basically change the signature parameter of the deploy and then send it over.
-		//  So...
-		const approval = new DeployUtil.Approval();
-		const signature = await signTransaction(ledgerAccountIndex, deploy.hash);
+			// To Sign the Deploy, we basically change the signature parameter of the deploy and then send it over.
+			const signature = await signTransaction(ledgerAccountIndex, deploy);
 
-		console.log(signature);
+			console.log(signature);
 
-		if (!signature || !signature?.error) {
-			throw 'Failed to sign transaction. Please make sure your ledger is unlocked and Casper App is Active/Open and try again';
+			if (
+				!signature ||
+				signature?.error ||
+				signature?.errorMessage?.toLowerCase() !== 'no errors'
+			) {
+				throw 'Failed to sign transaction. Please make sure your ledger is unlocked and Casper App is Active/Open and try again';
+			}
+
+			const signedDeploy = DeployUtil.setSignature(deploy, signature.signatureRS, publicKey);
+
+			const deployHash = await casperClient.putDeploy(signedDeploy);
+
+			// Return the deploy info using the deployHash
+			return await casperClient.getDeploy(deployHash);
+		} catch (error) {
+			console.log(error);
+			throw error;
 		}
-
-		DeployUtil.setSignature(deploy, signature);
-
-		approval.signature = Keys.Secp256K1.accountHex(signature);
-
-		deploy.approvals.push(approval);
-
-		const deployHash = await casperClient.putDeploy(deploy);
-
-		// Return the deploy info using the deployHash
-		const data = await casperClient.getDeploy(deployHash);
-		return { data };
-
-		// export const signDeploy = (
-		// 	deploy: Deploy,
-		// 	signingKey: AsymmetricKey
-		//   ): Deploy => {
-		// 	const approval = new Approval();
-		// 	const signature = signingKey.sign(deploy.hash);
-		// 	approval.signer = signingKey.accountHex();
-		// 	switch (signingKey.signatureAlgorithm) {
-		// 	  case SignatureAlgorithm.Ed25519:
-		// 		approval.signature = Keys.Ed25519.accountHex(signature);
-		// 		break;
-		// 	  case SignatureAlgorithm.Secp256K1:
-		// 		approval.signature = Keys.Secp256K1.accountHex(signature);
-		// 		break;
-		// 	}
-		// 	deploy.approvals.push(approval);
-
-		// 	return deploy;
-		//   };
 	},
 
 	delegateUsingLedger: async ({
-		privateKey,
-		accountHash,
 		publicKey,
 		validatorPublicKey,
 		amount,
-		network,
-		algorithm,
+		ledgerAccountIndex,
+		network = 'testnet',
 	}) => {
 		try {
 			network = network ?? 'testnet';
@@ -95,29 +86,15 @@ module.exports = {
 			const { casperService, casperClient } = getCasperClientAndService(network);
 			const networkName = network === 'mainnet' ? 'casper' : 'casper-test';
 			const client = casperClient;
-			// Read keys from the structure created in #Generating keys
-			// if (privateKey.length !== 128) {
-			// 	privateKey = Keys.Ed25519.parsePrivateKey(privateKey);
-			// }
-			// const publicKey = Keys.Ed25519.privateToPublicKey(privateKey);
 
-			// We just delete this once we have signing setup
-			const keyPair =
-				algorithm === 'ed25519'
-					? Keys.Ed25519.parseKeyPair(Buffer.from(publicKey, 'hex'), Buffer.from(privateKey, 'hex'))
-					: Keys.Secp256K1.parseKeyPair(
-							Buffer.from(publicKey.slice(2), 'hex'),
-							Buffer.from(privateKey, 'hex'),
-							'raw',
-					  );
-
-			const deployParams = new DeployUtil.DeployParams(keyPair.publicKey, networkName);
+			publicKey = CLPublicKey.fromHex(publicKey);
+			const deployParams = new DeployUtil.DeployParams(publicKey, networkName);
 
 			amount = ethers.utils.parseUnits(amount.toString(), 9);
 
 			const payment = DeployUtil.standardPayment(5000000000);
 			const args = RuntimeArgs.fromMap({
-				delegator: keyPair.publicKey,
+				delegator: publicKey,
 				validator: CLPublicKey.fromHex(validatorPublicKey),
 				amount: CLValueBuilder.u512(amount),
 			});
@@ -131,52 +108,51 @@ module.exports = {
 				args,
 			);
 			const deploy = DeployUtil.makeDeploy(deployParams, session, payment);
-			const signedDeploy = DeployUtil.signDeploy(deploy, keyPair);
-			const executionResultHash = await client.putDeploy(signedDeploy);
+
+			// To Sign the Deploy, we basically change the signature parameter of the deploy and then send it over.
+			const signature = await signTransaction(ledgerAccountIndex, deploy);
+
+			console.log(signature);
+
+			if (
+				!signature ||
+				signature?.error ||
+				signature?.errorMessage?.toLowerCase() !== 'no errors'
+			) {
+				throw 'Failed to sign transaction. Please make sure your ledger is unlocked and Casper App is Active/Open and try again';
+			}
+
+			const signedDeploy = DeployUtil.setSignature(deploy, signature.signatureRS, publicKey);
+
+			const deployHash = await casperClient.putDeploy(signedDeploy);
 
 			// Return the deploy info using the deployHash
-			const data = await casperClient.getDeploy(executionResultHash);
-			return { data };
+			return await casperClient.getDeploy(deployHash);
 		} catch (error) {
+			console.log(error);
 			throw error;
 		}
 	},
 
 	undelegateUsingLedger: async ({
-		privateKey,
+		publicKey,
 		validatorPublicKey,
 		amount,
+		ledgerAccountIndex,
 		network = 'testnet',
-		algorithm,
 	}) => {
 		try {
 			const { casperService, casperClient } = getCasperClientAndService(network);
 			const networkName = network === 'mainnet' ? 'casper' : 'casper-test';
 
-			// Read keys from the structure created in #Generating keys
-			if (privateKey.length !== 128) {
-				privateKey = Keys.Ed25519.parsePrivateKey(privateKey);
-			}
-
-			const publicKey = Keys.Ed25519.privateToPublicKey(privateKey);
-
-			//  Remove this once we have signing setup
-			const keyPair =
-				algorithm === 'ed25519'
-					? Keys.Ed25519.parseKeyPair(Buffer.from(publicKey, 'hex'), Buffer.from(privateKey, 'hex'))
-					: Keys.Secp256K1.parseKeyPair(
-							Buffer.from(publicKey.slice(2), 'hex'),
-							Buffer.from(privateKey, 'hex'),
-							'raw',
-					  );
-
-			const deployParams = new DeployUtil.DeployParams(keyPair.publicKey, networkName);
+			publicKey = CLPublicKey.fromHex(publicKey);
+			const deployParams = new DeployUtil.DeployParams(publicKey, networkName);
 			const payment = DeployUtil.standardPayment(5000000000);
 
 			amount = ethers.utils.parseUnits(amount.toString(), 9);
 
 			const args = RuntimeArgs.fromMap({
-				delegator: keyPair.publicKey,
+				delegator: publicKey,
 				validator: CLPublicKey.fromHex(validatorPublicKey),
 				amount: CLValueBuilder.u512(amount),
 			});
@@ -190,12 +166,28 @@ module.exports = {
 				args,
 			);
 			const deploy = DeployUtil.makeDeploy(deployParams, session, payment);
-			const signedDeploy = DeployUtil.signDeploy(deploy, keyPair);
-			const executionResult = await client.putDeploy(signedDeploy);
 
-			const data = await casperClient.getDeploy(executionResult);
-			return { data };
+			// To Sign the Deploy, we basically change the signature parameter of the deploy and then send it over.
+			const signature = await signTransaction(ledgerAccountIndex, deploy);
+
+			console.log(signature);
+
+			if (
+				!signature ||
+				signature?.error ||
+				signature?.errorMessage?.toLowerCase() !== 'no errors'
+			) {
+				throw 'Failed to sign transaction. Please make sure your ledger is unlocked and Casper App is Active/Open and try again';
+			}
+
+			const signedDeploy = DeployUtil.setSignature(deploy, signature.signatureRS, publicKey);
+
+			const deployHash = await casperClient.putDeploy(signedDeploy);
+
+			// Return the deploy info using the deployHash
+			return await casperClient.getDeploy(deployHash);
 		} catch (error) {
+			console.log(error);
 			throw error;
 		}
 	},

@@ -39,7 +39,7 @@
 		"@ledgerhq/hw-transport-node-hid": "^6.27.5",
 		"@ledgerhq/logs": "^6.10.0",
 		"@tailwindcss/forms": "^0.5.2",
-		"@zondax/ledger-casper": "^2.4.3",
+		"@zondax/ledger-casper": "^0.0.1",
 		"axios": "^0.27.2",
 		"bip39": "^3.0.4",
 		"browserify": "^17.0.0",

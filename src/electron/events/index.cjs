@@ -523,48 +523,46 @@ module.exports = () => {
 					parsedData.toPublicKey,
 					parsedData.amount,
 					parsedData.network,
-				).catch((err) => {
-					// sendMessage(
-					// 	'sendErc20TokensResponse',
-					// 	JSON.stringify({
-					// 		data: null,
-					// 		error: err,
-					// 		message:
-					// 			'Encountered an error while trying to send your CSPR. Please make sure your ledger device is unlocked and the Casper App is open before retrying.',
-					// 		id: parsedData.id,
-					// 	}),
-					// );
-					// return null;
-					return {
+				)
+					.then((deploy) => ({
+						data: deploy,
+						id: parsedData.id,
+					}))
+					.catch((err) => ({
 						data: null,
 						error: err,
 						message:
 							'Encountered an error while trying to send your CSPR. Please make sure your ledger device is unlocked and the Casper App is open before retrying.',
 						id: parsedData.id,
-					};
-				});
+					}));
 				break;
 			case 'StakeUsingLedger':
-				res = await delegateUsingLedger(parsedData).catch((err) => {
-					return {
+				res = await delegateUsingLedger(parsedData)
+					.then((deploy) => ({
+						data: deploy,
+						id: parsedData.id,
+					}))
+					.catch((err) => ({
 						error: err,
 						data: null,
 						message:
 							'Encountered an error white trying to stake your tokens. Please make sure your ledger device is unlocked and the Casper App is open before retrying.',
 						id: parsedData.id,
-					};
-				});
+					}));
 				break;
 			case 'UnStakeUsingLedger':
-				res = await undelegateUsingLedger(parsedData).catch((err) => {
-					return {
+				res = await undelegateUsingLedger(parsedData)
+					.then((deploy) => ({
+						data: deploy,
+						id: parsedData.id,
+					}))
+					.catch((err) => ({
 						error: err,
 						data: null,
 						message:
 							'Encountered an error white trying to unstake your tokens. Please make sure your ledger device is unlocked and the Casper App is open before retrying.',
 						id: parsedData.id,
-					};
-				});
+					}));
 				break;
 			default:
 				res = await queryAppStatus().catch((error) => {
@@ -573,6 +571,7 @@ module.exports = () => {
 				break;
 		}
 
+		console.log(res);
 		event.returnValue = JSON.stringify({
 			action: parsedData.action,
 			nextAction: parsedData.nextAction ?? null,

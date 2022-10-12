@@ -16,9 +16,6 @@ const config = {
 			$scripts: path.resolve('./src/scripts'),
 		},
 	},
-	// define: {
-	// 	'process.env': process.env
-	// },
 	optimizeDeps: {
 		// entries: ['chart.js'],
 		// exclude: ['@zerodevx/svelte-toast']

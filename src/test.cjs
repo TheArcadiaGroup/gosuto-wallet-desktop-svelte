@@ -4,6 +4,8 @@ const { listen } = require('@ledgerhq/logs');
 const { CLPublicKey, CLPublicKeyTag, DeployUtil, Keys } = require('casper-js-sdk');
 const { ethers } = require('ethers');
 const { getCasperClientAndService } = require('./electron/utils/index.cjs');
+const axios = require('axios');
+const { testnetApiUrl } = require('./electron/constants/index.cjs');
 
 listen((log) => {
 	console.log(log);
@@ -143,7 +145,8 @@ async function sendUsingLedger(fromPublicKey, ledgerAccountIndex, toPublicKey, a
 	const path = "m/44'/506'/0'/0/0";
 	const signature = await CasperApp.sign(path, DeployUtil.deployToBytes(deploy));
 
-	const signedDeploy = DeployUtil.setSignature(deploy, signature.signatureRSV, publicKey);
+	console.log(signature);
+	const signedDeploy = DeployUtil.setSignature(deploy, signature.signatureRS, publicKey);
 
 	const deployHash = await casperClient.putDeploy(signedDeploy);
 

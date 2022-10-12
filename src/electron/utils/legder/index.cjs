@@ -1,7 +1,7 @@
 const TransportNodeHid = require('@ledgerhq/hw-transport-node-hid').default;
 const AppCasper = require('@zondax/ledger-casper').default;
 const { listen } = require('@ledgerhq/logs');
-const { CLPublicKey } = require('casper-js-sdk');
+const { CLPublicKey, DeployUtil } = require('casper-js-sdk');
 const { getBalance } = require('../account.cjs');
 
 listen((log) => {
@@ -86,16 +86,16 @@ const getFiveAccounts = async (startIndex = 0, network = 'testnet') => {
 	return { accounts: accountsArray };
 };
 
-const signTransaction = async (accountIndex, message) => {
+const signTransaction = async (accountIndex, deploy) => {
 	await queryAppStatus().catch((err) => {
 		throw err;
 	});
 	const [CasperApp, Transport] = await createTransport();
-	console.log(
-		await CasperApp.signGetChunks(`m/44'/506'/0'/0/${accountIndex}`, Buffer.from(message)),
+	const result = await CasperApp.sign(
+		`m/44'/506'/0'/0/${accountIndex}`,
+		DeployUtil.deployToBytes(deploy),
 	);
-	const result = await CasperApp.sign(`m/44'/506'/0'/0/${accountIndex}`, Buffer.from(message));
-	console.log(result);
+
 	await Transport.close();
 	return result;
 };
