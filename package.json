@@ -13,7 +13,6 @@
 	"scripts": {
 		"dev:app": "cross-env NODE_ENV=development && npm run dev:all",
 		"dev": "cross-env NODE_ENV=development && nodemon --watch . --exec npm run dev:all",
-		"test-script": "nodemon --watch . --exec node ./src/test.cjs",
 		"dev:all": "concurrently -n=svelte,electron -c='#ff3e00',blue \"npm run dev:svelte\" \"npm run dev:electron\"",
 		"dev:svelte": "vite dev",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
