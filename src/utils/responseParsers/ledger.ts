@@ -11,11 +11,13 @@ import { parseTransferData } from './transfers';
 function processLedgerResponse(jsonResponse: string) {
 	const response = JSON.parse(jsonResponse);
 
-	console.log(response);
 	if (
-		response.error === 'not-connected' ||
-		(response.error?.id && response.error?.id === 'ListenTimeout') ||
-		(response.error?.name && response.error?.name === 'TransportError')
+		(response.error === 'not-connected' ||
+			(response.error?.id && response.error?.id === 'ListenTimeout') ||
+			(response.error?.name && response.error?.name === 'TransportError')) &&
+		response.action !== 'UnStakeUsingLedger' &&
+		response.action !== 'StakeUsingLedger' &&
+		response.action !== 'SendCsprUsingLedger'
 	) {
 		isLedgerConnected.set(false);
 		ledgerError.set(
@@ -50,7 +52,7 @@ function processLedgerResponse(jsonResponse: string) {
 	if (
 		response.action === 'UnStakeUsingLedger' ||
 		response.action === 'StakeUsingLedger' ||
-		response.action === 'SendCspr'
+		response.action === 'SendCsprUsingLedger'
 	) {
 		switch (response.action) {
 			case 'UnStakeUsingLedger':
@@ -59,7 +61,7 @@ function processLedgerResponse(jsonResponse: string) {
 			case 'StakeUsingLedger':
 				parseDelegationResponse(JSON.stringify(response), 'stake');
 				break;
-			case 'SendCspr':
+			case 'SendCsprUsingLedger':
 				parseTransferData(JSON.stringify(response));
 				break;
 		}

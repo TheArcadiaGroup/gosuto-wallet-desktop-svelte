@@ -516,7 +516,7 @@ module.exports = () => {
 					parsedData.network || 'testnet',
 				).catch((error) => (res = { error }));
 				break;
-			case 'SendCspr':
+			case 'SendCsprUsingLedger':
 				res = await sendUsingLedger(
 					parsedData.fromPublicKey,
 					parsedData.ledgerAccountIndex,

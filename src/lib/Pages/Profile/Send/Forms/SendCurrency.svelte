@@ -130,6 +130,7 @@
 			// First check if new transactions came in
 			Object.keys(sendTokensTxs).map((item) => {
 				if (sendTokensTxs[item]) {
+					console.log(sendTokensTxs[item]);
 					if (sendTokensTxs[item]?.error) {
 						// Show error
 						popup = 'Send Failed!';

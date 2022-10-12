@@ -18,8 +18,6 @@ export const parseTransferData = (response: any) => {
 		);
 		const publicKey = data[1].deploy.session.Transfer.args[1][1].parsed; // Wallet Address
 
-		// TODO: TAKE THE 2.5% FEE INTO CONSIDERATION AS ITS CURRENTLY NOT BEING CONSIDERED
-
 		const returnObject = {
 			id: response.id,
 			wallet: publicKey,

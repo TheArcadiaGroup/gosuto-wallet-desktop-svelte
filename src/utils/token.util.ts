@@ -86,7 +86,7 @@ export async function sendToken(
 			window.api.send(
 				'ledger',
 				JSON.stringify({
-					action: 'SendCspr',
+					action: 'SendCsprUsingLedger',
 					fromPublicKey: publicKey,
 					ledgerAccountIndex: ledgerTx.accountIndex,
 					toPublicKey: recipientPublicKey,
