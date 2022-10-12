@@ -54,8 +54,10 @@
 			stakeAmount,
 			$user!.network,
 			$selectedWallet!.algorithm,
-			$selectedWallet!.ledgerIndex || $selectedWallet!.ledgerIndex === 0
-				? { accountIndex: $selectedWallet.ledgerIndex }
+			$selectedWallet?.ledgerIndex || $selectedWallet?.ledgerIndex === 0
+				? {
+						accountIndex: $selectedWallet.ledgerIndex,
+				  }
 				: null,
 		);
 
@@ -99,7 +101,7 @@
 			stakeAmount,
 			$user!.network,
 			wallet!.algorithm,
-			wallet!.ledgerIndex || wallet!.ledgerIndex === 0
+			wallet?.ledgerIndex || wallet?.ledgerIndex === 0
 				? { accountIndex: wallet.ledgerIndex }
 				: null,
 		);

@@ -163,7 +163,7 @@ export const undelegate = (
 		window.api.send(
 			'ledger',
 			JSON.stringify({
-				privateKey,
+				publicKey,
 				validatorPublicKey,
 				amount,
 				network,
