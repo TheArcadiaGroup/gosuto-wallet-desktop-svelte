@@ -15,7 +15,8 @@ function processLedgerResponse(jsonResponse: string) {
 	console.log(response);
 
 	if (
-		(response.error === 'not-connected' ||
+		(response.error ||
+			response.error === 'not-connected' ||
 			(response.error?.id && response.error?.id === 'ListenTimeout') ||
 			(response.error?.name && response.error?.name === 'TransportError')) &&
 		response.action !== 'UnStakeUsingLedger' &&
@@ -23,10 +24,17 @@ function processLedgerResponse(jsonResponse: string) {
 		response.action !== 'SendCsprUsingLedger'
 	) {
 		isLedgerConnected.set(false);
-		ledgerError.set(
-			response.message ??
-				'Please Make Sure Your Ledger is Unlocked and Casper App is Active/Open Before Proceeding',
-		);
+		loadingLedgerAccounts.set(false);
+		if (response.error.includes('cannot open device with path /dev/hidraw4')) {
+			ledgerError.set(`
+			Seems like we can't access your ledger device. If on linux, please try running this command on your terminal "sudo chmod 666 /dev/hidraw4" Before trying again
+			`);
+		} else {
+			ledgerError.set(
+				response.message ??
+					'Please Make Sure Your Ledger is Unlocked and Casper App is Active/Open Before Proceeding',
+			);
+		}
 		return;
 	}
 

@@ -571,6 +571,9 @@ module.exports = () => {
 				break;
 		}
 
+		if (res.error) {
+			res.error = new Error(res.error).message.toString();
+		}
 		console.log(parsedData.action, res);
 		event.returnValue = JSON.stringify({
 			action: parsedData.action,
