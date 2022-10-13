@@ -96,7 +96,7 @@
 				);
 			} else {
 				if ($ledgerAccounts?.length > 0) {
-					step = 2;
+					runChecker($isLedgerConnected, $ledgerAccounts, $selectedLedgerAccount);
 				}
 			}
 		}
