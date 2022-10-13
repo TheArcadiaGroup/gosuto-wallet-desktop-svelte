@@ -8,6 +8,7 @@ import { wallets } from '$stores/user/wallets';
 import { get } from 'svelte/store';
 import { parseDelegationResponse } from './delegations';
 import { parseTransferData } from './transfers';
+import _ from 'lodash-es';
 
 function processLedgerResponse(jsonResponse: string) {
 	const response = JSON.parse(jsonResponse);
@@ -36,6 +37,7 @@ function processLedgerResponse(jsonResponse: string) {
 			JSON.stringify({
 				action: 'FiveAccounts',
 				network: response.network ?? 'testnet',
+				fromIndex: get(ledgerAccounts)?.length > 0 ? get(ledgerAccounts)?.length : 0,
 			}),
 		);
 		return;
@@ -59,7 +61,9 @@ function processLedgerResponse(jsonResponse: string) {
 
 			return acc;
 		});
-		ledgerAccounts.set((get(ledgerAccounts) ?? []).concat(response.accounts));
+		ledgerAccounts.set(
+			_.uniqBy((get(ledgerAccounts) ?? []).concat(response.accounts), 'publicKey'),
+		);
 	}
 
 	// Process Staking/Unstaking Responses

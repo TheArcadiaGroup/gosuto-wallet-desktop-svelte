@@ -23,6 +23,7 @@
 	import { loadWalletData } from '$utils/dataLoaders';
 	import { walletLoaders } from '$stores/dataLoaders';
 	import { user } from '$stores/user';
+	import _ from 'lodash-es';
 
 	let walletName: string;
 	let password: string;
@@ -74,23 +75,30 @@
 						action: 'AppStatus',
 						nextAction: 'FiveAccounts',
 						network: $user?.network ?? 'testnet',
+						fromIndex: $ledgerAccounts && $ledgerAccounts.length > 0 ? $ledgerAccounts.length : 0,
 					}),
 				);
 			} else {
 				step = 3;
 			}
 		} else {
-			// Connect to Ledger
-			loadingLedgerAccounts.set(true);
+			if (!$ledgerAccounts || $ledgerAccounts.length <= 0) {
+				// Connect to Ledger
+				loadingLedgerAccounts.set(true);
 
-			window.api.send(
-				'ledger',
-				JSON.stringify({
-					action: 'AppStatus',
-					nextAction: 'FiveAccounts',
-					network: $user?.network ?? 'testnet',
-				}),
-			);
+				window.api.send(
+					'ledger',
+					JSON.stringify({
+						action: 'AppStatus',
+						nextAction: 'FiveAccounts',
+						network: $user?.network ?? 'testnet',
+					}),
+				);
+			} else {
+				if ($ledgerAccounts?.length > 0) {
+					step = 2;
+				}
+			}
 		}
 	}
 
@@ -141,7 +149,6 @@
 			$selectedLedgerAccount?.publicKey &&
 			$selectedLedgerAccount?.accountHash
 		) {
-			console.log($selectedLedgerAccount);
 			let wallets: IWallet[] = retrieveData('wallets') || [];
 
 			const newWallet: IWallet = {
@@ -206,13 +213,18 @@
 
 	onMount(() => {
 		// Check for the ledger connection and fetch accounts, if not possible, just take user to step 1, if possible, take them to two
-		if (!$ledgerAccounts || $ledgerAccounts?.length <= 0) {
+
+		if ($ledgerAccounts && $ledgerAccounts.length > 0) {
+			step = 2;
+			ledgerAccounts.set(_.uniqBy($ledgerAccounts, 'publicKey'));
+		} else if (!$ledgerAccounts || $ledgerAccounts?.length <= 0) {
 			window.api.send(
 				'ledger',
 				JSON.stringify({
 					action: 'AppStatus',
 					nextAction: 'FiveAccounts',
 					network: $user?.network ?? 'testnet',
+					fromIndex: $ledgerAccounts && $ledgerAccounts.length > 0 ? $ledgerAccounts.length : 0,
 				}),
 			);
 		}
@@ -229,8 +241,13 @@
 	});
 
 	ledgerAccounts.subscribe((accounts) => {
+		if (accounts && accounts.length > 0) {
+			loadingLedgerAccounts.set(false);
+		}
 		runChecker($isLedgerConnected, accounts, $selectedLedgerAccount);
 	});
+
+	loadingLedgerAccounts.subscribe((loading) => console.log(loading));
 
 	selectedLedgerAccount.subscribe((selectedAcc) => {
 		const localWallets: IWallet[] = $wallets ?? retrieveData('wallets') ?? [];
@@ -370,12 +387,12 @@
 
 			{#if $ledgerAccounts}
 				<div
-					class="grid grid-cols-3 gap-2 w-full overflow-y-scroll text-dark-gray dark:text-white"
-					style="max-height: 60vh;"
+					class="grid grid-cols-3 gap-2 w-full overflow-y-scroll text-dark-gray dark:text-white z-10 px-3"
+					style="max-height: 45vh;"
 				>
 					{#each $ledgerAccounts as account}
 						{#if account}
-							<div
+							<button
 								class="rounded-xl border border-light-grayShadeOne hover:bg-light-lighterOrange hover:border-light-lighterOrange hover:bg-opacity-50 cursor-pointer px-3 py-2 overflow-clip text-sm
 							flex flex-col items-start justify-evenly space-y-2 disabled:cursor-not-allowed"
 								class:cursor-not-allowed={account.exists}
@@ -383,28 +400,31 @@
 								class:border-light-lighterOrange={account.exists}
 								class:bg-opacity-50={account.exists}
 								on:click={() => !account.exists && selectedLedgerAccount.set(account)}
+								disabled={account.exists}
 								title={account.publicKey}
 							>
-								<div class="overflow-clip w-full">
+								<div class="overflow-clip w-full flex flex-col items-start">
 									<div class="text-xs text-light-grayShadeOne">Public Key</div>
 									<div>
 										{account.publicKey}
 									</div>
 								</div>
-								<div>
+								<div class="w-full flex flex-col items-start">
 									<div class="text-xs text-light-grayShadeOne">Balance</div>
 									<div class="balance">
 										{account.balance} CSPR
 									</div>
 								</div>
-							</div>
+							</button>
 						{/if}
 					{/each}
 				</div>
 			{/if}
 			<button
-				class="text-light-lighterOrange mt-10 -mb-16 text-left hover:border hover:border-light-lighterOrange px-4 py-2 transition-all rounded-full font-bold"
+				class="text-light-lighterOrange mt-10 -mb-16 text-left hover:border hover:border-light-lighterOrange px-4 py-2 transition-all rounded-full font-bold
+				disabled:bg-opacity-50 z-50"
 				on:click={loadMoreAddresses}
+				disabled={$loadingLedgerAccounts}
 			>
 				Load More Addresses
 				{#if $loadingLedgerAccounts}
@@ -483,21 +503,21 @@
 		@apply bg-white dark:bg-dark-gosutoDark;
 	}
 
-	.fileImport-wrapper .gosuto-logo {
+	:local(.fileImport-wrapper .gosuto-logo) {
 		@apply w-36 h-12 md:w-64 md:h-20 3xl:w-80 3xl:h-28 4xl:w-2/3 4xl:h-1/2;
-		@apply mb-8 4xl:mb-16;
+		@apply mb-8 4xl:mb-16 max-w-[25%];
 	}
 
-	.fileImport-content {
+	:local(.fileImport-content) {
 		@apply flex flex-col place-items-center;
 		@apply place-self-start justify-self-center;
 		@apply mt-10 md:mt-20;
-		@apply w-11/12 sm:w-3/4 md:w-1/2 lg:w-2/5 xl:w-1/4;
+		@apply w-11/12 sm:w-[80%] md:w-3/4 lg:w-4/5 xl:w-1/2;
 	}
 
-	.fileImport-header {
-		@apply text-xl md:text-3xl 3xl:text-4xl 4xl:text-7xl font-display font-bold;
-		@apply mb-4 4xl:mb-16;
+	:local(.fileImport-header) {
+		@apply text-xl md:text-3xl 3xl:text-4xl 4xl:text-6xl font-display font-bold;
+		@apply mb-4 4xl:mb-16 mt-2;
 		@apply text-dark-gray dark:text-white;
 	}
 

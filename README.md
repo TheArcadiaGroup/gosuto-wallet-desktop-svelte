@@ -1,11 +1,16 @@
 # Gosuto Wallet
 
+# DO NOT UPDATE TO ELECTRON v21 WITHOUT THIS ISSUE BEING FIXED
+
+[Electron 21 Issue](https://github.com/electron/electron/issues/35801)
+
 ## Warning
+
 This version is incompatible with the previous version
 
 ## Technologies
 
-Sveltekit + Electron + Tailwindcss 
+Sveltekit + Electron + Tailwindcss
 
 ## Getting Started
 

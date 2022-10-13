@@ -4,6 +4,6 @@
 	import { navigateToUrl } from '$utils/profiles';
 
 	beforeNavigate(({ to, cancel }) => {
-		navigateToUrl(to?.pathname ?? $page.url.pathname, cancel);
+		navigateToUrl(to?.url.pathname ?? $page.url.pathname, cancel);
 	});
 </script>

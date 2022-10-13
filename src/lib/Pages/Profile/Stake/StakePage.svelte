@@ -20,6 +20,7 @@
 	import ConfirmUnStake from '$lib/components/PopUps/StakePopups/ConfirmUnStake.svelte';
 	import { checkLockStatus } from '$utils/profiles';
 	import { goto } from '$app/navigation';
+	import _ from 'lodash-es';
 
 	// Popup
 	let popup:
@@ -54,7 +55,7 @@
 			stakeAmount,
 			$user!.network,
 			$selectedWallet!.algorithm,
-			$selectedWallet?.ledgerIndex || $selectedWallet?.ledgerIndex === 0
+			_.isNumber($selectedWallet.ledgerIndex)
 				? {
 						accountIndex: $selectedWallet.ledgerIndex,
 				  }
@@ -101,9 +102,7 @@
 			stakeAmount,
 			$user!.network,
 			wallet!.algorithm,
-			wallet?.ledgerIndex || wallet?.ledgerIndex === 0
-				? { accountIndex: wallet.ledgerIndex }
-				: null,
+			_.isNumber(wallet.ledgerIndex) ? { accountIndex: wallet.ledgerIndex } : null,
 		);
 
 		if (result) {

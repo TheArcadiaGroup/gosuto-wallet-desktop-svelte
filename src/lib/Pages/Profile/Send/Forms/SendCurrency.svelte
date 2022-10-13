@@ -17,6 +17,7 @@
 	import { ethers } from 'ethers';
 	import { page } from '$app/stores';
 	import { checkLockStatus } from '$utils/profiles';
+	import _ from 'lodash-es';
 
 	/*
 	Validation Requirements
@@ -83,7 +84,7 @@
 				note,
 				selectedToken.tokenTicker,
 				$selectedWallet.algorithm,
-				$selectedWallet.ledgerIndex || $selectedWallet.ledgerIndex === 0
+				_.isNumber($selectedWallet.ledgerIndex)
 					? { accountIndex: $selectedWallet.ledgerIndex }
 					: null,
 			);

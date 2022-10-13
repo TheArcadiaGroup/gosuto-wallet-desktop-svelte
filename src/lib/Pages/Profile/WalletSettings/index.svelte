@@ -14,6 +14,7 @@
 	import pollyfillData, { pollyfillSelectedWallet } from '$utils/pollyfillData';
 
 	import { goto } from '$app/navigation';
+	import _ from 'lodash-es';
 	import {
 		decryptPassword,
 		decryptPrvKey,
@@ -291,7 +292,7 @@
 						<p slot="text" class="settings-btn-text">Remove Wallet</p>
 					</Button>
 
-					{#if wallet.privateKey}
+					{#if !_.isNumber(wallet.ledgerIndex)}
 						<Button
 							hasGlow={true}
 							on:click={() => {
@@ -329,7 +330,7 @@
 				addTextBg={true}
 			/>
 			<br />
-			{#if privateKey}
+			{#if privateKey && !_.isNumber(wallet.ledgerIndex)}
 				<div class="private-container">
 					<div
 						class="img"

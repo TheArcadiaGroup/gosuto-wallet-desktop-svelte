@@ -32,10 +32,12 @@ const createWindow = () => {
 	const display = screen.getPrimaryDisplay();
 	const dimensions = display.workAreaSize;
 
-	const minWidth =
-		parseInt(dimensions.width * 0.8) > 1280 ? parseInt(dimensions.width * 0.8) : 1280;
-	const minHeight =
-		parseInt(dimensions.height * 0.8) > 700 ? parseInt(dimensions.height * 0.8) : 700;
+	// const minWidth =
+	// 	parseInt(dimensions.width * 0.8) > 1280 ? parseInt(dimensions.width * 0.8) : 1280;
+	// const minHeight =
+	// 	parseInt(dimensions.height * 0.8) > 700 ? parseInt(dimensions.height * 0.8) : 700;
+	const minWidth = 1280;
+	const minHeight = 700;
 
 	let windowState = new windowStateManager({
 		defaultWidth: minWidth,
