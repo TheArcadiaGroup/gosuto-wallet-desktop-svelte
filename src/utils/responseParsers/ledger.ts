@@ -4,12 +4,14 @@ import {
 	ledgerError,
 	loadingLedgerAccounts,
 } from '$stores/ledger';
+import { wallets } from '$stores/user/wallets';
 import { get } from 'svelte/store';
 import { parseDelegationResponse } from './delegations';
 import { parseTransferData } from './transfers';
 
 function processLedgerResponse(jsonResponse: string) {
 	const response = JSON.parse(jsonResponse);
+	console.log(response);
 
 	if (
 		(response.error === 'not-connected' ||
@@ -45,6 +47,18 @@ function processLedgerResponse(jsonResponse: string) {
 			isLedgerConnected.set(true);
 			loadingLedgerAccounts.set(false);
 		}
+		const storedWallets = get(wallets);
+		response.accounts?.map((acc: any) => {
+			if (
+				storedWallets.some(
+					(wallet) => wallet.publicKey.toLowerCase() === acc.publicKey.toLowerCase(),
+				)
+			) {
+				acc.exists = true;
+			}
+
+			return acc;
+		});
 		ledgerAccounts.set((get(ledgerAccounts) ?? []).concat(response.accounts));
 	}
 

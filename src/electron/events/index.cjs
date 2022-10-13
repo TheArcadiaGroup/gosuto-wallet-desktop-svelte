@@ -571,7 +571,7 @@ module.exports = () => {
 				break;
 		}
 
-		console.log(res);
+		console.log(parsedData.action, res);
 		event.returnValue = JSON.stringify({
 			action: parsedData.action,
 			nextAction: parsedData.nextAction ?? null,

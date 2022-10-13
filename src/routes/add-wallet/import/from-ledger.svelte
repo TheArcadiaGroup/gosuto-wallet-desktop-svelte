@@ -377,8 +377,12 @@
 						{#if account}
 							<div
 								class="rounded-xl border border-light-grayShadeOne hover:bg-light-lighterOrange hover:border-light-lighterOrange hover:bg-opacity-50 cursor-pointer px-3 py-2 overflow-clip text-sm
-							flex flex-col items-start justify-evenly space-y-2"
-								on:click={() => selectedLedgerAccount.set(account)}
+							flex flex-col items-start justify-evenly space-y-2 disabled:cursor-not-allowed"
+								class:cursor-not-allowed={account.exists}
+								class:bg-light-lighterOrange={account.exists}
+								class:border-light-lighterOrange={account.exists}
+								class:bg-opacity-50={account.exists}
+								on:click={() => !account.exists && selectedLedgerAccount.set(account)}
 								title={account.publicKey}
 							>
 								<div class="overflow-clip w-full">
@@ -442,17 +446,24 @@
 						!walletName ||
 						walletName?.length > 20 ||
 						walletExists}
+					class="relative"
 				>
-					<span slot="text" class="fileImport-bt-text">Import</span>
+					<div slot="text" class="fileImport-bt-text">Import</div>
 					{#if savingWallet}
-						<Loading size={30} useFirework={false} color="white" class="absolute left-28" />
+						<Loading size={30} useFirework={false} color="white" class="absolute -right-1/3" />
 					{/if}
 				</Button>
 			{:else if step !== 2}
 				<Button isDisabled={$loadingLedgerAccounts} on:click={performAction} class="relative">
-					<span slot="text" class="fileImport-bt-text">Connect Ledger</span>
+					<span slot="text" class="fileImport-bt-text">
+						{#if $loadingLedgerAccounts}
+							Fetching Accounts
+						{:else}
+							Connect Ledger
+						{/if}
+					</span>
 					{#if $loadingLedgerAccounts}
-						<Loading size={30} useFirework={false} color="white" class="absolute left-28" />
+						<Loading size={30} useFirework={false} color="white" class="absolute -right-1/3" />
 					{/if}
 				</Button>
 			{/if}
