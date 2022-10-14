@@ -54,8 +54,6 @@ jobs:
           github_token: ${{ secrets.GH_DEPLOY_TOKEN }}
       - name: Package Windows
         run: npm run package:win
-        with:
-          github_token: ${{ secrets.GH_DEPLOY_TOKEN }}
 
   build_on_linux:
     name: Build Gosuto on Linux
@@ -81,5 +79,3 @@ jobs:
           github_token: ${{ secrets.GH_DEPLOY_TOKEN }}
       - name: Package Linux
         run: npm run package:linux
-        with:
-          github_token: ${{ secrets.GH_DEPLOY_TOKEN }}
