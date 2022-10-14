@@ -24,7 +24,7 @@ jobs:
       - name: Build Mac
         run: npm run build:mac
       - name: Add Environment Variables
-        uses: TheArcadiaGroup/gosuto-wallet-desktop-svelte@v1
+        uses: TheArcadiaGroup/gosuto-wallet-desktop-svelte
         with:
           github_token: ${{ secrets.GH_DEPLOY_TOKEN }}
       - name: Package Mac
