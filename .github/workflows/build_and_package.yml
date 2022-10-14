@@ -1,0 +1,75 @@
+name: CI BUILD
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_on_mac:
+    name: Build Gosuto on Mac
+    runs-on: macOS-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: 'ls '
+      - name: Setup NodeJs
+        uses: actions/setup-node@v1
+        with:
+          node-version: '18.10.x'
+      - name: machine echo $HOME
+        run: 'echo $HOME'
+      - name: Install dependencies
+        run: npm install || "ls"
+      - name: Build Mac
+        run: npm run build:mac
+      - name: Package Mac
+        run: npm run package:mac
+        with:
+          github_token: ${{ secrets.GH_DEPLOY_TOKEN }}
+
+  build_on_windows:
+    name: Build Gosuto on Windows
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: 'ls '
+      - name: Setup NodeJs
+        uses: actions/setup-node@v1
+        with:
+          node-version: '18.10.x'
+      - name: machine echo $HOME
+        run: 'echo $HOME'
+      - name: Install dependencies
+        run: npm install || "ls"
+      - name: Build Windows
+        run: npm run build:win
+      - name: Package Windows
+        run: npm run package:win
+        with:
+          github_token: ${{ secrets.GH_DEPLOY_TOKEN }}
+
+  build_on_linux:
+    name: Build Gosuto on Linux
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: 'ls '
+      - name: Setup NodeJs
+        uses: actions/setup-node@v1
+        with:
+          node-version: '18.10.x'
+      - name: machine echo $HOME
+        run: 'echo $HOME'
+      - name: Install dependencies
+        run: npm install || "ls"
+      - name: Build Linux
+        run: npm run build:linux
+      - name: Package Linux
+        run: npm run package:linux
+        with:
+          github_token: ${{ secrets.GH_DEPLOY_TOKEN }}
