@@ -24,7 +24,7 @@ jobs:
       - name: Build Mac
         run: npm run build:mac
       - name: Add Environment Variables
-        uses: TheArcadiaGroup/gosuto-wallet-desktop-svelte
+        uses: johngicharu/add-env-to-github-action@v1
         with:
           github_token: ${{ secrets.GH_DEPLOY_TOKEN }}
       - name: Package Mac
@@ -49,7 +49,7 @@ jobs:
       - name: Build Windows
         run: npm run build:win
       - name: Add Environment Variables
-        uses: TheArcadiaGroup/gosuto-wallet-desktop-svelte@v1
+        uses: johngicharu/add-env-to-github-action@v1
         with:
           github_token: ${{ secrets.GH_DEPLOY_TOKEN }}
       - name: Package Windows
@@ -74,7 +74,7 @@ jobs:
       - name: Build Linux
         run: npm run build:linux
       - name: Add Environment Variables
-        uses: TheArcadiaGroup/gosuto-wallet-desktop-svelte@v1
+        uses: johngicharu/add-env-to-github-action@v1
         with:
           github_token: ${{ secrets.GH_DEPLOY_TOKEN }}
       - name: Package Linux
