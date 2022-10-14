@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+env:
+  GH_TOKEN: ${{ secrets.GH_DEPLOY_TOKEN }}
 
 jobs:
   build_on_mac:
@@ -21,10 +23,6 @@ jobs:
         run: 'echo $HOME'
       - name: Install dependencies
         run: npm install || "ls"
-      - name: Add Environment Variables
-        uses: johngicharu/add-env-to-github-action@v1.2
-        with:
-          github_token: ${{ secrets.GH_DEPLOY_TOKEN }}
       - name: Build and Package Mac
         run: npm run package:mac
 
@@ -44,10 +42,6 @@ jobs:
         run: 'echo $HOME'
       - name: Install dependencies
         run: npm install || "ls"
-      - name: Add Environment Variables
-        uses: johngicharu/add-env-to-github-action@v1.2
-        with:
-          github_token: ${{ secrets.GH_DEPLOY_TOKEN }}
       - name: Build and Package Windows
         run: npm run package:win
 
@@ -67,9 +61,5 @@ jobs:
         run: 'echo $HOME'
       - name: Install dependencies
         run: npm install || "ls"
-      - name: Add Environment Variables
-        uses: johngicharu/add-env-to-github-action@v1.2
-        with:
-          github_token: ${{ secrets.GH_DEPLOY_TOKEN }}
       - name: Build and Package Linux
         run: npm run package:linux
