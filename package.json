@@ -38,7 +38,7 @@
 		"@ledgerhq/hw-transport-node-hid": "^6.27.6",
 		"@ledgerhq/logs": "^6.10.1",
 		"@tailwindcss/forms": "^0.5.3",
-		"@zondax/ledger-casper": "^0.0.1",
+		"@zondax/ledger-casper": "^2.5.3",
 		"axios": "^1.1.2",
 		"bip39": "^3.0.4",
 		"browserify": "^17.0.0",
@@ -49,7 +49,6 @@
 		"chartjs": "^0.3.24",
 		"chartjs-adapter-date-fns": "^2.0.0",
 		"coingecko-api": "^1.0.10",
-		"custom-electron-titlebar": "^4.1.1",
 		"date-fns": "^2.29.3",
 		"electron-context-menu": "^3.5.0",
 		"electron-localshortcut": "^3.2.1",
@@ -87,7 +86,7 @@
 		"cross-env": "^7.0.3",
 		"cssnano": "^5.1.13",
 		"dotenv": "^16.0.3",
-		"electron": "^21.1.1",
+		"electron": "^20.3.2",
 		"electron-builder": "23.6.0",
 		"electron-connect": "^0.6.3",
 		"eslint": "^8.25.0",
@@ -108,6 +107,6 @@
 		"vite": "^3.1.7"
 	},
 	"overrides": {
-		"node-hid": "^2.1.2"
+		"node-hid": "2.1.2"
 	}
 }
