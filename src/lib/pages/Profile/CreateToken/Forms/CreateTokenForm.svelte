@@ -18,6 +18,7 @@
 	import { mintingTokens } from '$stores/user/tokens';
 	import { checkLockStatus } from '$utils/profiles';
 	import { goto } from '$app/navigation';
+	import _ from 'lodash-es';
 
 	let tokenName = '';
 	let tokenTicker = '';
@@ -60,6 +61,7 @@
 			mintableSupply,
 			authorizedMinterHash,
 			shareToken,
+			_.isNumber($selectedWallet.ledgerIndex) ? $selectedWallet.ledgerIndex : undefined,
 		);
 	}
 

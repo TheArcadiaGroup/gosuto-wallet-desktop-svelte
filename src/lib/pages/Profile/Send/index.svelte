@@ -8,6 +8,8 @@
 
 	import { page } from '$app/stores';
 	import NetworkSelector from '$lib/components/NetworkSelector.svelte';
+	import { selectedWallet } from '$stores/user/wallets.js';
+	import _ from 'lodash-es';
 
 	export let tokens: IToken[] = [];
 	/**
@@ -67,18 +69,20 @@
 			<div class="lower-bit">
 				<div class="title-row">
 					<p class="tokens-in-wallet-title">Tokens in this wallet</p>
-					<div class="ml-auto">
-						<Button
-							class="add-token-button"
-							on:click={() => dispatch('selectToken', { tokenName: 'AddToken' })}
-							hasGlow={true}
-						>
-							<div slot="text" class="inner-btn">
-								<PlusIcon />
-								<span>Add Token</span>
-							</div>
-						</Button>
-					</div>
+					{#if !_.isNumber($selectedWallet.ledgerIndex)}
+						<div class="ml-auto">
+							<Button
+								class="add-token-button"
+								on:click={() => dispatch('selectToken', { tokenName: 'AddToken' })}
+								hasGlow={true}
+							>
+								<div slot="text" class="inner-btn">
+									<PlusIcon />
+									<span>Add Token</span>
+								</div>
+							</Button>
+						</div>
+					{/if}
 				</div>
 			</div>
 		</div>

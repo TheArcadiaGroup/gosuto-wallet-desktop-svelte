@@ -65,6 +65,7 @@ export function createToken(
 	mintableSupply: boolean,
 	authorizedMinterHash: string,
 	shareToken: boolean,
+	ledgerAccountIndex: number | undefined = undefined,
 ): boolean {
 	// Send request to electron
 	const txId = Math.random().toString(16).slice(2);
@@ -93,6 +94,7 @@ export function createToken(
 			mintable: mintableSupply,
 			authorized_minter: authorizedMinterHash,
 			network: get(user)?.network ?? 'testnet',
+			ledger_account_index: ledgerAccountIndex,
 		}),
 	);
 

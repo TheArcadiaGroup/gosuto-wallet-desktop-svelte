@@ -68,6 +68,8 @@ export async function sendToken(
 		contractHash: contractHash,
 		algorithm: algorithm,
 		tokenDecimals: tokenDecimals,
+		// Do not change this to ledgerTx?.accountIndex ?? undefined since this can be 0
+		ledgerAccountIndex: ledgerTx ? ledgerTx.accountIndex : undefined,
 	};
 
 	sendTokenTracker.update((transactions) => {

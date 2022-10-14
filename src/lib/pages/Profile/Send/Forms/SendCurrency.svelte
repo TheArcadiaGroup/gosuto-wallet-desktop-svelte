@@ -176,7 +176,8 @@
 			tokenAmount > selectedToken.tokenAmountHeld - totalCost) ||
 		(selectedToken.contractHash !== 'CSPR' && tokenAmount > userTokenBalance) ||
 		(Boolean(recipientAddress) && recipientAddress === $selectedWallet!.publicKey) ||
-		(Boolean(recipientAddress) && !publicKeyValid);
+		(Boolean(recipientAddress) && !publicKeyValid) ||
+		(_.isNumber($selectedWallet?.ledgerIndex) && selectedToken.contractHash !== 'CSPR');
 	$: publicKeyValid = isValidPublicKey(recipientAddress);
 </script>
 
@@ -251,6 +252,12 @@
 			<div class="error-div">
 				<ErrorIcon class="mr-1" fill={'#e6332a'} />
 				You cannot send tokens to yourself
+			</div>
+		{/if}
+		{#if _.isNumber($selectedWallet?.ledgerIndex) && selectedToken.contractHash !== 'CSPR'}
+			<div class="error-div">
+				<ErrorIcon class="mr-1" fill={'#e6332a'} />
+				We do not yet support sending tokens other than CSPR using ledger
 			</div>
 		{/if}
 		<!-- <div class="currency-form-row">

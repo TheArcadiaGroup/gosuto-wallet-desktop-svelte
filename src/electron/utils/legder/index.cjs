@@ -3,6 +3,7 @@ const AppCasper = require('@zondax/ledger-casper').default;
 const { listen } = require('@ledgerhq/logs');
 const { CLPublicKey, DeployUtil } = require('casper-js-sdk');
 const { getBalance } = require('../account.cjs');
+const fs = require('fs');
 
 listen((log) => {
 	console.log(log);
@@ -86,7 +87,7 @@ const getFiveAccounts = async (startIndex = 0, network = 'testnet') => {
 	return { accounts: accountsArray };
 };
 
-const signTransaction = async (accountIndex, deploy) => {
+const signTransactionUsingLedger = async (accountIndex, deploy) => {
 	await queryAppStatus().catch((err) => {
 		throw err;
 	});
@@ -106,5 +107,5 @@ module.exports = {
 	queryAppStatus,
 	getCasperLedgerAppInformation,
 	getFiveAccounts,
-	signTransaction,
+	signTransactionUsingLedger,
 };

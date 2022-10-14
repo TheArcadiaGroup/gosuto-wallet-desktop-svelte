@@ -1,7 +1,7 @@
 const { CLPublicKey, DeployUtil, CLValueBuilder, RuntimeArgs } = require('casper-js-sdk');
 const { ethers } = require('ethers');
 const { getCasperClientAndService } = require('../index.cjs');
-const { signTransaction } = require('./index.cjs');
+const { signTransactionUsingLedger } = require('./index.cjs');
 
 module.exports = {
 	sendUsingLedger: async (
@@ -49,7 +49,7 @@ module.exports = {
 			const deploy = DeployUtil.makeDeploy(deployParams, session, payment);
 
 			// To Sign the Deploy, we basically change the signature parameter of the deploy and then send it over.
-			const signature = await signTransaction(ledgerAccountIndex, deploy);
+			const signature = await signTransactionUsingLedger(ledgerAccountIndex, deploy);
 
 			console.log(signature);
 
@@ -110,7 +110,7 @@ module.exports = {
 			const deploy = DeployUtil.makeDeploy(deployParams, session, payment);
 
 			// To Sign the Deploy, we basically change the signature parameter of the deploy and then send it over.
-			const signature = await signTransaction(ledgerAccountIndex, deploy);
+			const signature = await signTransactionUsingLedger(ledgerAccountIndex, deploy);
 
 			console.log(signature);
 
@@ -168,7 +168,7 @@ module.exports = {
 			const deploy = DeployUtil.makeDeploy(deployParams, session, payment);
 
 			// To Sign the Deploy, we basically change the signature parameter of the deploy and then send it over.
-			const signature = await signTransaction(ledgerAccountIndex, deploy);
+			const signature = await signTransactionUsingLedger(ledgerAccountIndex, deploy);
 
 			console.log(signature);
 

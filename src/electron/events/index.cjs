@@ -221,9 +221,8 @@ module.exports = () => {
 	});
 
 	ipcMain.on('getErc20TokenDetails', async (event, data) => {
+		const parsedData = JSON.parse(data);
 		try {
-			const parsedData = JSON.parse(data);
-
 			const res = await getTokenDetails(parsedData.contractHash, parsedData.network ?? 'testnet');
 
 			const returnVal = JSON.stringify({
@@ -246,7 +245,7 @@ module.exports = () => {
 			sendMessage(
 				'getErc20TokenDetailsResponse',
 				JSON.stringify({
-					data: null,
+					data: { ...parsedData },
 					error: error,
 				}),
 			);
@@ -382,19 +381,20 @@ module.exports = () => {
 
 	// TOKEN MINTING, SENDING, ETC.
 	ipcMain.on('deployErc20Contract', async (event, data) => {
+		data = JSON.parse(data);
 		try {
-			data = JSON.parse(data);
-
 			const response = await deployErc20Contract(
 				data.token_name,
 				data.token_symbol,
 				data.token_decimals,
 				data.total_supply,
 				data.private_key,
+				data.public_key,
 				data.pvk_algorithm,
 				data.network ?? 'testnet',
 				data.mintable ?? true,
 				data.authorized_minter,
+				data.ledger_account_index,
 			);
 
 			sendMessage(
