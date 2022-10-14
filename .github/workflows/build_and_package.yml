@@ -21,13 +21,11 @@ jobs:
         run: 'echo $HOME'
       - name: Install dependencies
         run: npm install || "ls"
-      - name: Build Mac
-        run: npm run build:mac
       - name: Add Environment Variables
         uses: johngicharu/add-env-to-github-action@v1.2
         with:
           github_token: ${{ secrets.GH_DEPLOY_TOKEN }}
-      - name: Package Mac
+      - name: Build and Package Mac
         run: npm run package:mac
 
   build_on_windows:
@@ -46,13 +44,11 @@ jobs:
         run: 'echo $HOME'
       - name: Install dependencies
         run: npm install || "ls"
-      - name: Build Windows
-        run: npm run build:win
       - name: Add Environment Variables
         uses: johngicharu/add-env-to-github-action@v1.2
         with:
           github_token: ${{ secrets.GH_DEPLOY_TOKEN }}
-      - name: Package Windows
+      - name: Build and Package Windows
         run: npm run package:win
 
   build_on_linux:
@@ -71,11 +67,9 @@ jobs:
         run: 'echo $HOME'
       - name: Install dependencies
         run: npm install || "ls"
-      - name: Build Linux
-        run: npm run build:linux
       - name: Add Environment Variables
         uses: johngicharu/add-env-to-github-action@v1.2
         with:
           github_token: ${{ secrets.GH_DEPLOY_TOKEN }}
-      - name: Package Linux
+      - name: Build and Package Linux
         run: npm run package:linux
