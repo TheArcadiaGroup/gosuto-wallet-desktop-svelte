@@ -90,12 +90,21 @@
 		</div>
 
 		<div class="createWallet-use-terms">
-			<input class="createWallet-checkbox" type="checkbox" name="terms of use" bind:checked />
-			<label class="createWallet-checkbox-label" for="terms of use">
+			<input
+				class="createWallet-checkbox"
+				type="checkbox"
+				name="terms_of_use"
+				id="terms_of_use"
+				bind:checked
+			/>
+			<label class="createWallet-checkbox-label" for="terms_of_use">
 				I have read and agree to the
 				<span
 					on:click={() => {
-						window.api.send('openUrl', 'https://www.arcadiamgroup.com/');
+						window.api.send(
+							'openUrl',
+							'https://app.termly.io/document/privacy-policy/7da60156-4087-4659-a758-b940f95331da',
+						);
 					}}
 					class="text-light-orange cursor-pointer"
 				>
