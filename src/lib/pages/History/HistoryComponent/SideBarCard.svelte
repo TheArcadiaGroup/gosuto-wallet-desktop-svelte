@@ -26,7 +26,20 @@
 		| 'Claimed Reward'
 		| 'Contract Call' = 'Sent';
 
-	let blockExplorerURLBase = `https://${$user?.network === 'testnet' ? 'testnet.' : ''}cspr.live`;
+	$: block_deploy_base_uri =
+		$user?.network === 'testnet' ? `https://testnet.cspr.live/deploy` : 'https://casperstats.io/tx';
+	$: block_validator_base_uri =
+		$user?.network === 'testnet'
+			? `https://testnet.cspr.live/validator`
+			: 'https://casperstats.io/validator';
+	$: block_account_base_uri =
+		$user?.network === 'testnet'
+			? `https://testnet.cspr.live/account`
+			: 'https://casperstats.io/address';
+	$: block_contract_base_uri =
+		$user?.network === 'testnet'
+			? `https://testnet.cspr.live/contract`
+			: 'https://casperstats.io/address';
 </script>
 
 <div class="sidebar-card">
@@ -48,8 +61,8 @@
 						window.api.send(
 							'openUrl',
 							sidebarData.transactionType === 'contract_call'
-								? `${blockExplorerURLBase}/contract/${sidebarData?.recipient}`
-								: `${blockExplorerURLBase}/account/${sidebarData?.recipient}`,
+								? `${block_contract_base_uri}/${sidebarData?.recipient}`
+								: `${block_account_base_uri}/${sidebarData?.recipient}`,
 						)}
 				>
 					{shortenAddress(sidebarData?.recipient)}
@@ -69,7 +82,7 @@
 			<p
 				class="address clickable-address"
 				on:click={() =>
-					window.api.send('openUrl', `${blockExplorerURLBase}/account/${sidebarData?.sender}`)}
+					window.api.send('openUrl', `${block_account_base_uri}/${sidebarData?.sender}`)}
 			>
 				{shortenAddress(sidebarData?.sender)}
 			</p>
@@ -111,7 +124,7 @@
 			<p
 				class="address overflow-clip clickable-address"
 				on:click={() =>
-					window.api.send('openUrl', `${blockExplorerURLBase}/deploy/${sidebarData?.deployHash}`)}
+					window.api.send('openUrl', `${block_deploy_base_uri}/${sidebarData?.deployHash}`)}
 			>
 				{shortenAddress(sidebarData?.deployHash)}
 			</p>
@@ -124,7 +137,7 @@
 					on:click={() =>
 						window.api.send(
 							'openUrl',
-							`${blockExplorerURLBase}/validator/${sidebarData?.validatorPublicKey}`,
+							`${block_validator_base_uri}/${sidebarData?.validatorPublicKey}`,
 						)}
 				>
 					{shortenAddress(sidebarData?.validatorPublicKey)}
@@ -145,7 +158,7 @@
 	<div
 		class="block-explorer-link"
 		on:click={() =>
-			window.api.send('openUrl', `${blockExplorerURLBase}/deploy/${sidebarData?.deployHash}`)}
+			window.api.send('openUrl', `${block_deploy_base_uri}/${sidebarData?.deployHash}`)}
 	>
 		View on block explorer
 	</div>

@@ -18,7 +18,8 @@
 		goto(`/profile/${$selectedWallet?.publicKey}/stake?validator=${validatorPublicKey}`);
 	};
 
-	$: block_base_url = `https://${$user?.network === 'testnet' ? 'testnet.' : ''}cspr.live`;
+	$: block_base_url =
+		$user?.network === 'testnet' ? `https://testnet.cspr.live` : 'https://casperstats.io';
 </script>
 
 <div class="validator-item {$$props.class}">

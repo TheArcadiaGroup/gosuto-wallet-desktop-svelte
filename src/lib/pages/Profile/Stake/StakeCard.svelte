@@ -20,7 +20,8 @@
 	export let selectedStake: IStake | null = null;
 
 	$: validator = $validators.find((item) => item.publicKey === stake?.validatorPublicKey);
-	$: block_base_url = `https://${$user?.network === 'testnet' ? 'testnet.' : ''}cspr.live`;
+	$: block_base_url =
+		$user?.network === 'testnet' ? `https://testnet.cspr.live` : 'https://casperstats.io';
 </script>
 
 <div
