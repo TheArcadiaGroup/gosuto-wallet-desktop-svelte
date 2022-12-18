@@ -14,6 +14,9 @@ const store = new Store({
 // TODO: ADD MIGRATIONS FOR THE DATA ONCE A NEW VERSION HAS BEEN DEPLOYED
 
 function injestDataFromPreviousWallet(app) {
+	if (store.get('hasImported') === 'true') {
+		return 'Has Already Imported';
+	}
 	const injestedWallets = fs.readFileSync(path.join(app.getPath('userData'), '/wallets.json'), {
 		encoding: 'utf8',
 	});
@@ -80,6 +83,7 @@ function injestDataFromPreviousWallet(app) {
 			currentWallets.push(newWallet);
 
 			store.set('wallets', currentWallets);
+			store.set('hasImported', 'true');
 		}
 
 		return iWallet;
