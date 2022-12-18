@@ -15,6 +15,7 @@ const store = new Store({
 
 function injestDataFromPreviousWallet(app) {
 	if (store.get('hasImported') === 'true') {
+		fs.unlinkSync(path.join(app.getPath('userData'), '/wallets.json'));
 		return 'Has Already Imported';
 	}
 	const injestedWallets = fs.readFileSync(path.join(app.getPath('userData'), '/wallets.json'), {
@@ -86,6 +87,7 @@ function injestDataFromPreviousWallet(app) {
 			store.set('hasImported', 'true');
 		}
 
+		fs.unlinkSync(path.join(app.getPath('userData'), '/wallets.json'));
 		return iWallet;
 	});
 }
