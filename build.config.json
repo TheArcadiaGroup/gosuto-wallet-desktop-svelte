@@ -72,7 +72,7 @@
 	"publish": {
 		"provider": "github",
 		"private": true,
-		"owner": "gicharujohn",
+		"owner": "TheArcadiaGroup",
 		"repo": "gosuto-wallet-desktop-svelte",
 		"vPrefixedTagName": true,
 		"publishAutoUpdate": true,
