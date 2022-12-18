@@ -7,6 +7,7 @@ const contextMenu = require('electron-context-menu');
 const loadEvents = require('./events/index.cjs');
 const { buildDarwinMenu, buildDefaultMenu } = require('./utils/buildMenu.cjs');
 const sendMessage = require('./events/sendMessage.cjs');
+const { injestDataFromPreviousWallet } = require('./data/index.cjs');
 
 const windowStateManager = require('electron-win-state').default;
 // const { createTitleBar } = require('./utils/titlebar.cjs');
@@ -74,6 +75,7 @@ const createWindow = () => {
 	});
 
 	mainWindow.once('ready-to-show', () => {
+		injestDataFromPreviousWallet(app);
 		mainWindow.show();
 		mainWindow.focus();
 	});
