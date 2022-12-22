@@ -14,6 +14,12 @@ const store = new Store({
 // TODO: ADD MIGRATIONS FOR THE DATA ONCE A NEW VERSION HAS BEEN DEPLOYED
 
 function injestDataFromPreviousWallet(app) {
+	const fileExists = fs.existsSync(path.join(app.getPath('userData'), '/wallets.json'));
+
+	if (!fileExists) {
+		return null;
+	}
+
 	if (store.get('hasImported') === 'true') {
 		fs.unlinkSync(path.join(app.getPath('userData'), '/wallets.json'));
 		return 'Has Already Imported';
