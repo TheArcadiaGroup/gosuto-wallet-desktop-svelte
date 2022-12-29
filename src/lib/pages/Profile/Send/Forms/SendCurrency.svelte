@@ -84,7 +84,7 @@
 				note,
 				selectedToken.tokenTicker,
 				$selectedWallet.algorithm,
-				_.isNumber($selectedWallet.ledgerIndex)
+				_.isNumber($selectedWallet?.ledgerIndex)
 					? { accountIndex: $selectedWallet.ledgerIndex }
 					: null,
 			);

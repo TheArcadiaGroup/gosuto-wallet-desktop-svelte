@@ -61,7 +61,7 @@
 			mintableSupply,
 			authorizedMinterHash,
 			shareToken,
-			_.isNumber($selectedWallet.ledgerIndex) ? $selectedWallet.ledgerIndex : undefined,
+			_.isNumber($selectedWallet?.ledgerIndex) ? $selectedWallet.ledgerIndex : undefined,
 		);
 	}
 

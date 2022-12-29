@@ -30,6 +30,7 @@ const {
 	delegateUsingLedger,
 	undelegateUsingLedger,
 } = require('../utils/legder/ledgerTransactions.cjs');
+const log = require('electron-log');
 
 /**
  * Receiving messages from Renderer
@@ -117,6 +118,7 @@ module.exports = () => {
 			);
 			event.returnValue = { id: data.id, data: res, error: null };
 		} catch (err) {
+			log.error('Send CSPR Tokens Error: ', err);
 			sendMessage(
 				'sendCSPRTokensResponse',
 				JSON.stringify({
@@ -137,6 +139,7 @@ module.exports = () => {
 
 	// token balance
 	ipcMain.on('accountCsprBalance', async (event, data) => {
+		console.log('Try to fetch balance: ', data);
 		// Testnet is the fallback network here
 		const parsedData = JSON.parse(data);
 
@@ -174,6 +177,7 @@ module.exports = () => {
 			event.returnValue = returnValue;
 			sendMessage('erc20TokenBalanceResponse', returnValue);
 		} catch (err) {
+			log.error('ERC20 Token Balance: ', err);
 			const returnValue = {
 				balance: 0,
 				contractHash: parsedData.contractHash,
@@ -208,7 +212,7 @@ module.exports = () => {
 				}),
 			);
 		} catch (error) {
-			console.log(error);
+			log.error('Send ERC20 Tokens: ', error);
 			sendMessage(
 				'sendErc20TokensResponse',
 				JSON.stringify({
@@ -238,6 +242,7 @@ module.exports = () => {
 
 			sendMessage('getErc20TokenDetailsResponse', returnVal);
 		} catch (error) {
+			log.error('ERC20 Token Details: ', error);
 			event.returnValue = JSON.stringify({
 				data: null,
 				error: error,
@@ -304,7 +309,7 @@ module.exports = () => {
 			});
 		} catch (error) {
 			// Handle Error and Return Error Object
-			console.log(error);
+			log.error('Delegate Response: ', error);
 			sendMessage(
 				'delegateResponse',
 				JSON.stringify({
@@ -363,6 +368,7 @@ module.exports = () => {
 			});
 		} catch (error) {
 			// Handle Error and Return Error Object
+			log.error('Undelegate Error: ', error);
 			sendMessage(
 				'undelegateResponse',
 				JSON.stringify({
@@ -409,6 +415,7 @@ module.exports = () => {
 				}),
 			);
 		} catch (error) {
+			log.error('Deploy ERC20 Error: ', error);
 			sendMessage(
 				'deployErc20ContractResponse',
 				JSON.stringify({
@@ -424,6 +431,7 @@ module.exports = () => {
 		try {
 			await require('electron').shell.openExternal(data);
 		} catch (error) {
+			log.error('Error Opening URI: ', error);
 			console.log(error);
 		}
 	});
@@ -443,6 +451,7 @@ module.exports = () => {
 				data.privateKeyContent,
 			);
 		} catch (error) {
+			log.error('Export Wallet Certificate: ', error);
 			event.returnValue = error;
 		}
 	});
@@ -475,6 +484,7 @@ module.exports = () => {
 					message: '',
 				};
 			} else {
+				log.error('Encryption issue: ', res);
 				result = {
 					data: res,
 					error: 'Inaccurate Encryption Method Provided',
@@ -485,6 +495,7 @@ module.exports = () => {
 			event.returnValue = JSON.stringify(result);
 			sendMessage('encryptionResponse', JSON.stringify(result));
 		} catch (error) {
+			log.error('Error During Encryption: ', error);
 			event.returnValue = JSON.stringify({
 				data: null,
 				error: error,
@@ -574,7 +585,8 @@ module.exports = () => {
 		if (res.error) {
 			res.error = new Error(res.error).message.toString();
 		}
-		console.log(parsedData.action, res);
+
+		log.info(parsedData.action, res);
 		event.returnValue = JSON.stringify({
 			action: parsedData.action,
 			nextAction: parsedData.nextAction ?? null,
@@ -622,5 +634,9 @@ module.exports = () => {
 
 	ipcMain.on('appInfo', async (event, data) => {
 		event.returnValue = { rootPath: app.getAppPath() };
+	});
+
+	ipcMain.on('log', async (event, data) => {
+		log.info(data);
 	});
 };

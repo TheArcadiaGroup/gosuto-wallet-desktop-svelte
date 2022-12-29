@@ -32,6 +32,7 @@ export const getAccountBalance = async (
 
 		return +ethers.utils.formatUnits(balance!, 9);
 	} catch (error) {
+		window.api.send('log', error);
 		return 0;
 	}
 };
@@ -55,7 +56,9 @@ export const getWalletBalancesSum = async (
 			}
 		}
 		return sum;
-	} catch (error) {}
+	} catch (error) {
+		window.api.send('log', error);
+	}
 };
 
 export const getValidatorWeight = async (
@@ -76,7 +79,9 @@ export const getValidatorWeight = async (
 			}
 		}
 		return 0;
-	} catch (error) {}
+	} catch (error) {
+		window.api.send('log', error);
+	}
 };
 
 export const getValidatorRewards = async (
@@ -106,7 +111,9 @@ export const getValidatorRewards = async (
 			}
 		}
 		return rewardsSum / 1e9;
-	} catch (error) {}
+	} catch (error) {
+		window.api.send('log', error);
+	}
 };
 
 export const getDelegatorRewards = async (
@@ -124,6 +131,7 @@ export const getDelegatorRewards = async (
 		const jsonResponse = await response.json();
 		return parseFloat(jsonResponse.data) / 1e9;
 	} catch (error) {
+		window.api.send('log', error);
 		console.log('error = ', error);
 		return 0;
 	}
@@ -137,6 +145,7 @@ export const getLatestBlockInfo = async (network: 'testnet' | 'mainnet' = 'testn
 		const latestBlock = await casperService.getLatestBlockInfo();
 		return latestBlock;
 	} catch (error) {
+		window.api.send('log', error);
 		console.log(`ERROR ${error}`);
 	}
 };
@@ -152,7 +161,9 @@ export const getTotalStaked = async (network: 'testnet' | 'mainnet' = 'testnet')
 			return accumVariable + parseInt(current.weight);
 		}, 0);
 		return sumOfWeights / 1e9;
-	} catch (error) {}
+	} catch (error) {
+		window.api.send('log', error);
+	}
 };
 
 export const fetchUserRewards = async (
@@ -177,7 +188,8 @@ export const fetchUserRewards = async (
 				pageCount: number;
 			};
 		})
-		.catch((_err) => {
+		.catch((error) => {
+			window.api.send('log', error);
 			return null;
 		});
 };
@@ -225,6 +237,7 @@ export const filterUserRewards = async (
 
 		return resObject;
 	} catch (error) {
+		window.api.send('log', error);
 		console.log(error);
 		return null;
 	}
@@ -288,6 +301,7 @@ export const getNetworkValidators = async (network: 'testnet' | 'mainnet' = 'tes
 			return val;
 		});
 	} catch (error) {
+		window.api.send('log', error);
 		console.log(error);
 		return [];
 	}
@@ -393,6 +407,7 @@ export const getUserDelegatedAmount = async (
 
 		return { stakedAmount, unclaimedRewards, stakingOperations, stakingRewards };
 	} catch (error) {
+		window.api.sendSync('log', error);
 		console.log('error =', error);
 		return { stakedAmount: 0, unclaimedRewards: 0, stakingOperations: [], stakingRewards: 0 };
 	} finally {
@@ -419,6 +434,7 @@ export const getValidatorByDeploy = async (
 			? (session as any).StoredContractByHash?.args[1][1]?.parsed
 			: '';
 	} catch (error) {
+		window.api.send('log', error);
 		console.log('error in get validator = ', error, sess);
 		return '';
 	}

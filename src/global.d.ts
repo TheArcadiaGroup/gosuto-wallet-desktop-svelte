@@ -21,7 +21,7 @@ declare global {
 	interface Window {
 		api: {
 			receive: (channel: MainReceiveChannels, dataFunc) => void;
-			send: (channel: MainSendChannels, data: string) => void;
+			send: (channel: MainSendChannels, data: string | any) => void;
 			sendSync: (channel: MainSendChannels, data?: any) => any;
 		};
 		CasperSDK: typeof import('casper-js-sdk');
@@ -294,7 +294,8 @@ declare global {
 		| 'getErc20TokenDetails'
 		| 'appInfo'
 		| 'ledger'
-		| 'appUpdates';
+		| 'appUpdates'
+		| 'log';
 	type MainReceiveChannels =
 		| 'createWalletFromFileResponse'
 		| 'createWalletFromMnemonicsResponse'

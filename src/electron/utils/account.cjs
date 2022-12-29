@@ -1,6 +1,7 @@
 const { Keys, CLPublicKey, DeployUtil } = require('casper-js-sdk');
 const { ethers } = require('ethers');
 const { getCasperClientAndService } = require('./index.cjs');
+const log = require('electron-log');
 
 module.exports = {
 	getBalance: async (accountHash, publicKey, network = 'testnet') => {
@@ -24,7 +25,7 @@ module.exports = {
 
 			const actualBalance = ethers.utils.formatUnits(balanceBigNumber, 9);
 
-			console.log('Account Balance: ', actualBalance);
+			log.info('Account Balance: ', actualBalance);
 
 			return actualBalance;
 		} catch (error) {
@@ -35,12 +36,12 @@ module.exports = {
 				.then((balanceBigNumber) => {
 					const actualBalance = ethers.utils.formatUnits(balanceBigNumber, 9);
 
-					console.log('Fallback Balance: ', actualBalance, '\n\n', error);
+					log.error('Fallback Balance: ', actualBalance, '\n\n', error);
 
 					return actualBalance;
 				})
 				.catch((_err) => {
-					console.log('\n\nBalance ERROR: \n\n', accountHash, '\n\n', _err);
+					log.error('\n\nBalance ERROR: \n\n', accountHash, '\n\n', _err);
 
 					return '0';
 				});
@@ -110,6 +111,7 @@ module.exports = {
 			// Return the deploy info using the deployHash
 			return await casperClient.getDeploy(deployHash);
 		} catch (err) {
+			log.error('Send Tx Error: ', err);
 			throw err;
 		}
 	},

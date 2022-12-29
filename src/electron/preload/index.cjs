@@ -26,6 +26,7 @@ contextBridge.exposeInMainWorld('api', {
 			'getErc20TokenDetails',
 			'ledger',
 			'appUpdates',
+			'log',
 		];
 		if (validChannels.includes(channel)) {
 			ipcRenderer.send(channel, data);
@@ -54,6 +55,7 @@ contextBridge.exposeInMainWorld('api', {
 			'appInfo',
 			'ledger',
 			'appUpdates',
+			'log',
 		];
 		if (validChannels.includes(channel)) {
 			return ipcRenderer.sendSync(channel, data);

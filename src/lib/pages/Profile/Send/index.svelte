@@ -69,7 +69,7 @@
 			<div class="lower-bit">
 				<div class="title-row">
 					<p class="tokens-in-wallet-title">Tokens in this wallet</p>
-					{#if !_.isNumber($selectedWallet.ledgerIndex)}
+					{#if !_.isNumber($selectedWallet?.ledgerIndex)}
 						<div class="ml-auto">
 							<Button
 								class="add-token-button"

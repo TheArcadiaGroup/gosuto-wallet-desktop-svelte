@@ -17,7 +17,14 @@ const port = process.env.PORT || 5173;
 const serveURL = serve({ directory: '.' });
 
 // Setup Update
-log.transports.file.level = 'info';
+log.catchErrors();
+log.transports.console.format = '{h}:{i}:{s} {text}';
+log.transports.file.format = '{h}:{i}:{s} {text}';
+log.transports.console.useStyles = true;
+log.transports.file.useStyles = true;
+console.log = log.log;
+Object.assign(console, log.functions);
+
 autoUpdater.logger = log;
 const rs = 'https://gosuto-updater.vercel.app';
 const url = `${rs}/update/${process.platform}/${app.getVersion()}`;

@@ -55,7 +55,7 @@
 			stakeAmount,
 			$user!.network,
 			$selectedWallet!.algorithm,
-			_.isNumber($selectedWallet.ledgerIndex)
+			_.isNumber($selectedWallet?.ledgerIndex)
 				? {
 						accountIndex: $selectedWallet.ledgerIndex,
 				  }
