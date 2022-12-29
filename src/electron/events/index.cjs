@@ -154,6 +154,9 @@ module.exports = () => {
 			),
 			network: parsedData.network || 'testnet',
 		};
+
+		console.log(returnValue);
+
 		sendMessage('accountCsprBalanceResponse', JSON.stringify(returnValue));
 
 		event.returnValue = JSON.stringify(returnValue);
@@ -203,6 +206,8 @@ module.exports = () => {
 				parsedData.network,
 			);
 
+			console.log(response);
+
 			sendMessage(
 				'sendErc20TokensResponse',
 				JSON.stringify({
@@ -228,6 +233,7 @@ module.exports = () => {
 		const parsedData = JSON.parse(data);
 		try {
 			const res = await getTokenDetails(parsedData.contractHash, parsedData.network ?? 'testnet');
+			console.log(res);
 
 			const returnVal = JSON.stringify({
 				data: {
@@ -293,6 +299,9 @@ module.exports = () => {
 				network: network ?? 'testnet',
 				algorithm: algorithm ?? 'ed25519',
 			});
+
+			console.log(response);
+
 			sendMessage(
 				'delegateResponse',
 				JSON.stringify({
@@ -354,6 +363,9 @@ module.exports = () => {
 				network: network ?? 'tesnet',
 				algorithm: algorithm ?? 'ed25519',
 			});
+
+			console.log(response);
+
 			sendMessage(
 				'undelegateResponse',
 				JSON.stringify({
@@ -402,6 +414,8 @@ module.exports = () => {
 				data.authorized_minter,
 				data.ledger_account_index,
 			);
+
+			console.log(response);
 
 			sendMessage(
 				'deployErc20ContractResponse',

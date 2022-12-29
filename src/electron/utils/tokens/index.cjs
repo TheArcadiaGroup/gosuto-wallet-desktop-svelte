@@ -40,62 +40,71 @@ const deployMintableContract = async (
 	authorized_minter = null,
 	ledger_account_index = undefined,
 ) => {
-	const { casperClient } = getCasperClientAndService(network);
-	const networkName = network === 'mainnet' ? 'casper' : 'casper-test';
+	try {
+		const { casperClient } = getCasperClientAndService(network);
+		const networkName = network === 'mainnet' ? 'casper' : 'casper-test';
 
-	const erc20MintableContractCode = fs.readFileSync(path.join(__dirname, './erc20_mintable.wasm'), {
-		encoding: 'hex',
-	});
+		const erc20MintableContractCode = fs.readFileSync(
+			path.join(__dirname, './erc20_mintable.wasm'),
+			{
+				encoding: 'hex',
+			},
+		);
 
-	const contractCode = Uint8Array.from(Buffer.from(erc20MintableContractCode, 'hex'));
+		const contractCode = Uint8Array.from(Buffer.from(erc20MintableContractCode, 'hex'));
 
-	const clPublicKey = CLPublicKey.fromHex(public_key);
+		const clPublicKey = CLPublicKey.fromHex(public_key);
 
-	const deployParams = new DeployUtil.DeployParams(clPublicKey, networkName);
-	const payment = DeployUtil.standardPayment(90000000000);
+		const deployParams = new DeployUtil.DeployParams(clPublicKey, networkName);
+		const payment = DeployUtil.standardPayment(90000000000);
 
-	const session = DeployUtil.ExecutableDeployItem.newModuleBytes(
-		contractCode,
-		RuntimeArgs.fromMap({
-			name: new CLString(token_name),
-			symbol: new CLString(token_symbol),
-			decimals: new CLU8(token_decimals),
-			total_supply: new CLU256(ethers.utils.parseUnits(token_supply.toString(), token_decimals)),
-			authorized_minter: new CLString(authorized_minter),
-			contract_key_name: new CLString(token_name),
-		}),
-	);
+		const session = DeployUtil.ExecutableDeployItem.newModuleBytes(
+			contractCode,
+			RuntimeArgs.fromMap({
+				name: new CLString(token_name),
+				symbol: new CLString(token_symbol),
+				decimals: new CLU8(token_decimals),
+				total_supply: new CLU256(ethers.utils.parseUnits(token_supply.toString(), token_decimals)),
+				authorized_minter: new CLString(authorized_minter),
+				contract_key_name: new CLString(token_name),
+			}),
+		);
 
-	let deploy = DeployUtil.makeDeploy(deployParams, session, payment);
+		let deploy = DeployUtil.makeDeploy(deployParams, session, payment);
 
-	/** Sign Deploy */
-	if (_.isNumber(ledger_account_index)) {
-		//	Use Ledger
-		const signature = await signTransactionUsingLedger(ledger_account_index, deploy);
-		if (!signature || signature?.error || signature?.errorMessage?.toLowerCase() !== 'no errors') {
-			throw 'Failed to sign transaction. Please make sure your ledger is unlocked and Casper App is Active/Open and try again';
+		/** Sign Deploy */
+		if (_.isNumber(ledger_account_index)) {
+			//	Use Ledger
+			const signature = await signTransactionUsingLedger(ledger_account_index, deploy);
+			if (
+				!signature ||
+				signature?.error ||
+				signature?.errorMessage?.toLowerCase() !== 'no errors'
+			) {
+				throw 'Failed to sign transaction. Please make sure your ledger is unlocked and Casper App is Active/Open and try again';
+			}
+
+			deploy = DeployUtil.setSignature(deploy, signature.signatureRS, clPublicKey);
+		} else {
+			const customPublicKeyDerivation =
+				pvk_algorithm === 'ed25519'
+					? Keys.Ed25519.privateToPublicKey(Buffer.from(private_key, 'hex'))
+					: Keys.Secp256K1.privateToPublicKey(Buffer.from(private_key, 'hex'));
+			const keyPair =
+				pvk_algorithm === 'ed25519'
+					? Keys.Ed25519.parseKeyPair(customPublicKeyDerivation, Buffer.from(private_key, 'hex'))
+					: Keys.Secp256K1.parseKeyPair(
+							customPublicKeyDerivation,
+							Buffer.from(private_key, 'hex'),
+							'raw',
+					  );
+			deploy = DeployUtil.signDeploy(deploy, keyPair);
 		}
 
-		deploy = DeployUtil.setSignature(deploy, signature.signatureRS, clPublicKey);
-	} else {
-		const customPublicKeyDerivation =
-			pvk_algorithm === 'ed25519'
-				? Keys.Ed25519.privateToPublicKey(Buffer.from(private_key, 'hex'))
-				: Keys.Secp256K1.privateToPublicKey(Buffer.from(private_key, 'hex'));
-		const keyPair =
-			pvk_algorithm === 'ed25519'
-				? Keys.Ed25519.parseKeyPair(customPublicKeyDerivation, Buffer.from(private_key, 'hex'))
-				: Keys.Secp256K1.parseKeyPair(
-						customPublicKeyDerivation,
-						Buffer.from(private_key, 'hex'),
-						'raw',
-				  );
-		deploy = DeployUtil.signDeploy(deploy, keyPair);
+		return await casperClient.putDeploy(deploy);
+	} catch (error) {
+		throw error;
 	}
-
-	const deployHash = await casperClient.putDeploy(deploy);
-
-	return deployHash;
 };
 
 const deployNormalContract = async (
@@ -109,62 +118,68 @@ const deployNormalContract = async (
 	network = 'testnet',
 	ledger_account_index = undefined,
 ) => {
-	const { casperClient } = getCasperClientAndService(network);
-	const networkName = network === 'mainnet' ? 'casper' : 'casper-test';
+	try {
+		const { casperClient } = getCasperClientAndService(network);
+		const networkName = network === 'mainnet' ? 'casper' : 'casper-test';
 
-	const erc20MintableContractCode = fs.readFileSync(path.join(__dirname, './erc20_token.wasm'), {
-		encoding: 'hex',
-	});
+		const erc20MintableContractCode = fs.readFileSync(path.join(__dirname, './erc20_token.wasm'), {
+			encoding: 'hex',
+		});
 
-	const contractCode = Uint8Array.from(Buffer.from(erc20MintableContractCode, 'hex'));
+		const contractCode = Uint8Array.from(Buffer.from(erc20MintableContractCode, 'hex'));
 
-	const clPublicKey = CLPublicKey.fromHex(public_key);
+		const clPublicKey = CLPublicKey.fromHex(public_key);
 
-	const deployParams = new DeployUtil.DeployParams(clPublicKey, networkName);
-	const payment = DeployUtil.standardPayment(90000000000);
+		const deployParams = new DeployUtil.DeployParams(clPublicKey, networkName);
+		const payment = DeployUtil.standardPayment(90000000000);
 
-	const session = DeployUtil.ExecutableDeployItem.newModuleBytes(
-		contractCode,
-		RuntimeArgs.fromMap({
-			name: new CLString(token_name),
-			symbol: new CLString(token_symbol),
-			decimals: new CLU8(token_decimals),
-			total_supply: new CLU256(ethers.utils.parseUnits(token_supply.toString(), token_decimals)),
-			// authorized_minter: new CLString(authorized_minter),
-			contract_key_name: new CLString(token_name),
-		}),
-	);
+		const session = DeployUtil.ExecutableDeployItem.newModuleBytes(
+			contractCode,
+			RuntimeArgs.fromMap({
+				name: new CLString(token_name),
+				symbol: new CLString(token_symbol),
+				decimals: new CLU8(token_decimals),
+				total_supply: new CLU256(ethers.utils.parseUnits(token_supply.toString(), token_decimals)),
+				// authorized_minter: new CLString(authorized_minter),
+				contract_key_name: new CLString(token_name),
+			}),
+		);
 
-	let deploy = DeployUtil.makeDeploy(deployParams, session, payment);
+		let deploy = DeployUtil.makeDeploy(deployParams, session, payment);
 
-	/** Sign Deploy */
-	if (_.isNumber(ledger_account_index)) {
-		//	Use Ledger
-		const signature = await signTransactionUsingLedger(ledger_account_index, deploy);
-		if (!signature || signature?.error || signature?.errorMessage?.toLowerCase() !== 'no errors') {
-			throw 'Failed to sign transaction. Please make sure your ledger is unlocked and Casper App is Active/Open and try again';
+		/** Sign Deploy */
+		if (_.isNumber(ledger_account_index)) {
+			//	Use Ledger
+			const signature = await signTransactionUsingLedger(ledger_account_index, deploy);
+			if (
+				!signature ||
+				signature?.error ||
+				signature?.errorMessage?.toLowerCase() !== 'no errors'
+			) {
+				throw 'Failed to sign transaction. Please make sure your ledger is unlocked and Casper App is Active/Open and try again';
+			}
+
+			deploy = DeployUtil.setSignature(deploy, signature.signatureRS, clPublicKey);
+		} else {
+			const customPublicKeyDerivation =
+				pvk_algorithm === 'ed25519'
+					? Keys.Ed25519.privateToPublicKey(Buffer.from(private_key, 'hex'))
+					: Keys.Secp256K1.privateToPublicKey(Buffer.from(private_key, 'hex'));
+			const keyPair =
+				pvk_algorithm === 'ed25519'
+					? Keys.Ed25519.parseKeyPair(customPublicKeyDerivation, Buffer.from(private_key, 'hex'))
+					: Keys.Secp256K1.parseKeyPair(
+							customPublicKeyDerivation,
+							Buffer.from(private_key, 'hex'),
+							'raw',
+					  );
+			deploy = DeployUtil.signDeploy(deploy, keyPair);
 		}
 
-		deploy = DeployUtil.setSignature(deploy, signature.signatureRS, clPublicKey);
-	} else {
-		const customPublicKeyDerivation =
-			pvk_algorithm === 'ed25519'
-				? Keys.Ed25519.privateToPublicKey(Buffer.from(private_key, 'hex'))
-				: Keys.Secp256K1.privateToPublicKey(Buffer.from(private_key, 'hex'));
-		const keyPair =
-			pvk_algorithm === 'ed25519'
-				? Keys.Ed25519.parseKeyPair(customPublicKeyDerivation, Buffer.from(private_key, 'hex'))
-				: Keys.Secp256K1.parseKeyPair(
-						customPublicKeyDerivation,
-						Buffer.from(private_key, 'hex'),
-						'raw',
-				  );
-		deploy = DeployUtil.signDeploy(deploy, keyPair);
+		return await casperClient.putDeploy(deploy);
+	} catch (error) {
+		throw error;
 	}
-
-	const deployHash = await casperClient.putDeploy(deploy);
-
-	return deployHash;
 };
 
 const getTokenNamedKeyValue = async (contractHash, key, network) => {
