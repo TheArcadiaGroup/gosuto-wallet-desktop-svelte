@@ -197,7 +197,7 @@ export const undelegate = (
 					  );
 
 			const deployParams = new DeployUtil.DeployParams(keyPair.publicKey, networkName);
-			const payment = DeployUtil.standardPayment(10000); // 5000000000
+			const payment = DeployUtil.standardPayment(3000000000); // 5000000000
 
 			const amountAsBigNumber = ethers.utils.parseUnits(amount.toString(), 9);
 
