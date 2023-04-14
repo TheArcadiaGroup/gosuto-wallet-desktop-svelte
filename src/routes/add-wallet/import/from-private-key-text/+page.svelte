@@ -113,7 +113,7 @@
 				const pbkUint8 = Keys.Ed25519.privateToPublicKey(pvkUint8);
 
 				keyPair = Keys.Ed25519.parseKeyPair(pbkUint8, pvkUint8);
-				algorithm = 'secp256k1';
+				algorithm = 'ed25519';
 			}
 
 			return {

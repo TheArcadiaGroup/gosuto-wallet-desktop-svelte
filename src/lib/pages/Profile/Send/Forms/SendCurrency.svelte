@@ -73,6 +73,7 @@
 		popupContent = '';
 
 		if ($selectedWallet) {
+			console.log('selected wallet', $selectedWallet);
 			const result = await sendToken(
 				$selectedWallet.publicKey,
 				$selectedWallet.privateKey,

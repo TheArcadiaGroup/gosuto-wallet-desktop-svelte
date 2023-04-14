@@ -26,8 +26,8 @@
 		],
 		"type": "distribution",
 		"hardenedRuntime": true,
-		"entitlements": "build_assets/entitlements.mac.plist",
-		"entitlementsInherit": "build_assets/entitlements.mac.plist",
+		"entitlements": "entitlements.mac.plist",
+		"entitlementsInherit": "entitlements.mac.plist",
 		"gatekeeperAssess": false
 	},
 	"dmg": {
