@@ -3,6 +3,8 @@
 
 	import PasswordToCopyPopup from '$lib/components/PopUps/WalletSettings/PasswordToCopyPopup.svelte';
 	import PasswordToExportPopup from '$lib/components/PopUps/WalletSettings/PasswordToExportPopup.svelte';
+	import PasswordToShowQRCodePopup from '$lib/components/PopUps/WalletSettings/PasswordToShowQRCodePopup.svelte';
+	import WalletQRCodePkPopup from '$lib/components/PopUps/WalletSettings/WalletQRCodePkPopup.svelte';
 	import WalletCopiedPopup from '$lib/components/PopUps/WalletSettings/WalletCopiedPopup.svelte';
 	import ReturnHome from '$lib/components/ReturnHome.svelte';
 
@@ -41,6 +43,8 @@
 
 	let showCopyWalletPasswordPopup: boolean = false;
 	let showExportWalletFilePopup: boolean = false;
+	let showExportWalletQRCodePopup: boolean = false;
+	let showQRCodePopup: boolean = false;
 	let showRemoveWalletPopup: boolean = false;
 	let showWalletCopiedPopup: boolean = false;
 
@@ -246,6 +250,30 @@
 				}}
 			/>
 		{/if}
+		{#if showExportWalletQRCodePopup}
+			<PasswordToShowQRCodePopup
+				bind:password={exportWalletPassword}
+				okDisabled={exportWalletPassword !== walletCurrentPassword}
+				on:confirm={() => {
+					showExportWalletQRCodePopup = false;
+					showQRCodePopup = true;
+				}}
+				on:cancel={() => {
+					showExportWalletQRCodePopup = false;
+					exportWalletPassword = '';
+				}}
+			/>
+		{/if}
+		{#if showQRCodePopup}
+			<WalletQRCodePkPopup
+				bind:password={exportWalletPassword}
+				okDisabled={false}
+				privateKey={decryptPrvKey(wallet.privateKey)}
+				on:confirm={() => {
+					showQRCodePopup = false;
+				}}
+			/>
+		{/if}
 		{#if showRemoveWalletPopup}
 			<PasswordToRemoveWalletPopup
 				bind:password={removeWalletPassword}
@@ -300,6 +328,16 @@
 							}}
 						>
 							<p slot="text" class="settings-btn-text">Export Wallet</p>
+						</Button>
+					{/if}
+					{#if !_.isNumber(wallet.ledgerIndex)}
+						<Button
+							hasGlow={true}
+							on:click={() => {
+								showExportWalletQRCodePopup = true;
+							}}
+						>
+							<p slot="text" class="settings-btn-text">Private Key QRCode</p>
 						</Button>
 					{/if}
 				</div>
