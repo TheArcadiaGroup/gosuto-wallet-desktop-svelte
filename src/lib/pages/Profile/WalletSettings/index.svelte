@@ -266,7 +266,6 @@
 		{/if}
 		{#if showQRCodePopup}
 			<WalletQRCodePkPopup
-				bind:password={exportWalletPassword}
 				okDisabled={false}
 				privateKey={decryptPrvKey(wallet.privateKey)}
 				on:confirm={() => {
